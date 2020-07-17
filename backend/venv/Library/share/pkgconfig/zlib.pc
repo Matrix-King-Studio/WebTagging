@@ -1,0 +1,13 @@
+prefix=W:/softsz/WebTagging/backend/venv/Library
+exec_prefix=W:/softsz/WebTagging/backend/venv/Library
+libdir=W:/softsz/WebTagging/backend/venv/Library/lib
+sharedlibdir=W:/softsz/WebTagging/backend/venv/Library/lib
+includedir=W:/softsz/WebTagging/backend/venv/Library/include
+
+Name: zlib
+Description: zlib compression library
+Version: 1.2.11
+
+Requires:
+Libs: -L${libdir} -L${sharedlibdir} -lz
+Cflags: -I${includedir}

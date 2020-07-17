@@ -1,0 +1,71 @@
+{
+  "build": "h2a8f88b_0",
+  "build_number": 0,
+  "channel": "https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/main/win-64",
+  "constrains": [],
+  "depends": [
+    "vc >=14.1,<15.0a0",
+    "vs2015_runtime >=14.16.27012,<15.0a0",
+    "zlib >=1.2.11,<1.3.0a0"
+  ],
+  "extracted_package_dir": "D:\\MiniConda\\pkgs\\sqlite-3.32.3-h2a8f88b_0",
+  "features": "",
+  "files": [
+    "Library/bin/sqlite3.dll",
+    "Library/bin/sqlite3.exe",
+    "Library/include/sqlite3.h",
+    "Library/lib/sqlite3.lib",
+    ".nonadmin"
+  ],
+  "fn": "sqlite-3.32.3-h2a8f88b_0.conda",
+  "legacy_bz2_md5": "1acaa687831537a844cb0e2b266c0288",
+  "license": "Public-Domain (http://www.sqlite.org/copyright.html)",
+  "link": {
+    "source": "D:\\MiniConda\\pkgs\\sqlite-3.32.3-h2a8f88b_0",
+    "type": 1
+  },
+  "md5": "beb479ac36f260ef5f927105efb1ab83",
+  "name": "sqlite",
+  "package_tarball_full_path": "D:\\MiniConda\\pkgs\\sqlite-3.32.3-h2a8f88b_0.conda",
+  "paths_data": {
+    "paths": [
+      {
+        "_path": "Library/bin/sqlite3.dll",
+        "path_type": "hardlink",
+        "sha256": "275843e46e6e01219bbb3619393f9ed5216abee87a04d17dd84a1f81b8b646b9",
+        "sha256_in_prefix": "275843e46e6e01219bbb3619393f9ed5216abee87a04d17dd84a1f81b8b646b9",
+        "size_in_bytes": 1543168
+      },
+      {
+        "_path": "Library/bin/sqlite3.exe",
+        "path_type": "hardlink",
+        "sha256": "422634bea15b5c62e5ca4f6ef4bc8efe274642e897271ace5a4b4b4d7b2dffed",
+        "sha256_in_prefix": "422634bea15b5c62e5ca4f6ef4bc8efe274642e897271ace5a4b4b4d7b2dffed",
+        "size_in_bytes": 1828352
+      },
+      {
+        "_path": "Library/include/sqlite3.h",
+        "path_type": "hardlink",
+        "sha256": "96a7c868bda3160973772924eff2c778df31f7d3d5148bf07a0078771a5b97b7",
+        "sha256_in_prefix": "96a7c868bda3160973772924eff2c778df31f7d3d5148bf07a0078771a5b97b7",
+        "size_in_bytes": 581356
+      },
+      {
+        "_path": "Library/lib/sqlite3.lib",
+        "path_type": "hardlink",
+        "sha256": "9abdcf9ee2cbacbd8a2fd8256cf1a9b6072438d703e23de04a5ad812527fe1e9",
+        "sha256_in_prefix": "9abdcf9ee2cbacbd8a2fd8256cf1a9b6072438d703e23de04a5ad812527fe1e9",
+        "size_in_bytes": 64264
+      }
+    ],
+    "paths_version": 1
+  },
+  "requested_spec": "None",
+  "sha256": "088cf64c03596dd88b3c5818895c70d806f23719d78494b7e0271f48c15078f6",
+  "size": 821316,
+  "subdir": "win-64",
+  "timestamp": 1592836741209,
+  "track_features": "",
+  "url": "https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/main/win-64/sqlite-3.32.3-h2a8f88b_0.conda",
+  "version": "3.32.3"
+}
