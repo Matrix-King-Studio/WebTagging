@@ -1,0 +1,28 @@
+*** Starting uWSGI 2.0.19.1 (64bit) on [Fri Jul 24 15:25:53 2020] ***
+compiled with version: 4.8.5 20150623 (Red Hat 4.8.5-39) on 24 July 2020 06:18:47
+os: Linux-3.10.0-1062.18.1.el7.x86_64 #1 SMP Tue Mar 17 23:49:17 UTC 2020
+nodename: Alex
+machine: x86_64
+clock source: unix
+pcre jit disabled
+detected number of CPU cores: 1
+current working directory: /www/wwwroot/WebTagging/backend-flask
+writing pidfile to /www/wwwroot/WebTagging/backend-flask/uwsgi/uwsgi.pid
+detected binary path: /usr/anaconda/Anaconda/envs/WebTagging/bin/uwsgi
+uWSGI running as root, you can use --uid/--gid/--chroot options
+*** WARNING: you are running uWSGI as root !!! (use the --uid flag) *** 
+chdir() to /www/wwwroot/WebTagging/backend-flask
+your processes number limit is 7270
+your memory page size is 4096 bytes
+detected max file descriptor number: 65535
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to UNIX address /www/wwwroot/WebTagging/backend-flask/uwsgi/uwsgi.sock fd 3
+uWSGI running as root, you can use --uid/--gid/--chroot options
+*** WARNING: you are running uWSGI as root !!! (use the --uid flag) *** 
+Python version: 3.7.7 (default, May  7 2020, 21:25:33)  [GCC 7.3.0]
+Set PythonHome to /usr/anaconda/Anaconda/envs/WebTagging/bin
+Fatal Python error: initfsencoding: Unable to get the locale encoding
+ModuleNotFoundError: No module named 'encodings'
+
+Current thread 0x00007f49c3af77c0 (most recent call first):
