@@ -1,0 +1,18 @@
+{
+  "title": "Label Studio",
+  "protocol": "http://",
+  "host": "0.0.0.0",
+  "port": 8080,
+  "debug": false,
+  "label_config": null,
+  "input_path": null,
+  "output_dir": "completions",
+  "instruction": "Type some <b>hypertext</b> for label experts!",
+  "allow_delete_completions": true,
+  "templates_dir": "examples",
+  "editor": {
+    "debug": false
+  },
+  "sampling": "sequential",
+  "ml_backends": []
+}

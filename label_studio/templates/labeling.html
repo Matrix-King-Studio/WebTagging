@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block body %}
+
+<script src="static/js/lsf-sdk.js"></script>
+
+<!-- Editor -->
+<div class="content">
+  <div id="label-studio">
+    <div class="ui loader active inline centered"></div>
+  </div>
+</div>
+
+<script>
+  window.onload = function () {
+    var task = {{ task_data | json | safe }};
+    window.LSF_SDK = LSF_SDK("label-studio", `{{ label_config_line | safe }}`, task);
+  }
+</script>
+
+{% endblock %}

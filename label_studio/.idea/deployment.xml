@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="PublishConfigData" autoUpload="Always" serverName="root@47.96.237.42:22 password">
+    <serverData>
+      <paths name="label_studio">
+        <serverdata>
+          <mappings>
+            <mapping deploy="/www/wwwroot/WebTagging/label-studio/label_studio" local="$PROJECT_DIR$" web="/" />
+          </mappings>
+        </serverdata>
+      </paths>
+      <paths name="root@47.96.237.42:22 password">
+        <serverdata>
+          <mappings>
+            <mapping deploy="/www/wwwroot/WebTagging/label-studio/label_studio" local="$PROJECT_DIR$" />
+          </mappings>
+        </serverdata>
+      </paths>
+    </serverData>
+    <option name="myAutoUpload" value="ALWAYS" />
+  </component>
+</project>
