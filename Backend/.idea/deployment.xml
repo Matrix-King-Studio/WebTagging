@@ -5,7 +5,7 @@
       <paths name="root@47.96.237.42:22 password">
         <serverdata>
           <mappings>
-            <mapping local="$PROJECT_DIR$" web="/" />
+            <mapping deploy="/root/WebTagging/Backend" local="$PROJECT_DIR$" web="/" />
           </mappings>
         </serverdata>
       </paths>

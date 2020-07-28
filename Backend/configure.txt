@@ -1,0 +1,4 @@
+宝塔面板
+    Bt-Panel: http://47.96.237.42:8888/d805d48a
+    username: 8oxl8fgh
+    password: fd70ffdc
