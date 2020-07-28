@@ -79,9 +79,9 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'HOST': '127.0.0.1',
         'PORT': '3306',
-        'USER': 'root',
-        'PASSWORD': '20001001',
-        'NAME': 'webtagging',
+        'USER': 'WebTagging',
+        'PASSWORD': 'Wm3a5DGYpbFKs6LA',
+        'NAME': 'WebTagging',
     }
 }
 

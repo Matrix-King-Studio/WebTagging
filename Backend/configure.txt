@@ -2,3 +2,12 @@
     Bt-Panel: http://47.96.237.42:8888/d805d48a
     username: 8oxl8fgh
     password: fd70ffdc
+
+FTP账号资料
+    用户：WebTagging
+    密码：jFJMPTDFwPzkbnib
+
+数据库账号资料
+    数据库名：WebTagging
+    用户：WebTagging
+    密码：Wm3a5DGYpbFKs6LA
