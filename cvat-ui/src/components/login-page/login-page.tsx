@@ -35,18 +35,17 @@ function LoginPageComponent(props: LoginPageComponentProps & RouteComponentProps
         <>
             <Row type='flex' justify='center' align='middle'>
                 <Col {...sizes}>
-                    <Title level={2}> Login </Title>
+                    <Title level={2}> 登录 </Title>
                     <LoginForm
                         fetching={fetching}
                         onSubmit={(loginData: LoginData): void => {
                             onLogin(loginData.username, loginData.password);
-                        }}
-                    />
+                        }}/>
                     <Row type='flex' justify='start' align='top'>
                         <Col>
                             <Text strong>
-                                New to CVAT? Create
-                                <Link to='/auth/register'> an account</Link>
+                                没有账号？
+                                <Link to='/auth/register'>注册一个！</Link>
                             </Text>
                         </Col>
                     </Row>

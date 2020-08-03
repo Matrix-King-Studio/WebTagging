@@ -40,14 +40,16 @@
 
 # User's guide
 
-Computer Vision Annotation Tool (CVAT) is a web-based tool which helps to
-annotate videos and images for Computer Vision algorithms. It was inspired
-by [Vatic](http://carlvondrick.com/vatic/) free, online, interactive video
-annotation tool. CVAT has many powerful features: _interpolation of bounding
-boxes between key frames, automatic annotation using deep learning models,
-shortcuts for most of critical actions, dashboard with a list of annotation
-tasks, LDAP and basic authorization, etc..._ It was created for and used by
-a professional data annotation team. UX and UI were optimized especially for
+计算机视觉标注工具 (CVAT) 是基于 Web 为计算机视觉算法标注视频和图像的在线工具。它的设计灵感来源于 [Vatic](http://carlvondrick.com/vatic/) ，一款免费、在线、交互式的视频标注工具。
+CVAT 有很多强大的功能:
+- 在关键帧之间插入边界框
+- 使用深度学习模型自动标注
+- 很多关键行为的快捷键
+- 带有标注任务列表的仪表盘
+- LDAP和基本授权
+- 等……
+
+It was created for and used by a professional data annotation team. UX and UI were optimized especially for
 computer vision tasks developed by our team.
 
 ## Getting started

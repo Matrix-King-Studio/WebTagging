@@ -48,8 +48,7 @@ class LoginFormComponent extends React.PureComponent<LoginFormProps> {
                     <Input
                         autoComplete='username'
                         prefix={<Icon type='user' style={{ color: 'rgba(0,0,0,.25)' }} />}
-                        placeholder='Username'
-                    />,
+                        placeholder='用户名'/>,
                 )}
             </Form.Item>
         );
@@ -71,8 +70,7 @@ class LoginFormComponent extends React.PureComponent<LoginFormProps> {
                         autoComplete='current-password'
                         prefix={<Icon type='lock' style={{ color: 'rgba(0,0,0,.25)' }} />}
                         placeholder='Password'
-                        type='password'
-                    />,
+                        type='密码'/>,
                 )}
             </Form.Item>
         );
@@ -91,9 +89,8 @@ class LoginFormComponent extends React.PureComponent<LoginFormProps> {
                         loading={fetching}
                         disabled={fetching}
                         htmlType='submit'
-                        className='login-form-button'
-                    >
-                        Sign in
+                        className='login-form-button'>
+                        登录
                     </Button>
                 </Form.Item>
             </Form>
