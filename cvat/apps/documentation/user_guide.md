@@ -49,74 +49,69 @@ CVAT 有很多强大的功能:
 - LDAP和基本授权
 - 等……
 
-It was created for and used by a professional data annotation team. UX and UI were optimized especially for
+CVAT 是为专业的数据标注团队创建和使用的，UX and UI were optimized especially for
 computer vision tasks developed by our team.
 
-## Getting started
+## 入门
 
-### Authorization
--   First of all, you have to log in to CVAT tool.
+### 授权
+-   首先，您必须登录到CVAT工具。
 
     ![](static/documentation/images/image001.jpg)
 
--   For register a new user press "Create an account"
+-   要注册新用户，请点击`Create an account`
 
     ![](static/documentation/images/image002.jpg)
 
--   You can register a user but by default it will not have rights even to view
-    list of tasks. Thus you should create a superuser. The superuser can use
-    [Django administration panel](http://localhost:8080/admin) to assign correct
-    groups to the user. Please use the command below to create an admin account:
+-   刚注册的用户，但在默认情况下，甚至无权查看任务列表。因此需要创建一个超级用户，使用 Django 管理面板为新用户分配正确的组。
+    请使用以下命令创建管理员帐户：
 
     ``docker exec -it cvat bash -ic '/usr/bin/python3 ~/manage.py createsuperuser'``
 
--   If you want to create a non-admin account, you can do that using the link below
-    on the login page. Don't forget to modify permissions for the new user in the
-    administration panel. There are several groups (aka roles): admin, user,
-    annotator, observer.
+-   如果你想创建一个非管理员用户，则可以通过登录页面上的链接来创建，然后让管理员分配相应的角色（管理员、用户、标注员、质检员）。
 
     ![](static/documentation/images/image003.jpg)
 
-### Administration panel
-Go to the [Django administration panel](http://localhost:8080/admin). There you can:
--   Create / edit / delete users
--   Control permissions of users and access to the tool.
+### 管理面板
+在管理面板中，您可以：
+-   创建/编辑/删除用户
+-   控制用户的权限和对工具的访问
 
     ![](static/documentation/images/image115.jpg)
 
-### Creating an annotation task
+### 创建标注任务
 
-1.  Create an annotation task pressing ``Create new task`` button on the main page.
+1.  点击主页面上的 ``Create new task`` 按钮创建标注任务：
 ![](static/documentation/images/image004.jpg)
 
-1.  Specify parameters of the task:
+1.  指定任务的参数
 
-    #### Basic configuration
+    #### 基本配置
 
-    **Name** The name of the task to be created.
+    **Name** 要创建的任务名称
 
     ![](static/documentation/images/image005.jpg)
 
-    **Labels**. There are two ways of working with labels:
-    -   The ``Constructor`` is a simple way to add and adjust labels. To add a new label click the ``Add label`` button.
+    **Labels**. 使用标签有两种方法：
+    -   ``Constructor`` 是添加和调整标签的简单方法。点击 ``Add label`` 按钮即可添加一个新的标签。
           ![](static/documentation/images/image123.jpg)
 
-        You can set a name of the label in the ``Label name`` field.
+        可以在 ``Label name`` 字段设置标签的名称。
 
           ![](static/documentation/images/image124.jpg)
 
-        If necessary you can add an attribute and set its properties by clicking ``Add an attribute``:
+        如果有需要，也可以通过点击 ``Add an attribute`` 来添加属性并设置其属性：
 
           ![](static/documentation/images/image125.jpg)
 
-        The following actions are available here:
-        1. Set the attribute’s name.
-        1. Choose the way to display the attribute:
-           - Select — drop down list of value
-           - Radio — is used when it is necessary to choose just one option out of few suggested.
-           - Checkbox — is used when it is necessary to choose any number of options out of suggested.
-           - Text — is used when an attribute is entered as a text.
-           - Number — is used when an attribute is entered as a number.
+        设置属性提供以下操作：
+        1. 设置属性的名称。
+        1. 选择显示属性的方式：
+           - Select — 下拉列表选值
+           - Radio — 从提供的几个选项中只选择一个时使用
+           - Checkbox — 从提供的选项中选择任意数量的选项时使用
+           - Text — 文本输入，默认属性
+           - Number — 数字输入
         1. Set values for the attribute. The values could be separated by pressing ``Enter``.
         The entered value is displayed as a separate element which could be deleted
         by pressing ``Backspace`` or clicking the close button (x).

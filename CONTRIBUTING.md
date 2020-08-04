@@ -1,42 +1,38 @@
-# Contributing to this project
+# 对本项目做贡献
 
-Please take a moment to review this document in order to make the contribution
-process easy and effective for everyone involved.
+请花点时间看一下这篇文章，以使投稿过程对所有参与的人都简单有效。
 
-Following these guidelines helps to communicate that you respect the time of
-the developers managing and developing this open source project. In return,
-they should reciprocate that respect in addressing your issue or assessing
-patches and features.
+遵循这些指导原则有助于传达这样的信息：
+1. 您尊重开发人员管理和开发这个开源项目的时间
+2. 作为回报，他们应该在解决您的问题或评估补丁程序和功能时回报这种尊重
 
-## Development environment
+## 开发环境
 
-Next steps should work on clear Ubuntu 18.04.
+下一步的工作应该是清除ubuntu18.04。
 
--   Install necessary dependencies:
+-   安装必要的依赖项：
     ```sh
     $ sudo apt-get update && sudo apt-get --no-install-recommends install -y ffmpeg build-essential curl redis-server python3-dev python3-pip python3-venv libldap2-dev libsasl2-dev
     ```
-    Also please make sure that you have installed ffmpeg with all necessary libav* libraries and pkg-config package.
+    另外，请确保您已经安装了ffmpeg以及所有必需的libav*库和pkg config包。
     ```sh
-    # Node and npm (you can use default versions of these packages from apt (8.*, 3.*), but we would recommend to use newer versions)
+    # Node和npm（您可以使用apt（8.*，3.*）提供的这些包的默认版本，但我们建议使用更新的版本）
     curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
     sudo apt-get install -y nodejs
 
-    # General dependencies
+    # 一般依赖项
     sudo apt-get install -y pkg-config
 
-    # Library components
+    # 库组件
     sudo apt-get install -y \
         libavformat-dev libavcodec-dev libavdevice-dev \
         libavutil-dev libswscale-dev libswresample-dev libavfilter-dev
     ```
-    See [PyAV Dependencies installation guide](http://docs.mikeboers.com/pyav/develop/overview/installation.html#dependencies)
-    for details.
+    See [PyAV Dependencies installation guide](http://docs.mikeboers.com/pyav/develop/overview/installation.html#dependencies) for details.
 
--   Install [Visual Studio Code](https://code.visualstudio.com/docs/setup/linux#_debian-and-ubuntu-based-distributions)
-for development
+-   Install [Visual Studio Code](https://code.visualstudio.com/docs/setup/linux#_debian-and-ubuntu-based-distributions) for development
 
--   Install CVAT on your local host:
+-   在本地主机上安装CVAT：
     ```sh
     git clone https://github.com/opencv/cvat
     cd cvat && mkdir logs keys
@@ -49,7 +45,7 @@ for development
     python manage.py collectstatic
     ```
 
--   Create a super user for CVAT:
+-   为CVAT创建超级用户：
     ```sh
     $ python manage.py createsuperuser
     Username (leave blank to use 'django'): ***
@@ -58,18 +54,18 @@ for development
     Password (again): ***
     ```
 
--   Install npm packages for UI and start UI debug server (run the following command from CVAT root directory):
+-   为UI安装npm包并启动UI调试服务器（从CVAT根目录运行以下命令）：
     ```sh
     cd cvat-core && npm install && \
     cd ../cvat-ui && npm install && npm start
     ```
 
--   Open new terminal (Ctrl + Shift + T), run Visual Studio Code from the virtual environment
+-   打开新终端（Ctrl+Shift+T），从虚拟环境运行 visual studio 代码
     ```sh
     cd .. && source .env/bin/activate && code
     ```
 
--   Install followig vscode extensions:
+-   安装以下vscode扩展：
     - [Debugger for Chrome](https://marketplace.visualstudio.com/items?itemName=msjsdiag.debugger-for-chrome)
     - [Python](https://marketplace.visualstudio.com/items?itemName=ms-python.python)
     - [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint)
@@ -77,15 +73,15 @@ for development
     - [licenser](https://marketplace.visualstudio.com/items?itemName=ymotongpoo.licenser)
     - [Trailing Spaces](https://marketplace.visualstudio.com/items?itemName=shardulm94.trailing-spaces)
 
--   Reload Visual Studio Code from virtual environment
+-   从虚拟环境重新加载Visual Studio代码
 
--   Select `server: debug` configuration and start it (F5) to run REST server and its workers
+-   选择“server:debug”配置并启动它（F5）以运行REST服务器及其工作进程
 
-You have done! Now it is possible to insert breakpoints and debug server and client of the tool.
+你做到了！现在可以插入断点并调试工具的服务器和客户端。
 
-## How to setup additional components in development environment
+## 如何在开发环境中设置附加组件
 
-### Automatic annotation
+### 自动标注
 - Install OpenVINO on your host machine according to instructions from
 [OpenVINO website](https://docs.openvinotoolkit.org/latest/index.html)
 - Add some environment variables (copy code below to the end of ``.env/bin/activate`` file):
