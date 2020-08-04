@@ -20,9 +20,9 @@ import fcntl
 import shutil
 import subprocess
 import mimetypes
-mimetypes.add_type("application/wasm", ".wasm", True)
-
 from pathlib import Path
+
+mimetypes.add_type("application/wasm", ".wasm", True)
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = str(Path(__file__).parents[2])
@@ -32,10 +32,11 @@ INTERNAL_IPS = ['127.0.0.1']
 
 try:
     sys.path.append(BASE_DIR)
-    from keys.secret_key import SECRET_KEY # pylint: disable=unused-import
+    from keys.secret_key import SECRET_KEY  # pylint: disable=unused-import
 except ImportError:
 
     from django.utils.crypto import get_random_string
+
     keys_dir = os.path.join(BASE_DIR, 'keys')
     if not os.path.isdir(keys_dir):
         os.mkdir(keys_dir)
@@ -53,15 +54,15 @@ def generate_ssh_keys():
     with open(pidfile, "w") as pid:
         fcntl.flock(pid, fcntl.LOCK_EX)
         try:
-            subprocess.run(['ssh-add {}/*'.format(ssh_dir)], shell = True, stderr = subprocess.PIPE)
-            keys = subprocess.run(['ssh-add -l'], shell = True,
-                stdout = subprocess.PIPE).stdout.decode('utf-8').split('\n')
+            subprocess.run(['ssh-add {}/*'.format(ssh_dir)], shell=True, stderr=subprocess.PIPE)
+            keys = subprocess.run(['ssh-add -l'], shell=True,
+                                  stdout=subprocess.PIPE).stdout.decode('utf-8').split('\n')
             if 'has no identities' in keys[0]:
                 print('SSH keys were not found')
                 volume_keys = os.listdir(keys_dir)
                 if not ('id_rsa' in volume_keys and 'id_rsa.pub' in volume_keys):
                     print('New pair of keys are being generated')
-                    subprocess.run(['ssh-keygen -b 4096 -t rsa -f {}/id_rsa -q -N ""'.format(ssh_dir)], shell = True)
+                    subprocess.run(['ssh-keygen -b 4096 -t rsa -f {}/id_rsa -q -N ""'.format(ssh_dir)], shell=True)
                     shutil.copyfile('{}/id_rsa'.format(ssh_dir), '{}/id_rsa'.format(keys_dir))
                     shutil.copymode('{}/id_rsa'.format(ssh_dir), '{}/id_rsa'.format(keys_dir))
                     shutil.copyfile('{}/id_rsa.pub'.format(ssh_dir), '{}/id_rsa.pub'.format(keys_dir))
@@ -72,9 +73,10 @@ def generate_ssh_keys():
                     shutil.copymode('{}/id_rsa'.format(keys_dir), '{}/id_rsa'.format(ssh_dir))
                     shutil.copyfile('{}/id_rsa.pub'.format(keys_dir), '{}/id_rsa.pub'.format(ssh_dir))
                     shutil.copymode('{}/id_rsa.pub'.format(keys_dir), '{}/id_rsa.pub'.format(ssh_dir))
-                subprocess.run(['ssh-add', '{}/id_rsa'.format(ssh_dir)], shell = True)
+                subprocess.run(['ssh-add', '{}/id_rsa'.format(ssh_dir)], shell=True)
         finally:
             fcntl.flock(pid, fcntl.LOCK_UN)
+
 
 try:
     if os.getenv("SSH_AUTH_SOCK", None):
@@ -132,9 +134,9 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.BasicAuthentication'
     ],
     'DEFAULT_VERSIONING_CLASS':
-        # Don't try to use URLPathVersioning. It will give you /api/{version}
-        # in path and '/api/docs' will not collapse similar items (flat list
-        # of all possible methods isn't readable).
+    # Don't try to use URLPathVersioning. It will give you /api/{version}
+    # in path and '/api/docs' will not collapse similar items (flat list
+    # of all possible methods isn't readable).
         'rest_framework.versioning.NamespaceVersioning',
     # Need to add 'api-docs' here as a workaround for include_docs_urls.
     'ALLOWED_VERSIONS': ('v1', 'api-docs'),
@@ -200,7 +202,7 @@ ROOT_URLCONF = 'cvat.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -251,7 +253,6 @@ RQ_QUEUES = {
 RQ_SHOW_ADMIN_LINK = True
 RQ_EXCEPTION_HANDLERS = ['cvat.apps.engine.views.rq_handler']
 
-
 # JavaScript and CSS compression
 # https://django-compressor.readthedocs.io
 
@@ -282,19 +283,19 @@ AUTH_PASSWORD_VALIDATORS = [
 # Cache DB access (e.g. for engine.task.get_frame)
 # https://github.com/Suor/django-cacheops
 CACHEOPS_REDIS = {
-    'host': 'localhost', # redis-server is on same machine
-    'port': 6379,        # default redis port
-    'db': 1,             # SELECT non-default redis database
+    'host': 'localhost',  # redis-server is on same machine
+    'port': 6379,  # default redis port
+    'db': 1,  # SELECT non-default redis database
 }
 
 CACHEOPS = {
     # Automatically cache any Task.objects.get() calls for 15 minutes
     # This also includes .first() and .last() calls.
-    'engine.task': {'ops': 'get', 'timeout': 60*15},
+    'engine.task': {'ops': 'get', 'timeout': 60 * 15},
 
     # Automatically cache any Job.objects.get() calls for 15 minutes
     # This also includes .first() and .last() calls.
-    'engine.job': {'ops': 'get', 'timeout': 60*15},
+    'engine.job': {'ops': 'get', 'timeout': 60 * 15},
 }
 
 CACHEOPS_DEGRADE_ON_FAILURE = True
@@ -361,7 +362,7 @@ LOGGING = {
             'level': 'DEBUG',
             'filename': os.path.join(BASE_DIR, 'logs', 'cvat_server.log'),
             'formatter': 'standard',
-            'maxBytes': 1024*1024*50, # 50 MB
+            'maxBytes': 1024 * 1024 * 50,  # 50 MB
             'backupCount': 5,
         },
         'logstash': {
@@ -401,7 +402,7 @@ if os.getenv('DJANGO_LOG_SERVER_HOST'):
     LOGGING['loggers']['cvat.client']['handlers'] += ['logstash']
 
 DATA_UPLOAD_MAX_MEMORY_SIZE = 100 * 1024 * 1024  # 100 MB
-DATA_UPLOAD_MAX_NUMBER_FIELDS = None   # this django check disabled
+DATA_UPLOAD_MAX_NUMBER_FIELDS = None  # this django check disabled
 LOCAL_LOAD_MAX_FILES_COUNT = 500
 LOCAL_LOAD_MAX_FILES_SIZE = 512 * 1024 * 1024  # 512 MB
 
@@ -423,5 +424,5 @@ RESTRICTIONS = {
         'engine.role.annotator',
         'engine.role.user',
         'engine.role.admin',
-        ),
+    ),
 }
