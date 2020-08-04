@@ -20,9 +20,10 @@ import fcntl
 import shutil
 import subprocess
 import mimetypes
-from pathlib import Path
 
 mimetypes.add_type("application/wasm", ".wasm", True)
+
+from pathlib import Path
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = str(Path(__file__).parents[2])
@@ -303,7 +304,7 @@ CACHEOPS_DEGRADE_ON_FAILURE = True
 # Internationalization
 # https://docs.djangoproject.com/en/2.0/topics/i18n/
 
-LANGUAGE_CODE = 'zh-hans'
+LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = os.getenv('TZ', 'Etc/UTC')
 

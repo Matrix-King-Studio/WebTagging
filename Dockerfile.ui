@@ -7,8 +7,6 @@ ARG socks_proxy
 ARG PUBLIC_INSTANCE
 ARG WA_PAGE_VIEW_HIT
 
-RUN npm config set registry https://registry.npm.taobao.org
-
 ENV TERM=xterm \
     http_proxy=${http_proxy}   \
     https_proxy=${https_proxy} \
@@ -19,7 +17,7 @@ ENV TERM=xterm \
 
 # Install dependencies
 COPY cvat-core/package*.json /tmp/cvat-core/
-# COPY cvat-canvas/package*.json /tmp/cvat-canvas/
+COPY cvat-canvas/package*.json /tmp/cvat-canvas/
 COPY cvat-ui/package*.json /tmp/cvat-ui/
 COPY cvat-data/package*.json /tmp/cvat-data/
 
@@ -32,8 +30,8 @@ WORKDIR /tmp/cvat-core/
 RUN npm install
 
 # Install cvat-canvas dependencies
-# WORKDIR /tmp/cvat-canvas/
-# RUN npm install
+WORKDIR /tmp/cvat-canvas/
+RUN npm install
 
 # Install cvat-ui dependencies
 WORKDIR /tmp/cvat-ui/
@@ -42,7 +40,7 @@ RUN npm install
 # Build source code
 COPY cvat-data/ /tmp/cvat-data/
 COPY cvat-core/ /tmp/cvat-core/
-# COPY cvat-canvas/ /tmp/cvat-canvas/
+COPY cvat-canvas/ /tmp/cvat-canvas/
 COPY cvat-ui/ /tmp/cvat-ui/
 RUN npm run build
 
