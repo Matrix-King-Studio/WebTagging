@@ -1,4 +1,3 @@
-
 # Copyright (C) 2018 Intel Corporation
 #
 # SPDX-License-Identifier: MIT
@@ -12,8 +11,9 @@ from . import views
 
 urlpatterns = [
     path('login', auth_views.LoginView.as_view(form_class=forms.AuthForm,
-        template_name='login.html', extra_context={'note': settings.AUTH_LOGIN_NOTE}),
-        name='login'),
+                                               template_name='login.html',
+                                               extra_context={'note': settings.AUTH_LOGIN_NOTE}),
+         name='login'),
     path('logout', auth_views.LogoutView.as_view(next_page='login'), name='logout'),
 ]
 
