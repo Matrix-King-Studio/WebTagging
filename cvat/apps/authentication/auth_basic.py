@@ -4,6 +4,7 @@
 from . import AUTH_ROLE
 from django.conf import settings
 
+
 def create_user(sender, instance, created, **kwargs):
     from django.contrib.auth.models import Group
 

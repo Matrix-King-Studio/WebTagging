@@ -20,10 +20,10 @@ import fcntl
 import shutil
 import subprocess
 import mimetypes
+from pathlib import Path
+
 
 mimetypes.add_type("application/wasm", ".wasm", True)
-
-from pathlib import Path
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = str(Path(__file__).parents[2])
@@ -182,8 +182,7 @@ MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
-    # FIXME
-    # 'corsheaders.middleware.CorsPostCsrfMiddleware',
+    'corsheaders.middleware.CorsPostCsrfMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -304,9 +303,8 @@ CACHEOPS_DEGRADE_ON_FAILURE = True
 # Internationalization
 # https://docs.djangoproject.com/en/2.0/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
-
-TIME_ZONE = os.getenv('TZ', 'Etc/UTC')
+LANGUAGE_CODE = 'zh-hans'
+TIME_ZONE = 'Asia/Chongqing'
 
 USE_I18N = True
 

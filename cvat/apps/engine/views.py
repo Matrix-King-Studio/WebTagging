@@ -354,15 +354,21 @@ class DjangoFilterInspector(CoreAPICompatInspector):
                           type=openapi.TYPE_STRING)
     ],
     filter_inspectors=[DjangoFilterInspector]))
-@method_decorator(name='create', decorator=swagger_auto_schema(
-    operation_summary='Method creates a new task in a database without any attached images and videos'))
+@method_decorator(name='create',
+                  decorator=swagger_auto_schema(
+                      operation_summary='Method creates a new task in a database without any attached images and videos'))
 @method_decorator(name='retrieve',
-                  decorator=swagger_auto_schema(operation_summary='Method returns details of a specific task'))
-@method_decorator(name='update', decorator=swagger_auto_schema(operation_summary='Method updates a task by id'))
-@method_decorator(name='destroy', decorator=swagger_auto_schema(
-    operation_summary='Method deletes a specific task, all attached jobs, annotations, and data'))
-@method_decorator(name='partial_update', decorator=swagger_auto_schema(
-    operation_summary='Methods does a partial update of chosen fields in a task'))
+                  decorator=swagger_auto_schema(
+                      operation_summary='Method returns details of a specific task'))
+@method_decorator(name='update',
+                  decorator=swagger_auto_schema(
+                      operation_summary='Method updates a task by id'))
+@method_decorator(name='destroy',
+                  decorator=swagger_auto_schema(
+                      operation_summary='Method deletes a specific task, all attached jobs, annotations, and data'))
+@method_decorator(name='partial_update',
+                  decorator=swagger_auto_schema(
+                      operation_summary='Methods does a partial update of chosen fields in a task'))
 class TaskViewSet(auth.TaskGetQuerySetMixin, viewsets.ModelViewSet):
     queryset = Task.objects.all().prefetch_related(
         "label_set__attributespec_set",
@@ -414,7 +420,8 @@ class TaskViewSet(auth.TaskGetQuerySetMixin, viewsets.ModelViewSet):
             shutil.rmtree(instance.data.get_data_dirname(), ignore_errors=True)
             instance.data.delete()
 
-    @swagger_auto_schema(method='get', operation_summary='Returns a list of jobs for a specific task',
+    @swagger_auto_schema(method='get',
+                         operation_summary='返回特定任务的作业列表',
                          responses={'200': JobSerializer(many=True)})
     @action(detail=True, methods=['GET'], serializer_class=JobSerializer)
     def jobs(self, request, pk):
@@ -425,16 +432,27 @@ class TaskViewSet(auth.TaskGetQuerySetMixin, viewsets.ModelViewSet):
 
         return Response(serializer.data)
 
-    @swagger_auto_schema(method='post', operation_summary='Method permanently attaches images or video to a task')
-    @swagger_auto_schema(method='get', operation_summary='Method returns data for a specific task',
+    @swagger_auto_schema(method='post',
+                         operation_summary='方法将图像或视频永久附加到任务')
+    @swagger_auto_schema(method='get',
+                         operation_summary='Method returns data for a specific task',
                          manual_parameters=[
-                             openapi.Parameter('type', in_=openapi.IN_QUERY, required=True, type=openapi.TYPE_STRING,
+                             openapi.Parameter('type',
+                                               in_=openapi.IN_QUERY,
+                                               required=True,
+                                               type=openapi.TYPE_STRING,
                                                enum=['chunk', 'frame', 'preview'],
                                                description="Specifies the type of the requested data"),
-                             openapi.Parameter('quality', in_=openapi.IN_QUERY, required=True, type=openapi.TYPE_STRING,
+                             openapi.Parameter('quality',
+                                               in_=openapi.IN_QUERY,
+                                               required=True,
+                                               type=openapi.TYPE_STRING,
                                                enum=['compressed', 'original'],
                                                description="Specifies the quality level of the requested data, doesn't matter for 'preview' type"),
-                             openapi.Parameter('number', in_=openapi.IN_QUERY, required=True, type=openapi.TYPE_NUMBER,
+                             openapi.Parameter('number',
+                                               in_=openapi.IN_QUERY,
+                                               required=True,
+                                               type=openapi.TYPE_NUMBER,
                                                description="A unique number value identifying chunk or frame, doesn't matter for 'preview' type"),
                          ]
                          )
@@ -505,17 +523,25 @@ class TaskViewSet(auth.TaskGetQuerySetMixin, viewsets.ModelViewSet):
                 slogger.task[pk].error(msg, exc_info=True)
                 return Response(data=msg + '\n' + str(e), status=status.HTTP_400_BAD_REQUEST)
 
-    @swagger_auto_schema(method='get', operation_summary='Method allows to download task annotations',
+    @swagger_auto_schema(method='get',
+                         operation_summary='方法允许下载任务标注',
                          manual_parameters=[
-                             openapi.Parameter('format', openapi.IN_QUERY,
+                             openapi.Parameter('format',
+                                               openapi.IN_QUERY,
                                                description="Desired output format name\nYou can get the list of supported formats at:\n/server/annotation/formats",
-                                               type=openapi.TYPE_STRING, required=False),
-                             openapi.Parameter('filename', openapi.IN_QUERY,
+                                               type=openapi.TYPE_STRING,
+                                               required=False),
+                             openapi.Parameter('filename',
+                                               openapi.IN_QUERY,
                                                description="Desired output file name",
-                                               type=openapi.TYPE_STRING, required=False),
-                             openapi.Parameter('action', in_=openapi.IN_QUERY,
+                                               type=openapi.TYPE_STRING,
+                                               required=False),
+                             openapi.Parameter('action',
+                                               in_=openapi.IN_QUERY,
                                                description='Used to start downloading process after annotation file had been created',
-                                               type=openapi.TYPE_STRING, required=False, enum=['download'])
+                                               type=openapi.TYPE_STRING,
+                                               required=False,
+                                               enum=['download'])
                          ],
                          responses={
                              '202': openapi.Response(description='Dump of annotations has been started'),
@@ -523,11 +549,14 @@ class TaskViewSet(auth.TaskGetQuerySetMixin, viewsets.ModelViewSet):
                              '200': openapi.Response(description='Download of file started')
                          }
                          )
-    @swagger_auto_schema(method='put', operation_summary='Method allows to upload task annotations',
+    @swagger_auto_schema(method='put',
+                         operation_summary='Method allows to upload task annotations',
                          manual_parameters=[
-                             openapi.Parameter('format', openapi.IN_QUERY,
+                             openapi.Parameter('format',
+                                               openapi.IN_QUERY,
                                                description="Input format name\nYou can get the list of supported formats at:\n/server/annotation/formats",
-                                               type=openapi.TYPE_STRING, required=False),
+                                               type=openapi.TYPE_STRING,
+                                               required=False),
                          ],
                          responses={
                              '202': openapi.Response(description='Uploading has been started'),
@@ -592,10 +621,10 @@ class TaskViewSet(auth.TaskGetQuerySetMixin, viewsets.ModelViewSet):
                 return Response(data)
 
     @swagger_auto_schema(method='get',
-                         operation_summary='When task is being created the method returns information about a status of the creation process')
+                         operation_summary='创建任务时，该方法返回有关创建进程状态的信息')
     @action(detail=True, methods=['GET'], serializer_class=RqStatusSerializer)
     def status(self, request, pk):
-        self.get_object()  # force to call check_object_permissions
+        self.get_object()  # 强制调用check_object_权限
         response = self._get_rq_response(queue="default",
                                          job_id="/api/{}/tasks/{}".format(request.version, pk))
         serializer = RqStatusSerializer(data=response)

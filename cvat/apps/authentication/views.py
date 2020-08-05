@@ -17,19 +17,19 @@ from django.utils.decorators import method_decorator
 from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
 
+
 def register_user(request):
     if request.method == 'POST':
         form = forms.NewUserForm(request.POST)
         if form.is_valid():
             form.save()
-            username = form.cleaned_data.get('username')
-            raw_password = form.cleaned_data.get('password1')
-            user = authenticate(username=username, password=raw_password)
-            login(request, user)
-            return redirect(settings.LOGIN_REDIRECT_URL)
+            return Response('注册成功！')
+        else:
+            return Response(form.errors)
     else:
         form = forms.NewUserForm()
     return render(request, 'register.html', {'form': form})
+
 
 @method_decorator(name='post', decorator=swagger_auto_schema(
     request_body=openapi.Schema(
@@ -50,6 +50,7 @@ class SigningView(views.APIView):
     Signed URL contains a token which authenticates a user on the server.
     Signed URL is valid during 30 seconds since signing.
     """
+
     def post(self, request):
         url = request.data.get('url')
         if not url:

@@ -133,6 +133,7 @@ RUN if [ "$WITH_DEXTR" = "yes" ]; then \
 COPY ssh ${HOME}/.ssh
 COPY utils ${HOME}/utils
 COPY cvat/ ${HOME}/cvat
+COPY templates/ ${HOME}/cvat/templates
 COPY tests ${HOME}/tests
 COPY datumaro/ ${HOME}/datumaro
 
