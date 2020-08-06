@@ -13,15 +13,15 @@ from cvat.apps.restrictions.views import RestrictionsViewSet
 
 schema_view = get_schema_view(
    openapi.Info(
-      title="CVAT REST API",
-      default_version='v1',
-      description="REST API for Computer Vision Annotation Tool (CVAT)",
-      terms_of_service="https://www.google.com/policies/terms/",
+      title="CVAT REST API",    # API标题（必须）
+      default_version='v1',     # API版本字符串（必须）
+      description="用于计算机视觉注释工具 (CVAT) 的 REST API ",             # API描述，支持 Markdown
+      terms_of_service="https://www.google.com/policies/terms/",       # API服务条款；应为 URL
       contact=openapi.Contact(email="nikita.manovich@intel.com"),
-      license=openapi.License(name="MIT License"),
+      license=openapi.License(name="MIT License"),                      # 许可证对象
    ),
    public=True,
-   permission_classes=(permissions.IsAuthenticated,),
+   permission_classes=(permissions.AllowAny,),
 )
 
 router = routers.DefaultRouter(trailing_slash=False)

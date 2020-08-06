@@ -7,17 +7,20 @@ import logging
 from cvat.settings.base import LOGGING
 from .models import Job, Task
 
+
 def _get_task(tid):
     try:
         return Task.objects.get(pk=tid)
     except Exception:
         raise Exception('{} key must be a task identifier'.format(tid))
 
+
 def _get_job(jid):
     try:
         return Job.objects.select_related("segment__task").get(id=jid)
     except Exception:
         raise Exception('{} key must be a job identifier'.format(jid))
+
 
 class TaskLoggerStorage:
     def __init__(self):
@@ -39,6 +42,7 @@ class TaskLoggerStorage:
 
         return logger
 
+
 class JobLoggerStorage:
     def __init__(self):
         self._storage = dict()
@@ -51,6 +55,7 @@ class JobLoggerStorage:
     def _get_task_logger(self, jid):
         job = _get_job(jid)
         return slogger.task[job.segment.task.id]
+
 
 class TaskClientLoggerStorage:
     def __init__(self):
@@ -69,6 +74,7 @@ class TaskClientLoggerStorage:
 
         return logger
 
+
 class JobClientLoggerStorage:
     def __init__(self):
         self._storage = dict()
@@ -82,11 +88,13 @@ class JobClientLoggerStorage:
         job = _get_job(jid)
         return clogger.task[job.segment.task.id]
 
+
 class dotdict(dict):
     """dot.notation access to dictionary attributes"""
     __getattr__ = dict.get
     __setattr__ = dict.__setitem__
     __delattr__ = dict.__delitem__
+
 
 clogger = dotdict({
     'task': TaskClientLoggerStorage(),

@@ -709,10 +709,13 @@ class TaskViewSet(auth.TaskGetQuerySetMixin, viewsets.ModelViewSet):
                                    )
 
 
-@method_decorator(name='retrieve', decorator=swagger_auto_schema(operation_summary='Method returns details of a job'))
-@method_decorator(name='update', decorator=swagger_auto_schema(operation_summary='Method updates a job by id'))
-@method_decorator(name='partial_update', decorator=swagger_auto_schema(
-    operation_summary='Methods does a partial update of chosen fields in a job'))
+@method_decorator(name='retrieve',
+                  decorator=swagger_auto_schema(operation_summary='Method returns details of a job'))
+@method_decorator(name='update',
+                  decorator=swagger_auto_schema(operation_summary='Method updates a job by id'))
+@method_decorator(name='partial_update',
+                  decorator=swagger_auto_schema(
+                      operation_summary='Methods does a partial update of chosen fields in a job'))
 class JobViewSet(viewsets.GenericViewSet,
                  mixins.RetrieveModelMixin, mixins.UpdateModelMixin):
     queryset = Job.objects.all().order_by('id')
