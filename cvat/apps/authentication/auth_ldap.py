@@ -1,4 +1,3 @@
-
 # Copyright (C) 2018 Intel Corporation
 #
 # SPDX-License-Identifier: MIT
@@ -12,6 +11,7 @@ AUTH_LDAP_GROUPS = {
     AUTH_ROLE.USER: settings.AUTH_LDAP_USER_GROUPS,
     AUTH_ROLE.OBSERVER: settings.AUTH_LDAP_OBSERVER_GROUPS
 }
+
 
 def create_user(sender, user=None, ldap_user=None, **kwargs):
     from django.contrib.auth.models import Group
