@@ -39,7 +39,7 @@ class RegisterFormComponent extends React.PureComponent<RegisterFormProps> {
     private validateConfirmation = (rule: any, value: any, callback: any): void => {
         const { form } = this.props;
         if (value && value !== form.getFieldValue('password1')) {
-            callback('Two passwords that you enter is inconsistent!');
+            callback('您输入的两个密码不一致！');
         } else {
             callback();
         }
@@ -88,7 +88,7 @@ class RegisterFormComponent extends React.PureComponent<RegisterFormProps> {
             if (agreement.field === userAgreement.name
                 && userAgreement.required && !value) {
                 isValid = false;
-                callback(`You must accept the ${userAgreement.displayText} to continue!`);
+                callback(`你必须接受 ${userAgreement.displayText} 才能继续！`);
                 break;
             }
         }
@@ -131,13 +131,13 @@ class RegisterFormComponent extends React.PureComponent<RegisterFormProps> {
                 {form.getFieldDecorator('firstName', {
                     rules: [{
                         required: true,
-                        message: 'Please specify a first name',
+                        message: '请指定名字',
                         pattern: patterns.validateName.pattern,
                     }],
                 })(
                     <Input
                         prefix={<Icon type='user-add' style={{ color: 'rgba(0,0,0,.25)' }} />}
-                        placeholder='First name'
+                        placeholder='名字'
                     />,
                 )}
             </Form.Item>
@@ -152,13 +152,13 @@ class RegisterFormComponent extends React.PureComponent<RegisterFormProps> {
                 {form.getFieldDecorator('lastName', {
                     rules: [{
                         required: true,
-                        message: 'Please specify a last name',
+                        message: '请指定姓氏',
                         pattern: patterns.validateName.pattern,
                     }],
                 })(
                     <Input
                         prefix={<Icon type='user-add' style={{ color: 'rgba(0,0,0,.25)' }} />}
-                        placeholder='Last name'
+                        placeholder='姓'
                     />,
                 )}
             </Form.Item>
@@ -173,14 +173,14 @@ class RegisterFormComponent extends React.PureComponent<RegisterFormProps> {
                 {form.getFieldDecorator('username', {
                     rules: [{
                         required: true,
-                        message: 'Please specify a username',
+                        message: '请指定用户名',
                     }, {
                         validator: this.validateUsername,
                     }],
                 })(
                     <Input
                         prefix={<Icon type='user-add' style={{ color: 'rgba(0,0,0,.25)' }} />}
-                        placeholder='Username'
+                        placeholder='用户名'
                     />,
                 )}
             </Form.Item>
@@ -195,16 +195,16 @@ class RegisterFormComponent extends React.PureComponent<RegisterFormProps> {
                 {form.getFieldDecorator('email', {
                     rules: [{
                         type: 'email',
-                        message: 'The input is not valid E-mail!',
+                        message: '输入的电子邮件无效！',
                     }, {
                         required: true,
-                        message: 'Please specify an email address',
+                        message: '请指定电子邮件地址',
                     }],
                 })(
                     <Input
                         autoComplete='email'
                         prefix={<Icon type='mail' style={{ color: 'rgba(0,0,0,.25)' }} />}
-                        placeholder='Email address'
+                        placeholder='电子邮件地址'
                     />,
                 )}
             </Form.Item>
@@ -219,15 +219,14 @@ class RegisterFormComponent extends React.PureComponent<RegisterFormProps> {
                 {form.getFieldDecorator('password1', {
                     rules: [{
                         required: true,
-                        message: 'Please input your password!',
+                        message: '请输入密码！',
                     }, {
                         validator: this.validatePassword,
                     }],
                 })(<Input.Password
                     autoComplete='new-password'
                     prefix={<Icon type='lock' style={{ color: 'rgba(0,0,0,.25)' }} />}
-                    placeholder='Password'
-                />)}
+                    placeholder='密码'/>)}
             </Form.Item>
         );
     }
@@ -240,14 +239,14 @@ class RegisterFormComponent extends React.PureComponent<RegisterFormProps> {
                 {form.getFieldDecorator('password2', {
                     rules: [{
                         required: true,
-                        message: 'Please confirm your password!',
+                        message: '请确认您的密码！',
                     }, {
                         validator: this.validateConfirmation,
                     }],
                 })(<Input.Password
                     autoComplete='new-password'
                     prefix={<Icon type='lock' style={{ color: 'rgba(0,0,0,.25)' }} />}
-                    placeholder='Confirm password'
+                    placeholder='确认密码'
                 />)}
             </Form.Item>
         );
@@ -266,7 +265,7 @@ class RegisterFormComponent extends React.PureComponent<RegisterFormProps> {
                             valuePropName: 'checked',
                             rules: [{
                                 required: true,
-                                message: 'You must accept to continue!',
+                                message: '你必须接受才能继续！',
                             }, {
                                 validator: this.validateAgrement,
                             }]
@@ -310,9 +309,8 @@ class RegisterFormComponent extends React.PureComponent<RegisterFormProps> {
                         htmlType='submit'
                         className='register-form-button'
                         loading={fetching}
-                        disabled={fetching}
-                    >
-                        Submit
+                        disabled={fetching}>
+                        提交
                     </Button>
                 </Form.Item>
             </Form>

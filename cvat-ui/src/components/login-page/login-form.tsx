@@ -42,14 +42,13 @@ class LoginFormComponent extends React.PureComponent<LoginFormProps> {
                 {getFieldDecorator('username', {
                     rules: [{
                         required: true,
-                        message: 'Please specify a username',
+                        message: '请指定用户名',
                     }],
                 })(
                     <Input
                         autoComplete='username'
                         prefix={<Icon type='user' style={{ color: 'rgba(0,0,0,.25)' }} />}
-                        placeholder='Username'
-                    />,
+                        placeholder='用户名'/>,
                 )}
             </Form.Item>
         );
@@ -64,15 +63,14 @@ class LoginFormComponent extends React.PureComponent<LoginFormProps> {
                 {getFieldDecorator('password', {
                     rules: [{
                         required: true,
-                        message: 'Please specify a password',
+                        message: '请指定密码',
                     }],
                 })(
                     <Input
                         autoComplete='current-password'
                         prefix={<Icon type='lock' style={{ color: 'rgba(0,0,0,.25)' }} />}
-                        placeholder='Password'
-                        type='password'
-                    />,
+                        placeholder='密码'
+                        type='password'/>,
                 )}
             </Form.Item>
         );
@@ -84,16 +82,14 @@ class LoginFormComponent extends React.PureComponent<LoginFormProps> {
             <Form onSubmit={this.handleSubmit} className='login-form'>
                 {this.renderUsernameField()}
                 {this.renderPasswordField()}
-
                 <Form.Item>
                     <Button
                         type='primary'
                         loading={fetching}
                         disabled={fetching}
                         htmlType='submit'
-                        className='login-form-button'
-                    >
-                        Sign in
+                        className='login-form-button'>
+                        登录
                     </Button>
                 </Form.Item>
             </Form>

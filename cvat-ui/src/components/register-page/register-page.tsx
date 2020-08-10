@@ -44,7 +44,7 @@ function RegisterPageComponent(
         <>
             <Row type='flex' justify='center' align='middle'>
                 <Col {...sizes}>
-                    <Title level={2}> Create an account </Title>
+                    <Title level={2}> 注册用户 </Title>
                     <RegisterForm
                         fetching={fetching}
                         userAgreements={userAgreements}
@@ -63,8 +63,7 @@ function RegisterPageComponent(
                     <Row type='flex' justify='start' align='top'>
                         <Col>
                             <Text strong>
-                                Already have an account?
-                                <Link to='/auth/login'> Login </Link>
+                                <Link to='/auth/login'> 登录 </Link>
                             </Text>
                         </Col>
                     </Row>

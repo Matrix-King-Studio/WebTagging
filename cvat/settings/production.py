@@ -28,6 +28,6 @@ DATABASES = {
         'HOST': 'cvat_db',
         'NAME': 'cvat',
         'USER': 'root',
-        'PASSWORD': os.getenv('POSTGRES_PASSWORD', ''),
+        'PASSWORD': 'root',
     }
 }

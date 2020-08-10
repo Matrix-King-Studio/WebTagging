@@ -2,23 +2,23 @@
 
 ![](/cvat/apps/documentation/static/documentation/images/image097.jpg)
 
-It is possible to proxy annotation logs from client to ELK. To do that run the following command below:
+可以将注释日志从客户端代理到ELK。为此，请运行以下命令：
 
-### Build docker image
+### 构建docker映像
 ```bash
 # From project root directory
 docker-compose -f docker-compose.yml -f components/analytics/docker-compose.analytics.yml build
 ```
 
-### Run docker container
+### 运行docker容器
 ```bash
 # From project root directory
 docker-compose -f docker-compose.yml -f components/analytics/docker-compose.analytics.yml up -d
 ```
 
-At the moment it is not possible to save advanced settings. Below values should be specified manually.
+目前无法保存高级设置。应手动指定以下值。
 
-## Time picker default
+## 时间选择器默认值
 {
     "from": "now/d",
     "to": "now/d",
@@ -26,7 +26,7 @@ At the moment it is not possible to save advanced settings. Below values should 
     "section": 0
 }
 
-## Time picker quick ranges
+## 时间选择器快速范围
 
 ```json
 [

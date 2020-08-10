@@ -715,3 +715,295 @@
             }
         ]
     }
+
+### 标注工作台
+
+获取当前标注情况
+
+**Request URL**: http://alexking.site:8080/api/v1/jobs/:id/annotations
+
+**Request Method**: GET
+
+**Response**：
+
+    {
+        "version":18,
+        "tracks":[
+
+        ],
+        "shapes":[
+            {
+                "type":"rectangle",
+                "occluded":false,
+                "z_order":0,
+                "points":[
+                    38.7734375,
+                    52.267578125,
+                    537.5498657226562,
+                    324.32745361328125
+                ],
+                "id":5,
+                "frame":0,
+                "label_id":11,
+                "group":0,
+                "attributes":[
+                    {
+                        "spec_id":11,
+                        "value":"BMW"
+                    }
+                ]
+            },
+            {
+                "type":"rectangle",
+                "occluded":false,
+                "z_order":0,
+                "points":[
+                    265.5,
+                    440.37890625,
+                    949.4398803710938,
+                    826.9536437988281
+                ],
+                "id":6,
+                "frame":1,
+                "label_id":11,
+                "group":0,
+                "attributes":[
+                    {
+                        "spec_id":11,
+                        "value":"BMW"
+                    }
+                ]
+            },
+            {
+                "type":"polyline",
+                "occluded":false,
+                "z_order":0,
+                "points":[
+                    248.486328125,
+                    308.3876953125,
+                    116.8235734331156,
+                    210.529840972873,
+                    111.48587464920638,
+                    150.03592142188973,
+                    114.45126286248887,
+                    118.60280636108655,
+                    136.39513564078698,
+                    98.4381665107594,
+                    173.1659494855012,
+                    73.52890551917699,
+                    255.60374181478073,
+                    71.74967259120785,
+                    300.0845650140327,
+                    75.90121608980371,
+                    342.19307764265795,
+                    85.3904583723106,
+                    416.92086061739974,
+                    135.80205799812938,
+                    490.46248830683,
+                    174.94518241347214,
+                    504.6963517305903,
+                    213.49522918615548,
+                    502.3240411599636,
+                    268.6514499532277,
+                    481.56632366697886,
+                    289.40916744621245,
+                    419.29317118802646,
+                    306.6084190832571,
+                    354.64770813844734,
+                    304.82918615528615,
+                    327.9592142188976,
+                    313.7253507951373,
+                    248.48681010290056,
+                    308.38765201122624
+                ],
+                "id":7,
+                "frame":5,
+                "label_id":11,
+                "group":0,
+                "attributes":[
+                    {
+                        "spec_id":11,
+                        "value":"s"
+                    }
+                ]
+            },
+            {
+                "type":"rectangle",
+                "occluded":false,
+                "z_order":0,
+                "points":[
+                    62.6875,
+                    94.7421875,
+                    500.0170593261719,
+                    333.68536376953125
+                ],
+                "id":8,
+                "frame":7,
+                "label_id":11,
+                "group":0,
+                "attributes":[
+                    {
+                        "spec_id":11,
+                        "value":"123"
+                    }
+                ]
+            }
+        ],
+        "tags":[
+
+        ]
+    }
+
+保存当前标注数据
+
+    首先创建保存任务
+
+**Request URL**: http://alexking.site:8080/api/v1/jobs/5/annotations?action=create
+
+**Request Method**: GET
+
+**Request Data**：
+
+    {
+        "shapes":[
+            {
+                "type":"rectangle",
+                "occluded":false,
+                "z_order":0,
+                "points":[
+                    235.4541015625,
+                    589.7822265625,
+                    1361.490478515625,
+                    995.818603515625
+                ],
+                "attributes":[
+                    {
+                        "spec_id":"11",
+                        "value":""
+                    }
+                ],
+                "frame":3,
+                "label_id":11,
+                "group":0
+            }
+        ],
+        "tracks":[
+
+        ],
+        "tags":[
+
+        ],
+        "version":26
+    }
+
+**Response**：
+
+    {
+        "version":28,
+        "tracks":[
+
+        ],
+        "shapes":[
+            {
+                "type":"rectangle",
+                "occluded":false,
+                "z_order":0,
+                "points":[
+                    235.4541015625,
+                    589.7822265625,
+                    1361.490478515625,
+                    995.818603515625
+                ],
+                "id":10,
+                "frame":3,
+                "label_id":11,
+                "group":0,
+                "attributes":[
+                    {
+                        "spec_id":11,
+                        "value":""
+                    }
+                ]
+            }
+        ],
+        "tags":[
+
+        ]
+    }
+
+    然后走一遍升级
+
+**Request URL**: http://alexking.site:8080/api/v1/jobs/5/annotations?action=update
+
+**Request Method**: PATCH
+
+**Request Data**：
+
+    {
+        "shapes":[
+            {
+                "type":"rectangle",
+                "occluded":false,
+                "z_order":0,
+                "points":[
+                    47.10546875,
+                    232.705078125,
+                    991.9782104492188,
+                    549.2141723632812
+                ],
+                "attributes":[
+                    {
+                        "spec_id":"11",
+                        "value":"123"
+                    }
+                ],
+                "id":9,
+                "frame":6,
+                "label_id":11,
+                "group":0
+            }
+        ],
+        "tracks":[
+
+        ],
+        "tags":[
+
+        ],
+        "version":28
+    }
+
+**Response**：
+
+    {
+        "version":29,
+        "tracks":[
+
+        ],
+        "shapes":[
+            {
+                "type":"rectangle",
+                "occluded":false,
+                "z_order":0,
+                "points":[
+                    47.10546875,
+                    232.705078125,
+                    991.9782104492188,
+                    549.2141723632812
+                ],
+                "id":9,
+                "frame":6,
+                "label_id":11,
+                "group":0,
+                "attributes":[
+                    {
+                        "spec_id":11,
+                        "value":"123"
+                    }
+                ]
+            }
+        ],
+        "tags":[
+
+        ]
+    }
+

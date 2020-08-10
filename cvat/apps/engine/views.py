@@ -225,25 +225,36 @@ class ProjectFilter(filters.FilterSet):
 @method_decorator(name='list', decorator=swagger_auto_schema(
     operation_summary='Returns a paginated list of projects according to query parameters (10 projects per page)',
     manual_parameters=[
-        openapi.Parameter('id', openapi.IN_QUERY, description="A unique number value identifying this project",
+        openapi.Parameter('id',
+                          openapi.IN_QUERY,
+                          description="A unique number value identifying this project",
                           type=openapi.TYPE_NUMBER),
-        openapi.Parameter('name', openapi.IN_QUERY,
+        openapi.Parameter('name',
+                          openapi.IN_QUERY,
                           description="Find all projects where name contains a parameter value",
                           type=openapi.TYPE_STRING),
-        openapi.Parameter('owner', openapi.IN_QUERY,
+        openapi.Parameter('owner',
+                          openapi.IN_QUERY,
                           description="Find all project where owner name contains a parameter value",
                           type=openapi.TYPE_STRING),
-        openapi.Parameter('status', openapi.IN_QUERY, description="Find all projects with a specific status",
-                          type=openapi.TYPE_STRING, enum=[str(i) for i in StatusChoice]),
-        openapi.Parameter('assignee', openapi.IN_QUERY,
+        openapi.Parameter('status',
+                          openapi.IN_QUERY,
+                          description="Find all projects with a specific status",
+                          type=openapi.TYPE_STRING,
+                          enum=[str(i) for i in StatusChoice]),
+        openapi.Parameter('assignee',
+                          openapi.IN_QUERY,
                           description="Find all projects where assignee name contains a parameter value",
                           type=openapi.TYPE_STRING)]))
-@method_decorator(name='create', decorator=swagger_auto_schema(operation_summary='Method creates a new project'))
+@method_decorator(name='create',
+                  decorator=swagger_auto_schema(operation_summary='Method creates a new project'))
 @method_decorator(name='retrieve',
                   decorator=swagger_auto_schema(operation_summary='Method returns details of a specific project'))
-@method_decorator(name='destroy', decorator=swagger_auto_schema(operation_summary='Method deletes a specific project'))
-@method_decorator(name='partial_update', decorator=swagger_auto_schema(
-    operation_summary='Methods does a partial update of chosen fields in a project'))
+@method_decorator(name='destroy',
+                  decorator=swagger_auto_schema(operation_summary='Method deletes a specific project'))
+@method_decorator(name='partial_update',
+                  decorator=swagger_auto_schema(
+                      operation_summary='Methods does a partial update of chosen fields in a project'))
 class ProjectViewSet(auth.ProjectGetQuerySetMixin, viewsets.ModelViewSet):
     queryset = models.Project.objects.all().order_by('-id')
     serializer_class = ProjectSerializer
@@ -885,8 +896,7 @@ def _import_annotations(request, rq_id, rq_func, pk, format_name):
     if not rq_job:
         serializer = AnnotationFileSerializer(data=request.data)
         if serializer.is_valid(raise_exception=True):
-            if format_name not in \
-                [f.DISPLAY_NAME for f in dm.views.get_import_formats()]:
+            if format_name not in [f.DISPLAY_NAME for f in dm.views.get_import_formats()]:
                 raise serializers.ValidationError(
                     "Unknown input format '{}'".format(format_name))
 

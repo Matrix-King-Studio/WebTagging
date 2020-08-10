@@ -12,6 +12,7 @@ from drf_yasg.utils import swagger_auto_schema
 
 from cvat.apps.restrictions.serializers import UserAgreementSerializer
 
+
 class RestrictionsViewSet(viewsets.ViewSet):
     serializer_class = None
     permission_classes = [AllowAny]
@@ -36,6 +37,6 @@ class RestrictionsViewSet(viewsets.ViewSet):
 
     @staticmethod
     @action(detail=False, methods=['GET'], renderer_classes=(TemplateHTMLRenderer,),
-        url_path='terms-of-use')
+            url_path='terms-of-use')
     def terms_of_use(request):
         return Response(template_name='restrictions/terms_of_use.html')

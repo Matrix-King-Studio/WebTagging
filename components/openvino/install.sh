@@ -19,7 +19,7 @@ fi
 
 cd /tmp/components/openvino
 
-tar -xzf `ls | grep "openvino_toolkit"`
+tar -xz `ls | grep "openvino_toolkit"`
 cd `ls -d */ | grep "openvino_toolkit"`
 
 apt-get update && apt-get --no-install-recommends install -y sudo cpio && \
@@ -39,3 +39,4 @@ else
     echo "source /opt/intel/openvino/bin/setupvars.sh" >> ${HOME}/.bashrc;
     echo -e '\nexport IE_PLUGINS_PATH=${IE_PLUGINS_PATH}' >> /opt/intel/openvino/bin/setupvars.sh;
 fi
+reid/reid.bin

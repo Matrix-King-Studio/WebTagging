@@ -148,7 +148,7 @@ REST_FRAMEWORK = {
         'django_filters.rest_framework.DjangoFilterBackend',
         'rest_framework.filters.OrderingFilter'),
 
-    # Disable default handling of the 'format' query parameter by REST framework
+    # 禁用REST框架对“format”查询参数的默认处理
     'URL_FORMAT_OVERRIDE': 'scheme',
 }
 
