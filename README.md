@@ -1,4 +1,4 @@
-# Computer Vision Annotation Tool (CVAT)
+# 计算机视觉标注工具 (CVAT)
 
 [![Build Status](https://travis-ci.org/opencv/cvat.svg?branch=develop)](https://travis-ci.org/opencv/cvat)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/840351da141e4eaeac6476fd19ec0a33)](https://app.codacy.com/app/cvat/cvat?utm_source=github.com&utm_medium=referral&utm_content=opencv/cvat&utm_campaign=Badge_Grade_Dashboard)
@@ -81,7 +81,9 @@ Automatically generated Swagger documentation for Django REST API is
 available on ``<cvat_origin>/api/swagger``
 (default: ``localhost:8080/api/swagger``).
 
-Swagger documentation is visiable on allowed hostes, Update environement variable in docker-compose.yml file with cvat hosted machine IP or domain name. Example - ``ALLOWED_HOSTS: 'localhost, 127.0.0.1'``)
+Swagger documentation is visiable on allowed hostes, Update environement variable in docker-compose.yml file with cvat hosted machine IP or domain name.
+
+Example - ``ALLOWED_HOSTS: 'localhost, 127.0.0.1'``)
 
 ## LICENSE
 

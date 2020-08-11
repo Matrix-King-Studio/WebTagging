@@ -151,6 +151,7 @@ class Task(models.Model):
                                 related_query_name="task")
     name = SafeCharField(max_length=256)
     mode = models.CharField(max_length=32)
+    describe = models.CharField(max_length=1024, blank=True, default="")
     owner = models.ForeignKey(User, null=True, blank=True,
                               on_delete=models.SET_NULL, related_name="owners")
     assignee = models.ForeignKey(User, null=True, blank=True,

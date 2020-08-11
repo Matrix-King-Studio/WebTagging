@@ -130,6 +130,7 @@
 
 **Response**：
 
+```json
     {
         "url":"http://alexking.site:8080/api/v1/tasks/4",
         "id":4,
@@ -199,6 +200,7 @@
         ],
         "project":null
     }
+```
 
 2. 上传 Task 数据集
 
@@ -258,6 +260,7 @@
 
 **Response**：
 
+```json
     {
         "count": 2,
         "next": null,
@@ -373,6 +376,7 @@
             }
         ]
     }
+```
 
 ### 修改任务
 
@@ -402,6 +406,7 @@
 
 **Response**：
 
+```json
     {
         "count":9,
         "next":null,
@@ -457,6 +462,7 @@
             }
         ]
     }
+```
 
 3. 修改 Task 的信息（Name、Label、Assign）
 
@@ -466,6 +472,7 @@
 
 **Request Data**：
 
+```json
     {
         "assignee":12,
         "name":"test",
@@ -554,6 +561,7 @@
             }
         ]
     }
+```
 
 4. 修改 Task 的 job Assign
 
@@ -570,6 +578,7 @@
 
 **Response**：
 
+```json
     {
         "url":"http://alexking.site:8080/api/v1/jobs/4",
         "id":4,
@@ -579,6 +588,7 @@
         "stop_frame":2,
         "task_id":4
     }
+```
 
 5. 重新获取 Task 详细信息
 
@@ -588,6 +598,7 @@
 
 **Request Data**：
 
+```json
     {
         "count":1,
         "next":null,
@@ -715,6 +726,7 @@
             }
         ]
     }
+```
 
 ### 标注工作台
 
@@ -726,6 +738,7 @@
 
 **Response**：
 
+```json
     {
         "version":18,
         "tracks":[
@@ -853,6 +866,8 @@
 
         ]
     }
+```
+
 
 保存当前标注数据
 
@@ -864,6 +879,7 @@
 
 **Request Data**：
 
+```json
     {
         "shapes":[
             {
@@ -895,9 +911,11 @@
         ],
         "version":26
     }
+```
 
 **Response**：
 
+```json
     {
         "version":28,
         "tracks":[
@@ -930,6 +948,7 @@
 
         ]
     }
+```
 
     然后走一遍升级
 
@@ -939,6 +958,7 @@
 
 **Request Data**：
 
+```json
     {
         "shapes":[
             {
@@ -971,39 +991,55 @@
         ],
         "version":28
     }
+```
 
 **Response**：
 
-    {
-        "version":29,
-        "tracks":[
+```json
+{
+    "version":29,
+    "tracks":[
 
-        ],
-        "shapes":[
-            {
-                "type":"rectangle",
-                "occluded":false,
-                "z_order":0,
-                "points":[
-                    47.10546875,
-                    232.705078125,
-                    991.9782104492188,
-                    549.2141723632812
-                ],
-                "id":9,
-                "frame":6,
-                "label_id":11,
-                "group":0,
-                "attributes":[
-                    {
-                        "spec_id":11,
-                        "value":"123"
-                    }
-                ]
-            }
-        ],
-        "tags":[
+    ],
+    "shapes":[
+        {
+            "type":"rectangle",
+            "occluded":false,
+            "z_order":0,
+            "points":[
+                47.10546875,
+                232.705078125,
+                991.9782104492188,
+                549.2141723632812
+            ],
+            "id":9,
+            "frame":6,
+            "label_id":11,
+            "group":0,
+            "attributes":[
+                {
+                    "spec_id":11,
+                    "value":"123"
+                }
+            ]
+        }
+    ],
+    "tags":[
 
-        ]
-    }
+    ]
+}
+```
+
+### 下载标注结果
+
+**Request URL**: http://alexking.site:8080/api/v1/tasks/:id/annotations?format=COCO%201.0
+
+**Request Method**: GET
+
+**Response**：
+
+    Status Code:
+        '202': '已开始转储标注'
+        '201': '标注文件已准备好下载'
+        '200': '已开始下载文件'
 

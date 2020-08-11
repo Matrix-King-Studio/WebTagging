@@ -277,11 +277,9 @@ services:
 
 请不要忘记使用“-f”选项将此文件包含到docker compose命令中（在某些情况下可以省略）。
 
-### Share path
+### 共享路径
 
-You can use a share storage for data uploading during you are creating a task.
-To do that you can mount it to CVAT docker container. Example of
-docker-compose.override.yml for this purpose:
+您可以在创建任务时使用共享存储来上载数据。为此，您可以将其挂载到CVAT docker容器。用于此目的的docker-compose.override.yml示例：
 
 ```yml
 version: "2.3"
@@ -301,9 +299,7 @@ volumes:
       o: bind
 ```
 
-You can change the share device path to your actual share. For user convenience
-we have defined the environment variable $CVAT_SHARE_URL. This variable
-contains a text (url for example) which is shown in the client-share browser.
+您可以将共享设备路径更改为实际共享。为了方便用户，我们定义了环境变量$CVAT_SHARE_URL。此变量包含在客户端共享浏览器中显示的文本（例如url）。
 
 ### Serving over HTTPS
 

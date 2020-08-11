@@ -182,27 +182,26 @@ class DataSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Data
         fields = ('chunk_size', 'size', 'image_quality', 'start_frame', 'stop_frame', 'frame_filter',
-                  'compressed_chunk_type', 'original_chunk_type', 'client_files', 'server_files', 'remote_files',
-                  'use_zip_chunks')
+                  'compressed_chunk_type', 'original_chunk_type', 'client_files', 'server_files',
+                  'remote_files', 'use_zip_chunks')
 
     # pylint: disable=no-self-use
     def validate_frame_filter(self, value):
         match = re.search("step\s*=\s*([1-9]\d*)", value)
         if not match:
-            raise serializers.ValidationError("Invalid frame filter expression")
+            raise serializers.ValidationError("无效的帧筛选器表达式")
         return value
 
     # pylint: disable=no-self-use
     def validate_chunk_size(self, value):
         if not value > 0:
-            raise serializers.ValidationError('Chunk size must be a positive integer')
+            raise serializers.ValidationError('块大小必须是正整数')
         return value
 
     # pylint: disable=no-self-use
     def validate(self, data):
-        if 'start_frame' in data and 'stop_frame' in data \
-            and data['start_frame'] > data['stop_frame']:
-            raise serializers.ValidationError('Stop frame must be more or equal start frame')
+        if 'start_frame' in data and 'stop_frame' in data and data['start_frame'] > data['stop_frame']:
+            raise serializers.ValidationError('停止帧必须大于等于起始帧')
         return data
 
     # pylint: disable=no-self-use
@@ -249,7 +248,7 @@ class TaskSerializer(WriteOnceMixin, serializers.ModelSerializer):
 
     class Meta:
         model = models.Task
-        fields = ('url', 'id', 'name', 'mode', 'owner', 'assignee',
+        fields = ('url', 'id', 'name', 'mode', 'owner', 'assignee', 'describe',
                   'bug_tracker', 'created_date', 'updated_date', 'overlap',
                   'segment_size', 'z_order', 'status', 'labels', 'segments',
                   'project', 'data_chunk_size', 'data_compressed_chunk_type', 'data_original_chunk_type', 'size',
