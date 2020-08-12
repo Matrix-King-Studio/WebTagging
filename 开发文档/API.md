@@ -210,6 +210,7 @@
 
 **Response**：
 
+```json
     {
         "chunk_size":null,
         "size":0,
@@ -232,8 +233,36 @@
         ],
         "use_zip_chunks":false
     }
+```
 
-3. 获取任务创建状态
+3. 选择共享数据集
+
+**Request URL**: http://alexking.site:8080/api/v1/server/share?directory=path
+
+例如：path = /car/
+
+**Request Method**: GET
+
+**Request Data**：
+
+    directory: /car/
+
+**Response**：
+
+```json
+[
+    {
+        "name":"car5.jpg",
+        "type":"REG"
+    },
+    {
+        "name":"car3.jpg",
+        "type":"REG"
+    }
+]
+```
+
+4. 获取任务创建状态
 
 **Request URL**: http://alexking.site:8080/api/v1/tasks/:id/status
 
