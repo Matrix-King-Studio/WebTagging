@@ -91,8 +91,7 @@ def dispatch_request(request):
 class ServerViewSet(viewsets.ViewSet):
     serializer_class = None
 
-    # To get nice documentation about ServerViewSet actions it is necessary
-    # to implement the method. By default, ViewSet doesn't provide it.
+    # 要获得有关ServerViewSet操作的良好文档，必须实现该方法。默认情况下，ViewSet不提供它。
     def get_serializer(self, *args, **kwargs):
         pass
 
@@ -137,7 +136,6 @@ class ServerViewSet(viewsets.ViewSet):
                 clogger.task[tid].error(message)
             else:
                 clogger.glob.error(message)
-
             return Response(serializer.data, status=status.HTTP_201_CREATED)
 
     @staticmethod
@@ -145,8 +143,7 @@ class ServerViewSet(viewsets.ViewSet):
     @action(detail=False, methods=['POST'], serializer_class=LogEventSerializer)
     def logs(request):
         """
-        将来自客户端的日志保存到服务器上
-        向ELK发送日志（如果它已连接）
+        将来自客户端的日志保存到服务器上，向ELK发送日志（如果它已连接）
         """
         serializer = LogEventSerializer(many=True, data=request.data)
         if serializer.is_valid(raise_exception=True):
@@ -197,7 +194,8 @@ class ServerViewSet(viewsets.ViewSet):
             if serializer.is_valid(raise_exception=True):
                 return Response(serializer.data)
         else:
-            return Response(f"{param} is an invalid directory", status=status.HTTP_400_BAD_REQUEST)
+            return Response("{} is an invalid directory".format(param),
+                            status=status.HTTP_400_BAD_REQUEST)
 
     @staticmethod
     @swagger_auto_schema(method='get', operation_summary='Method provides the list of supported annotations formats',
@@ -472,7 +470,10 @@ class TaskViewSet(auth.TaskGetQuerySetMixin, viewsets.ModelViewSet):
         if request.method == 'POST':
             db_task = self.get_object()  # call check_object_permissions as well
             serializer = DataSerializer(data=request.data)
-            serializer.is_valid(raise_exception=True)
+            print("request", request)
+            print("request.data", request.data)
+            serializer.is_valid()
+            print("serializer.errors", serializer.errors)
             db_data = serializer.save()
             db_task.data = db_data
             db_task.save()
@@ -593,7 +594,7 @@ class TaskViewSet(auth.TaskGetQuerySetMixin, viewsets.ModelViewSet):
             format_name = request.query_params.get('format')
             if format_name:
                 return _export_annotations(db_task=db_task,
-                                           rq_id=f"/api/v1/tasks/{pk}/annotations/{format_name}",
+                                           rq_id="/api/v1/tasks/{}/annotations/{}".format(pk, format_name),
                                            request=request,
                                            action=request.query_params.get("action", "").lower(),
                                            callback=dm.views.export_task_annotations,
@@ -956,7 +957,9 @@ def _export_annotations(db_task, rq_id, request, format_name, action, callback, 
                     rq_job.delete()
 
                     timestamp = datetime.strftime(last_task_update_time, "%Y_%m_%d_%H_%M_%S")
-                    filename = filename or f"task_{db_task.name}-{timestamp}-{format_name}{osp.splitext(file_path)[1]}"
+                    filename = filename or "task_{}-{}-{}{}".format(
+                                   db_task.name, timestamp,
+                                   format_name, osp.splitext(file_path)[1])
                     return sendfile(request, file_path, attachment=True, attachment_filename=filename.lower())
                 else:
                     if osp.exists(file_path):

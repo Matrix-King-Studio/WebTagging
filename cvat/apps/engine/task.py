@@ -1,4 +1,3 @@
-
 # Copyright (C) 2018 Intel Corporation
 #
 # SPDX-License-Identifier: MIT
@@ -13,7 +12,8 @@ from urllib import error as urlerror
 from urllib import parse as urlparse
 from urllib import request as urlrequest
 
-from cvat.apps.engine.media_extractors import get_mime, MEDIA_TYPES, Mpeg4ChunkWriter, ZipChunkWriter, Mpeg4CompressedChunkWriter, ZipCompressedChunkWriter
+from cvat.apps.engine.media_extractors import get_mime, MEDIA_TYPES, Mpeg4ChunkWriter, ZipChunkWriter, \
+    Mpeg4CompressedChunkWriter, ZipCompressedChunkWriter
 from cvat.apps.engine.models import DataChoice
 
 import django_rq
@@ -24,13 +24,15 @@ from distutils.dir_util import copy_tree
 from . import models
 from .log import slogger
 
+
 ############################# Low Level server API
 
 def create(tid, data):
     """Schedule the task"""
     q = django_rq.get_queue('default')
     q.enqueue_call(func=_create_thread, args=(tid, data),
-        job_id="/api/v1/tasks/{}".format(tid))
+                   job_id="/api/v1/tasks/{}".format(tid))
+
 
 @transaction.atomic
 def rq_handler(job, exc_type, exc_value, traceback):
@@ -41,9 +43,10 @@ def rq_handler(job, exc_type, exc_value, traceback):
         with open(db_task.get_log_path(), "wt") as log_file:
             print_exception(exc_type, exc_value, traceback, file=log_file)
     except models.Task.DoesNotExist:
-        pass # skip exceptions in the code
+        pass  # skip exceptions in the code
 
     return False
+
 
 ############################# Internal implementation for server API
 
@@ -63,6 +66,7 @@ def _copy_data_from_share(server_files, upload_dir):
                 os.makedirs(target_dir)
             shutil.copyfile(source_path, target_path)
 
+
 def _save_task_to_db(db_task):
     job = rq.get_current_job()
     job.meta['status'] = 'Task is being saved in database'
@@ -80,7 +84,7 @@ def _save_task_to_db(db_task):
     default_overlap = 5 if db_task.mode == 'interpolation' else 0
     if db_task.overlap is None:
         db_task.overlap = default_overlap
-    db_task.overlap = min(db_task.overlap, segment_size  // 2)
+    db_task.overlap = min(db_task.overlap, segment_size // 2)
 
     segment_step -= db_task.overlap
 
@@ -103,6 +107,7 @@ def _save_task_to_db(db_task):
     db_task.data.save()
     db_task.save()
 
+
 def _count_files(data):
     share_root = settings.SHARE_ROOT
     server_files = []
@@ -123,7 +128,7 @@ def _count_files(data):
     # the example above only 2.txt and 1.txt files will be in the final list.
     # Also need to correctly handle 'a/b/c0', 'a/b/c' case.
     data['server_files'] = [v[1] for v in zip([""] + server_files, server_files)
-        if not os.path.dirname(v[0]).startswith(v[1])]
+                            if not os.path.dirname(v[0]).startswith(v[1])]
 
     def count_files(file_mapping, counter):
         for rel_path, full_path in file_mapping.items():
@@ -132,22 +137,22 @@ def _count_files(data):
                 counter[mime].append(rel_path)
             else:
                 slogger.glob.warn("Skip '{}' file (its mime type doesn't "
-                    "correspond to a video or an image file)".format(full_path))
+                                  "correspond to a video or an image file)".format(full_path))
 
-
-    counter = { media_type: [] for media_type in MEDIA_TYPES.keys() }
+    counter = {media_type: [] for media_type in MEDIA_TYPES.keys()}
 
     count_files(
-        file_mapping={ f:f for f in data['remote_files'] or data['client_files']},
+        file_mapping={f: f for f in data['remote_files'] or data['client_files']},
         counter=counter,
     )
 
     count_files(
-        file_mapping={ f:os.path.abspath(os.path.join(share_root, f)) for f in data['server_files']},
+        file_mapping={f: os.path.abspath(os.path.join(share_root, f)) for f in data['server_files']},
         counter=counter,
     )
 
     return counter
+
 
 def _validate_data(counter):
     unique_entries = 0
@@ -176,6 +181,7 @@ def _validate_data(counter):
 
     return counter, task_modes[0]
 
+
 def _download_data(urls, upload_dir):
     job = rq.get_current_job()
     local_files = {}
@@ -202,6 +208,7 @@ def _download_data(urls, upload_dir):
 
         local_files[name] = True
     return list(local_files.keys())
+
 
 @transaction.atomic
 def _create_thread(tid, data):
@@ -241,7 +248,8 @@ def _create_thread(tid, data):
                 stop=data['stop_frame'],
             )
     db_task.mode = task_mode
-    db_data.compressed_chunk_type = models.DataChoice.VIDEO if task_mode == 'interpolation' and not data['use_zip_chunks'] else models.DataChoice.IMAGESET
+    db_data.compressed_chunk_type = models.DataChoice.VIDEO if task_mode == 'interpolation' and not data[
+        'use_zip_chunks'] else models.DataChoice.IMAGESET
     db_data.original_chunk_type = models.DataChoice.VIDEO if task_mode == 'interpolation' else models.DataChoice.IMAGESET
 
     def update_progress(progress):

@@ -8,12 +8,18 @@
 
 **Form Data**:
 
-	username: ""
-	password: ""
+```json
+{
+	"username": "",
+	"password": ""
+}
+```
 
 **Response**：Token Key
 
+```json
 	{"key":"e7b5b0363cae7fe9c455636d6b21fc09f526aff0"}
+```
 
 ### 注销
 
@@ -29,14 +35,16 @@
 
 **Form Data**:
 
+```json
 	{
 	    "username":"",
 	    "first_name":"",
 	    "last_name":"",
 	    "email":"",
 	    "password1":"",
-	    "password2":"",
+	    "password2":""
 	}
+```
 
 ### 用户
 
@@ -48,6 +56,7 @@
 
 **Response**：
 
+```json
     {
         "url": "http://alexking.site:8080/api/v1/users/1",
         "id": 1,
@@ -64,6 +73,7 @@
         "last_login": "2020-08-03T09:49:09.829369Z",
         "date_joined": "2020-08-03T09:49:00.616248Z"
     }
+```
 
 ## 任务
 
@@ -79,6 +89,7 @@
 
 **Request Data**：
 
+```json
     {
         "name":"testCreate",
         "labels":[
@@ -127,6 +138,7 @@
         ],
         "z_order":false
     }
+```
 
 **Response**：
 
@@ -757,9 +769,120 @@
     }
 ```
 
+## 标注
+
 ### 标注工作台
 
-获取当前标注情况
+![](http://assets.processon.com/chart_image/5f349fe463768942471382fe.png)
+
+1. 创建标注日志
+
+**Request URL**: http://alexking.site:8080/api/v1/server/logs
+
+**Request Method**: POST
+
+**Request Data**：
+
+```json
+[
+    {
+        "name":"Send user activity",
+        "time":"2020-08-13T01:45:53.569Z",
+        "client_id":"642862",
+        "is_active":true,
+        "payload":{
+            "working_time":264149
+        }
+    }
+]
+```
+
+**Response**：
+
+```json
+[
+    {
+        "client_id":642862,
+        "name":"Send user activity",
+        "time":"2020-08-13T09:45:53.569000+08:00",
+        "payload":{
+            "working_time":264149
+        },
+        "is_active":true
+    }
+]
+```
+
+2. 获取待标注信息列表
+
+**Request URL**: http://alexking.site:8080/api/v1/tasks/19/data/meta
+
+**Request Method**: GET
+
+**Response**：
+
+```json
+{
+    "chunk_size":72,
+    "size":8,
+    "image_quality":70,
+    "start_frame":0,
+    "stop_frame":7,
+    "frame_filter":"",
+    "frames":[
+        {
+            "width":584,
+            "height":328,
+            "name":"car1.jpg"
+        },
+        {
+            "width":1280,
+            "height":919,
+            "name":"car2.jpg"
+        },
+        {
+            "width":434,
+            "height":326,
+            "name":"car3.jpg"
+        },
+        {
+            "width":1600,
+            "height":1000,
+            "name":"car4.jpg"
+        },
+        {
+            "width":264,
+            "height":198,
+            "name":"car5.jpg"
+        },
+        {
+            "width":634,
+            "height":357,
+            "name":"car6.jpg"
+        },
+        {
+            "width":1024,
+            "height":768,
+            "name":"car7.jpg"
+        },
+        {
+            "width":516,
+            "height":387,
+            "name":"car8.jpg"
+        }
+    ]
+}
+```
+
+3. 获取待标注详细信息压缩包
+
+**Request URL**: http://alexking.site:8080/api/v1/tasks/19/data?type=chunk&number=0&quality=compressed
+
+**Request Method**: GET
+
+4. 前端通过unzip_imgs.worker.js解压待标注文件
+
+5. 获取当前标注情况
 
 **Request URL**: http://alexking.site:8080/api/v1/jobs/:id/annotations
 
@@ -794,101 +917,6 @@
                         "value":"BMW"
                     }
                 ]
-            },
-            {
-                "type":"rectangle",
-                "occluded":false,
-                "z_order":0,
-                "points":[
-                    265.5,
-                    440.37890625,
-                    949.4398803710938,
-                    826.9536437988281
-                ],
-                "id":6,
-                "frame":1,
-                "label_id":11,
-                "group":0,
-                "attributes":[
-                    {
-                        "spec_id":11,
-                        "value":"BMW"
-                    }
-                ]
-            },
-            {
-                "type":"polyline",
-                "occluded":false,
-                "z_order":0,
-                "points":[
-                    248.486328125,
-                    308.3876953125,
-                    116.8235734331156,
-                    210.529840972873,
-                    111.48587464920638,
-                    150.03592142188973,
-                    114.45126286248887,
-                    118.60280636108655,
-                    136.39513564078698,
-                    98.4381665107594,
-                    173.1659494855012,
-                    73.52890551917699,
-                    255.60374181478073,
-                    71.74967259120785,
-                    300.0845650140327,
-                    75.90121608980371,
-                    342.19307764265795,
-                    85.3904583723106,
-                    416.92086061739974,
-                    135.80205799812938,
-                    490.46248830683,
-                    174.94518241347214,
-                    504.6963517305903,
-                    213.49522918615548,
-                    502.3240411599636,
-                    268.6514499532277,
-                    481.56632366697886,
-                    289.40916744621245,
-                    419.29317118802646,
-                    306.6084190832571,
-                    354.64770813844734,
-                    304.82918615528615,
-                    327.9592142188976,
-                    313.7253507951373,
-                    248.48681010290056,
-                    308.38765201122624
-                ],
-                "id":7,
-                "frame":5,
-                "label_id":11,
-                "group":0,
-                "attributes":[
-                    {
-                        "spec_id":11,
-                        "value":"s"
-                    }
-                ]
-            },
-            {
-                "type":"rectangle",
-                "occluded":false,
-                "z_order":0,
-                "points":[
-                    62.6875,
-                    94.7421875,
-                    500.0170593261719,
-                    333.68536376953125
-                ],
-                "id":8,
-                "frame":7,
-                "label_id":11,
-                "group":0,
-                "attributes":[
-                    {
-                        "spec_id":11,
-                        "value":"123"
-                    }
-                ]
             }
         ],
         "tags":[
@@ -898,7 +926,7 @@
 ```
 
 
-保存当前标注数据
+6. 保存当前标注数据
 
     首先创建保存任务
 
@@ -1057,6 +1085,1118 @@
 
     ]
 }
+```
+
+    如果有删除的数据则走删除API
+
+**Request URL**: http://alexking.site:8080/api/v1/jobs/7/annotations?action=delete
+
+**Request Method**: PATCH
+
+**Request Data**：
+
+```json
+{"shapes":[],"tracks":[],"tags":[],"version":2}
+```
+
+**Response**：
+
+```json
+{"tags":[],"tracks":[],"shapes":[],"version":3}
+```
+
+7. 创建日志文件
+
+**Request URL**: http://alexking.site:8080/api/v1/server/logs
+
+**Request Method**: POST
+
+**Request Data**：
+
+```json
+[
+    {
+        "name":"Load job",
+        "time":"2020-08-13T01:45:53.569Z",
+        "client_id":"642862",
+        "job_id":7,
+        "task_id":19,
+        "is_active":true,
+        "payload":{
+            "duration":5209,
+            "frame count":8,
+            "track count":0,
+            "object count":0,
+            "box count":0,
+            "polygon count":0,
+            "polyline count":0,
+            "points count":0,
+            "cuboids count":0,
+            "tag count":0
+        }
+    },
+    {
+        "name":"Fit image",
+        "time":"2020-08-13T01:45:58.799Z",
+        "client_id":"642862",
+        "job_id":7,
+        "task_id":19,
+        "is_active":true,
+        "payload":{
+
+        }
+    },
+    {
+        "name":"Draw object",
+        "time":"2020-08-13T01:46:15.345Z",
+        "client_id":"642862",
+        "job_id":7,
+        "task_id":19,
+        "is_active":true,
+        "payload":{
+            "count":1,
+            "duration":8960
+        }
+    },
+    {
+        "name":"Change attribute",
+        "time":"2020-08-13T01:46:19.895Z",
+        "client_id":"642862",
+        "job_id":7,
+        "task_id":19,
+        "is_active":true,
+        "payload":{
+            "id":30,
+            "value":"gray",
+            "object_id":1
+        }
+    },
+    {
+        "name":"Change attribute",
+        "time":"2020-08-13T01:46:23.889Z",
+        "client_id":"642862",
+        "job_id":7,
+        "task_id":19,
+        "is_active":true,
+        "payload":{
+            "id":31,
+            "value":"YYB",
+            "object_id":1
+        }
+    },
+    {
+        "name":"Change frame",
+        "time":"2020-08-13T01:46:27.376Z",
+        "client_id":"642862",
+        "job_id":7,
+        "task_id":19,
+        "is_active":true,
+        "payload":{
+            "from":0,
+            "to":1
+        }
+    },
+    {
+        "name":"Fit image",
+        "time":"2020-08-13T01:46:27.409Z",
+        "client_id":"642862",
+        "job_id":7,
+        "task_id":19,
+        "is_active":true,
+        "payload":{
+
+        }
+    },
+    {
+        "name":"Draw object",
+        "time":"2020-08-13T01:46:41.282Z",
+        "client_id":"642862",
+        "job_id":7,
+        "task_id":19,
+        "is_active":true,
+        "payload":{
+            "count":1,
+            "duration":8449
+        }
+    },
+    {
+        "name":"Change attribute",
+        "time":"2020-08-13T01:46:45.854Z",
+        "client_id":"642862",
+        "job_id":7,
+        "task_id":19,
+        "is_active":true,
+        "payload":{
+            "id":30,
+            "value":"gray",
+            "object_id":2
+        }
+    },
+    {
+        "name":"Change attribute",
+        "time":"2020-08-13T01:46:49.256Z",
+        "client_id":"642862",
+        "job_id":7,
+        "task_id":19,
+        "is_active":true,
+        "payload":{
+            "id":31,
+            "value":"006M",
+            "object_id":2
+        }
+    },
+    {
+        "name":"Change frame",
+        "time":"2020-08-13T01:46:54.744Z",
+        "client_id":"642862",
+        "job_id":7,
+        "task_id":19,
+        "is_active":true,
+        "payload":{
+            "from":1,
+            "to":2
+        }
+    },
+    {
+        "name":"Fit image",
+        "time":"2020-08-13T01:46:54.764Z",
+        "client_id":"642862",
+        "job_id":7,
+        "task_id":19,
+        "is_active":true,
+        "payload":{
+
+        }
+    },
+    {
+        "name":"Draw object",
+        "time":"2020-08-13T01:47:12.884Z",
+        "client_id":"642862",
+        "job_id":7,
+        "task_id":19,
+        "is_active":true,
+        "payload":{
+            "count":1,
+            "duration":14627
+        }
+    },
+    {
+        "name":"Change attribute",
+        "time":"2020-08-13T01:47:15.774Z",
+        "client_id":"642862",
+        "job_id":7,
+        "task_id":19,
+        "is_active":true,
+        "payload":{
+            "id":30,
+            "value":"black",
+            "object_id":3
+        }
+    },
+    {
+        "name":"Change attribute",
+        "time":"2020-08-13T01:47:21.073Z",
+        "client_id":"642862",
+        "job_id":7,
+        "task_id":19,
+        "is_active":true,
+        "payload":{
+            "id":31,
+            "value":"no",
+            "object_id":3
+        }
+    },
+    {
+        "name":"Change frame",
+        "time":"2020-08-13T01:47:37.703Z",
+        "client_id":"642862",
+        "job_id":7,
+        "task_id":19,
+        "is_active":true,
+        "payload":{
+            "from":2,
+            "to":3
+        }
+    },
+    {
+        "name":"Fit image",
+        "time":"2020-08-13T01:47:37.723Z",
+        "client_id":"642862",
+        "job_id":7,
+        "task_id":19,
+        "is_active":true,
+        "payload":{
+
+        }
+    },
+    {
+        "name":"Draw object",
+        "time":"2020-08-13T01:47:53.511Z",
+        "client_id":"642862",
+        "job_id":7,
+        "task_id":19,
+        "is_active":true,
+        "payload":{
+            "count":1,
+            "duration":8503
+        }
+    },
+    {
+        "name":"Change attribute",
+        "time":"2020-08-13T01:47:56.567Z",
+        "client_id":"642862",
+        "job_id":7,
+        "task_id":19,
+        "is_active":true,
+        "payload":{
+            "id":30,
+            "value":"black",
+            "object_id":4
+        }
+    },
+    {
+        "name":"Change attribute",
+        "time":"2020-08-13T01:47:59.018Z",
+        "client_id":"642862",
+        "job_id":7,
+        "task_id":19,
+        "is_active":true,
+        "payload":{
+            "id":31,
+            "value":"laosilaisi",
+            "object_id":4
+        }
+    },
+    {
+        "name":"Change frame",
+        "time":"2020-08-13T01:48:08.178Z",
+        "client_id":"642862",
+        "job_id":7,
+        "task_id":19,
+        "is_active":true,
+        "payload":{
+            "from":3,
+            "to":4
+        }
+    },
+    {
+        "name":"Fit image",
+        "time":"2020-08-13T01:48:08.206Z",
+        "client_id":"642862",
+        "job_id":7,
+        "task_id":19,
+        "is_active":true,
+        "payload":{
+
+        }
+    },
+    {
+        "name":"Draw object",
+        "time":"2020-08-13T01:48:19.639Z",
+        "client_id":"642862",
+        "job_id":7,
+        "task_id":19,
+        "is_active":true,
+        "payload":{
+            "count":1,
+            "duration":7425
+        }
+    },
+    {
+        "name":"Change attribute",
+        "time":"2020-08-13T01:48:22.541Z",
+        "client_id":"642862",
+        "job_id":7,
+        "task_id":19,
+        "is_active":true,
+        "payload":{
+            "id":30,
+            "value":"gray",
+            "object_id":5
+        }
+    },
+    {
+        "name":"Change attribute",
+        "time":"2020-08-13T01:48:24.391Z",
+        "client_id":"642862",
+        "job_id":7,
+        "task_id":19,
+        "is_active":true,
+        "payload":{
+            "id":31,
+            "value":"no",
+            "object_id":5
+        }
+    },
+    {
+        "name":"Change frame",
+        "time":"2020-08-13T01:48:28.176Z",
+        "client_id":"642862",
+        "job_id":7,
+        "task_id":19,
+        "is_active":true,
+        "payload":{
+            "from":4,
+            "to":5
+        }
+    },
+    {
+        "name":"Fit image",
+        "time":"2020-08-13T01:48:28.192Z",
+        "client_id":"642862",
+        "job_id":7,
+        "task_id":19,
+        "is_active":true,
+        "payload":{
+
+        }
+    },
+    {
+        "name":"Draw object",
+        "time":"2020-08-13T01:49:25.486Z",
+        "client_id":"642862",
+        "job_id":7,
+        "task_id":19,
+        "is_active":true,
+        "payload":{
+            "count":1,
+            "duration":11673
+        }
+    },
+    {
+        "name":"Change attribute",
+        "time":"2020-08-13T01:49:28.996Z",
+        "client_id":"642862",
+        "job_id":7,
+        "task_id":19,
+        "is_active":true,
+        "payload":{
+            "id":30,
+            "value":"gray",
+            "object_id":6
+        }
+    },
+    {
+        "name":"Change attribute",
+        "time":"2020-08-13T01:49:31.169Z",
+        "client_id":"642862",
+        "job_id":7,
+        "task_id":19,
+        "is_active":true,
+        "payload":{
+            "id":31,
+            "value":"no",
+            "object_id":6
+        }
+    },
+    {
+        "name":"Change frame",
+        "time":"2020-08-13T01:49:35.439Z",
+        "client_id":"642862",
+        "job_id":7,
+        "task_id":19,
+        "is_active":true,
+        "payload":{
+            "from":5,
+            "to":6
+        }
+    },
+    {
+        "name":"Fit image",
+        "time":"2020-08-13T01:49:35.462Z",
+        "client_id":"642862",
+        "job_id":7,
+        "task_id":19,
+        "is_active":true,
+        "payload":{
+
+        }
+    },
+    {
+        "name":"Draw object",
+        "time":"2020-08-13T01:49:47.261Z",
+        "client_id":"642862",
+        "job_id":7,
+        "task_id":19,
+        "is_active":true,
+        "payload":{
+            "count":1,
+            "duration":8645
+        }
+    },
+    {
+        "name":"Change attribute",
+        "time":"2020-08-13T01:49:50.318Z",
+        "client_id":"642862",
+        "job_id":7,
+        "task_id":19,
+        "is_active":true,
+        "payload":{
+            "id":30,
+            "value":"gray",
+            "object_id":7
+        }
+    },
+    {
+        "name":"Change attribute",
+        "time":"2020-08-13T01:49:52.123Z",
+        "client_id":"642862",
+        "job_id":7,
+        "task_id":19,
+        "is_active":true,
+        "payload":{
+            "id":31,
+            "value":"no",
+            "object_id":7
+        }
+    },
+    {
+        "name":"Change frame",
+        "time":"2020-08-13T01:49:54.270Z",
+        "client_id":"642862",
+        "job_id":7,
+        "task_id":19,
+        "is_active":true,
+        "payload":{
+            "from":6,
+            "to":7
+        }
+    },
+    {
+        "name":"Fit image",
+        "time":"2020-08-13T01:49:54.288Z",
+        "client_id":"642862",
+        "job_id":7,
+        "task_id":19,
+        "is_active":true,
+        "payload":{
+
+        }
+    },
+    {
+        "name":"Draw object",
+        "time":"2020-08-13T01:50:05.822Z",
+        "client_id":"642862",
+        "job_id":7,
+        "task_id":19,
+        "is_active":true,
+        "payload":{
+            "count":1,
+            "duration":7752
+        }
+    },
+    {
+        "name":"Change attribute",
+        "time":"2020-08-13T01:50:08.976Z",
+        "client_id":"642862",
+        "job_id":7,
+        "task_id":19,
+        "is_active":true,
+        "payload":{
+            "id":30,
+            "value":"gray",
+            "object_id":8
+        }
+    },
+    {
+        "name":"Change attribute",
+        "time":"2020-08-13T01:50:10.710Z",
+        "client_id":"642862",
+        "job_id":7,
+        "task_id":19,
+        "is_active":true,
+        "payload":{
+            "id":31,
+            "value":"SUV",
+            "object_id":8
+        }
+    },
+    {
+        "name":"Save job",
+        "time":"2020-08-13T01:50:34.847Z",
+        "client_id":"642862",
+        "job_id":7,
+        "task_id":19,
+        "is_active":true,
+        "payload":{
+            "duration":285
+        }
+    },
+    {
+        "name":"Send task info",
+        "time":"2020-08-13T01:50:35.133Z",
+        "client_id":"642862",
+        "job_id":7,
+        "task_id":19,
+        "is_active":true,
+        "payload":{
+            "frame count":8,
+            "track count":8,
+            "object count":8,
+            "box count":8,
+            "polygon count":0,
+            "polyline count":0,
+            "points count":0,
+            "cuboids count":0,
+            "tag count":0
+        }
+    },
+    {
+        "name":"Send user activity",
+        "time":"2020-08-13T01:50:35.144Z",
+        "client_id":"642862",
+        "job_id":7,
+        "task_id":19,
+        "is_active":true,
+        "payload":{
+            "working_time":281470
+        }
+    }
+]
+```
+
+**Response**：
+
+```json
+[
+    {
+        "job_id":7,
+        "task_id":19,
+        "client_id":642862,
+        "name":"Load job",
+        "time":"2020-08-13T09:45:53.569000+08:00",
+        "payload":{
+            "points count":0,
+            "object count":0,
+            "cuboids count":0,
+            "polyline count":0,
+            "duration":5209,
+            "frame count":8,
+            "polygon count":0,
+            "track count":0,
+            "tag count":0,
+            "box count":0
+        },
+        "is_active":true
+    },
+    {
+        "job_id":7,
+        "task_id":19,
+        "client_id":642862,
+        "name":"Fit image",
+        "time":"2020-08-13T09:45:58.799000+08:00",
+        "payload":{
+
+        },
+        "is_active":true
+    },
+    {
+        "job_id":7,
+        "task_id":19,
+        "client_id":642862,
+        "name":"Draw object",
+        "time":"2020-08-13T09:46:15.345000+08:00",
+        "payload":{
+            "duration":8960,
+            "count":1
+        },
+        "is_active":true
+    },
+    {
+        "job_id":7,
+        "task_id":19,
+        "client_id":642862,
+        "name":"Change attribute",
+        "time":"2020-08-13T09:46:19.895000+08:00",
+        "payload":{
+            "value":"gray",
+            "object_id":1,
+            "id":30
+        },
+        "is_active":true
+    },
+    {
+        "job_id":7,
+        "task_id":19,
+        "client_id":642862,
+        "name":"Change attribute",
+        "time":"2020-08-13T09:46:23.889000+08:00",
+        "payload":{
+            "value":"YYB",
+            "object_id":1,
+            "id":31
+        },
+        "is_active":true
+    },
+    {
+        "job_id":7,
+        "task_id":19,
+        "client_id":642862,
+        "name":"Change frame",
+        "time":"2020-08-13T09:46:27.376000+08:00",
+        "payload":{
+            "from":0,
+            "to":1
+        },
+        "is_active":true
+    },
+    {
+        "job_id":7,
+        "task_id":19,
+        "client_id":642862,
+        "name":"Fit image",
+        "time":"2020-08-13T09:46:27.409000+08:00",
+        "payload":{
+
+        },
+        "is_active":true
+    },
+    {
+        "job_id":7,
+        "task_id":19,
+        "client_id":642862,
+        "name":"Draw object",
+        "time":"2020-08-13T09:46:41.282000+08:00",
+        "payload":{
+            "duration":8449,
+            "count":1
+        },
+        "is_active":true
+    },
+    {
+        "job_id":7,
+        "task_id":19,
+        "client_id":642862,
+        "name":"Change attribute",
+        "time":"2020-08-13T09:46:45.854000+08:00",
+        "payload":{
+            "value":"gray",
+            "object_id":2,
+            "id":30
+        },
+        "is_active":true
+    },
+    {
+        "job_id":7,
+        "task_id":19,
+        "client_id":642862,
+        "name":"Change attribute",
+        "time":"2020-08-13T09:46:49.256000+08:00",
+        "payload":{
+            "value":"006M",
+            "object_id":2,
+            "id":31
+        },
+        "is_active":true
+    },
+    {
+        "job_id":7,
+        "task_id":19,
+        "client_id":642862,
+        "name":"Change frame",
+        "time":"2020-08-13T09:46:54.744000+08:00",
+        "payload":{
+            "from":1,
+            "to":2
+        },
+        "is_active":true
+    },
+    {
+        "job_id":7,
+        "task_id":19,
+        "client_id":642862,
+        "name":"Fit image",
+        "time":"2020-08-13T09:46:54.764000+08:00",
+        "payload":{
+
+        },
+        "is_active":true
+    },
+    {
+        "job_id":7,
+        "task_id":19,
+        "client_id":642862,
+        "name":"Draw object",
+        "time":"2020-08-13T09:47:12.884000+08:00",
+        "payload":{
+            "duration":14627,
+            "count":1
+        },
+        "is_active":true
+    },
+    {
+        "job_id":7,
+        "task_id":19,
+        "client_id":642862,
+        "name":"Change attribute",
+        "time":"2020-08-13T09:47:15.774000+08:00",
+        "payload":{
+            "value":"black",
+            "object_id":3,
+            "id":30
+        },
+        "is_active":true
+    },
+    {
+        "job_id":7,
+        "task_id":19,
+        "client_id":642862,
+        "name":"Change attribute",
+        "time":"2020-08-13T09:47:21.073000+08:00",
+        "payload":{
+            "value":"no",
+            "object_id":3,
+            "id":31
+        },
+        "is_active":true
+    },
+    {
+        "job_id":7,
+        "task_id":19,
+        "client_id":642862,
+        "name":"Change frame",
+        "time":"2020-08-13T09:47:37.703000+08:00",
+        "payload":{
+            "from":2,
+            "to":3
+        },
+        "is_active":true
+    },
+    {
+        "job_id":7,
+        "task_id":19,
+        "client_id":642862,
+        "name":"Fit image",
+        "time":"2020-08-13T09:47:37.723000+08:00",
+        "payload":{
+
+        },
+        "is_active":true
+    },
+    {
+        "job_id":7,
+        "task_id":19,
+        "client_id":642862,
+        "name":"Draw object",
+        "time":"2020-08-13T09:47:53.511000+08:00",
+        "payload":{
+            "duration":8503,
+            "count":1
+        },
+        "is_active":true
+    },
+    {
+        "job_id":7,
+        "task_id":19,
+        "client_id":642862,
+        "name":"Change attribute",
+        "time":"2020-08-13T09:47:56.567000+08:00",
+        "payload":{
+            "value":"black",
+            "object_id":4,
+            "id":30
+        },
+        "is_active":true
+    },
+    {
+        "job_id":7,
+        "task_id":19,
+        "client_id":642862,
+        "name":"Change attribute",
+        "time":"2020-08-13T09:47:59.018000+08:00",
+        "payload":{
+            "value":"laosilaisi",
+            "object_id":4,
+            "id":31
+        },
+        "is_active":true
+    },
+    {
+        "job_id":7,
+        "task_id":19,
+        "client_id":642862,
+        "name":"Change frame",
+        "time":"2020-08-13T09:48:08.178000+08:00",
+        "payload":{
+            "from":3,
+            "to":4
+        },
+        "is_active":true
+    },
+    {
+        "job_id":7,
+        "task_id":19,
+        "client_id":642862,
+        "name":"Fit image",
+        "time":"2020-08-13T09:48:08.206000+08:00",
+        "payload":{
+
+        },
+        "is_active":true
+    },
+    {
+        "job_id":7,
+        "task_id":19,
+        "client_id":642862,
+        "name":"Draw object",
+        "time":"2020-08-13T09:48:19.639000+08:00",
+        "payload":{
+            "duration":7425,
+            "count":1
+        },
+        "is_active":true
+    },
+    {
+        "job_id":7,
+        "task_id":19,
+        "client_id":642862,
+        "name":"Change attribute",
+        "time":"2020-08-13T09:48:22.541000+08:00",
+        "payload":{
+            "value":"gray",
+            "object_id":5,
+            "id":30
+        },
+        "is_active":true
+    },
+    {
+        "job_id":7,
+        "task_id":19,
+        "client_id":642862,
+        "name":"Change attribute",
+        "time":"2020-08-13T09:48:24.391000+08:00",
+        "payload":{
+            "value":"no",
+            "object_id":5,
+            "id":31
+        },
+        "is_active":true
+    },
+    {
+        "job_id":7,
+        "task_id":19,
+        "client_id":642862,
+        "name":"Change frame",
+        "time":"2020-08-13T09:48:28.176000+08:00",
+        "payload":{
+            "from":4,
+            "to":5
+        },
+        "is_active":true
+    },
+    {
+        "job_id":7,
+        "task_id":19,
+        "client_id":642862,
+        "name":"Fit image",
+        "time":"2020-08-13T09:48:28.192000+08:00",
+        "payload":{
+
+        },
+        "is_active":true
+    },
+    {
+        "job_id":7,
+        "task_id":19,
+        "client_id":642862,
+        "name":"Draw object",
+        "time":"2020-08-13T09:49:25.486000+08:00",
+        "payload":{
+            "duration":11673,
+            "count":1
+        },
+        "is_active":true
+    },
+    {
+        "job_id":7,
+        "task_id":19,
+        "client_id":642862,
+        "name":"Change attribute",
+        "time":"2020-08-13T09:49:28.996000+08:00",
+        "payload":{
+            "value":"gray",
+            "object_id":6,
+            "id":30
+        },
+        "is_active":true
+    },
+    {
+        "job_id":7,
+        "task_id":19,
+        "client_id":642862,
+        "name":"Change attribute",
+        "time":"2020-08-13T09:49:31.169000+08:00",
+        "payload":{
+            "value":"no",
+            "object_id":6,
+            "id":31
+        },
+        "is_active":true
+    },
+    {
+        "job_id":7,
+        "task_id":19,
+        "client_id":642862,
+        "name":"Change frame",
+        "time":"2020-08-13T09:49:35.439000+08:00",
+        "payload":{
+            "from":5,
+            "to":6
+        },
+        "is_active":true
+    },
+    {
+        "job_id":7,
+        "task_id":19,
+        "client_id":642862,
+        "name":"Fit image",
+        "time":"2020-08-13T09:49:35.462000+08:00",
+        "payload":{
+
+        },
+        "is_active":true
+    },
+    {
+        "job_id":7,
+        "task_id":19,
+        "client_id":642862,
+        "name":"Draw object",
+        "time":"2020-08-13T09:49:47.261000+08:00",
+        "payload":{
+            "duration":8645,
+            "count":1
+        },
+        "is_active":true
+    },
+    {
+        "job_id":7,
+        "task_id":19,
+        "client_id":642862,
+        "name":"Change attribute",
+        "time":"2020-08-13T09:49:50.318000+08:00",
+        "payload":{
+            "value":"gray",
+            "object_id":7,
+            "id":30
+        },
+        "is_active":true
+    },
+    {
+        "job_id":7,
+        "task_id":19,
+        "client_id":642862,
+        "name":"Change attribute",
+        "time":"2020-08-13T09:49:52.123000+08:00",
+        "payload":{
+            "value":"no",
+            "object_id":7,
+            "id":31
+        },
+        "is_active":true
+    },
+    {
+        "job_id":7,
+        "task_id":19,
+        "client_id":642862,
+        "name":"Change frame",
+        "time":"2020-08-13T09:49:54.270000+08:00",
+        "payload":{
+            "from":6,
+            "to":7
+        },
+        "is_active":true
+    },
+    {
+        "job_id":7,
+        "task_id":19,
+        "client_id":642862,
+        "name":"Fit image",
+        "time":"2020-08-13T09:49:54.288000+08:00",
+        "payload":{
+
+        },
+        "is_active":true
+    },
+    {
+        "job_id":7,
+        "task_id":19,
+        "client_id":642862,
+        "name":"Draw object",
+        "time":"2020-08-13T09:50:05.822000+08:00",
+        "payload":{
+            "duration":7752,
+            "count":1
+        },
+        "is_active":true
+    },
+    {
+        "job_id":7,
+        "task_id":19,
+        "client_id":642862,
+        "name":"Change attribute",
+        "time":"2020-08-13T09:50:08.976000+08:00",
+        "payload":{
+            "value":"gray",
+            "object_id":8,
+            "id":30
+        },
+        "is_active":true
+    },
+    {
+        "job_id":7,
+        "task_id":19,
+        "client_id":642862,
+        "name":"Change attribute",
+        "time":"2020-08-13T09:50:10.710000+08:00",
+        "payload":{
+            "value":"SUV",
+            "object_id":8,
+            "id":31
+        },
+        "is_active":true
+    },
+    {
+        "job_id":7,
+        "task_id":19,
+        "client_id":642862,
+        "name":"Save job",
+        "time":"2020-08-13T09:50:34.847000+08:00",
+        "payload":{
+            "duration":285
+        },
+        "is_active":true
+    },
+    {
+        "job_id":7,
+        "task_id":19,
+        "client_id":642862,
+        "name":"Send task info",
+        "time":"2020-08-13T09:50:35.133000+08:00",
+        "payload":{
+            "tag count":0,
+            "object count":8,
+            "cuboids count":0,
+            "polyline count":0,
+            "points count":0,
+            "frame count":8,
+            "polygon count":0,
+            "track count":8,
+            "box count":8
+        },
+        "is_active":true
+    },
+    {
+        "job_id":7,
+        "task_id":19,
+        "client_id":642862,
+        "name":"Send user activity",
+        "time":"2020-08-13T09:50:35.144000+08:00",
+        "payload":{
+            "working_time":281470
+        },
+        "is_active":true
+    }
+]
 ```
 
 ### 下载标注结果
