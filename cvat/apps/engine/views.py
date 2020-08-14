@@ -470,10 +470,7 @@ class TaskViewSet(auth.TaskGetQuerySetMixin, viewsets.ModelViewSet):
         if request.method == 'POST':
             db_task = self.get_object()  # call check_object_permissions as well
             serializer = DataSerializer(data=request.data)
-            print("request", request)
-            print("request.data", request.data)
             serializer.is_valid()
-            print("serializer.errors", serializer.errors)
             db_data = serializer.save()
             db_task.data = db_data
             db_task.save()
@@ -663,7 +660,6 @@ class TaskViewSet(auth.TaskGetQuerySetMixin, viewsets.ModelViewSet):
             response = {"state": "Started"}
             if 'status' in job.meta:
                 response['message'] = job.meta['status']
-
         return response
 
     @staticmethod
@@ -958,8 +954,8 @@ def _export_annotations(db_task, rq_id, request, format_name, action, callback, 
 
                     timestamp = datetime.strftime(last_task_update_time, "%Y_%m_%d_%H_%M_%S")
                     filename = filename or "task_{}-{}-{}{}".format(
-                                   db_task.name, timestamp,
-                                   format_name, osp.splitext(file_path)[1])
+                        db_task.name, timestamp,
+                        format_name, osp.splitext(file_path)[1])
                     return sendfile(request, file_path, attachment=True, attachment_filename=filename.lower())
                 else:
                     if osp.exists(file_path):

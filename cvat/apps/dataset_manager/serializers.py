@@ -10,6 +10,7 @@ class DatasetFormatSerializer(serializers.Serializer):
     ext = serializers.CharField(max_length=64, source='EXT')
     version = serializers.CharField(max_length=64, source='VERSION')
 
+
 class DatasetFormatsSerializer(serializers.Serializer):
     importers = DatasetFormatSerializer(many=True)
     exporters = DatasetFormatSerializer(many=True)
