@@ -74,14 +74,14 @@ server. Proxy is an advanced topic and it is not covered by the guide.
     CVAT server.
 
     ```bash
-    docker-compose -f docker-compose.yml -f components/auto_segmentation/docker-compose.auto_segmentation.yml -f componen ts/openvino/docker-compose.openvino.yml -f cvat/apps/dextr_segmentation/docker-compose.dextr.yml -f components/tf_annotation/docker-com pose.tf_annotation.yml -f components/analytics/docker-compose.analytics.yml build
+    docker-compose -f docker-compose.yml -f components/auto_segmentation/docker-compose.auto_segmentation.yml -f components/openvino/docker-compose.openvino.yml -f cvat/apps/dextr_segmentation/docker-compose.dextr.yml -f components/tf_annotation/docker-compose.tf_annotation.yml -f components/analytics/docker-compose.analytics.yml build
     ```
 
 -   Run docker containers. It will take some time to download public docker
     images like postgres:10.3-alpine, redis:4.0.5-alpine and create containers.
 
     ```sh
-    docker-compose -f docker-compose.yml -f components/auto_segmentation/docker-compose.auto_segmentation.yml -f componen ts/openvino/docker-compose.openvino.yml -f cvat/apps/dextr_segmentation/docker-compose.dextr.yml -f components/tf_annotation/docker-com pose.tf_annotation.yml -f components/analytics/docker-compose.analytics.yml up -d
+    docker-compose -f docker-compose.yml -f components/auto_segmentation/docker-compose.auto_segmentation.yml -f components/openvino/docker-compose.openvino.yml -f cvat/apps/dextr_segmentation/docker-compose.dextr.yml -f components/tf_annotation/docker-compose.tf_annotation.yml -f components/analytics/docker-compose.analytics.yml up -d
     ```
 
 -   You can register a user but by default it will not have rights even to view
