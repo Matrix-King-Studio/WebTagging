@@ -1,7 +1,5 @@
 - [Quick installation guide](#quick-installation-guide)
   - [Ubuntu 18.04 (x86_64/amd64)](#ubuntu-1804-x86_64amd64)
-  - [Windows 10](#windows-10)
-  - [Mac OS Mojave](#mac-os-mojave)
   - [Advanced topics](#advanced-topics)
     - [Additional components](#additional-components)
     - [Stop all containers](#stop-all-containers)
@@ -76,14 +74,14 @@ server. Proxy is an advanced topic and it is not covered by the guide.
     CVAT server.
 
     ```bash
-    docker-compose build
+    docker-compose -f docker-compose.yml -f components/auto_segmentation/docker-compose.auto_segmentation.yml -f componen ts/openvino/docker-compose.openvino.yml -f cvat/apps/dextr_segmentation/docker-compose.dextr.yml -f components/tf_annotation/docker-com pose.tf_annotation.yml -f components/analytics/docker-compose.analytics.yml build
     ```
 
 -   Run docker containers. It will take some time to download public docker
     images like postgres:10.3-alpine, redis:4.0.5-alpine and create containers.
 
     ```sh
-    docker-compose up -d
+    docker-compose -f docker-compose.yml -f components/auto_segmentation/docker-compose.auto_segmentation.yml -f componen ts/openvino/docker-compose.openvino.yml -f cvat/apps/dextr_segmentation/docker-compose.dextr.yml -f components/tf_annotation/docker-com pose.tf_annotation.yml -f components/analytics/docker-compose.analytics.yml up -d
     ```
 
 -   You can register a user but by default it will not have rights even to view
@@ -106,126 +104,6 @@ server. Proxy is an advanced topic and it is not covered by the guide.
     sudo apt-get update
     sudo apt-get --no-install-recommends install -y google-chrome-stable
     ```
-
--   Open the installed Google Chrome browser and go to [localhost:8080](http://localhost:8080).
-    Type your login/password for the superuser on the login page and press the _Login_
-    button. Now you should be able to create a new annotation task. Please read the
-    [CVAT user's guide](/cvat/apps/documentation/user_guide.md) for more details.
-
-## Windows 10
--   Download [Docker for Windows](https://download.docker.com/win/stable/Docker%20for%20Windows%20Installer.exe).
-    Double-click `Docker for Windows Installer` to run the installer. More
-    instructions can be found [here](https://docs.docker.com/docker-for-windows/install/). Note:
-    Docker Desktop requires Windows 10 Pro or Enterprise version 14393 to run.
-
--   Download and install
-    [Git for Windows](https://github.com/git-for-windows/git/releases/download/v2.21.0.windows.1/Git-2.21.0-64-bit.exe).
-    When installing the package please keep all options by default.
-    More information about the package can be found [here](https://gitforwindows.org).
-
--   Download and install [Google Chrome](https://www.google.com/chrome/). It is the only browser
-    which is supported by CVAT.
-
--   Go to windows menu, find `Git Bash` application and run it. You should see a terminal window.
-
--   Clone _CVAT_ source code from the
-    [GitHub repository](https://github.com/opencv/cvat).
-
-    ```bash
-    git clone https://github.com/opencv/cvat
-    cd cvat
-    ```
-
--   Build docker images by default. It will take some time to download public
-    docker image ubuntu:16.04 and install all necessary ubuntu packages to run
-    CVAT server.
-
-    ```bash
-    docker-compose build
-    ```
-
--   Run docker containers. It will take some time to download public docker
-    images like postgres:10.3-alpine, redis:4.0.5-alpine and create containers.
-
-    ```sh
-    docker-compose up -d
-    ```
-
--   You can register a user but by default it will not have rights even to view
-    list of tasks. Thus you should create a superuser. A superuser can use an
-    admin panel to assign correct groups to other users. Please use the command
-    below:
-
-    ```sh
-    winpty docker exec -it cvat bash -ic 'python3 ~/manage.py createsuperuser'
-    ```
-    Choose login and password for your admin account. For more information
-    please read [Django documentation](https://docs.djangoproject.com/en/2.2/ref/django-admin/#createsuperuser).
-
--   Open the installed Google Chrome browser and go to [localhost:8080](http://localhost:8080).
-    Type your login/password for the superuser on the login page and press the _Login_
-    button. Now you should be able to create a new annotation task. Please read the
-    [CVAT user's guide](/cvat/apps/documentation/user_guide.md) for more details.
-
-## Mac OS Mojave
--   Download [Docker for Mac](https://download.docker.com/mac/stable/Docker.dmg).
-    Double-click Docker.dmg to open the installer, then drag Moby the whale
-    to the Applications folder. Double-click Docker.app in the Applications
-    folder to start Docker. More instructions can be found
-    [here](https://docs.docker.com/v17.12/docker-for-mac/install/#install-and-run-docker-for-mac).
-
--   There are several ways to install Git on a Mac. The easiest is probably to
-    install the Xcode Command Line Tools. On Mavericks (10.9) or above you can
-    do this simply by trying to run git from the Terminal the very first time.
-
-    ```bash
-    git --version
-    ```
-
-    If you don’t have it installed already, it will prompt you to install it.
-    More instructions can be found [here](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git).
-
--   Download and install [Google Chrome](https://www.google.com/chrome/). It
-    is the only browser which is supported by CVAT.
-
--   Open a terminal window. The terminal app is in the Utilities folder in
-    Applications. To open it, either open your Applications folder, then open
-    Utilities and double-click on Terminal, or press Command - spacebar to
-    launch Spotlight and type "Terminal," then double-click the search result.
-
--   Clone _CVAT_ source code from the
-    [GitHub repository](https://github.com/opencv/cvat).
-
-    ```bash
-    git clone https://github.com/opencv/cvat
-    cd cvat
-    ```
-
--   Build docker images by default. It will take some time to download public
-    docker image ubuntu:16.04 and install all necessary ubuntu packages to run
-    CVAT server.
-
-    ```bash
-    docker-compose build
-    ```
-
--   Run docker containers. It will take some time to download public docker
-    images like postgres:10.3-alpine, redis:4.0.5-alpine and create containers.
-
-    ```sh
-    docker-compose up -d
-    ```
-
--   You can register a user but by default it will not have rights even to view
-    list of tasks. Thus you should create a superuser. A superuser can use an
-    admin panel to assign correct groups to other users. Please use the command
-    below:
-
-    ```sh
-    docker exec -it cvat bash -ic 'python3 ~/manage.py createsuperuser'
-    ```
-    Choose login and password for your admin account. For more information
-    please read [Django documentation](https://docs.djangoproject.com/en/2.2/ref/django-admin/#createsuperuser).
 
 -   Open the installed Google Chrome browser and go to [localhost:8080](http://localhost:8080).
     Type your login/password for the superuser on the login page and press the _Login_
