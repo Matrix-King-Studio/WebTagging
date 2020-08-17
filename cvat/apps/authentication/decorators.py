@@ -1,7 +1,3 @@
-# Copyright (C) 2018-2019 Intel Corporation
-#
-# SPDX-License-Identifier: MIT
-
 from functools import wraps
 from django.views.generic import RedirectView
 from django.contrib.auth import REDIRECT_FIELD_NAME
@@ -25,12 +21,12 @@ def login_required(function=None,
                 if auth is not None:
                     return view_func(request, *args, **kwargs)
 
-                login_url = '{}/login'.format(settings.UI_URL)
+                loginUrl = '{}/login'.format(settings.UI_URL)
                 if request.method not in redirect_methods:
-                    return JsonResponse({'login_page_url': login_url}, status=403)
+                    return JsonResponse({'login_page_url': loginUrl}, status=403)
 
                 return RedirectView.as_view(
-                    url=login_url,
+                    url=loginUrl,
                     permanent=True,
                     query_string=True
                 )(request)

@@ -1,7 +1,3 @@
-// Copyright (C) 2020 Intel Corporation
-//
-// SPDX-License-Identifier: MIT
-
 import React from 'react';
 import { GlobalHotKeys, ExtendedKeyMapOptions } from 'react-hotkeys';
 

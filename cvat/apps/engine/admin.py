@@ -1,7 +1,3 @@
-# Copyright (C) 2018 Intel Corporation
-#
-# SPDX-License-Identifier: MIT
-
 from django.contrib import admin
 from .models import PluginOption
 from .models import Plugin

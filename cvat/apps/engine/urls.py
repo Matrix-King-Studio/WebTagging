@@ -1,8 +1,3 @@
-
-# Copyright (C) 2018-2019 Intel Corporation
-#
-# SPDX-License-Identifier: MIT
-
 from django.urls import path, include
 from . import views
 from rest_framework import routers
@@ -12,16 +7,16 @@ from drf_yasg import openapi
 from cvat.apps.restrictions.views import RestrictionsViewSet
 
 schema_view = get_schema_view(
-   openapi.Info(
-      title="CVAT REST API",    # API标题（必须）
-      default_version='v1',     # API版本字符串（必须）
-      description="用于计算机视觉注释工具 (CVAT) 的 REST API ",             # API描述，支持 Markdown
-      terms_of_service="https://www.google.com/policies/terms/",       # API服务条款；应为 URL
-      contact=openapi.Contact(email="nikita.manovich@intel.com"),
-      license=openapi.License(name="MIT License"),                      # 许可证对象
-   ),
-   public=True,
-   permission_classes=(permissions.AllowAny,),
+    openapi.Info(
+        title="CVAT REST API",  # API标题（必须）
+        default_version='v1',  # API版本字符串（必须）
+        description="用于计算机视觉注释工具 (CVAT) 的 REST API ",  # API描述，支持 Markdown
+        terms_of_service="https://www.google.com/policies/terms/",  # API服务条款；应为 URL
+        contact=openapi.Contact(email="nikita.manovich@intel.com"),
+        license=openapi.License(name="MIT License"),  # 许可证对象
+    ),
+    public=True,
+    permission_classes=(permissions.AllowAny,),
 )
 
 router = routers.DefaultRouter(trailing_slash=False)
@@ -40,11 +35,11 @@ urlpatterns = [
 
     # documentation for API
     path('api/swagger<str:scheme>', views.wrap_swagger(
-       schema_view.without_ui(cache_timeout=0)), name='schema-json'),
+        schema_view.without_ui(cache_timeout=0)), name='schema-json'),
     path('api/swagger/', views.wrap_swagger(
-       schema_view.with_ui('swagger', cache_timeout=0)), name='schema-swagger-ui'),
+        schema_view.with_ui('swagger', cache_timeout=0)), name='schema-swagger-ui'),
     path('api/docs/', views.wrap_swagger(
-       schema_view.with_ui('redoc', cache_timeout=0)), name='schema-redoc'),
+        schema_view.with_ui('redoc', cache_timeout=0)), name='schema-redoc'),
 
     # entry point for API
     path('api/v1/auth/', include('cvat.apps.authentication.api_urls')),

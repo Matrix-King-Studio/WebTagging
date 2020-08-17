@@ -1,7 +1,3 @@
-# Copyright (C) 2018-2019 Intel Corporation
-#
-# SPDX-License-Identifier: MIT
-
 import os
 import os.path as osp
 import shutil
@@ -50,10 +46,6 @@ from . import models, task
 from .log import clogger, slogger
 
 
-# drf-yasg component doesn't handle correctly URL_FORMAT_OVERRIDE and
-# send requests with ?format=openapi suffix instead of ?scheme=openapi.
-# We map the required paramater explicitly and add it into query arguments
-# on the server side.
 def wrap_swagger(view):
     @login_required
     def _map_format_to_schema(request, scheme=None):
@@ -312,8 +304,7 @@ class TaskFilter(filters.FilterSet):
 
     class Meta:
         model = Task
-        fields = ("id", "project_id", "project", "name", "owner", "mode", "status",
-                  "assignee")
+        fields = ("id", "project_id", "project", "name", "owner", "mode", "status", "assignee")
 
 
 class DjangoFilterInspector(CoreAPICompatInspector):

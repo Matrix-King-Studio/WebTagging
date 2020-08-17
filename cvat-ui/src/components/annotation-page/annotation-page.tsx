@@ -1,7 +1,3 @@
-// Copyright (C) 2020 Intel Corporation
-//
-// SPDX-License-Identifier: MIT
-
 import './styles.scss';
 import React, { useEffect } from 'react';
 import Layout from 'antd/lib/layout';

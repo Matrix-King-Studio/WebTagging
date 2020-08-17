@@ -1,7 +1,3 @@
-# Copyright (C) 2018 Intel Corporation
-#
-# SPDX-License-Identifier: MIT
-
 import itertools
 import os
 import sys
@@ -25,8 +21,7 @@ from . import models
 from .log import slogger
 
 
-############################# Low Level server API
-
+# Low Level server API
 def create(tid, data):
     """Schedule the task"""
     q = django_rq.get_queue('default')

@@ -1,7 +1,3 @@
-# Copyright (C) 2018 Intel Corporation
-#
-# SPDX-License-Identifier: MIT
-
 from django.http import HttpResponseBadRequest, JsonResponse
 from rules.contrib.views import permission_required, objectgetter
 

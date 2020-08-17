@@ -1,8 +1,3 @@
-
-# Copyright (C) 2020 Intel Corporation
-#
-# SPDX-License-Identifier: MIT
-
 import getpass
 import json
 import os
@@ -22,15 +17,16 @@ CONFIG_SCHEMA = SchemaBuilder() \
     .add('server_url', str) \
     .build()
 
+
 class cvat_rest_api_task_images(SourceExtractor):
     def _image_local_path(self, item_id):
         task_id = self._config.task_id
         return osp.join(self._cache_dir,
-            'task_{}_frame_{:06d}.jpg'.format(task_id, int(item_id)))
+                        'task_{}_frame_{:06d}.jpg'.format(task_id, int(item_id)))
 
     def _make_image_loader(self, item_id):
         return lazy_image(item_id,
-            lambda item_id: self._image_loader(item_id, self))
+                          lambda item_id: self._image_loader(item_id, self))
 
     def _is_image_cached(self, item_id):
         return osp.isfile(self._image_local_path(item_id))
@@ -39,7 +35,7 @@ class cvat_rest_api_task_images(SourceExtractor):
         self._connect()
         os.makedirs(self._cache_dir, exist_ok=True)
         self._cvat_cli.tasks_frame(task_id=self._config.task_id,
-            frame_ids=[item_id], outdir=self._cache_dir, quality='original')
+                                   frame_ids=[item_id], outdir=self._cache_dir, quality='original')
 
     def _connect(self):
         if self._session is not None:
@@ -48,7 +44,7 @@ class cvat_rest_api_task_images(SourceExtractor):
         session = None
         try:
             print("Enter credentials for '%s' to read task data:" % \
-                (self._config.server_url))
+                  (self._config.server_url))
             username = input('User: ')
             password = getpass.getpass()
 
@@ -100,7 +96,7 @@ class cvat_rest_api_task_images(SourceExtractor):
             if entry.get('height') and entry.get('width'):
                 size = (entry['height'], entry['width'])
             image = Image(data=self._make_image_loader(item_id),
-                path=item_filename, size=size)
+                          path=item_filename, size=size)
             item = DatasetItem(id=item_id, image=image)
             items.append((item.id, item))
 

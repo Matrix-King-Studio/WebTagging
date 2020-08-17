@@ -1,7 +1,3 @@
-# Copyright (C) 2019-2020 Intel Corporation
-#
-# SPDX-License-Identifier: MIT
-
 import os
 import os.path as osp
 import tempfile

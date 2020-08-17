@@ -1,12 +1,7 @@
-
-# Copyright (C) 2020 Intel Corporation
-#
-# SPDX-License-Identifier: MIT
-
 from datumaro.components.project import Environment
 
-
 dm_env = Environment()
+
 
 class _Format:
     NAME = ''
@@ -14,13 +9,16 @@ class _Format:
     VERSION = ''
     DISPLAY_NAME = '{NAME} {VERSION}'
 
+
 class Exporter(_Format):
     def __call__(self, dst_file, task_data, **options):
         raise NotImplementedError()
 
+
 class Importer(_Format):
     def __call__(self, src_file, task_data, **options):
         raise NotImplementedError()
+
 
 def _wrap_format(f_or_cls, klass, name, version, ext, display_name):
     import inspect
@@ -46,34 +44,46 @@ def _wrap_format(f_or_cls, klass, name, version, ext, display_name):
     assert all([target.NAME, target.VERSION, target.EXT, target.DISPLAY_NAME])
     return target
 
+
 EXPORT_FORMATS = {}
+
+
 def exporter(name, version, ext, display_name=None):
     assert name not in EXPORT_FORMATS, "Export format '%s' already registered" % name
+
     def wrap_with_params(f_or_cls):
         t = _wrap_format(f_or_cls, Exporter,
-            name=name, ext=ext, version=version, display_name=display_name)
+                         name=name, ext=ext, version=version, display_name=display_name)
         key = t.DISPLAY_NAME
         assert key not in EXPORT_FORMATS, "Export format '%s' already registered" % name
         EXPORT_FORMATS[key] = t
         return t
+
     return wrap_with_params
 
+
 IMPORT_FORMATS = {}
+
+
 def importer(name, version, ext, display_name=None):
     def wrap_with_params(f_or_cls):
         t = _wrap_format(f_or_cls, Importer,
-            name=name, ext=ext, version=version, display_name=display_name)
+                         name=name, ext=ext, version=version, display_name=display_name)
         key = t.DISPLAY_NAME
         assert key not in IMPORT_FORMATS, "Import format '%s' already registered" % name
         IMPORT_FORMATS[key] = t
         return t
+
     return wrap_with_params
+
 
 def make_importer(name):
     return IMPORT_FORMATS[name]()
 
+
 def make_exporter(name):
     return EXPORT_FORMATS[name]()
+
 
 # pylint: disable=unused-import
 import cvat.apps.dataset_manager.formats.coco

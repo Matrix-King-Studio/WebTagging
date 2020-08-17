@@ -1,7 +1,3 @@
-# Copyright (C) 2018 Intel Corporation
-#
-# SPDX-License-Identifier: MIT
-
 from django.http import HttpResponse, HttpResponseBadRequest, JsonResponse
 from cvat.apps.authentication.decorators import login_required
 from rules.contrib.views import permission_required, objectgetter
@@ -17,6 +13,7 @@ import rq
 __RQ_QUEUE_NAME = "default"
 __DEXTR_HANDLER = DEXTR_HANDLER()
 
+
 def _dextr_thread(db_data, frame, points):
     job = rq.get_current_job()
     job.meta["result"] = __DEXTR_HANDLER.handle(db_data, frame, points)
@@ -25,7 +22,7 @@ def _dextr_thread(db_data, frame, points):
 
 @login_required
 @permission_required(perm=["engine.job.change"],
-    fn=objectgetter(Job, "jid"), raise_exception=True)
+                     fn=objectgetter(Job, "jid"), raise_exception=True)
 def create(request, jid):
     try:
         data = json.loads(request.body.decode("utf-8"))
@@ -35,7 +32,7 @@ def create(request, jid):
         username = request.user.username
 
         slogger.job[jid].info("create dextr request for the JOB: {} ".format(jid)
-            + "by the USER: {} on the FRAME: {}".format(username, frame))
+                              + "by the USER: {} on the FRAME: {}".format(username, frame))
 
         db_data = Job.objects.select_related("segment__task__data").get(id=jid).segment.task.data
 
@@ -46,15 +43,15 @@ def create(request, jid):
         if job is not None and (job.is_started or job.is_queued):
             if "cancel" not in job.meta:
                 raise Exception("Segmentation process has been already run for the " +
-                    "JOB: {} and the USER: {}".format(jid, username))
+                                "JOB: {} and the USER: {}".format(jid, username))
             else:
                 job.delete()
 
         queue.enqueue_call(func=_dextr_thread,
-            args=(db_data, frame, points),
-            job_id=rq_id,
-            timeout=15,
-            ttl=30)
+                           args=(db_data, frame, points),
+                           job_id=rq_id,
+                           timeout=15,
+                           ttl=30)
 
         return HttpResponse()
     except Exception as ex:
@@ -64,12 +61,12 @@ def create(request, jid):
 
 @login_required
 @permission_required(perm=["engine.job.change"],
-    fn=objectgetter(Job, "jid"), raise_exception=True)
+                     fn=objectgetter(Job, "jid"), raise_exception=True)
 def cancel(request, jid):
     try:
         username = request.user.username
         slogger.job[jid].info("cancel dextr request for the JOB: {} ".format(jid)
-            + "by the USER: {}".format(username))
+                              + "by the USER: {}".format(username))
 
         queue = django_rq.get_queue(__RQ_QUEUE_NAME)
         rq_id = "dextr.create/{}/{}".format(jid, username)
@@ -89,12 +86,12 @@ def cancel(request, jid):
 
 @login_required
 @permission_required(perm=["engine.job.change"],
-    fn=objectgetter(Job, "jid"), raise_exception=True)
+                     fn=objectgetter(Job, "jid"), raise_exception=True)
 def check(request, jid):
     try:
         username = request.user.username
         slogger.job[jid].info("check dextr request for the JOB: {} ".format(jid)
-            + "by the USER: {}".format(username))
+                              + "by the USER: {}".format(username))
 
         queue = django_rq.get_queue(__RQ_QUEUE_NAME)
         rq_id = "dextr.create/{}/{}".format(jid, username)
@@ -123,6 +120,7 @@ def check(request, jid):
     except Exception as ex:
         slogger.job[jid].error("can't check a dextr request for the job {}".format(jid), exc_info=True)
         return HttpResponseBadRequest(str(ex))
+
 
 def enabled(request):
     return HttpResponse()

@@ -1,7 +1,3 @@
-# Copyright (C) 2019 Intel Corporation
-#
-# SPDX-License-Identifier: MIT
-
 from copy import copy, deepcopy
 
 import numpy as np
@@ -67,7 +63,7 @@ class AnnotationIR:
         for shape in track['shapes']:
             if prev_shape and not prev_shape['outside'] and \
                 has_overlap(prev_shape['frame'], shape['frame']):
-                    return True
+                return True
             prev_shape = shape
 
         if not prev_shape['outside'] and prev_shape['frame'] <= stop:
@@ -116,14 +112,14 @@ class AnnotationIR:
         return track
 
     def slice(self, start, stop):
-        #makes a data copy from specified frame interval
+        # makes a data copy from specified frame interval
         splitted_data = AnnotationIR()
         splitted_data.tags = [deepcopy(t)
-            for t in self.tags if self._is_shape_inside(t, start, stop)]
+                              for t in self.tags if self._is_shape_inside(t, start, stop)]
         splitted_data.shapes = [deepcopy(s)
-            for s in self.shapes if self._is_shape_inside(s, start, stop)]
+                                for s in self.shapes if self._is_shape_inside(s, start, stop)]
         splitted_data.tracks = [self._slice_track(t, start, stop)
-            for t in self.tracks if self._is_track_inside(t, start, stop)]
+                                for t in self.tracks if self._is_track_inside(t, start, stop)]
 
         return splitted_data
 
@@ -132,6 +128,7 @@ class AnnotationIR:
         self.tags = []
         self.shapes = []
         self.tracks = []
+
 
 class AnnotationManager:
     def __init__(self, data):
@@ -158,6 +155,7 @@ class AnnotationManager:
         shapes = ShapeManager(self.data.shapes)
 
         return tracks + shapes.to_tracks()
+
 
 class ObjectManager:
     def __init__(self, objects):
@@ -195,9 +193,9 @@ class ObjectManager:
         # 1. Split objects on two parts: new and which can be intersected
         # with existing objects.
         new_objects = [obj for obj in objects
-            if obj["frame"] >= start_frame + overlap]
+                       if obj["frame"] >= start_frame + overlap]
         int_objects = [obj for obj in objects
-            if obj["frame"] < start_frame + overlap]
+                       if obj["frame"] < start_frame + overlap]
         assert len(new_objects) + len(int_objects) == len(objects)
 
         # 2. Convert to more convenient data structure (objects by frame)
@@ -225,7 +223,7 @@ class ObjectManager:
                 int_objects = int_objects_by_frame[frame]
                 old_objects = old_objects_by_frame[frame]
                 cost_matrix = np.empty(shape=(len(int_objects), len(old_objects)),
-                    dtype=float)
+                                       dtype=float)
                 # 5.1 Construct cost matrix for the frame.
                 for i, int_obj in enumerate(int_objects):
                     for j, old_obj in enumerate(old_objects):
@@ -254,10 +252,11 @@ class ObjectManager:
                 for j in old_objects_indexes:
                     if j != -1:
                         self._modify_unmached_object(old_objects[j],
-                            start_frame + overlap)
+                                                     start_frame + overlap)
             else:
                 # We don't have old objects on the frame. Let's add all new ones.
                 self.objects.extend(int_objects_by_frame[frame])
+
 
 class TagManager(ObjectManager):
     @staticmethod
@@ -278,9 +277,11 @@ class TagManager(ObjectManager):
     def _modify_unmached_object(obj, end_frame):
         pass
 
+
 def pairwise(iterable):
     a = iter(iterable)
     return zip(a, a)
+
 
 class ShapeManager(ObjectManager):
     def to_tracks(self):
@@ -317,7 +318,7 @@ class ShapeManager(ObjectManager):
             overlap_area = p0.intersection(p1).area
             return overlap_area / (p0.area + p1.area - overlap_area)
 
-        has_same_type  = obj0["type"] == obj1["type"]
+        has_same_type = obj0["type"] == obj1["type"]
         has_same_label = obj0.get("label_id") == obj1.get("label_id")
         if has_same_type and has_same_label:
             if obj0["type"] == ShapeType.RECTANGLE:
@@ -331,7 +332,7 @@ class ShapeManager(ObjectManager):
 
                 return _calc_polygons_similarity(p0, p1)
             else:
-                return 0 # FIXME: need some similarity for points and polylines
+                return 0  # FIXME: need some similarity for points and polylines
         return 0
 
     @staticmethod
@@ -342,6 +343,7 @@ class ShapeManager(ObjectManager):
     @staticmethod
     def _modify_unmached_object(obj, end_frame):
         pass
+
 
 class TrackManager(ObjectManager):
     def to_shapes(self, end_frame):
@@ -360,7 +362,7 @@ class TrackManager(ObjectManager):
         # Just for unification. All tracks are assigned on the same frame
         objects_by_frame = {0: []}
         for obj in objects:
-            shape = obj["shapes"][-1] # optimization for old tracks
+            shape = obj["shapes"][-1]  # optimization for old tracks
             if shape["frame"] >= start_frame or not shape["outside"]:
                 objects_by_frame[0].append(obj)
 
@@ -382,8 +384,8 @@ class TrackManager(ObjectManager):
             end_frame = start_frame + overlap
             obj0_shapes = TrackManager.get_interpolated_shapes(obj0, start_frame, end_frame)
             obj1_shapes = TrackManager.get_interpolated_shapes(obj1, start_frame, end_frame)
-            obj0_shapes_by_frame = {shape["frame"]:shape for shape in obj0_shapes}
-            obj1_shapes_by_frame = {shape["frame"]:shape for shape in obj1_shapes}
+            obj0_shapes_by_frame = {shape["frame"]: shape for shape in obj0_shapes}
+            obj1_shapes_by_frame = {shape["frame"]: shape for shape in obj1_shapes}
             assert obj0_shapes_by_frame and obj1_shapes_by_frame
 
             count, error = 0, 0
@@ -426,7 +428,7 @@ class TrackManager(ObjectManager):
     def normalize_shape(shape):
         points = list(shape["points"])
         if len(points) == 2:
-            points.extend(points) # duplicate points for single point case
+            points.extend(points)  # duplicate points for single point case
         points = np.asarray(points).reshape(-1, 2)
         broken_line = geometry.LineString(points)
         points = []
@@ -495,7 +497,8 @@ class TrackManager(ObjectManager):
 
         # TODO: Need to modify a client and a database (append "outside" shapes for polytracks)
         if not prev_shape["outside"] and (prev_shape["type"] == ShapeType.RECTANGLE
-               or prev_shape["type"] == ShapeType.POINTS or prev_shape["type"] == ShapeType.CUBOID):
+                                          or prev_shape["type"] == ShapeType.POINTS or prev_shape[
+                                              "type"] == ShapeType.CUBOID):
             shape = copy(prev_shape)
             shape["frame"] = end_frame
             shapes.extend(interpolate(prev_shape, shape))
@@ -508,7 +511,7 @@ class TrackManager(ObjectManager):
     def _unite_objects(obj0, obj1):
         track = obj0 if obj0["frame"] < obj1["frame"] else obj1
         assert obj0["label_id"] == obj1["label_id"]
-        shapes = {shape["frame"]:shape for shape in obj0["shapes"]}
+        shapes = {shape["frame"]: shape for shape in obj0["shapes"]}
         for shape in obj1["shapes"]:
             frame = shape["frame"]
             if frame in shapes:

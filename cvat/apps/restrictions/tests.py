@@ -1,8 +1,3 @@
-# Copyright (C) 2020 Intel Corporation
-#
-# SPDX-License-Identifier: MIT
-
-
 from rest_framework.test import APITestCase, APIClient
 from rest_framework import status
 from django.conf import settings

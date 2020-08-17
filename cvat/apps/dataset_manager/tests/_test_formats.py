@@ -1,8 +1,3 @@
-
-# Copyright (C) 2020 Intel Corporation
-#
-# SPDX-License-Identifier: MIT
-
 # FIXME: Git application and package name clash in tests
 class _GitImportFix:
     import sys
@@ -46,6 +41,7 @@ class _GitImportFix:
         import importlib
         importlib.invalidate_caches()
 
+
 def _setUpModule():
     _GitImportFix.apply()
     import cvat.apps.dataset_manager as dm
@@ -57,8 +53,9 @@ def _setUpModule():
     import sys
     sys.path.insert(0, __file__[:__file__.rfind('/dataset_manager/')])
 
+
 # def tearDownModule():
-    # _GitImportFix.restore()
+# _GitImportFix.restore()
 
 from io import BytesIO
 import os.path as osp
@@ -85,6 +82,7 @@ def generate_image_file(filename):
 
     return f
 
+
 def create_db_users(cls):
     group_user, _ = Group.objects.get_or_create(name="user")
 
@@ -92,6 +90,7 @@ def create_db_users(cls):
     user_dummy.groups.add(group_user)
 
     cls.user = user_dummy
+
 
 class ForceLogin:
     def __init__(self, user, client):
@@ -101,13 +100,14 @@ class ForceLogin:
     def __enter__(self):
         if self.user:
             self.client.force_login(self.user,
-                backend='django.contrib.auth.backends.ModelBackend')
+                                    backend='django.contrib.auth.backends.ModelBackend')
 
         return self
 
     def __exit__(self, exception_type, exception_value, traceback):
         if self.user:
             self.client.logout()
+
 
 class TaskExportTest(APITestCase):
     def setUp(self):
@@ -285,7 +285,7 @@ class TaskExportTest(APITestCase):
     def _put_api_v1_task_id_annotations(self, tid, data):
         with ForceLogin(self.user, self.client):
             response = self.client.put("/api/v1/tasks/{}/annotations".format(tid),
-                data=data, format="json")
+                                       data=data, format="json")
 
         return response
 
@@ -293,7 +293,7 @@ class TaskExportTest(APITestCase):
         with tempfile.TemporaryDirectory() as temp_dir:
             file_path = osp.join(temp_dir, format_name)
             dm.task.export_task(task["id"], file_path,
-                format_name, **export_args)
+                                format_name, **export_args)
 
             check(file_path)
 
@@ -301,33 +301,33 @@ class TaskExportTest(APITestCase):
         formats = dm.views.get_export_formats()
 
         self.assertEqual({f.DISPLAY_NAME for f in formats},
-        {
-            'COCO 1.0',
-            'CVAT for images 1.1',
-            'CVAT for video 1.1',
-            'Datumaro 1.0',
-            'LabelMe 3.0',
-            'MOT 1.1',
-            'PASCAL VOC 1.1',
-            'Segmentation mask 1.1',
-            'TFRecord 1.0',
-            'YOLO 1.1',
-        })
+                         {
+                             'COCO 1.0',
+                             'CVAT for images 1.1',
+                             'CVAT for video 1.1',
+                             'Datumaro 1.0',
+                             'LabelMe 3.0',
+                             'MOT 1.1',
+                             'PASCAL VOC 1.1',
+                             'Segmentation mask 1.1',
+                             'TFRecord 1.0',
+                             'YOLO 1.1',
+                         })
 
     def test_import_formats_query(self):
         formats = dm.views.get_import_formats()
 
         self.assertEqual({f.DISPLAY_NAME for f in formats},
-        {
-            'COCO 1.0',
-            'CVAT 1.1',
-            'LabelMe 3.0',
-            'MOT 1.1',
-            'PASCAL VOC 1.1',
-            'Segmentation mask 1.1',
-            'TFRecord 1.0',
-            'YOLO 1.1',
-        })
+                         {
+                             'COCO 1.0',
+                             'CVAT 1.1',
+                             'LabelMe 3.0',
+                             'MOT 1.1',
+                             'PASCAL VOC 1.1',
+                             'Segmentation mask 1.1',
+                             'TFRecord 1.0',
+                             'YOLO 1.1',
+                         })
 
     def test_exports(self):
         def check(file_path):
@@ -336,12 +336,12 @@ class TaskExportTest(APITestCase):
 
         for f in dm.views.get_export_formats():
             format_name = f.DISPLAY_NAME
-            for save_images in { True, False }:
+            for save_images in {True, False}:
                 with self.subTest(format=format_name, save_images=save_images):
                     task = self._generate_task()
                     self._generate_annotations(task)
                     self._test_export(check, task,
-                        format_name, save_images=save_images)
+                                      format_name, save_images=save_images)
 
     def test_empty_images_are_exported(self):
         dm_env = dm.formats.registry.dm_env
@@ -383,5 +383,5 @@ class TaskExportTest(APITestCase):
                         dataset = load_dataset(file_path)
 
                     self.assertEqual(len(dataset), task["size"])
-                self._test_export(check, task, format_name, save_images=False)
 
+                self._test_export(check, task, format_name, save_images=False)

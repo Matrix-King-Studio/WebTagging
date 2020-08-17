@@ -1,7 +1,3 @@
-# Copyright (C) 2018-2019 Intel Corporation
-#
-# SPDX-License-Identifier: MIT
-
 from enum import Enum
 import re
 import os

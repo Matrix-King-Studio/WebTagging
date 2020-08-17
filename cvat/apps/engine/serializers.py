@@ -1,7 +1,3 @@
-# Copyright (C) 2019 Intel Corporation
-#
-# SPDX-License-Identifier: MIT
-
 import os
 import re
 import shutil
@@ -19,7 +15,6 @@ class AttributeSerializer(serializers.ModelSerializer):
         fields = ('id', 'name', 'mutable', 'input_type', 'default_value',
                   'values')
 
-    # pylint: disable=no-self-use
     def to_internal_value(self, data):
         attribute = data.copy()
         attribute['values'] = '\n'.join(map(lambda x: x.strip(), data.get('values', [])))

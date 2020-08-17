@@ -1,7 +1,3 @@
-# Copyright (C) 2018 Intel Corporation
-#
-# SPDX-License-Identifier: MIT
-
 from django.http import HttpResponse, HttpResponseBadRequest, JsonResponse
 from cvat.apps.authentication.decorators import login_required
 from rules.contrib.views import permission_required, objectgetter

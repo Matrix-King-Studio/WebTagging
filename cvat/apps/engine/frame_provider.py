@@ -1,7 +1,3 @@
-# Copyright (C) 2020 Intel Corporation
-#
-# SPDX-License-Identifier: MIT
-
 import math
 from enum import Enum
 from io import BytesIO
