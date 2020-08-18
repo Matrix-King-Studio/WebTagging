@@ -1,30 +1,33 @@
 # 计算机视觉标注工具 (CVAT)
 
-[![Build Status](https://travis-ci.org/opencv/cvat.svg?branch=develop)](https://travis-ci.org/opencv/cvat)
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/840351da141e4eaeac6476fd19ec0a33)](https://app.codacy.com/app/cvat/cvat?utm_source=github.com&utm_medium=referral&utm_content=opencv/cvat&utm_campaign=Badge_Grade_Dashboard)
-[![Gitter chat](https://badges.gitter.im/opencv-cvat/gitter.png)](https://gitter.im/opencv-cvat)
-[![Coverage Status](https://coveralls.io/repos/github/opencv/cvat/badge.svg?branch=)](https://coveralls.io/github/opencv/cvat?branch=develop)
-[![codebeat badge](https://codebeat.co/badges/53cd0d16-fddc-46f8-903c-f43ed9abb6dd)](https://codebeat.co/projects/github-com-opencv-cvat-develop)
-[![DOI](https://zenodo.org/badge/139156354.svg)](https://zenodo.org/badge/latestdoi/139156354)
+计算机视觉标注工具(CVAT)是基于 Web 为计算机视觉算法标注视频和图像的在线工具。
 
-CVAT is free, online, interactive video and image annotation
-tool for computer vision. It is being used by our team to
-annotate million of objects with different properties. Many UI
-and UX decisions are based on feedbacks from professional data annotation team.
-Try it online [cvat.org](https://cvat.org).
+它的灵感来自[Vatic](http://carlvondrick.com/vatic/)免费的、在线的、交互式的视频注释工具。
+
+CVAT有许多强大的功能:
+- 在关键帧之间插入边界框
+- 使用深度学习模型自动标注
+- 大多数关键行动的捷径
+- 带有注释任务列表的仪表板
+- LDAP和基本授权
+- 等……
+
+它是为一个专业的数据注释团队创建和使用的。
+
+特别针对我们团队开发的计算机视觉任务进行了用户体验和用户界面优化。
 
 ![CVAT screenshot](cvat/apps/documentation/static/documentation/images/cvat.jpg)
 
-## Documentation
+## 文档
 
-- [Installation guide](cvat/apps/documentation/installation.md)
-- [User's guide](cvat/apps/documentation/user_guide.md)
-- [Django REST API documentation](#rest-api)
-- [Datumaro dataset framework](datumaro/README.md)
-- [Command line interface](utils/cli/)
-- [XML annotation format](cvat/apps/documentation/xml_format.md)
-- [AWS Deployment Guide](cvat/apps/documentation/AWS-Deployment-Guide.md)
-- [Questions](#questions)
+- [安装指南](cvat/apps/documentation/installation.md)
+- [用户手册](cvat/apps/documentation/user_guide.md)
+- [Django REST API 文档](#rest-api)
+- [Datumaro 数据集框架](datumaro/README.md)
+- [命令行界面](utils/cli/)
+- [XML 标注格式](cvat/apps/documentation/xml_format.md)
+- [AWS 部署指南](cvat/apps/documentation/AWS-Deployment-Guide.md)
+- [问题](#问题)
 
 ## Screencasts
 
@@ -89,7 +92,7 @@ Example - ``ALLOWED_HOSTS: 'localhost, 127.0.0.1'``)
 
 Code released under the [MIT License](https://opensource.org/licenses/MIT).
 
-## Questions
+## 问题
 
 CVAT usage related questions or unclear concepts can be posted in our
 [Gitter chat](https://gitter.im/opencv-cvat) for **quick replies** from

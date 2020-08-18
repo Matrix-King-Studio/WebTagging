@@ -86,6 +86,7 @@ INSTALLED_APPS = [
     'cvat.apps.git',
     'cvat.apps.restrictions',
     'django_rq',
+    'django_extensions',
     'compressor',
     'cacheops',
     'sendfile',

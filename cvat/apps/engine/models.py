@@ -1,6 +1,6 @@
-from enum import Enum
 import re
 import os
+from enum import Enum
 
 from django.db import models
 from django.conf import settings
@@ -18,9 +18,9 @@ class SafeCharField(models.CharField):
 
 
 class StatusChoice(str, Enum):
-    ANNOTATION = 'annotation'
-    VALIDATION = 'validation'
-    COMPLETED = 'completed'
+    ANNOTATION = 'annotation'   # 标注
+    VALIDATION = 'validation'   # 验证
+    COMPLETED = 'completed'     # 完成
 
     @classmethod
     def choices(cls):
@@ -125,6 +125,7 @@ class Image(models.Model):
 
 
 class Project(models.Model):
+    # 自定义安全 CharField 字段
     name = SafeCharField(max_length=256)
     owner = models.ForeignKey(User, null=True, blank=True,
                               on_delete=models.SET_NULL, related_name="+")
@@ -136,7 +137,7 @@ class Project(models.Model):
     status = models.CharField(max_length=32, choices=StatusChoice.choices(),
                               default=StatusChoice.ANNOTATION)
 
-    # Extend default permission model
+    # 扩展默认权限模型
     class Meta:
         default_permissions = ()
 
@@ -145,6 +146,7 @@ class Task(models.Model):
     project = models.ForeignKey(Project, on_delete=models.CASCADE,
                                 null=True, blank=True, related_name="tasks",
                                 related_query_name="task")
+    # 自定义安全 CharField 字段
     name = SafeCharField(max_length=256)
     mode = models.CharField(max_length=32)
     describe = models.CharField(max_length=1024, blank=True, default="")
@@ -156,7 +158,7 @@ class Task(models.Model):
     created_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now_add=True)
     overlap = models.PositiveIntegerField(null=True)
-    # Zero means that there are no limits (default)
+    # 零表示没有限制（默认）
     segment_size = models.PositiveIntegerField(default=0)
     z_order = models.BooleanField(default=False)
     status = models.CharField(max_length=32,
@@ -164,7 +166,7 @@ class Task(models.Model):
                               default=StatusChoice.ANNOTATION)
     data = models.ForeignKey(Data, on_delete=models.CASCADE, null=True, related_name="tasks")
 
-    # Extend default permission model
+    # 扩展默认权限模型
     class Meta:
         default_permissions = ()
 
@@ -187,8 +189,7 @@ class Task(models.Model):
         return self.name
 
 
-# Redefined a couple of operation for FileSystemStorage to avoid renaming
-# or other side effects.
+# 为文件系统存储重新定义了几个操作，以避免重命名或其他副作用。
 class MyFileSystemStorage(FileSystemStorage):
     def get_valid_name(self, name):
         return name
@@ -203,7 +204,7 @@ def upload_path_handler(instance, filename):
     return os.path.join(instance.data.get_upload_dirname(), filename)
 
 
-# For client files which the user is uploaded
+# 用户上传的客户端文件
 class ClientFile(models.Model):
     data = models.ForeignKey(Data, on_delete=models.CASCADE, null=True, related_name='client_files')
     file = models.FileField(upload_to=upload_path_handler,
@@ -214,7 +215,7 @@ class ClientFile(models.Model):
         unique_together = ("data", "file")
 
 
-# For server files on the mounted share
+# 在服务器上挂载的共享文件
 class ServerFile(models.Model):
     data = models.ForeignKey(Data, on_delete=models.CASCADE, null=True, related_name='server_files')
     file = models.CharField(max_length=1024)
@@ -223,7 +224,7 @@ class ServerFile(models.Model):
         default_permissions = ()
 
 
-# For URLs
+# 通过 URL 提供的文件
 class RemoteFile(models.Model):
     data = models.ForeignKey(Data, on_delete=models.CASCADE, null=True, related_name='remote_files')
     file = models.CharField(max_length=1024)
@@ -253,6 +254,7 @@ class Job(models.Model):
 
 class Label(models.Model):
     task = models.ForeignKey(Task, on_delete=models.CASCADE)
+    # 自定义安全 CharField 字段
     name = SafeCharField(max_length=64)
 
     def __str__(self):
@@ -264,11 +266,11 @@ class Label(models.Model):
 
 
 class AttributeType(str, Enum):
-    CHECKBOX = 'checkbox'
-    RADIO = 'radio'
-    NUMBER = 'number'
-    TEXT = 'text'
-    SELECT = 'select'
+    CHECKBOX = 'checkbox'   # 复选框
+    RADIO = 'radio'         # 单选框
+    NUMBER = 'number'       # 数值输入框
+    TEXT = 'text'           # 字符输入框
+    SELECT = 'select'       # 下拉列表
 
     @classmethod
     def choices(cls):
@@ -299,6 +301,7 @@ class AttributeVal(models.Model):
     # TODO: add a validator here to be sure that it corresponds to self.label
     id = models.BigAutoField(primary_key=True)
     spec = models.ForeignKey(AttributeSpec, on_delete=models.CASCADE)
+    # 自定义安全 CharField 字段
     value = SafeCharField(max_length=4096)
 
     class Meta:
@@ -307,11 +310,11 @@ class AttributeVal(models.Model):
 
 
 class ShapeType(str, Enum):
-    RECTANGLE = 'rectangle'  # (x0, y0, x1, y1)
-    POLYGON = 'polygon'  # (x0, y0, ..., xn, yn)
-    POLYLINE = 'polyline'  # (x0, y0, ..., xn, yn)
-    POINTS = 'points'  # (x0, y0, ..., xn, yn)
-    CUBOID = 'cuboid'
+    RECTANGLE = 'rectangle'     # 矩形 (x0, y0, x1, y1)
+    POLYGON = 'polygon'         # 多边形 (x0, y0, ..., xn, yn)
+    POLYLINE = 'polyline'       # 折线 (x0, y0, ..., xn, yn)
+    POINTS = 'points'           # 点 (x0, y0, ..., xn, yn)
+    CUBOID = 'cuboid'           # 长方体
 
     @classmethod
     def choices(cls):
@@ -415,18 +418,21 @@ class TrackedShapeAttributeVal(AttributeVal):
 
 class Plugin(models.Model):
     name = models.SlugField(max_length=32, primary_key=True)
+    # 自定义安全 CharField 字段
     description = SafeCharField(max_length=8192)
     maintainer = models.ForeignKey(User, null=True, blank=True,
                                    on_delete=models.SET_NULL, related_name="maintainers")
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now_add=True)
 
-    # Extend default permission model
+    # 扩展默认权限模型
     class Meta:
         default_permissions = ()
 
 
 class PluginOption(models.Model):
     plugin = models.ForeignKey(Plugin, on_delete=models.CASCADE)
+    # 自定义安全 CharField 字段
     name = SafeCharField(max_length=32)
+    # 自定义安全 CharField 字段
     value = SafeCharField(max_length=1024)
