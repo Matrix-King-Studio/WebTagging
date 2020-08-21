@@ -1,3 +1,7 @@
+# Copyright (C) 2020 Intel Corporation
+#
+# SPDX-License-Identifier: MIT
+
 from django.conf import settings
 from rest_framework.response import Response
 from rest_framework.decorators import action
@@ -7,7 +11,6 @@ from rest_framework.renderers import TemplateHTMLRenderer
 from drf_yasg.utils import swagger_auto_schema
 
 from cvat.apps.restrictions.serializers import UserAgreementSerializer
-
 
 class RestrictionsViewSet(viewsets.ViewSet):
     serializer_class = None
@@ -33,6 +36,6 @@ class RestrictionsViewSet(viewsets.ViewSet):
 
     @staticmethod
     @action(detail=False, methods=['GET'], renderer_classes=(TemplateHTMLRenderer,),
-            url_path='terms-of-use')
+        url_path='terms-of-use')
     def terms_of_use(request):
         return Response(template_name='restrictions/terms_of_use.html')

@@ -1,3 +1,7 @@
+# Copyright (C) 2018 Intel Corporation
+#
+# SPDX-License-Identifier: MIT
+
 from django.conf import settings
 from django.db.models import Q
 import rules
@@ -9,21 +13,17 @@ from rest_framework import authentication, exceptions
 from rest_framework.authentication import TokenAuthentication as _TokenAuthentication
 from django.contrib.auth import login
 
-
+# Even with token authorization it is very important to have a valid session id
+# in cookies because in some cases we cannot use token authorization (e.g. when
+# we redirect to the server in UI using just URL). To overkill that we override
+# the class to call `login` method which restores the session id in cookies.
 class TokenAuthentication(_TokenAuthentication):
-    """
-    即使使用 Token 授权，在 cookies 中有一个有效的 session id 也是非常重要的。
-    在某些情况下，我们不能使用令牌授权（例如，当我们仅使用 URL 重定向到 UI 中的服务器时）。
-    我们重写类来调用“login”方法来恢复 cookies 中的 session id。
-    """
-
     def authenticate(self, request):
         auth = super().authenticate(request)
         session = getattr(request, 'session')
         if auth is not None and session.session_key is None:
             login(request, auth[0], 'django.contrib.auth.backends.ModelBackend')
         return auth
-
 
 def register_signals():
     from django.db.models.signals import post_migrate, post_save
@@ -46,15 +46,13 @@ def register_signals():
 
         django_auth_ldap.backend.populate_user.connect(create_user)
 
-
 class SignatureAuthentication(authentication.BaseAuthentication):
     """
-    签名URL的身份验证后端。
+    Authentication backend for signed URLs.
     """
-
     def authenticate(self, request):
         """
-        如果URL签名有效，则返回经过身份验证的用户。
+        Returns authenticated user if URL signature is valid.
         """
         signer = signature.Signer()
         sign = request.query_params.get(signature.QUERY_PARAM)
@@ -72,13 +70,11 @@ class SignatureAuthentication(authentication.BaseAuthentication):
 
         return (user, None)
 
-
 # AUTH PREDICATES
 has_admin_role = rules.is_group_member(str(AUTH_ROLE.ADMIN))
 has_user_role = rules.is_group_member(str(AUTH_ROLE.USER))
 has_annotator_role = rules.is_group_member(str(AUTH_ROLE.ANNOTATOR))
 has_observer_role = rules.is_group_member(str(AUTH_ROLE.OBSERVER))
-
 
 @rules.predicate
 def is_project_owner(db_user, db_project):
@@ -86,17 +82,14 @@ def is_project_owner(db_user, db_project):
     # only by admin. At the moment each task has an owner.
     return db_project is not None and db_project.owner == db_user
 
-
 @rules.predicate
 def is_project_assignee(db_user, db_project):
     return db_project is not None and db_project.assignee == db_user
-
 
 @rules.predicate
 def is_project_annotator(db_user, db_project):
     db_tasks = list(db_project.tasks.prefetch_related('segment_set').all())
     return any([is_task_annotator(db_user, db_task) for db_task in db_tasks])
-
 
 @rules.predicate
 def is_task_owner(db_user, db_task):
@@ -104,35 +97,29 @@ def is_task_owner(db_user, db_task):
     # only by admin. At the moment each task has an owner.
     return db_task.owner == db_user or is_project_owner(db_user, db_task.project)
 
-
 @rules.predicate
 def is_task_assignee(db_user, db_task):
     return db_task.assignee == db_user or is_project_assignee(db_user, db_task.project)
-
 
 @rules.predicate
 def is_task_annotator(db_user, db_task):
     db_segments = list(db_task.segment_set.prefetch_related('job_set__assignee').all())
     return any([is_job_annotator(db_user, db_job)
-                for db_segment in db_segments for db_job in db_segment.job_set.all()])
-
+        for db_segment in db_segments for db_job in db_segment.job_set.all()])
 
 @rules.predicate
 def is_job_owner(db_user, db_job):
     return is_task_owner(db_user, db_job.segment.task)
 
-
 @rules.predicate
 def is_job_annotator(db_user, db_job):
     db_task = db_job.segment.task
     # A job can be annotated by any user if the task's assignee is None.
-    has_rights = (db_task.assignee is None and not settings.RESTRICTIONS['reduce_task_visibility']) or is_task_assignee(
-        db_user, db_task)
+    has_rights = (db_task.assignee is None and not settings.RESTRICTIONS['reduce_task_visibility']) or is_task_assignee(db_user, db_task)
     if db_job.assignee is not None:
         has_rights |= (db_user == db_job.assignee)
 
     return has_rights
-
 
 # AUTH PERMISSIONS RULES
 rules.add_perm('engine.role.user', has_user_role)
@@ -142,77 +129,67 @@ rules.add_perm('engine.role.observer', has_observer_role)
 
 rules.add_perm('engine.project.create', has_admin_role | has_user_role)
 rules.add_perm('engine.project.access', has_admin_role | has_observer_role |
-               is_project_owner | is_project_annotator)
+    is_project_owner | is_project_annotator)
 rules.add_perm('engine.project.change', has_admin_role | is_project_owner |
-               is_project_assignee)
+    is_project_assignee)
 rules.add_perm('engine.project.delete', has_admin_role | is_project_owner)
 
 rules.add_perm('engine.task.create', has_admin_role | has_user_role)
 rules.add_perm('engine.task.access', has_admin_role | has_observer_role |
-               is_task_owner | is_task_annotator)
+    is_task_owner | is_task_annotator)
 rules.add_perm('engine.task.change', has_admin_role | is_task_owner |
-               is_task_assignee)
+    is_task_assignee)
 rules.add_perm('engine.task.delete', has_admin_role | is_task_owner)
 
 rules.add_perm('engine.job.access', has_admin_role | has_observer_role |
-               is_job_owner | is_job_annotator)
+    is_job_owner | is_job_annotator)
 rules.add_perm('engine.job.change', has_admin_role | is_job_owner |
-               is_job_annotator)
-
+    is_job_annotator)
 
 class AdminRolePermission(BasePermission):
     # pylint: disable=no-self-use
     def has_permission(self, request, view):
         return request.user.has_perm("engine.role.admin")
 
-
 class UserRolePermission(BasePermission):
     # pylint: disable=no-self-use
     def has_permission(self, request, view):
         return request.user.has_perm("engine.role.user")
-
 
 class AnnotatorRolePermission(BasePermission):
     # pylint: disable=no-self-use
     def has_permission(self, request, view):
         return request.user.has_perm("engine.role.annotator")
 
-
 class ObserverRolePermission(BasePermission):
     # pylint: disable=no-self-use
     def has_permission(self, request, view):
         return request.user.has_perm("engine.role.observer")
-
 
 class ProjectCreatePermission(BasePermission):
     # pylint: disable=no-self-use
     def has_permission(self, request, view):
         return request.user.has_perm("engine.project.create")
 
-
 class ProjectAccessPermission(BasePermission):
     # pylint: disable=no-self-use
     def has_object_permission(self, request, view, obj):
         return request.user.has_perm("engine.project.access", obj)
-
 
 class ProjectChangePermission(BasePermission):
     # pylint: disable=no-self-use
     def has_object_permission(self, request, view, obj):
         return request.user.has_perm("engine.project.change", obj)
 
-
 class ProjectDeletePermission(BasePermission):
     # pylint: disable=no-self-use
     def has_object_permission(self, request, view, obj):
         return request.user.has_perm("engine.project.delete", obj)
 
-
 class TaskCreatePermission(BasePermission):
     # pylint: disable=no-self-use
     def has_permission(self, request, view):
         return request.user.has_perm("engine.task.create")
-
 
 class TaskAccessPermission(BasePermission):
     # pylint: disable=no-self-use
@@ -229,9 +206,8 @@ class ProjectGetQuerySetMixin(object):
             return queryset
         else:
             return queryset.filter(Q(owner=user) | Q(assignee=user) |
-                                   Q(task__owner=user) | Q(task__assignee=user) |
-                                   Q(task__segment__job__assignee=user)).distinct()
-
+                Q(task__owner=user) | Q(task__assignee=user) |
+                Q(task__segment__job__assignee=user)).distinct()
 
 def filter_task_queryset(queryset, user):
     # Don't filter queryset for admin, observer
@@ -239,12 +215,11 @@ def filter_task_queryset(queryset, user):
         return queryset
 
     query_filter = Q(owner=user) | Q(assignee=user) | \
-                   Q(segment__job__assignee=user)
+        Q(segment__job__assignee=user)
     if not settings.RESTRICTIONS['reduce_task_visibility']:
         query_filter |= Q(assignee=None)
 
     return queryset.filter(query_filter).distinct()
-
 
 class TaskGetQuerySetMixin(object):
     def get_queryset(self):
@@ -256,24 +231,20 @@ class TaskGetQuerySetMixin(object):
         else:
             return filter_task_queryset(queryset, user)
 
-
 class TaskChangePermission(BasePermission):
     # pylint: disable=no-self-use
     def has_object_permission(self, request, view, obj):
         return request.user.has_perm("engine.task.change", obj)
-
 
 class TaskDeletePermission(BasePermission):
     # pylint: disable=no-self-use
     def has_object_permission(self, request, view, obj):
         return request.user.has_perm("engine.task.delete", obj)
 
-
 class JobAccessPermission(BasePermission):
     # pylint: disable=no-self-use
     def has_object_permission(self, request, view, obj):
         return request.user.has_perm("engine.job.access", obj)
-
 
 class JobChangePermission(BasePermission):
     # pylint: disable=no-self-use

@@ -1,3 +1,7 @@
+# Copyright (C) 2020 Intel Corporation
+#
+# SPDX-License-Identifier: MIT
+
 import math
 from enum import Enum
 from io import BytesIO
@@ -36,7 +40,6 @@ class RandomAccessIterator:
     def reset(self):
         self.iterator = iter(self.iterable)
         self.pos = -1
-
 
 class FrameProvider:
     class Quality(Enum):
@@ -116,7 +119,7 @@ class FrameProvider:
             else:
                 image = np.array(Image.open(frame))
             if len(image.shape) == 3 and image.shape[2] in {3, 4}:
-                image[:, :, :3] = image[:, :, 2::-1]  # RGB to BGR
+                image[:, :, :3] = image[:, :, 2::-1] # RGB to BGR
             return image
         else:
             raise Exception('unsupported output type')
@@ -129,7 +132,7 @@ class FrameProvider:
         return self._loaders[quality].get_chunk_path(chunk_number)
 
     def get_frame(self, frame_number, quality=Quality.ORIGINAL,
-                  out_type=Type.BUFFER):
+            out_type=Type.BUFFER):
         _, chunk_number, frame_offset = self._validate_frame_number(frame_number)
         loader = self._loaders[quality]
         chunk_reader = loader.load(chunk_number)

@@ -40,8 +40,3 @@ if UI_PORT and UI_PORT != '80':
 
 CORS_ORIGIN_WHITELIST = [UI_URL]
 CORS_REPLACE_HTTPS_REFERER = True
-
-GRAPH_MODELS = {
-  'all_applications': True,
-  'group_models': True,
-}

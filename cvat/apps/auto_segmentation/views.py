@@ -1,3 +1,9 @@
+
+# Copyright (C) 2018-2020 Intel Corporation
+#
+# SPDX-License-Identifier: MIT
+
+
 from django.http import HttpResponse, JsonResponse, HttpResponseBadRequest
 from rest_framework.decorators import api_view
 from rules.contrib.views import permission_required, objectgetter
@@ -18,7 +24,6 @@ from cvat.apps.engine.log import slogger
 import sys
 import skimage.io
 from skimage.measure import find_contours, approximate_polygon
-
 
 def run_tensorflow_auto_segmentation(frame_provider, labels_mapping, treshold):
     def _convert_to_int(boolean_mask):
@@ -101,7 +106,7 @@ def run_tensorflow_auto_segmentation(frame_provider, labels_mapping, treshold):
         for index, c_id in enumerate(r['class_ids']):
             if c_id in labels_mapping.keys():
                 if r['scores'][index] >= treshold:
-                    mask = _convert_to_int(r['masks'][:, :, index])
+                    mask = _convert_to_int(r['masks'][:,:,index])
                     segmentation = _convert_to_segmentation(mask)
                     label = labels_mapping[c_id]
                     if label not in result:
@@ -110,7 +115,6 @@ def run_tensorflow_auto_segmentation(frame_provider, labels_mapping, treshold):
                         [image_num, segmentation])
 
     return result
-
 
 def convert_to_cvat_format(data):
     result = {
@@ -136,7 +140,6 @@ def convert_to_cvat_format(data):
 
     return result
 
-
 def create_thread(tid, labels_mapping, user):
     try:
         # If detected object accuracy bigger than threshold it will returend
@@ -161,7 +164,7 @@ def create_thread(tid, labels_mapping, user):
 
         # Modify data format and save
         result = convert_to_cvat_format(result)
-        serializer = LabeledDataSerializer(data=result)
+        serializer = LabeledDataSerializer(data = result)
         if serializer.is_valid(raise_exception=True):
             put_task_data(tid, result)
         slogger.glob.info('auto segmentation for task {} done'.format(tid))
@@ -169,10 +172,8 @@ def create_thread(tid, labels_mapping, user):
         try:
             slogger.task[tid].exception('exception was occured during auto segmentation of the task', exc_info=True)
         except Exception:
-            slogger.glob.exception('exception was occured during auto segmentation of the task {}'.format(tid),
-                                   exc_info=True)
+            slogger.glob.exception('exception was occured during auto segmentation of the task {}'.format(tid), exc_info=True)
         raise ex
-
 
 @api_view(['POST'])
 @login_required
@@ -197,7 +198,7 @@ def get_meta_info(request):
 
 @login_required
 @permission_required(perm=['engine.task.change'],
-                     fn=objectgetter(TaskModel, 'tid'), raise_exception=True)
+    fn=objectgetter(TaskModel, 'tid'), raise_exception=True)
 def create(request, tid):
     slogger.glob.info('auto segmentation create request for task {}'.format(tid))
     try:
@@ -208,28 +209,27 @@ def create(request, tid):
             raise Exception("The process is already running")
 
         db_labels = db_task.label_set.prefetch_related('attributespec_set').all()
-        db_labels = {db_label.id: db_label.name for db_label in db_labels}
+        db_labels = {db_label.id:db_label.name for db_label in db_labels}
 
         # COCO Labels
-        auto_segmentation_labels = {"BG": 0,
-                                    "person": 1, "bicycle": 2, "car": 3, "motorcycle": 4, "airplane": 5,
-                                    "bus": 6, "train": 7, "truck": 8, "boat": 9, "traffic_light": 10,
-                                    "fire_hydrant": 11, "stop_sign": 12, "parking_meter": 13, "bench": 14,
-                                    "bird": 15, "cat": 16, "dog": 17, "horse": 18, "sheep": 19, "cow": 20,
-                                    "elephant": 21, "bear": 22, "zebra": 23, "giraffe": 24, "backpack": 25,
-                                    "umbrella": 26, "handbag": 27, "tie": 28, "suitcase": 29, "frisbee": 30,
-                                    "skis": 31, "snowboard": 32, "sports_ball": 33, "kite": 34, "baseball_bat": 35,
-                                    "baseball_glove": 36, "skateboard": 37, "surfboard": 38, "tennis_racket": 39,
-                                    "bottle": 40, "wine_glass": 41, "cup": 42, "fork": 43, "knife": 44, "spoon": 45,
-                                    "bowl": 46, "banana": 47, "apple": 48, "sandwich": 49, "orange": 50, "broccoli": 51,
-                                    "carrot": 52, "hot_dog": 53, "pizza": 54, "donut": 55, "cake": 56, "chair": 57,
-                                    "couch": 58, "potted_plant": 59, "bed": 60, "dining_table": 61, "toilet": 62,
-                                    "tv": 63, "laptop": 64, "mouse": 65, "remote": 66, "keyboard": 67, "cell_phone": 68,
-                                    "microwave": 69, "oven": 70, "toaster": 71, "sink": 72, "refrigerator": 73,
-                                    "book": 74, "clock": 75, "vase": 76, "scissors": 77, "teddy_bear": 78,
-                                    "hair_drier": 79,
-                                    "toothbrush": 80
-                                    }
+        auto_segmentation_labels = { "BG": 0,
+            "person": 1, "bicycle": 2, "car": 3, "motorcycle": 4, "airplane": 5,
+            "bus": 6, "train": 7, "truck": 8, "boat": 9, "traffic_light": 10,
+            "fire_hydrant": 11, "stop_sign": 12, "parking_meter": 13, "bench": 14,
+            "bird": 15, "cat": 16, "dog": 17, "horse": 18, "sheep": 19, "cow": 20,
+            "elephant": 21, "bear": 22, "zebra": 23, "giraffe": 24, "backpack": 25,
+            "umbrella": 26, "handbag": 27, "tie": 28, "suitcase": 29, "frisbee": 30,
+            "skis": 31, "snowboard": 32, "sports_ball": 33, "kite": 34, "baseball_bat": 35,
+            "baseball_glove": 36, "skateboard": 37, "surfboard": 38, "tennis_racket": 39,
+            "bottle": 40, "wine_glass": 41, "cup": 42, "fork": 43, "knife": 44, "spoon": 45,
+            "bowl": 46, "banana": 47, "apple": 48, "sandwich": 49, "orange": 50, "broccoli": 51,
+            "carrot": 52, "hot_dog": 53, "pizza": 54, "donut": 55, "cake": 56, "chair": 57,
+            "couch": 58, "potted_plant": 59, "bed": 60, "dining_table": 61, "toilet": 62,
+            "tv": 63, "laptop": 64, "mouse": 65, "remote": 66, "keyboard": 67, "cell_phone": 68,
+            "microwave": 69, "oven": 70, "toaster": 71, "sink": 72, "refrigerator": 73,
+            "book": 74, "clock": 75, "vase": 76, "scissors": 77, "teddy_bear": 78, "hair_drier": 79,
+            "toothbrush": 80
+            }
 
         labels_mapping = {}
         for key, labels in db_labels.items():
@@ -241,9 +241,9 @@ def create(request, tid):
 
         # Run auto segmentation job
         queue.enqueue_call(func=create_thread,
-                           args=(tid, labels_mapping, request.user),
-                           job_id='auto_segmentation.create/{}'.format(tid),
-                           timeout=604800)  # 7 days
+            args=(tid, labels_mapping, request.user),
+            job_id='auto_segmentation.create/{}'.format(tid),
+            timeout=604800)     # 7 days
 
         slogger.task[tid].info('tensorflow segmentation job enqueued with labels {}'.format(labels_mapping))
 
@@ -256,10 +256,9 @@ def create(request, tid):
 
     return HttpResponse()
 
-
 @login_required
 @permission_required(perm=['engine.task.access'],
-                     fn=objectgetter(TaskModel, 'tid'), raise_exception=True)
+    fn=objectgetter(TaskModel, 'tid'), raise_exception=True)
 def check(request, tid):
     try:
         queue = django_rq.get_queue('low')
@@ -290,7 +289,7 @@ def check(request, tid):
 
 @login_required
 @permission_required(perm=['engine.task.change'],
-                     fn=objectgetter(TaskModel, 'tid'), raise_exception=True)
+    fn=objectgetter(TaskModel, 'tid'), raise_exception=True)
 def cancel(request, tid):
     try:
         queue = django_rq.get_queue('low')

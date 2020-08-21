@@ -1,6 +1,10 @@
+
+# Copyright (C) 2018 Intel Corporation
+#
+# SPDX-License-Identifier: MIT
+
 import cv2
 import numpy as np
-
 
 class ImageLoader():
     def __init__(self, frame_provider):

@@ -1,3 +1,7 @@
+# Copyright (C) 2018 Intel Corporation
+#
+# SPDX-License-Identifier: MIT
+
 from openvino.inference_engine import IENetwork, IEPlugin, IECore, get_version
 
 import subprocess
@@ -5,7 +9,6 @@ import os
 import platform
 
 _IE_PLUGINS_PATH = os.getenv("IE_PLUGINS_PATH", None)
-
 
 def _check_instruction(instruction):
     return instruction == str.strip(
@@ -46,4 +49,4 @@ def make_plugin_or_core():
 
 
 def make_network(model, weights):
-    return IENetwork(model=model, weights=weights)
+    return IENetwork(model = model, weights = weights)

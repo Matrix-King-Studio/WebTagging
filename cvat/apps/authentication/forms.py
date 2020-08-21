@@ -1,3 +1,8 @@
+
+# Copyright (C) 2018 Intel Corporation
+#
+# SPDX-License-Identifier: MIT
+
 from django.contrib.auth.forms import (
     UsernameField,
     AuthenticationForm,
@@ -8,7 +13,6 @@ from django.contrib.auth.models import User
 
 from django import forms
 
-
 class AuthForm(AuthenticationForm):
     username = UsernameField(
         widget=forms.TextInput(attrs={'autofocus': True, 'placeholder': "Username"}),
@@ -18,7 +22,6 @@ class AuthForm(AuthenticationForm):
         strip=False,
         widget=forms.PasswordInput(attrs={'placeholder': "Password"}),
     )
-
 
 class NewUserForm(UserCreationForm):
     username = UsernameField(
@@ -54,4 +57,4 @@ class NewUserForm(UserCreationForm):
 
     class Meta:
         model = User
-        fields = ('username', 'first_name', 'last_name', 'email',)
+        fields = ('username', 'first_name', 'last_name', 'email', )

@@ -1,6 +1,9 @@
+# Copyright (C) 2018 Intel Corporation
+#
+# SPDX-License-Identifier: MIT
+
 from .development import *
 import tempfile
-from django.test.runner import DiscoverRunner
 
 _temp_dir = tempfile.TemporaryDirectory(suffix="cvat")
 
@@ -19,6 +22,7 @@ os.makedirs(TASKS_ROOT, exist_ok=True)
 MODELS_ROOT = os.path.join(DATA_ROOT, 'models')
 os.makedirs(MODELS_ROOT, exist_ok=True)
 
+
 # To avoid ERROR django.security.SuspiciousFileOperation:
 # The joined path (...) is located outside of the base path component
 MEDIA_ROOT = _temp_dir.name
@@ -34,9 +38,13 @@ PASSWORD_HASHERS = (
     'django.contrib.auth.hashers.MD5PasswordHasher',
 )
 
+# When you run ./manage.py test, Django looks at the TEST_RUNNER setting to
+# determine what to do. By default, TEST_RUNNER points to
+# 'django.test.runner.DiscoverRunner'. This class defines the default Django
+# testing behavior.
 TEST_RUNNER = "cvat.settings.testing.PatchedDiscoverRunner"
 
-
+from django.test.runner import DiscoverRunner
 class PatchedDiscoverRunner(DiscoverRunner):
     def __init__(self, *args, **kwargs):
         # Used fakeredis for testing (don't affect production redis)

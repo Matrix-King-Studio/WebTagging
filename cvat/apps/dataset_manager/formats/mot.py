@@ -1,10 +1,14 @@
+# Copyright (C) 2019 Intel Corporation
+#
+# SPDX-License-Identifier: MIT
+
 from tempfile import TemporaryDirectory
 
 from pyunpack import Archive
 
 import datumaro.components.extractor as datumaro
 from cvat.apps.dataset_manager.bindings import (CvatTaskDataExtractor,
-                                                match_frame)
+    match_frame)
 from cvat.apps.dataset_manager.util import make_zip_archive
 from datumaro.components.project import Dataset
 
@@ -16,14 +20,13 @@ def _export(dst_file, task_data, save_images=False):
     extractor = CvatTaskDataExtractor(task_data, include_images=save_images)
     envt = dm_env.transforms
     extractor = extractor.transform(envt.get('id_from_image_name'))
-    extractor = Dataset.from_extractors(extractor)  # apply lazy transforms
+    extractor = Dataset.from_extractors(extractor) # apply lazy transforms
     with TemporaryDirectory() as temp_dir:
         converter = dm_env.make_converter('mot_seq_gt',
-                                          save_images=save_images)
+            save_images=save_images)
         converter(extractor, save_dir=temp_dir)
 
         make_zip_archive(temp_dir, dst_file)
-
 
 @importer(name='MOT', ext='ZIP', version='1.1')
 def _import(src_file, task_data):
@@ -36,7 +39,7 @@ def _import(src_file, task_data):
         label_cat = dataset.categories()[datumaro.AnnotationType.label]
 
         for item in dataset:
-            item = item.wrap(id=int(item.id) - 1)  # NOTE: MOT frames start from 1
+            item = item.wrap(id=int(item.id) - 1) # NOTE: MOT frames start from 1
             frame_id = match_frame(item, task_data)
 
             for ann in item.annotations:

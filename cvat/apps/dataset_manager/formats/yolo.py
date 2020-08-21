@@ -1,3 +1,7 @@
+# Copyright (C) 2019 Intel Corporation
+#
+# SPDX-License-Identifier: MIT
+
 import os.path as osp
 from glob import glob
 from tempfile import TemporaryDirectory
@@ -5,7 +9,7 @@ from tempfile import TemporaryDirectory
 from pyunpack import Archive
 
 from cvat.apps.dataset_manager.bindings import (CvatTaskDataExtractor,
-                                                import_dm_annotations, match_frame)
+    import_dm_annotations, match_frame)
 from cvat.apps.dataset_manager.util import make_zip_archive
 from datumaro.components.extractor import DatasetItem
 from datumaro.components.project import Dataset
@@ -16,13 +20,12 @@ from .registry import dm_env, exporter, importer
 @exporter(name='YOLO', ext='ZIP', version='1.1')
 def _export(dst_file, task_data, save_images=False):
     extractor = CvatTaskDataExtractor(task_data, include_images=save_images)
-    extractor = Dataset.from_extractors(extractor)  # apply lazy transforms
+    extractor = Dataset.from_extractors(extractor) # apply lazy transforms
     with TemporaryDirectory() as temp_dir:
         converter = dm_env.make_converter('yolo', save_images=save_images)
         converter(extractor, save_dir=temp_dir)
 
         make_zip_archive(temp_dir, dst_file)
-
 
 @importer(name='YOLO', ext='ZIP', version='1.1')
 def _import(src_file, task_data):

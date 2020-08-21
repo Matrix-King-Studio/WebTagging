@@ -1,3 +1,7 @@
+# Copyright (C) 2018 Intel Corporation
+#
+# SPDX-License-Identifier: MIT
+
 import django_rq
 import json
 import os
@@ -16,10 +20,9 @@ from .model_loader import load_labelmap
 from . import model_manager
 from .models import AnnotationModel
 
-
 @login_required
 @permission_required(perm=["engine.task.change"],
-                     fn=objectgetter(TaskModel, "tid"), raise_exception=True)
+    fn=objectgetter(TaskModel, "tid"), raise_exception=True)
 def cancel(request, tid):
     try:
         queue = django_rq.get_queue("low")
@@ -34,14 +37,10 @@ def cancel(request, tid):
         try:
             slogger.task[tid].exception("cannot cancel auto annotation for task #{}".format(tid), exc_info=True)
         except Exception as logger_ex:
-            slogger.glob.exception(
-                "exception was occured during cancel auto annotation request for task {}: {}".format(tid,
-                                                                                                     str(logger_ex)),
-                exc_info=True)
+            slogger.glob.exception("exception was occured during cancel auto annotation request for task {}: {}".format(tid, str(logger_ex)), exc_info=True)
         return HttpResponseBadRequest(str(ex))
 
     return HttpResponse()
-
 
 @login_required
 @permission_required(perm=["auto_annotation.model.create"], raise_exception=True)
@@ -80,10 +79,9 @@ def create_model(request):
     except Exception as e:
         return HttpResponseBadRequest(str(e))
 
-
 @login_required
 @permission_required(perm=["auto_annotation.model.update"],
-                     fn=objectgetter(AnnotationModel, "mid"), raise_exception=True)
+    fn=objectgetter(AnnotationModel, "mid"), raise_exception=True)
 def update_model(request, mid):
     if request.method != 'POST':
         return HttpResponseBadRequest("Only POST requests are accepted")
@@ -118,16 +116,14 @@ def update_model(request, mid):
     except Exception as e:
         return HttpResponseBadRequest(str(e))
 
-
 @login_required
 @permission_required(perm=["auto_annotation.model.delete"],
-                     fn=objectgetter(AnnotationModel, "mid"), raise_exception=True)
+    fn=objectgetter(AnnotationModel, "mid"), raise_exception=True)
 def delete_model(request, mid):
     if request.method != 'DELETE':
         return HttpResponseBadRequest("Only DELETE requests are accepted")
     model_manager.delete(mid)
     return HttpResponse()
-
 
 @api_view(['POST'])
 @login_required
@@ -139,9 +135,7 @@ def get_meta_info(request):
             "models": [],
             "run": {},
         }
-        dl_model_list = list(
-            AnnotationModel.objects.filter(Q(owner=request.user) | Q(primary=True) | Q(shared=True)).order_by(
-                '-created_date'))
+        dl_model_list = list(AnnotationModel.objects.filter(Q(owner=request.user) | Q(primary=True) | Q(shared=True)).order_by('-created_date'))
         for dl_model in dl_model_list:
             labels = []
             if dl_model.labelmap_file and os.path.exists(dl_model.labelmap_file.name):
@@ -172,12 +166,11 @@ def get_meta_info(request):
     except Exception as e:
         return HttpResponseBadRequest(str(e))
 
-
 @login_required
 @permission_required(perm=["engine.task.change"],
-                     fn=objectgetter(TaskModel, "tid"), raise_exception=True)
+    fn=objectgetter(TaskModel, "tid"), raise_exception=True)
 @permission_required(perm=["auto_annotation.model.access"],
-                     fn=objectgetter(AnnotationModel, "mid"), raise_exception=True)
+    fn=objectgetter(AnnotationModel, "mid"), raise_exception=True)
 def start_annotation(request, mid, tid):
     slogger.glob.info("auto annotation create request for task {} via DL model {}".format(tid, mid))
     try:
@@ -202,9 +195,8 @@ def start_annotation(request, mid, tid):
 
         db_labels = db_task.label_set.prefetch_related("attributespec_set").all()
         db_attributes = {db_label.id:
-                             {db_attr.name: db_attr.id for db_attr in db_label.attributespec_set.all()} for db_label in
-                         db_labels}
-        db_labels = {db_label.name: db_label.id for db_label in db_labels}
+            {db_attr.name: db_attr.id for db_attr in db_label.attributespec_set.all()} for db_label in db_labels}
+        db_labels = {db_label.name:db_label.id for db_label in db_labels}
 
         model_labels = {value: key for key, value in load_labelmap(labelmap_file).items()}
 
@@ -216,21 +208,21 @@ def start_annotation(request, mid, tid):
         if not labels_mapping:
             raise Exception("No labels found for annotation")
 
-        rq_id = "auto_annotation.run.{}".format(tid)
+        rq_id="auto_annotation.run.{}".format(tid)
         queue.enqueue_call(func=model_manager.run_inference_thread,
-                           args=(
-                               tid,
-                               model_file_path,
-                               weights_file_path,
-                               labels_mapping,
-                               db_attributes,
-                               convertation_file_path,
-                               should_reset,
-                               request.user,
-                               restricted,
-                           ),
-                           job_id=rq_id,
-                           timeout=604800)  # 7 days
+            args=(
+                tid,
+                model_file_path,
+                weights_file_path,
+                labels_mapping,
+                db_attributes,
+                convertation_file_path,
+                should_reset,
+                request.user,
+                restricted,
+            ),
+            job_id = rq_id,
+            timeout=604800)     # 7 days
 
         slogger.task[tid].info("auto annotation job enqueued")
 
@@ -238,14 +230,10 @@ def start_annotation(request, mid, tid):
         try:
             slogger.task[tid].exception("exception was occurred during annotation request", exc_info=True)
         except Exception as logger_ex:
-            slogger.glob.exception(
-                "exception was occurred during create auto annotation request for task {}: {}".format(tid,
-                                                                                                      str(logger_ex)),
-                exc_info=True)
+            slogger.glob.exception("exception was occurred during create auto annotation request for task {}: {}".format(tid, str(logger_ex)), exc_info=True)
         return HttpResponseBadRequest(str(ex))
 
     return JsonResponse({"id": rq_id})
-
 
 @login_required
 def check(request, rq_id):

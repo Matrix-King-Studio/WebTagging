@@ -1,3 +1,8 @@
+
+# Copyright (C) 2018 Intel Corporation
+#
+# SPDX-License-Identifier: MIT
+
 import os
 from enum import Enum
 
@@ -8,10 +13,8 @@ from django.core.files.storage import FileSystemStorage
 
 fs = FileSystemStorage()
 
-
 def upload_path_handler(instance, filename):
     return os.path.join(settings.MODELS_ROOT, str(instance.id), filename)
-
 
 class FrameworkChoice(Enum):
     OPENVINO = 'openvino'
@@ -29,11 +32,10 @@ class SafeCharField(models.CharField):
             return value[:self.max_length]
         return value
 
-
 class AnnotationModel(models.Model):
     name = SafeCharField(max_length=256)
     owner = models.ForeignKey(User, null=True, blank=True,
-                              on_delete=models.SET_NULL)
+        on_delete=models.SET_NULL)
     created_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now_add=True)
     model_file = models.FileField(upload_to=upload_path_handler, storage=fs)

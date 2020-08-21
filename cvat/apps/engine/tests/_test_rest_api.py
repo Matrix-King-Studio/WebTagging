@@ -1,3 +1,7 @@
+# Copyright (C) 2020 Intel Corporation
+#
+# SPDX-License-Identifier: MIT
+
 # FIXME: Git application and package name clash in tests
 class _GitImportFix:
     import sys
@@ -41,16 +45,14 @@ class _GitImportFix:
         import importlib
         importlib.invalidate_caches()
 
-
 def _setUpModule():
     _GitImportFix.apply()
 
     import sys
     sys.path.insert(0, __file__[:__file__.rfind('/engine/')])
 
-
 # def tearDownModule():
-# _GitImportFix.restore()
+    # _GitImportFix.restore()
 
 import io
 import os
@@ -76,10 +78,9 @@ from rest_framework import status
 from rest_framework.test import APIClient, APITestCase
 
 from cvat.apps.engine.models import (AttributeType, Data, Job, Project,
-                                     Segment, StatusChoice, Task)
+    Segment, StatusChoice, Task)
 
 _setUpModule()
-
 
 def create_db_users(cls):
     (group_admin, _) = Group.objects.get_or_create(name="admin")
@@ -88,7 +89,7 @@ def create_db_users(cls):
     (group_observer, _) = Group.objects.get_or_create(name="observer")
 
     user_admin = User.objects.create_superuser(username="admin", email="",
-                                               password="admin")
+        password="admin")
     user_admin.groups.add(group_admin)
     user_owner = User.objects.create_user(username="user1", password="user1")
     user_owner.groups.add(group_user)
@@ -107,7 +108,6 @@ def create_db_users(cls):
     cls.annotator = cls.user3 = user_annotator
     cls.observer = cls.user4 = user_observer
     cls.user = cls.user5 = user_dummy
-
 
 def create_db_task(data):
     data_settings = {
@@ -143,7 +143,6 @@ def create_db_task(data):
         db_job.save()
 
     return db_task
-
 
 def create_dummy_db_tasks(obj, project=None):
     tasks = []
@@ -203,7 +202,6 @@ def create_dummy_db_tasks(obj, project=None):
     tasks.append(db_task)
 
     return tasks
-
 
 def create_dummy_db_projects(obj):
     projects = []
@@ -399,7 +397,6 @@ class JobUpdateAPITestCase(APITestCase):
         response = self._run_api_v1_jobs_id(self.job.id + 10, None, data)
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
-
 class JobPartialUpdateAPITestCase(JobUpdateAPITestCase):
     def _run_api_v1_jobs_id(self, jid, user, data):
         with ForceLogin(user, self.client):
@@ -416,7 +413,6 @@ class JobPartialUpdateAPITestCase(JobUpdateAPITestCase):
         data = {"assignee": self.user.id}
         response = self._run_api_v1_jobs_id(self.job.id, self.owner, data)
         self._check_request(response, data)
-
 
 class ServerAboutAPITestCase(APITestCase):
     def setUp(self):
@@ -450,7 +446,6 @@ class ServerAboutAPITestCase(APITestCase):
         response = self._run_api_v1_server_about(None)
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
-
 class ServerExceptionAPITestCase(APITestCase):
     def setUp(self):
         self.client = APIClient()
@@ -475,10 +470,10 @@ class ServerExceptionAPITestCase(APITestCase):
 
     def _run_api_v1_server_exception(self, user):
         with ForceLogin(user, self.client):
-            # pylint: disable=unused-variable
+            #pylint: disable=unused-variable
             with mock.patch("cvat.apps.engine.views.clogger") as clogger:
                 response = self.client.post('/api/v1/server/exception',
-                                            self.data, format='json')
+                    self.data, format='json')
 
         return response
 
@@ -503,30 +498,30 @@ class ServerLogsAPITestCase(APITestCase):
     def setUpTestData(cls):
         create_db_users(cls)
         cls.data = [
-            {
-                "time": "2019-01-29T12:34:56.000000Z",
-                "task_id": 1,
-                "job_id": 1,
-                "proj_id": 2,
-                "client_id": 12321235123,
-                "message": "just test message",
-                "name": "add point",
-                "is_active": True,
-                "payload": {"count": 1}
-            },
-            {
-                "time": "2019-02-24T12:34:56.000000Z",
-                "client_id": 12321235123,
-                "name": "add point",
-                "is_active": True,
-            }]
+        {
+            "time": "2019-01-29T12:34:56.000000Z",
+            "task_id": 1,
+            "job_id": 1,
+            "proj_id": 2,
+            "client_id": 12321235123,
+            "message": "just test message",
+            "name": "add point",
+            "is_active": True,
+            "payload": {"count": 1}
+        },
+        {
+            "time": "2019-02-24T12:34:56.000000Z",
+            "client_id": 12321235123,
+            "name": "add point",
+            "is_active": True,
+        }]
 
     def _run_api_v1_server_logs(self, user):
         with ForceLogin(user, self.client):
-            # pylint: disable=unused-variable
+            #pylint: disable=unused-variable
             with mock.patch("cvat.apps.engine.views.clogger") as clogger:
                 response = self.client.post('/api/v1/server/logs',
-                                            self.data, format='json')
+                    self.data, format='json')
 
         return response
 
@@ -566,7 +561,6 @@ class UserAPITestCase(APITestCase):
         extra_check("last_login", data)
         extra_check("date_joined", data)
 
-
 class UserListAPITestCase(UserAPITestCase):
     def _run_api_v1_users(self, user):
         with ForceLogin(user, self.client):
@@ -600,7 +594,6 @@ class UserListAPITestCase(UserAPITestCase):
         response = self._run_api_v1_users(None)
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
-
 class UserSelfAPITestCase(UserAPITestCase):
     def _run_api_v1_users_self(self, user):
         with ForceLogin(user, self.client):
@@ -627,7 +620,6 @@ class UserSelfAPITestCase(UserAPITestCase):
     def test_api_v1_users_self_no_auth(self):
         response = self._run_api_v1_users_self(None)
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
-
 
 class UserGetAPITestCase(UserAPITestCase):
     def _run_api_v1_users_id(self, user, user_id):
@@ -671,7 +663,6 @@ class UserGetAPITestCase(UserAPITestCase):
         response = self._run_api_v1_users_id(None, self.user.id)
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
-
 class UserPartialUpdateAPITestCase(UserAPITestCase):
     def _run_api_v1_users_id(self, user, user_id, data):
         with ForceLogin(user, self.client):
@@ -682,7 +673,7 @@ class UserPartialUpdateAPITestCase(UserAPITestCase):
     def _check_response_with_data(self, user, response, data, is_full):
         # refresh information about the user from DB
         user = User.objects.get(id=user.id)
-        for k, v in data.items():
+        for k,v in data.items():
             self.assertEqual(response.data[k], v)
         self._check_response(user, response, is_full)
 
@@ -717,7 +708,6 @@ class UserPartialUpdateAPITestCase(UserAPITestCase):
         data = {"username": "user12"}
         response = self._run_api_v1_users_id(None, self.user.id, data)
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
-
 
 class UserDeleteAPITestCase(UserAPITestCase):
     def _run_api_v1_users_id(self, user, user_id):
@@ -758,7 +748,6 @@ class UserDeleteAPITestCase(UserAPITestCase):
         response = self._run_api_v1_users_id(None, self.user.id)
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
-
 class ProjectListAPITestCase(APITestCase):
     def setUp(self):
         self.client = APIClient()
@@ -786,7 +775,7 @@ class ProjectListAPITestCase(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertListEqual(
             sorted([project.name for project in self.projects
-                    if 'my empty project' != project.name]),
+                if 'my empty project' != project.name]),
             sorted([res["name"] for res in response.data["results"]]))
 
     def test_api_v1_projects_observer(self):
@@ -799,7 +788,6 @@ class ProjectListAPITestCase(APITestCase):
     def test_api_v1_projects_no_auth(self):
         response = self._run_api_v1_projects(None)
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
-
 
 class ProjectGetAPITestCase(APITestCase):
     def setUp(self):
@@ -847,7 +835,6 @@ class ProjectGetAPITestCase(APITestCase):
     def test_api_v1_projects_id_no_auth(self):
         self._check_api_v1_projects_id(None)
 
-
 class ProjectDeleteAPITestCase(APITestCase):
     def setUp(self):
         self.client = APIClient()
@@ -884,7 +871,6 @@ class ProjectDeleteAPITestCase(APITestCase):
 
     def test_api_v1_projects_id_no_auth(self):
         self._check_api_v1_projects_id(None)
-
 
 class ProjectCreateAPITestCase(APITestCase):
     def setUp(self):
@@ -937,6 +923,7 @@ class ProjectCreateAPITestCase(APITestCase):
         }
         self._check_api_v1_projects(self.admin, data)
 
+
     def test_api_v1_projects_user(self):
         data = {
             "name": "Dummy name",
@@ -950,6 +937,7 @@ class ProjectCreateAPITestCase(APITestCase):
             "name": "My import project with data"
         }
         self._check_api_v1_projects(self.user, data)
+
 
     def test_api_v1_projects_observer(self):
         data = {
@@ -966,7 +954,6 @@ class ProjectCreateAPITestCase(APITestCase):
         }
         self._check_api_v1_projects(None, data)
 
-
 class ProjectPartialUpdateAPITestCase(APITestCase):
     def setUp(self):
         self.client = APIClient()
@@ -979,7 +966,7 @@ class ProjectPartialUpdateAPITestCase(APITestCase):
     def _run_api_v1_projects_id(self, pid, user, data):
         with ForceLogin(user, self.client):
             response = self.client.patch('/api/v1/projects/{}'.format(pid),
-                                         data=data, format="json")
+                data=data, format="json")
 
         return response
 
@@ -1031,7 +1018,6 @@ class ProjectPartialUpdateAPITestCase(APITestCase):
         }
         self._check_api_v1_projects_id(None, data)
 
-
 class ProjectListOfTasksAPITestCase(APITestCase):
     def setUp(self):
         self.client = APIClient()
@@ -1061,7 +1047,7 @@ class ProjectListOfTasksAPITestCase(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertListEqual(
             sorted([task.name for task in project.tasks.all()
-                    if task.owner in [None, self.user] or
+                if  task.owner in [None, self.user] or
                     task.assignee in [None, self.user]]),
             sorted([res["name"] for res in response.data["results"]]))
 
@@ -1106,7 +1092,7 @@ class TaskListAPITestCase(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertListEqual(
             sorted([task.name for task in self.tasks
-                    if (task.owner == self.user or task.assignee == None)]),
+                if (task.owner == self.user or task.assignee == None)]),
             sorted([res["name"] for res in response.data["results"]]))
 
     def test_api_v1_tasks_observer(self):
@@ -1119,7 +1105,6 @@ class TaskListAPITestCase(APITestCase):
     def test_api_v1_tasks_no_auth(self):
         response = self._run_api_v1_tasks(None)
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
-
 
 class TaskGetAPITestCase(APITestCase):
     def setUp(self):
@@ -1177,7 +1162,6 @@ class TaskGetAPITestCase(APITestCase):
     def test_api_v1_tasks_id_no_auth(self):
         self._check_api_v1_tasks_id(None)
 
-
 class TaskDeleteAPITestCase(APITestCase):
     def setUp(self):
         self.client = APIClient()
@@ -1215,7 +1199,6 @@ class TaskDeleteAPITestCase(APITestCase):
     def test_api_v1_tasks_id_no_auth(self):
         self._check_api_v1_tasks_id(None)
 
-
 class TaskUpdateAPITestCase(APITestCase):
     def setUp(self):
         self.client = APIClient()
@@ -1228,7 +1211,7 @@ class TaskUpdateAPITestCase(APITestCase):
     def _run_api_v1_tasks_id(self, tid, user, data):
         with ForceLogin(user, self.client):
             response = self.client.put('/api/v1/tasks/{}'.format(tid),
-                                       data=data, format="json")
+                data=data, format="json")
 
         return response
 
@@ -1324,12 +1307,11 @@ class TaskUpdateAPITestCase(APITestCase):
         }
         self._check_api_v1_tasks_id(None, data)
 
-
 class TaskPartialUpdateAPITestCase(TaskUpdateAPITestCase):
     def _run_api_v1_tasks_id(self, tid, user, data):
         with ForceLogin(user, self.client):
             response = self.client.patch('/api/v1/tasks/{}'.format(tid),
-                                         data=data, format="json")
+                data=data, format="json")
 
         return response
 
@@ -1346,6 +1328,7 @@ class TaskPartialUpdateAPITestCase(TaskUpdateAPITestCase):
         self._check_api_v1_tasks_id(self.admin, data)
         # Now owner is updated, but self.db_tasks are obsolete
         # We can't do any tests without owner in data below
+
 
     def test_api_v1_tasks_id_user_partial(self):
         data = {
@@ -1368,6 +1351,7 @@ class TaskPartialUpdateAPITestCase(TaskUpdateAPITestCase):
         }
         self._check_api_v1_tasks_id(self.user, data)
 
+
     def test_api_v1_tasks_id_observer(self):
         data = {
             "name": "my task #3"
@@ -1382,7 +1366,6 @@ class TaskPartialUpdateAPITestCase(TaskUpdateAPITestCase):
             }]
         }
         self._check_api_v1_tasks_id(None, data)
-
 
 class TaskCreateAPITestCase(APITestCase):
     def setUp(self):
@@ -1473,7 +1456,6 @@ class TaskCreateAPITestCase(APITestCase):
         }
         self._check_api_v1_tasks(None, data)
 
-
 def generate_image_file(filename):
     f = BytesIO()
     gen = random.SystemRandom()
@@ -1486,7 +1468,6 @@ def generate_image_file(filename):
 
     return (width, height), f
 
-
 def generate_image_files(*args):
     images = []
     image_sizes = []
@@ -1496,7 +1477,6 @@ def generate_image_files(*args):
         images.append(image)
 
     return image_sizes, images
-
 
 def generate_video_file(filename, width=1920, height=1080, duration=1, fps=25):
     f = BytesIO()
@@ -1532,7 +1512,6 @@ def generate_video_file(filename, width=1920, height=1080, duration=1, fps=25):
 
     return [(width, height)] * total_frames, f
 
-
 def generate_zip_archive_file(filename, count):
     image_sizes = []
     zip_buf = BytesIO()
@@ -1546,7 +1525,6 @@ def generate_zip_archive_file(filename, count):
     zip_buf.name = filename
     zip_buf.seek(0)
     return image_sizes, zip_buf
-
 
 class TaskDataAPITestCase(APITestCase):
     _image_sizes = {}
@@ -1640,10 +1618,11 @@ class TaskDataAPITestCase(APITestCase):
         path = os.path.join(settings.SHARE_ROOT, "videos", "test_video_1.mp4")
         os.remove(path)
 
+
     def _run_api_v1_tasks_id_data_post(self, tid, user, data):
         with ForceLogin(user, self.client):
             response = self.client.post('/api/v1/tasks/{}/data'.format(tid),
-                                        data=data)
+                data=data)
 
         return response
 
@@ -1691,8 +1670,7 @@ class TaskDataAPITestCase(APITestCase):
         stream = container.streams.video[0]
         return [f.to_image() for f in container.decode(stream)]
 
-    def _test_api_v1_tasks_id_data_spec(self, user, spec, data, expected_compressed_type, expected_original_type,
-                                        image_sizes):
+    def _test_api_v1_tasks_id_data_spec(self, user, spec, data, expected_compressed_type, expected_original_type, image_sizes):
         # create task
         response = self._create_task(user, spec)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
@@ -1707,7 +1685,7 @@ class TaskDataAPITestCase(APITestCase):
 
         expected_status_code = status.HTTP_200_OK
         if user == self.user and "owner" in spec and spec["owner"] != user.id and \
-            "assignee" in spec and spec["assignee"] != user.id:
+           "assignee" in spec and spec["assignee"] != user.id:
             expected_status_code = status.HTTP_403_FORBIDDEN
         self.assertEqual(response.status_code, expected_status_code)
 
@@ -1743,7 +1721,7 @@ class TaskDataAPITestCase(APITestCase):
         response = self._get_original_chunk(task_id, user, 0)
         self.assertEqual(response.status_code, expected_status_code)
         if expected_status_code == status.HTTP_200_OK:
-            original_chunk = io.BytesIO(b"".join(response.streaming_content))
+            original_chunk  = io.BytesIO(b"".join(response.streaming_content))
             if task["data_original_chunk_type"] == self.ChunkType.IMAGESET:
                 images = self._extract_zip_chunk(original_chunk)
             else:
@@ -1797,8 +1775,7 @@ class TaskDataAPITestCase(APITestCase):
             "image_quality": 75,
         }
 
-        self._test_api_v1_tasks_id_data_spec(user, task_spec, task_data, self.ChunkType.IMAGESET,
-                                             self.ChunkType.IMAGESET, image_sizes)
+        self._test_api_v1_tasks_id_data_spec(user, task_spec, task_data, self.ChunkType.IMAGESET, self.ChunkType.IMAGESET, image_sizes)
 
         task_spec = {
             "name": "my task #2",
@@ -1824,8 +1801,7 @@ class TaskDataAPITestCase(APITestCase):
             self._image_sizes[task_data["server_files[2]"]],
         ]
 
-        self._test_api_v1_tasks_id_data_spec(user, task_spec, task_data, self.ChunkType.IMAGESET,
-                                             self.ChunkType.IMAGESET, image_sizes)
+        self._test_api_v1_tasks_id_data_spec(user, task_spec, task_data, self.ChunkType.IMAGESET, self.ChunkType.IMAGESET, image_sizes)
 
         task_spec = {
             "name": "my video task #1",
@@ -1843,8 +1819,7 @@ class TaskDataAPITestCase(APITestCase):
             "image_quality": 43,
         }
 
-        self._test_api_v1_tasks_id_data_spec(user, task_spec, task_data, self.ChunkType.VIDEO, self.ChunkType.VIDEO,
-                                             image_sizes)
+        self._test_api_v1_tasks_id_data_spec(user, task_spec, task_data, self.ChunkType.VIDEO, self.ChunkType.VIDEO, image_sizes)
 
         task_spec = {
             "name": "my video task #2",
@@ -1862,8 +1837,7 @@ class TaskDataAPITestCase(APITestCase):
         }
         image_sizes = self._image_sizes[task_data["server_files[0]"]]
 
-        self._test_api_v1_tasks_id_data_spec(user, task_spec, task_data, self.ChunkType.VIDEO, self.ChunkType.VIDEO,
-                                             image_sizes)
+        self._test_api_v1_tasks_id_data_spec(user, task_spec, task_data, self.ChunkType.VIDEO, self.ChunkType.VIDEO, image_sizes)
 
         task_spec = {
             "name": "my video task #3",
@@ -1880,8 +1854,7 @@ class TaskDataAPITestCase(APITestCase):
         }
         image_sizes = self._image_sizes[task_data["server_files[0]"]]
 
-        self._test_api_v1_tasks_id_data_spec(user, task_spec, task_data, self.ChunkType.VIDEO, self.ChunkType.VIDEO,
-                                             image_sizes)
+        self._test_api_v1_tasks_id_data_spec(user, task_spec, task_data, self.ChunkType.VIDEO, self.ChunkType.VIDEO, image_sizes)
 
         task_spec = {
             "name": "my video task #4",
@@ -1900,8 +1873,7 @@ class TaskDataAPITestCase(APITestCase):
         }
         image_sizes = self._image_sizes[task_data["server_files[0]"]]
 
-        self._test_api_v1_tasks_id_data_spec(user, task_spec, task_data, self.ChunkType.IMAGESET, self.ChunkType.VIDEO,
-                                             image_sizes)
+        self._test_api_v1_tasks_id_data_spec(user, task_spec, task_data, self.ChunkType.IMAGESET, self.ChunkType.VIDEO, image_sizes)
 
         task_spec = {
             "name": "my archive task #6",
@@ -1918,8 +1890,7 @@ class TaskDataAPITestCase(APITestCase):
         }
         image_sizes = self._image_sizes[task_data["server_files[0]"]]
 
-        self._test_api_v1_tasks_id_data_spec(user, task_spec, task_data, self.ChunkType.IMAGESET,
-                                             self.ChunkType.IMAGESET, image_sizes)
+        self._test_api_v1_tasks_id_data_spec(user, task_spec, task_data, self.ChunkType.IMAGESET, self.ChunkType.IMAGESET, image_sizes)
 
         task_spec = {
             "name": "my archive task #7",
@@ -1936,8 +1907,7 @@ class TaskDataAPITestCase(APITestCase):
             "image_quality": 100,
         }
 
-        self._test_api_v1_tasks_id_data_spec(user, task_spec, task_data, self.ChunkType.IMAGESET,
-                                             self.ChunkType.IMAGESET, image_sizes)
+        self._test_api_v1_tasks_id_data_spec(user, task_spec, task_data, self.ChunkType.IMAGESET, self.ChunkType.IMAGESET, image_sizes)
 
     def test_api_v1_tasks_id_data_admin(self):
         self._test_api_v1_tasks_id_data(self.admin)
@@ -1964,7 +1934,6 @@ class TaskDataAPITestCase(APITestCase):
         response = self._create_task(None, data)
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
-
 def compare_objects(self, obj1, obj2, ignore_keys, fp_tolerance=.001):
     if isinstance(obj1, dict):
         self.assertTrue(isinstance(obj2, dict), "{} != {}".format(obj1, obj2))
@@ -1987,7 +1956,6 @@ def compare_objects(self, obj1, obj2, ignore_keys, fp_tolerance=.001):
             self.assertAlmostEqual(obj1, obj2, delta=fp_tolerance)
         else:
             self.assertEqual(obj1, obj2)
-
 
 class JobAnnotationAPITestCase(APITestCase):
     def setUp(self):
@@ -2074,7 +2042,7 @@ class JobAnnotationAPITestCase(APITestCase):
     def _put_api_v1_jobs_id_data(self, jid, user, data):
         with ForceLogin(user, self.client):
             response = self.client.put("/api/v1/jobs/{}/annotations".format(jid),
-                                       data=data, format="json")
+                data=data, format="json")
 
         return response
 
@@ -2087,7 +2055,7 @@ class JobAnnotationAPITestCase(APITestCase):
     def _delete_api_v1_jobs_id_data(self, jid, user):
         with ForceLogin(user, self.client):
             response = self.client.delete("/api/v1/jobs/{}/annotations".format(jid),
-                                          format="json")
+            format="json")
 
         return response
 
@@ -2220,7 +2188,7 @@ class JobAnnotationAPITestCase(APITestCase):
 
         default_attr_values = self._get_default_attr_values(task)
         response = self._put_api_v1_jobs_id_data(job["id"], annotator, data)
-        data["version"] += 1  # need to update the version
+        data["version"] += 1 # need to update the version
         self.assertEqual(response.status_code, HTTP_200_OK)
         self._check_response(response, data)
 
@@ -2232,7 +2200,7 @@ class JobAnnotationAPITestCase(APITestCase):
         self._check_response(response, data)
 
         response = self._delete_api_v1_jobs_id_data(job["id"], annotator)
-        data["version"] += 1  # need to update the version
+        data["version"] += 1 # need to update the version
         self.assertEqual(response.status_code, HTTP_204_NO_CONTENT)
 
         data = {
@@ -2338,7 +2306,7 @@ class JobAnnotationAPITestCase(APITestCase):
             ]
         }
         response = self._patch_api_v1_jobs_id_data(job["id"], annotator,
-                                                   "create", data)
+            "create", data)
         data["version"] += 1
         self.assertEqual(response.status_code, HTTP_200_OK)
         self._check_response(response, data)
@@ -2361,8 +2329,8 @@ class JobAnnotationAPITestCase(APITestCase):
             data["tracks"][0]["shapes"][0]["occluded"] = False
 
         response = self._patch_api_v1_jobs_id_data(job["id"], annotator,
-                                                   "update", data)
-        data["version"] = data.get("version", 0) + 1  # need to update the version
+            "update", data)
+        data["version"] = data.get("version", 0) + 1 # need to update the version
         self.assertEqual(response.status_code, HTTP_200_OK)
         self._check_response(response, data)
 
@@ -2371,8 +2339,8 @@ class JobAnnotationAPITestCase(APITestCase):
         self._check_response(response, data)
 
         response = self._patch_api_v1_jobs_id_data(job["id"], annotator,
-                                                   "delete", data)
-        data["version"] += 1  # need to update the version
+            "delete", data)
+        data["version"] += 1 # need to update the version
         self.assertEqual(response.status_code, HTTP_200_OK)
         self._check_response(response, data)
 
@@ -2478,16 +2446,16 @@ class JobAnnotationAPITestCase(APITestCase):
             ]
         }
         response = self._patch_api_v1_jobs_id_data(job["id"], annotator,
-                                                   "create", data)
+            "create", data)
         self.assertEqual(response.status_code, HTTP_400_BAD_REQUEST)
 
     def test_api_v1_jobs_id_annotations_admin(self):
         self._run_api_v1_jobs_id_annotations(self.admin, self.assignee,
-                                             self.assignee)
+            self.assignee)
 
     def test_api_v1_jobs_id_annotations_user(self):
         self._run_api_v1_jobs_id_annotations(self.user, self.assignee,
-                                             self.assignee)
+            self.assignee)
 
     def test_api_v1_jobs_id_annotations_observer(self):
         _, jobs = self._create_task(self.user, self.assignee)
@@ -2511,15 +2479,15 @@ class JobAnnotationAPITestCase(APITestCase):
         response = self._delete_api_v1_jobs_id_data(job["id"], self.observer)
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
 
+
     def test_api_v1_jobs_id_annotations_no_auth(self):
         self._run_api_v1_jobs_id_annotations(self.user, self.assignee, None)
-
 
 class TaskAnnotationAPITestCase(JobAnnotationAPITestCase):
     def _put_api_v1_tasks_id_annotations(self, pk, user, data):
         with ForceLogin(user, self.client):
             response = self.client.put("/api/v1/tasks/{}/annotations".format(pk),
-                                       data=data, format="json")
+                data=data, format="json")
 
         return response
 
@@ -2532,7 +2500,7 @@ class TaskAnnotationAPITestCase(JobAnnotationAPITestCase):
     def _delete_api_v1_tasks_id_annotations(self, pk, user):
         with ForceLogin(user, self.client):
             response = self.client.delete("/api/v1/tasks/{}/annotations".format(pk),
-                                          format="json")
+            format="json")
 
         return response
 
@@ -2557,7 +2525,7 @@ class TaskAnnotationAPITestCase(JobAnnotationAPITestCase):
                 path="/api/v1/tasks/{0}/annotations?{1}".format(pk, query_params),
                 data=data,
                 format="multipart",
-            )
+                )
 
         return response
 
@@ -2812,7 +2780,7 @@ class TaskAnnotationAPITestCase(JobAnnotationAPITestCase):
             ]
         }
         response = self._patch_api_v1_tasks_id_annotations(task["id"], annotator,
-                                                           "create", data)
+            "create", data)
         data["version"] += 1
         self.assertEqual(response.status_code, HTTP_200_OK)
         self._check_response(response, data)
@@ -2835,7 +2803,7 @@ class TaskAnnotationAPITestCase(JobAnnotationAPITestCase):
             data["tracks"][0]["shapes"][0]["occluded"] = False
 
         response = self._patch_api_v1_tasks_id_annotations(task["id"], annotator,
-                                                           "update", data)
+            "update", data)
         data["version"] = data.get("version", 0) + 1
         self.assertEqual(response.status_code, HTTP_200_OK)
         self._check_response(response, data)
@@ -2845,7 +2813,7 @@ class TaskAnnotationAPITestCase(JobAnnotationAPITestCase):
         self._check_response(response, data)
 
         response = self._patch_api_v1_tasks_id_annotations(task["id"], annotator,
-                                                           "delete", data)
+            "delete", data)
         data["version"] += 1
         self.assertEqual(response.status_code, HTTP_200_OK)
         self._check_response(response, data)
@@ -2952,7 +2920,7 @@ class TaskAnnotationAPITestCase(JobAnnotationAPITestCase):
             ]
         }
         response = self._patch_api_v1_tasks_id_annotations(task["id"], annotator,
-                                                           "create", data)
+            "create", data)
         self.assertEqual(response.status_code, HTTP_400_BAD_REQUEST)
 
     def _run_api_v1_tasks_id_annotations_dump_load(self, owner, assignee, annotator):
@@ -3089,15 +3057,15 @@ class TaskAnnotationAPITestCase(JobAnnotationAPITestCase):
                 "type": "polygon",
                 "occluded": True
             },
-                {
-                    "frame": 2,
-                    "label_id": task["labels"][1]["id"],
-                    "group": 1,
-                    "attributes": [],
-                    "points": [4, 7, 10, 30, 4, 5.55],
-                    "type": "polygon",
-                    "occluded": False
-                }]
+            {
+                "frame": 2,
+                "label_id": task["labels"][1]["id"],
+                "group": 1,
+                "attributes": [],
+                "points": [4, 7, 10, 30, 4, 5.55],
+                "type": "polygon",
+                "occluded": False
+            }]
 
             tags_wo_attrs = [{
                 "frame": 2,
@@ -3122,17 +3090,17 @@ class TaskAnnotationAPITestCase(JobAnnotationAPITestCase):
             }]
 
             annotations = {
-                "version": 0,
-                "tags": [],
-                "shapes": [],
-                "tracks": [],
-            }
+                    "version": 0,
+                    "tags": [],
+                    "shapes": [],
+                    "tracks": [],
+                }
             if annotation_format == "CVAT for video 1.1":
                 annotations["tracks"] = rectangle_tracks_with_attrs + rectangle_tracks_wo_attrs
 
             elif annotation_format == "CVAT for images 1.1":
                 annotations["shapes"] = rectangle_shapes_with_attrs + rectangle_shapes_wo_attrs \
-                                        + polygon_shapes_wo_attrs + polygon_shapes_with_attrs
+                    + polygon_shapes_wo_attrs + polygon_shapes_with_attrs
                 annotations["tags"] = tags_with_attrs + tags_wo_attrs
 
             elif annotation_format == "PASCAL VOC 1.1":
@@ -3140,7 +3108,7 @@ class TaskAnnotationAPITestCase(JobAnnotationAPITestCase):
                 annotations["tags"] = tags_wo_attrs
 
             elif annotation_format == "YOLO 1.1" or \
-                annotation_format == "TFRecord 1.0":
+                 annotation_format == "TFRecord 1.0":
                 annotations["shapes"] = rectangle_shapes_wo_attrs
 
             elif annotation_format == "COCO 1.0":
@@ -3181,11 +3149,11 @@ class TaskAnnotationAPITestCase(JobAnnotationAPITestCase):
         export_formats = data['exporters']
         self.assertTrue(isinstance(import_formats, list) and import_formats)
         self.assertTrue(isinstance(export_formats, list) and export_formats)
-        import_formats = {v['name'] for v in import_formats}
-        export_formats = {v['name'] for v in export_formats}
+        import_formats = { v['name'] for v in import_formats }
+        export_formats = { v['name'] for v in export_formats }
 
-        formats = {exp: exp if exp in import_formats else None
-                   for exp in export_formats}
+        formats = { exp: exp if exp in import_formats else None
+            for exp in export_formats }
         if 'CVAT 1.1' in import_formats:
             if 'CVAT for video 1.1' in export_formats:
                 formats['CVAT for video 1.1'] = 'CVAT 1.1'
@@ -3194,13 +3162,13 @@ class TaskAnnotationAPITestCase(JobAnnotationAPITestCase):
         if import_formats ^ export_formats:
             # NOTE: this may not be an error, so we should not fail
             print("The following import formats have no pair:",
-                  import_formats - export_formats)
+                import_formats - export_formats)
             print("The following export formats have no pair:",
-                  export_formats - import_formats)
+                export_formats - import_formats)
 
         for export_format, import_format in formats.items():
             with self.subTest(export_format=export_format,
-                              import_format=import_format):
+                    import_format=import_format):
                 # 1. create task
                 task, jobs = self._create_task(owner, assignee)
 
@@ -3214,15 +3182,15 @@ class TaskAnnotationAPITestCase(JobAnnotationAPITestCase):
 
                 # 3. download annotation
                 response = self._dump_api_v1_tasks_id_annotations(task["id"], annotator,
-                                                                  "?format={}".format(export_format))
+                    "?format={}".format(export_format))
                 self.assertEqual(response.status_code, HTTP_202_ACCEPTED)
 
                 response = self._dump_api_v1_tasks_id_annotations(task["id"], annotator,
-                                                                  "?format={}".format(export_format))
+                    "?format={}".format(export_format))
                 self.assertEqual(response.status_code, HTTP_201_CREATED)
 
                 response = self._dump_api_v1_tasks_id_annotations(task["id"], annotator,
-                                                                  "?format={}&action=download".format(export_format))
+                    "?format={}&action=download".format(export_format))
                 self.assertEqual(response.status_code, HTTP_200_OK)
 
                 # 4. check downloaded data
@@ -3258,13 +3226,13 @@ class TaskAnnotationAPITestCase(JobAnnotationAPITestCase):
 
                 # 7. check annotation
                 if import_format == "Segmentation mask 1.1":
-                    continue  # can't really predict the result to check
+                    continue # can't really predict the result to check
                 response = self._get_api_v1_tasks_id_annotations(task["id"], annotator)
                 self.assertEqual(response.status_code, HTTP_200_OK)
 
                 if annotator is None:
                     continue
-                data["version"] += 2  # upload is delete + put
+                data["version"] += 2 # upload is delete + put
                 self._check_response(response, data)
 
     def _check_dump_content(self, content, task, jobs, data, format_name):
@@ -3277,7 +3245,7 @@ class TaskAnnotationAPITestCase(JobAnnotationAPITestCase):
                     for k, v in dc.items():
                         dd[k].append(v)
                 d = {t.tag: {k: v[0] if len(v) == 1 else v
-                             for k, v in dd.items()}}
+                    for k, v in dd.items()}}
             if t.attrib:
                 d[t.tag].update(('@' + k, v) for k, v in t.attrib.items())
             if t.text:
@@ -3314,6 +3282,7 @@ class TaskAnnotationAPITestCase(JobAnnotationAPITestCase):
             self.assertTrue(zipfile.is_zipfile(content))
         elif format_name == "Segmentation mask 1.1":
             self.assertTrue(zipfile.is_zipfile(content))
+
 
     def _run_coco_annotation_upload_test(self, user):
         def generate_coco_anno():
@@ -3385,29 +3354,28 @@ class TaskAnnotationAPITestCase(JobAnnotationAPITestCase):
 
     def test_api_v1_tasks_id_annotations_admin(self):
         self._run_api_v1_tasks_id_annotations(self.admin, self.assignee,
-                                              self.assignee)
+            self.assignee)
 
     def test_api_v1_tasks_id_annotations_user(self):
         self._run_api_v1_tasks_id_annotations(self.user, self.assignee,
-                                              self.assignee)
+            self.assignee)
 
     def test_api_v1_tasks_id_annotations_no_auth(self):
         self._run_api_v1_tasks_id_annotations(self.user, self.assignee, None)
 
     def test_api_v1_tasks_id_annotations_dump_load_admin(self):
         self._run_api_v1_tasks_id_annotations_dump_load(self.admin, self.assignee,
-                                                        self.assignee)
+            self.assignee)
 
     def test_api_v1_tasks_id_annotations_dump_load_user(self):
         self._run_api_v1_tasks_id_annotations_dump_load(self.user, self.assignee,
-                                                        self.assignee)
+            self.assignee)
 
     def test_api_v1_tasks_id_annotations_dump_load_no_auth(self):
         self._run_api_v1_tasks_id_annotations_dump_load(self.user, self.assignee, None)
 
     def test_api_v1_tasks_id_annotations_upload_coco_user(self):
         self._run_coco_annotation_upload_test(self.user)
-
 
 class ServerShareAPITestCase(APITestCase):
     def setUp(self):

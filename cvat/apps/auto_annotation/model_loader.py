@@ -1,10 +1,14 @@
+
+# Copyright (C) 2018-2019 Intel Corporation
+#
+# SPDX-License-Identifier: MIT
+
 import json
 import cv2
 import os
 import numpy as np
 
 from cvat.apps.auto_annotation.inference_engine import make_plugin_or_core, make_network
-
 
 class ModelLoader():
     def __init__(self, model, weights):
@@ -19,7 +23,7 @@ class ModelLoader():
             not_supported_layers = [l for l in network.layers.keys() if l not in supported_layers]
             if len(not_supported_layers) != 0:
                 raise Exception("Following layers are not supported by the plugin for specified device {}:\n {}".
-                                format(core_or_plugin.device, ", ".join(not_supported_layers)))
+                          format(core_or_plugin.device, ", ".join(not_supported_layers)))
 
         iter_inputs = iter(network.inputs)
         self._input_blob_name = next(iter_inputs)

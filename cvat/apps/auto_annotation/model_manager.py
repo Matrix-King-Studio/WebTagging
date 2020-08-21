@@ -1,3 +1,7 @@
+# Copyright (C) 2018-2020 Intel Corporation
+#
+# SPDX-License-Identifier: MIT
+
 import django_rq
 import numpy as np
 import os
@@ -26,9 +30,8 @@ def _remove_old_file(model_file_field):
     if model_file_field and os.path.exists(model_file_field.name):
         os.remove(model_file_field.name)
 
-
 def _update_dl_model_thread(dl_model_id, name, is_shared, model_file, weights_file, labelmap_file,
-                            interpretation_file, run_tests, is_local_storage, delete_if_test_fails, restricted=True):
+        interpretation_file, run_tests, is_local_storage, delete_if_test_fails, restricted=True):
     def _get_file_content(filename):
         return os.path.basename(filename), open(filename, "rb")
 
@@ -42,7 +45,7 @@ def _update_dl_model_thread(dl_model_id, name, is_shared, model_file, weights_fi
         try:
             dummy_labelmap = {key: key for key in load_labelmap(labelmap_file).keys()}
             runner = InferenceAnnotationRunner(
-                data=[test_image, ],
+                data=[test_image,],
                 model_file=model_file,
                 weights_file=weights_file,
                 labels_mapping=dummy_labelmap,
@@ -114,9 +117,7 @@ def _update_dl_model_thread(dl_model_id, name, is_shared, model_file, weights_fi
     if not test_res:
         raise Exception("Model was not properly created/updated. Test failed: {}".format(message))
 
-
-def create_or_update(dl_model_id, name, model_file, weights_file, labelmap_file, interpretation_file, owner, storage,
-                     is_shared):
+def create_or_update(dl_model_id, name, model_file, weights_file, labelmap_file, interpretation_file, owner, storage, is_shared):
     def get_abs_path(share_path):
         if not share_path:
             return share_path
@@ -138,7 +139,6 @@ def create_or_update(dl_model_id, name, model_file, weights_file, labelmap_file,
                 tmp_file.write(chunk)
         os.close(fd)
         return filename
-
     is_create_request = dl_model_id is None
     if is_create_request:
         dl_model_id = create_empty(owner=owner)
@@ -182,7 +182,6 @@ def create_or_update(dl_model_id, name, model_file, weights_file, labelmap_file,
 
     return rq_id
 
-
 @transaction.atomic
 def create_empty(owner, framework=FrameworkChoice.OPENVINO):
     db_model = AnnotationModel(
@@ -197,7 +196,6 @@ def create_empty(owner, framework=FrameworkChoice.OPENVINO):
 
     return db_model.id
 
-
 @transaction.atomic
 def delete(dl_model_id):
     dl_model = AnnotationModel.objects.select_for_update().get(pk=dl_model_id)
@@ -210,9 +208,7 @@ def delete(dl_model_id):
     else:
         raise Exception("Requested DL model {} doesn't exist".format(dl_model_id))
 
-
-def run_inference_thread(tid, model_file, weights_file, labels_mapping, attributes, convertation_file, reset, user,
-                         restricted=True):
+def run_inference_thread(tid, model_file, weights_file, labels_mapping, attributes, convertation_file, reset, user, restricted=True):
     def update_progress(job, progress):
         job.refresh()
         if "cancel" in job.meta:
@@ -238,7 +234,7 @@ def run_inference_thread(tid, model_file, weights_file, labels_mapping, attribut
             weights_file=weights_file,
             labels_mapping=labels_mapping,
             attribute_spec=attributes,
-            convertation_file=convertation_file)
+            convertation_file= convertation_file)
         while more_data:
             result, more_data = runner.run(
                 job=job,
@@ -249,7 +245,7 @@ def run_inference_thread(tid, model_file, weights_file, labels_mapping, attribut
                 slogger.glob.info("auto annotation for task {} canceled by user".format(tid))
                 return
 
-            serializer = LabeledDataSerializer(data=result)
+            serializer = LabeledDataSerializer(data = result)
             if serializer.is_valid(raise_exception=True):
                 if reset:
                     put_task_data(tid, result)
@@ -261,8 +257,7 @@ def run_inference_thread(tid, model_file, weights_file, labels_mapping, attribut
         try:
             slogger.task[tid].exception("exception was occurred during auto annotation of the task", exc_info=True)
         except Exception as ex:
-            slogger.glob.exception(
-                "exception was occurred during auto annotation of the task {}: {}".format(tid, str(ex)), exc_info=True)
+            slogger.glob.exception("exception was occurred during auto annotation of the task {}: {}".format(tid, str(ex)), exc_info=True)
             raise ex
 
         raise e

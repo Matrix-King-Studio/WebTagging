@@ -1,4 +1,4 @@
-- [用户指南](#用户指南)
+- [User's guide](#users-guide)
   - [Getting started](#getting-started)
     - [Authorization](#authorization)
     - [Administration panel](#administration-panel)
@@ -38,304 +38,346 @@
   - [Analytics](#analytics)
   - [Shortcuts](#shortcuts)
 
-# 用户指南
+# User's guide
 
-计算机视觉标注工具(CVAT)是基于 Web 为计算机视觉算法标注视频和图像的在线工具。
+Computer Vision Annotation Tool (CVAT) is a web-based tool which helps to
+annotate videos and images for Computer Vision algorithms. It was inspired
+by [Vatic](http://carlvondrick.com/vatic/) free, online, interactive video
+annotation tool. CVAT has many powerful features: _interpolation of bounding
+boxes between key frames, automatic annotation using deep learning models,
+shortcuts for most of critical actions, dashboard with a list of annotation
+tasks, LDAP and basic authorization, etc..._ It was created for and used by
+a professional data annotation team. UX and UI were optimized especially for
+computer vision tasks developed by our team.
 
-它的灵感来自[Vatic](http://carlvondrick.com/vatic/)免费的、在线的、交互式的视频注释工具。
+## Getting started
 
-CVAT有许多强大的功能:
-- 在关键帧之间插入边界框
-- 使用深度学习模型自动标注
-- 大多数关键行动的捷径
-- 带有注释任务列表的仪表板
-- LDAP和基本授权
-- 等……
+### Authorization
+-   First of all, you have to log in to CVAT tool.
 
-它是为一个专业的数据标注团队创建和使用的，特别针对我们团队开发的计算机视觉任务进行了用户体验和用户界面优化。
+    ![](static/documentation/images/image001.jpg)
 
-## 入门
+-   For register a new user press "Create an account"
 
-### 授权
+    ![](static/documentation/images/image002.jpg)
 
--   首先，登录到 CVAT 工具。
-
-![在这里插入图片描述](https://img-blog.csdnimg.cn/20200801115204438.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzMzNjI4MQ==,size_16,color_FFFFFF,t_70#pic_center)
-
--   如果没有账号，想创建一个非管理员用户，请点击“注册”按钮
-
-![在这里插入图片描述](https://img-blog.csdnimg.cn/20200801115252314.jpg#pic_center)
-![在这里插入图片描述](https://img-blog.csdnimg.cn/20200801115754105.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzMzNjI4MQ==,size_16,color_FFFFFF,t_70#pic_center)
-
--   注册用户在默认情况下无权查看任务列表，需要管理员通过后台管理系统为新用户分配正确的组。
-    以下命令创建管理员帐户：
+-   You can register a user but by default it will not have rights even to view
+    list of tasks. Thus you should create a superuser. The superuser can use
+    [Django administration panel](http://localhost:8080/admin) to assign correct
+    groups to the user. Please use the command below to create an admin account:
 
     ``docker exec -it cvat bash -ic '/usr/bin/python3 ~/manage.py createsuperuser'``
 
-### 后台管理系统
+-   If you want to create a non-admin account, you can do that using the link below
+    on the login page. Don't forget to modify permissions for the new user in the
+    administration panel. There are several groups (aka roles): admin, user,
+    annotator, observer.
 
-后台管理系统可以：
--   创建/编辑/删除用户
--   控制用户的权限和对工具的访问。
+    ![](static/documentation/images/image003.jpg)
 
-![在这里插入图片描述](https://img-blog.csdnimg.cn/20200801120013183.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzMzNjI4MQ==,size_16,color_FFFFFF,t_70#pic_center)
+### Administration panel
+Go to the [Django administration panel](http://localhost:8080/admin). There you can:
+-   Create / edit / delete users
+-   Control permissions of users and access to the tool.
 
-### 创建标注任务
+    ![](static/documentation/images/image115.jpg)
 
-1.  点击主页面上的 ``Create new task`` 按钮创建标注任务。
+### Creating an annotation task
 
-![在这里插入图片描述](https://img-blog.csdnimg.cn/20200801120321568.jpg#pic_center)
+1.  Create an annotation task pressing ``Create new task`` button on the main page.
+![](static/documentation/images/image004.jpg)
 
+1.  Specify parameters of the task:
 
-1.  指定任务的参数：
+    #### Basic configuration
 
-    #### 基本配置
+    **Name** The name of the task to be created.
 
-    **Name** 要创建的任务的名称。
-	![在这里插入图片描述](https://img-blog.csdnimg.cn/20200801120445372.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzMzNjI4MQ==,size_16,color_FFFFFF,t_70#pic_center)
-    **Labels**. 使用标签有两种方法：
-    -   ``Constructor``是添加和调整标签的简单方法。要添加新标签，请单击``Add label``按钮。![在这里插入图片描述](https://img-blog.csdnimg.cn/20200801120837327.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzMzNjI4MQ==,size_16,color_FFFFFF,t_70#pic_center)
-        可以在``Label name``字段中设置标签的名称。
-![在这里插入图片描述](https://img-blog.csdnimg.cn/20200801121016717.jpg#pic_center)
-        如有必要，您可以通过单击``Add an attribute``来添加属性并设置其属性：
+    ![](static/documentation/images/image005.jpg)
 
-		![在这里插入图片描述](https://img-blog.csdnimg.cn/20200801121149502.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzMzNjI4MQ==,size_16,color_FFFFFF,t_70#pic_center)
-        此处提供以下操作：
-        1. 设置属性的名称。
-        2. 选择显示属性的方式：
-           - Select — 下拉列表选值
-           - Radio — 从建议的几个选项中只选择一个时使用
-           - Checkbox — 从建议的选项中选择任意数量的选项时使用
-           - Text — 属性作为文本输入，默认属性
-           - Number — 属性作为数字输入
-        3. 为属性设置值。按``Enter``键可以分隔这些值。输入的值显示为一个单独的元素，可以通过按``Backspace``或单击“关闭”按钮（x）来删除该元素。
-        如果指定的属性显示方式是文本或数字，则默认情况下输入的值将显示为文本。
-        4. 复选框``Mutable``确定属性是否将被逐帧更改。
-        5. 可以通过单击``关闭``按钮（x）删除该属性。
-       单击``Continue``按钮添加更多标签。
-        如果需要取消添加标签-请按``Cancel``按钮。
-        添加完所有必要的标签后，单击``Done``按钮。
-        单击``Done``后，添加的标签将显示为不同颜色的单独元素。
-        您可以通过单击``Update attributes``或``Delete label``来编辑或删除标签。
-    -   ``Raw`` 是高级用户使用标签的一种方式。
-	``Raw`` 以 json 格式显示标签数据，并提供了编辑和复制标签作为文本的选项。
-    ``Done`` 按钮应用更改，``Reset`` 按钮取消更改。
-![在这里插入图片描述](https://img-blog.csdnimg.cn/20200801122959376.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzMzNjI4MQ==,size_16,color_FFFFFF,t_70)
-    在``Raw``和``Constructor``模式下，可以按“Copy”按钮复制标签列表。
+    **Labels**. There are two ways of working with labels:
+    -   The ``Constructor`` is a simple way to add and adjust labels. To add a new label click the ``Add label`` button.
+          ![](static/documentation/images/image123.jpg)
 
-    **Select files**. 点击``My computer``从您的电脑中选择一些要添加批注的文件。
-    如果点击``Connected file share``，则可以从网络中选择要标注的文件。
-    如果选择`` Remote source``，您将看到一个字段，您可以在其中输入URL列表（每行一个URL）。
-![在这里插入图片描述](https://img-blog.csdnimg.cn/2020080112354746.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzMzNjI4MQ==,size_16,color_FFFFFF,t_70#pic_center)
-    #### 高级配置
+        You can set a name of the label in the ``Label name`` field.
 
-	![在这里插入图片描述](https://img-blog.csdnimg.cn/20200801123905501.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzMzNjI4MQ==,size_16,color_FFFFFF,t_70#pic_center)
+          ![](static/documentation/images/image124.jpg)
 
-    **Z-Order**. 定义绘制多边形的顺序。选中启用分层显示复选框。
+        If necessary you can add an attribute and set its properties by clicking ``Add an attribute``:
 
-    **Use zip chunks**. 强制使用压缩块作为压缩数据。实际只用于视频。
+          ![](static/documentation/images/image125.jpg)
 
-    **Image Quality**. 使用此选项可指定上载图像的质量。
-    该选项有助于更快地加载高分辨率数据集。
-	使用从``1``（完全压缩的图像）到``95``（几乎不是压缩图像）的值。
+        The following actions are available here:
+        1. Set the attribute’s name.
+        1. Choose the way to display the attribute:
+           - Select — drop down list of value
+           - Radio — is used when it is necessary to choose just one option out of few suggested.
+           - Checkbox — is used when it is necessary to choose any number of options out of suggested.
+           - Text — is used when an attribute is entered as a text.
+           - Number — is used when an attribute is entered as a number.
+        1. Set values for the attribute. The values could be separated by pressing ``Enter``.
+        The entered value is displayed as a separate element which could be deleted
+        by pressing ``Backspace`` or clicking the close button (x).
+        If the specified way of displaying the attribute is Text or Number,
+        the entered value will be displayed as text by default (e.g. you can specify the text format).
+        1. Checkbox ``Mutable`` determines if an attribute would be changed frame to frame.
+        1. You can delete the attribute by clicking the close button (x).
 
-    **Overlap Size**. 使用此选项可生成重叠段。
-    该选项使轨迹从一个线段连续到另一个线段。
-    将其用于插值模式。使用该参数有几个选项：
-    - 用于插值任务（视频序列）。
-    如果在两个相邻的线段上标注边界框，它们将合并为一个边界框。
-    如果重叠等于零或标注在转储的标注文件中的相邻段上较差，则将有多个轨迹，每个段对应一个对象。
-    - 标注（独立图像）。
-    如果一个对象存在于重叠的线段上，重叠大于零，并且相邻线段上的标注足够好，则该对象将自动合并为一个对象。
-    如果重叠等于零或标注在转储标注文件内的相邻段上较差，则同一对象将有多个边界框。
-    因此，可以在第一个线段上注释对象。
-    在第二个线段上标注同一个对象，如果您做得对，标注中就有一个轨迹。
-    如果不同段（重叠框架上）上的标注非常不同，则同一对象将有两个形状。
- 	此功能仅适用于边界框。
-    多边形、多段线、点不支持重叠段上的自动合并，即使重叠参数不为零，相邻线段上相应形状之间的匹配也非常完美。
+        Click the ``Continue`` button to add more labels.
+        If you need to cancel adding a label - press the ``Cancel`` button.
+        After all the necessary labels are added click the ``Done`` button.
+        After clicking ``Done`` the added labels would be displayed as separate elements of different colour.
+        You can edit or delete labels by clicking ``Update attributes`` or ``Delete label``.
 
-    **Segment size**. 使用此选项可以将一个巨大的数据集分成几个较小的段。
-    例如，一个作业不能由多个贴标器标注（不支持）。
-    因此，使用"segment size"可以为同一注释任务创建多个作业。
-    它将有助于您并行数据标注过程。
+    -   The ``Raw`` is a way of working with labels for an advanced user.
+    Raw presents label data in _json_ format with an option of editing and copying labels as a text.
+    The ``Done`` button applies the changes and the ``Reset`` button cancels the changes.
+          ![](static/documentation/images/image126.jpg)
 
-    **Start frame**. 任务中的视频开始的帧。
+    In ``Raw`` and ``Constructor`` mode, you can press the ``Copy`` button to copy the list of labels.
 
-    **Stop frame**. 任务中的视频结束的帧。
+    **Select files**. Press tab ``My computer`` to choose some files for annotation from your PC.
+    If you select tab ``Connected file share`` you can choose files for annotation from your network.
+    If you select `` Remote source`` , you'll see a field where you can enter a list of URLs (one URL per line).
 
-    **Frame Step**. 使用此选项可过滤视频帧。
-    例如，输入“25”可在视频中每隔二十五帧或每二十五幅图像保留一次。
+      ![](static/documentation/images/image127.jpg)
 
-    **Chunk size**. 定义从客户端发送到服务器时要打包在块中的帧数。
-    如果为空，服务器将自动定义。
+    #### Advanced configuration
 
-    推荐值：
+      ![](static/documentation/images/image128.jpg)
+
+    **Z-Order**. Defines the order on drawn polygons. Check the box for enable layered displaying.
+
+    **Use zip chunks**. Force to use zip chunks as compressed data. Actual for videos only.
+
+    **Image Quality**. Use this option to specify quality of uploaded images.
+    The option helps to load high resolution datasets faster.
+    Use the value from ``1`` (completely compressed images) to ``95`` (almost not compressed images).
+
+    **Overlap Size**. Use this option to make overlapped segments.
+    The option makes tracks continuous from one segment into another.
+    Use it for interpolation mode. There are several options for using the parameter:
+    - For an interpolation task (video sequence).
+    If you annotate a bounding box on two adjacent segments they will be merged into one bounding box.
+    If overlap equals to zero or annotation is poor on adjacent segments inside a dumped annotation file,
+    you will have several tracks, one for each segment, which corresponds to the object.
+    - For an annotation task (independent images).
+    If an object exists on overlapped segments, the overlap is greater than zero
+    and the annotation is good enough on adjacent segments, it will be automatically merged into one object.
+    If overlap equals to zero or annotation is poor on adjacent segments inside a dumped annotation file,
+    you will have several bounding boxes for the same object.
+    Thus, you annotate an object on the first segment.
+    You annotate the same object on second segment, and if you do it right, you
+    will have one track inside the annotations.
+    If annotations on different segments (on overlapped frames)
+    are very different, you will have two shapes for the same object.
+    This functionality works only for bounding boxes.
+    Polygons, polylines, points don't support automatic merge on overlapped segments
+    even the overlap parameter isn't zero and match between corresponding shapes on adjacent segments is perfect.
+
+    **Segment size**. Use this option to divide a huge dataset into a few smaller segments.
+    For example, one job cannot be annotated by several labelers (it isn't supported).
+    Thus using "segment size" you can create several jobs for the same annotation task.
+    It will help you to parallel data annotation process.
+
+    **Start frame**. Frame from which video in task begins.
+
+    **Stop frame**. Frame on which video in task ends.
+
+    **Frame Step**. Use this option to filter video frames.
+    For example, enter ``25`` to leave every twenty fifth frame in the video or every twenty fifth image.
+
+    **Chunk size**. Defines a number of frames to be packed in a chunk when send from client to server.
+    Server defines automatically if empty.
+
+    Recommended values:
     - 1080p or less: 36
     - 2k or less: 8 - 16
     - 4k or less: 4 - 8
     - More: 1 - 4
 
-    **Dataset Repository**.  存储库的URL链接可选地指定存储库的路径 (``default: annotation / <dump_file_name> .zip``).
-    支持注解的.zip和.xml文件扩展名。
+    **Dataset Repository**.  URL link of the repository optionally specifies the path to the repository for storage
+    (``default: annotation / <dump_file_name> .zip``).
+    The .zip and .xml file extension of annotation are supported.
     Field format: ``URL [PATH]`` example: ``https://github.com/project/repos.git  [1/2/3/4/annotation.xml]``
 
-    支持的URL格式：
+    Supported URL formats :
     - ``https://github.com/project/repos[.git]``
     - ``github.com/project/repos[.git]``
     - ``git@github.com:project/repos[.git]``
 
-    如果标注与存储库不同步，则创建后任务将以红色突出显示。
+    The task will be highlighted in red after creation if annotation isn't synchronized with the repository.
 
-    **Use LFS**. 如果标注文件很大，可以使用[LFS](https://git-lfs.github.com/)创建一个存储库支持。
+    **Use LFS**. If the annotation file is large, you can create a repository with
+    [LFS](https://git-lfs.github.com/) support.
 
-    **Issue tracker**. 如果需要，请指定问题跟踪程序的完整URL。
+    **Issue tracker**. Specify full issue tracker's URL if it's necessary.
 
-    按``Submit``按钮，它将被添加到注释任务列表中。
-    然后，创建的任务将显示在仪表板上：
-![在这里插入图片描述](https://img-blog.csdnimg.cn/20200801131624551.jpg#pic_center)
-1.  仪表板包含元素，每个元素都与单独的任务相关。它们按创建顺序排序。
-    每个元素包含：任务名称、预览、进度条、按钮“打开”和菜单“操作”。
-    每个按钮负责菜单内“操作”特定功能：
-    - ``Dump Annotation``和``Export as a dataset``—下载特定格式的批注或批注和图像。以下格式可用：
+    Push ``Submit`` button and it will be added into the list of annotation tasks.
+    Then, the created task will be displayed on a dashboard:
+
+    ![](static/documentation/images/image006_detrac.jpg)
+
+1.  The Dashboard contains elements and each of them relates to a separate task. They are sorted in creation order.
+    Each element contains: task name, preview, progress bar, button ``Open``, and menu ``Actions``.
+    Each button is responsible for a in menu ``Actions`` specific function:
+    - ``Dump Annotation`` and ``Export as a dataset`` — download annotations or
+        annotations and images in a specific format. The following formats are available:
       - [CVAT for video](/cvat/apps/documentation/xml_format.md#interpolation)
-      如果任务具有插值模式，则突出显示。
+      is highlighted if a task has the interpolation mode.
       - [CVAT for images](/cvat/apps/documentation/xml_format.md#annotation)
-      如果任务具有批注模式，则突出显示。
+      is highlighted if a task has the annotation mode.
       - [PASCAL VOC](http://host.robots.ox.ac.uk/pascal/VOC/)
       - [(VOC) Segmentation mask](http://host.robots.ox.ac.uk/pascal/VOC/) —
-          archive包含png格式的每个帧的类和实例掩码，以及一个文本文件，其中包含每个颜色的值。
+          archive contains class and instance masks for each frame in the png
+          format and a text file with the value of each color.
       - [YOLO](https://pjreddie.com/darknet/yolo/)
       - [COCO](http://cocodataset.org/#format-data)
       - [TFRecord](https://www.tensorflow.org/tutorials/load_data/tf_records)
       - [MOT](https://motchallenge.net/)
       - [LabelMe 3.0](http://labelme.csail.mit.edu/Release3.0/)
       - [Datumaro](https://github.com/opencv/cvat/blob/develop/datumaro/)
-    - ``Upload annotation``的格式与``Dump annotation``中的格式相同。
-      - [CVAT](/cvat/apps/documentation/xml_format.md) 同时接受视频和图像子格式。
-    - ``Automatic Annotation``—使用OpenVINO toolkit进行自动注释。
-      存在性取决于如何构建CVAT实例。
-    - ``Open bug tracker`` — 打开指向问题跟踪程序的链接。
-    - ``Delete`` — 删除任务。
+    - ``Upload annotation`` is available in the same formats as in ``Dump annotation``.
+      - [CVAT](/cvat/apps/documentation/xml_format.md) accepts both video and image sub-formats.
+    - ``Automatic Annotation`` — automatic annotation with  OpenVINO toolkit.
+      Presence depends on how you build CVAT instance.
+    - ``Open bug tracker`` — opens a link to Issue tracker.
+    - ``Delete`` — delete task.
 
-    按``Open`` 按钮转到任务详细信息。
+    Push ``Open`` button to go to task details.
 
-1.  任务详细信息是一个任务页面，其中包含预览、进度条、任务的详细信息（在创建任务时指定）和“作业”部分。
+1.  Task details is a task page which contains a preview, a progress bar
+    and the details of the task (specified when the task was created) and the jobs section.
 
-    [外链图片转存失败,源站可能有防盗链机制,建议将图片保存下来直接上传(img-t0hODpHu-1596171611932)(static/documentation/images/image131_detrac.jpg)]
+    ![](static/documentation/images/image131_detrac.jpg)
 
-    - 此页上提供了以下操作：
-      1. 更改任务的标题
-      2. 打开“Actions”菜单
-      3. 更改问题跟踪程序或打开问题跟踪程序（如果已指定）
-      4. 更换标签。
-      可以在原始模式或构造函数模式下为现有标签添加新标签或添加属性。
-      单击``Copy``可将标签复制到剪贴板。
-      1. Assigned to — 用于将任务分配给某人。开始输入被派遣人的姓名和/或从下拉列表中选择合适的人。
-    - ``Jobs`` — 是特定任务的所有作业的列表。在这里您可以找到下一个数据：
-      - 带有超链接的作业名称。
-      - Frames — 帧间隔。
-      - 任务的状态。 状态由用户在任务内的菜单中指定。
-      有三种类型的状态：标注、质检或已完成。
-      作业的状态是根据任务的进度条变化的。
-      - Started on — 此任务的开始日期。
-      - Duration — 是任务的时间量。
-      - Assignee是正在处理任务的用户。
-      你可以开始输入被派遣人的姓名和/或从下拉列表中选择合适的人。
-      - ``Copy``. 单击“复制”可将作业列表复制到剪贴板。
-      任务列表包含指向任务的直接链接。
+    - The next actions are available on this page:
+      1. Change the task’s title.
+      1. Open ``Actions`` menu.
+      1. Change issue tracker or open issue tracker if it is specified.
+      1. Change labels.
+      You can add new labels or add attributes for the existing labels in the Raw mode or the        Constructor mode.
+      By clicking ``Copy`` you will copy the labels to the clipboard.
+      1. Assigned to — is used to assign a task to a person. Start typing an assignee’s name and/or
+      choose the right person out of the dropdown list.
+    - ``Jobs`` — is a list of all jobs for a particular task. Here you can find the next data:
+      - Jobs name with a hyperlink to it.
+      - Frames — the frame interval.
+      - A status of the job. The status is specified by the user in the menu inside the job.
+      There are three types of status: annotation, validation or completed.
+      The status of the job is changes the progress bar of the task.
+      - Started on — start date of this job.
+      - Duration — is the amount of time the job is being worked.
+      - Assignee is the user who is working on the job.
+      You can start typing an assignee’s name and/or choose the right person out of the dropdown list.
+      - ``Copy``. By clicking Copy you will copy the job list to the clipboard.
+      The job list contains direct links to jobs.
 
-1.  按照“作业”部分中的链接开始标注过程。
-	在某些情况下，可以有多个链接。它取决于任务的大小以及“重叠大小”和“段大小”参数。为了提高用户体验，只会加载几个帧的第一个块，并且您可以对第一个图像进行注释。其他帧将在后台加载。
+1.  Follow a link inside ``Jobs`` section to start annotation process.
+    In some cases, you can have several links. It depends on size of your
+    task and ``Overlap Size`` and ``Segment Size`` parameters. To improve
+    UX, only the first chunk of several frames will be loaded and you will be able
+    to annotate first images. Other frames will be loaded in background.
 
-![在这里插入图片描述](https://img-blog.csdnimg.cn/20200802102158327.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzMzNjI4MQ==,size_16,color_FFFFFF,t_70#pic_center)
+    ![](static/documentation/images/image007_detrac.jpg)
 
-### 模型
+### Models
 
-在“模型”页面上，您可以管理为自动标注而上载的深度学习（DL）模型。
-使用该功能，您可以上载、更新或删除特定的DL模型。
-要打开模型管理器，请单击导航栏上的“模型”按钮。
-“模型”页面包含有关所有现有模型的信息。
-模型列表分为两部分：
-- Primary — 包含默认的CVAT模型。每个模型都是一个单独的元素。
-它包含模型的名称、模型所基于的框架和“支持的标签”（所有支持标签的下拉列表）。
-- Uploaded by a user — 包含用户上载的模型。
-用户模型列表中有其他列，其中包含以下信息：
-上传模型的用户名以及上传日期。
-在这里，您可以在“操作”菜单中删除模型。
-![在这里插入图片描述](https://img-blog.csdnimg.cn/20200802102938896.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzMzNjI4MQ==,size_16,color_FFFFFF,t_70#pic_center)
+On the ``Models`` page allows you to manage your deep learning (DL) models uploaded for auto annotation.
+Using the functionality you can upload, update or delete a specific DL model.
+To open the model manager, click the ``Models`` button on the navigation bar.
+The ``Models`` page contains information about all the existing models. The list of models is divided into two sections:
+- Primary — contains default CVAT models. Each model is a separate element.
+It contains the model’s name, a framework on which the model was based on and
+``Supported labels`` (a dropdown list of all supported labels).
+- Uploaded by a user — Contains models uploaded by a user.
+The list of user models has additional columns with the following information:
+name of the user who uploaded the model and the upload date.
+Here you can delete models in the ``Actions`` menu.
 
+![](static/documentation/images/image099.jpg)
 
-要添加模型，请单击“创建新模型”。
-输入模型名称，然后使用“选择文件”按钮选择模型文件。
-要使用自定义模型标注任务，您需要准备4个文件：
-- ``Model config`` (*.xml) - 具有网络配置的文本文件。
-- ``Model weights`` (*.bin) - 经过训练的权重的二进制文件。
-- ``Label map`` (*.json) - 一个简单的json文件，带有label_map的字典，类似于一个带有标签号字符串值的对象。
-- ``Interpretation script`` (*.py) - 用于将网络输出层转换为可由CVAT处理的预定义结构的文件。
+In order to add your model, click `` Create new model``.
+Enter model name, and select model file using "Select files" button.
+To annotate a task with a custom model you need to prepare 4 files:
+- ``Model config`` (*.xml) - a text file with network configuration.
+- ``Model weights`` (*.bin) - a binary file with trained weights.
+- ``Label map`` (*.json) - a simple json file with label_map dictionary like an object with
+string values for label numbers.
+- ``Interpretation script`` (*.py) - a file used to convert net output layer to a predefined structure
+which can be processed by CVAT.
 
-了解有关创建模型文件的详细信息可以阅读：[自动标注]()
-如果希望每个人都能使用模型，请选中“全局加载”。
-单击“提交”按钮提交模型。
-![在这里插入图片描述](https://img-blog.csdnimg.cn/20200802103919704.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzMzNjI4MQ==,size_16,color_FFFFFF,t_70#pic_center)
+You can learn more about creating model files by pressing [(?)](/cvat/apps/auto_annotation).
+Check the box `` Load globally`` if you want everyone to be able to use the model.
+Click the ``Submit`` button to submit  a model.
 
-上传完成后，您的模型可以在“由用户上载”部分找到。
-使用“Auto annotation”按钮使用您的一个DL模型对任务进行预注释。
+![](static/documentation/images/image104.jpg)
 
-### 搜索
+After the upload is complete your model can be found in the ``Uploaded by a user`` section.
+Use "Auto annotation" button to pre annotate a task using one of your DL models.
+[Read more](/cvat/apps/auto_annotation)
 
-对于搜索有几个选项。
+### Search
 
-- 在所有字段中搜索（所有者、代理人、任务名称、任务状态、任务模式）。
-在搜索字段中输入搜索字符串执行。
-- 如何执行搜索特定字段：
-  - ``owner: admin`` - 由名称中有子字符串“admin”的用户创建的所有任务
-  - ``assignee: employee``  - 分配给名称中有子字符串“employee”的用户的所有任务
-  - ``name: mighty`` - 所有名称中带有子字符串“mighty”的任务
-  - ``mode: annotation`` or ``mode: interpolation`` - 所有带有图像或视频的任务。
-  - ``status: annotation`` or ``status: validation`` or ``status: completed``  - 按状态搜索
-  - ``id: 5`` - id=5的任务。
-- Multiple filters. 可以使用关键字``AND``组合筛选器（标识符除外）:
+There are several options how to use the search.
+
+- Search within all fields (owner, assignee, task name, task status, task mode).
+To execute enter a search string in search field.
+- Search for specific fields. How to perform:
+  - ``owner: admin`` - all tasks created by the user who has the substring "admin" in his name
+  - ``assignee: employee``  - all tasks which are assigned to a user who has the substring "employee" in his name
+  - ``name: mighty`` - all tasks with the substring "mighty" in their names
+  - ``mode: annotation`` or ``mode: interpolation`` - all tasks with images or videos.
+  - ``status: annotation`` or ``status: validation`` or ``status: completed``  - search by status
+  - ``id: 5`` - task with id = 5.
+- Multiple filters. Filters can be combined (except for the identifier) ​​using the keyword `` AND``:
   - ``mode: interpolation AND owner: admin``
   - ``mode: annotation and status: annotation``
 
-搜索不区分大小写。
-![在这里插入图片描述](https://img-blog.csdnimg.cn/20200802104842887.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzMzNjI4MQ==,size_16,color_FFFFFF,t_70)
+The search is case insensitive.
 
+![](static/documentation/images/image100_detrac.jpg)
 
-## 标注工具的界面
+## Interface of the annotation tool
 
-该工具包括：
-- ``Header`` -  用于导航CVAT部分和帐户设置的固定标题;
-- ``Top panel`` — 包含导航按钮、主要功能和菜单访问；
-- ``Workspace`` — 显示图像的空间；
-- ``Controls sidebar`` — 包含用于导航图像、缩放、创建形状和编辑轨迹的工具（合并、拆分、分组）
-- ``Objects sidebar`` — 包含标签过滤器，两个列表：
-  对象（帧上的）和标签（帧上对象的）和外观设置。
+The tool consists of:
+- ``Header`` -  pinned header used to navigate CVAT sections and account settings;
+- ``Top panel`` — contains navigation buttons, main functions and menu access;
+- ``Workspace`` — space where images are shown;
+- ``Controls sidebar`` — contains tools for navigating the image, zoom,
+  creating shapes and editing tracks (merge, split, group)
+- ``Objects sidebar`` — contains label filter, two lists:
+  objects (on the frame) and labels (of objects on the frame) and appearance settings.
 
-![在这里插入图片描述](https://img-blog.csdnimg.cn/20200802105159970.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzMzNjI4MQ==,size_16,color_FFFFFF,t_70)
+![](static/documentation/images/image034_detrac.jpg)
 
-### 基本导航
+### Basic navigation
 
-1.  使用下面的箭头移动到下一帧/上一帧。
-    使用滚动条滑块在帧之间滚动。
-    几乎每个按钮都有一个快捷方式。
+1.  Use arrows below to move to the next/previous frame.
+    Use the scroll bar slider to scroll through frames.
+    Almost every button has a shortcut.
     To get a hint about a shortcut, just move your mouse pointer over an UI element.
-![在这里插入图片描述](https://img-blog.csdnimg.cn/20200802105637670.jpg#pic_center)
 
+    ![](static/documentation/images/image008.jpg)
 
-1.  要导航图像，请使用控件侧栏上的按钮。
-    另一种可以移动/移动图像的方法是在没有注释对象的区域内按住鼠标左键。
-    如果按下“鼠标滚轮”，则忽略所有带注释的对象。否则，将移动高亮显示的边界框而不是图像本身。
-![在这里插入图片描述](https://img-blog.csdnimg.cn/20200802105808791.jpg#pic_center)
+1.  To navigate the image, use the button on the controls sidebar.
+    Another way an image can be moved/shifted is by holding the left mouse button inside
+    an area without annotated objects.
+    If the ``Mouse Wheel`` is pressed, then all annotated objects are ignored. Otherwise the
+    a highlighted bounding box will be moved instead of the image itself.
 
-1.  您可以使用边栏控件上的按钮缩放感兴趣的区域。
-    使用“调整图像大小”按钮在工作区中调整图像大小。
-    您也可以使用鼠标滚轮缩放图像（图像将相对于当前光标位置进行缩放）。
-![在这里插入图片描述](https://img-blog.csdnimg.cn/20200807095857292.jpg)
+    ![](static/documentation/images/image136.jpg)
 
-### 形状类型（基础）
+1.  You can use the button on the sidebar controls to zoom on a region of interest.
+    Use the button ``Fit the image`` to fit the image in the workspace.
+    You can also use the mouse wheel to scale the image
+    (the image will be zoomed relatively to your current cursor position).
 
-有五种形状可以为图像添加标注：
+    ![](static/documentation/images/image137.jpg)
+
+### Types of shapes (basics)
+
+There are five shapes which you can annotate your images with:
 - ``Rectangle`` or ``Bounding box``
 - ``Polygon``
 - ``Polyline``
@@ -343,154 +385,170 @@ CVAT有许多强大的功能:
 - ``Cuboid``
 - ``Tag``
 
-它们看起来都是这样的：
+And there is how they all look like:
 
-![在这里插入图片描述](https://img-blog.csdnimg.cn/20200802105858292.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzMzNjI4MQ==,size_16,color_FFFFFF,t_70#pic_center)
+![](static/documentation/images/image038_detrac.jpg "Rectangle") ![](static/documentation/images/image033_detrac.jpg "Polygon")
 
-![在这里插入图片描述](https://img-blog.csdnimg.cn/20200802105938229.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzMzNjI4MQ==,size_16,color_FFFFFF,t_70#pic_center)
-![在这里插入图片描述](https://img-blog.csdnimg.cn/20200802110024859.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzMzNjI4MQ==,size_16,color_FFFFFF,t_70#pic_center)
+![](static/documentation/images/image009_mapillary_vistas.jpg "Polyline") ![](static/documentation/images/image010_affectnet.jpg "Points")
 
-``Tag`` - 工作区中没有形状，但显示在对象侧栏中。
+![](static/documentation/images/image015_detrac.jpg "Cuboid") ![](static/documentation/images/image135.jpg "Tag")
 
-### 形状模式（基础）
-使用示例：
-- 为一组图像创建新标注。
-- 为现有标注添加/修改/删除对象。
+``Tag`` - has no shape in the workspace, but is displayed in objects sidebar.
 
-1.  您需要在控件侧栏上选择“矩形”：
-![在这里插入图片描述](https://img-blog.csdnimg.cn/20200807102035631.jpg)
+### Shape mode (basics)
+Usage examples:
+- Create new annotations for a set of images.
+- Add/modify/delete objects for existing annotations.
 
+1.  You need to select ``Rectangle`` on the controls sidebar:
 
-    开始之前，请选择正确的“标签”（创建任务时应指定）和“绘图方法”（两点或四点）：
-![在这里插入图片描述](https://img-blog.csdnimg.cn/2020080710213362.jpg)
+    ![](static/documentation/images/image082.jpg)
 
-1.  在“形状模式”中创建新标注：
+    Before you start, select the correct `` Label`` (should be specified by you when creating the task)
+    and `` Drawing Method`` (by 2 points or by 4 points):
 
-    -   单击“形状”创建一个单独的“矩形”。
-![在这里插入图片描述](https://img-blog.csdnimg.cn/20200807102223203.jpg)
+    ![](static/documentation/images/image080.jpg)
 
+1.  Creating a new annotation in ``Shape mode``:
 
-    -   选择相反的点。你的第一个矩形准备好了！
-![在这里插入图片描述](https://img-blog.csdnimg.cn/20200807102455213.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzMzNjI4MQ==,size_16,color_FFFFFF,t_70)
+    -   Create a separate ``Rectangle`` by clicking on ``Shape``.
 
-    -   了解如何使用“按4点”绘制方法创建矩形的步骤, ([read here](#annotation-by-rectangle-4-points)).
+        ![](static/documentation/images/image081.jpg)
 
-    -   使用鼠标可以调整矩形的边界和位置。
+    -   Choose the opposite points. Your first rectangle is ready!
+
+        ![](static/documentation/images/image011_detrac.jpg)
+
+    -   To learn about creating a rectangle using the by 4 point drawing method, ([read here](#annotation-by-rectangle-4-points)).
+
+    -   It is possible to adjust boundaries and location of the rectangle using a mouse.
         Rectangle's size is shown in the top right corner , you can check it by clicking on any point of the shape.
         You can also undo your actions using ``Ctrl+Z`` and redo them with ``Shift+Ctrl+Z`` or ``Ctrl+Y``.
 
 1.  You can see the ``Object card`` in the objects sidebar or open it by right-clicking on the object.
     You can change the attributes in the details section.
     You can perform basic operations or delete an object by clicking on the action menu button.
-![在这里插入图片描述](https://img-blog.csdnimg.cn/20200807102736651.jpg)
 
+    ![](static/documentation/images/image012.jpg)
 
 1.  The following figure is an example of a fully annotated frame with separate shapes.
 
-    [外链图片转存失败,源站可能有防盗链机制,建议将图片保存下来直接上传(img-oRxUV641-1596171611968)(static/documentation/images/image013_detrac.jpg)]
+    ![](static/documentation/images/image013_detrac.jpg)
 
     Read more in the section [shape mode (advanced)](#shape-mode-advanced).
 
-### 轨迹模式（基础）
-使用示例：
-- 为帧序列创建新标注。
-- 为现有标注添加/修改/删除对象。
-- 编辑轨迹，将几个矩形合并为一个轨迹。
+### Track mode (basics)
+Usage examples:
+- Create new annotations for a sequence of frames.
+- Add/modify/delete objects for existing annotations.
+- Edit tracks, merge several rectangles into one track.
 
-1.  与“形状模式”一样，您需要在侧栏上选择一个“矩形”，在出现的表单中，选择所需的“标签”和“绘图方法”。
-![在这里插入图片描述](https://img-blog.csdnimg.cn/20200807104327351.jpg)
+1.  Like in the ``Shape mode``, you need to select a ``Rectangle`` on the sidebar,
+    in the appearing form, select the desired ``Label`` and the ``Drawing method``.
 
-2.  为对象创建轨迹（以选定的汽车为例）：
-    - 通过单击“Track”在“Track mode”下创建一个“Rectangle”。
-![在这里插入图片描述](https://img-blog.csdnimg.cn/20200807104409798.jpg)
+    ![](static/documentation/images/image083.jpg)
+
+1.  Creating a track for an object (look at the selected car as an example):
+    - Create a ``Rectangle`` in ``Track mode`` by clicking on ``Track``.
+
+      ![](static/documentation/images/image014.jpg)
 
     - In ``Track mode`` the rectangle will be automatically interpolated on the next frames.
     - The cyclist starts moving on frame #2270. Let's mark the frame as a key frame.
       You can press ``K`` for that or click the ``star`` button (see the screenshot below).
 
-        [外链图片转存失败,源站可能有防盗链机制,建议将图片保存下来直接上传(img-8XFejoDU-1596171611971)(static/documentation/images/image016.jpg)]
+        ![](static/documentation/images/image016.jpg)
 
     - If the object starts to change its position, you need to modify the rectangle where it happens.
       It isn't necessary to change the rectangle on each frame, simply update several keyframes
       and the frames between them will be interpolated automatically.
     - Let's jump 30 frames forward and adjust the boundaries of the object. See an example below:
 
-        [外链图片转存失败,源站可能有防盗链机制,建议将图片保存下来直接上传(img-xiedw6RV-1596171611972)(static/documentation/images/image017_detrac.jpg)]
+        ![](static/documentation/images/image017_detrac.jpg)
 
     -   After that the rectangle of the object will be changed automatically on frames 2270 to 2300:
 
-        [外链图片转存失败,源站可能有防盗链机制,建议将图片保存下来直接上传(img-bwvIrfna-1596171611973)(static/documentation/images/gif019_detrac.gif)]
+        ![](static/documentation/images/gif019_detrac.gif)
 
-3.  When the annotated object disappears or becomes too small, you need to
+1.  When the annotated object disappears or becomes too small, you need to
     finish the track. You have to choose ``Outside Property``, shortcut ``O``.
 
-    [外链图片转存失败,源站可能有防盗链机制,建议将图片保存下来直接上传(img-9FX70dWo-1596171611975)(static/documentation/images/image019.jpg)]
+    ![](static/documentation/images/image019.jpg)
 
-4.  If the object isn't visible on a couple of frames and then appears again,
+1.  If the object isn't visible on a couple of frames and then appears again,
     you can use the ``Merge`` feature to merge several individual tracks
     into one.
 
-    [外链图片转存失败,源站可能有防盗链机制,建议将图片保存下来直接上传(img-nxg8MdWG-1596171611977)(static/documentation/images/image020.jpg)]
+    ![](static/documentation/images/image020.jpg)
 
     -   Create tracks for moments when the cyclist is visible:
 
-        [外链图片转存失败,源站可能有防盗链机制,建议将图片保存下来直接上传(img-a9DNXklL-1596171611979)(static/documentation/images/gif001_detrac.gif)]
+        ![](static/documentation/images/gif001_detrac.gif)
 
     -   Click ``Merge`` button or press key ``M`` and click on any rectangle of the first track
         and on any rectangle of the second track and so on:
 
-        [外链图片转存失败,源站可能有防盗链机制,建议将图片保存下来直接上传(img-ISGPgo4d-1596171611980)(static/documentation/images/image162_detrac.jpg)]
+        ![](static/documentation/images/image162_detrac.jpg)
 
     -   Click ``Merge`` button or press ``M`` to apply changes.
 
-        [外链图片转存失败,源站可能有防盗链机制,建议将图片保存下来直接上传(img-wqXg6XXv-1596171611982)(static/documentation/images/image020.jpg)]
+        ![](static/documentation/images/image020.jpg)
 
     -   The final annotated sequence of frames in ``Interpolation`` mode can
         look like the clip below:
 
-        [外链图片转存失败,源站可能有防盗链机制,建议将图片保存下来直接上传(img-lJEPfF0l-1596171611983)(static/documentation/images/gif003_detrac.gif)]
+        ![](static/documentation/images/gif003_detrac.gif)
 
         Read more in the section [track mode (advanced)](#track-mode-advanced).
 
-### 属性标注模式（基础）
+### Attribute annotation mode (basics)
 
--   在此模式下，可以使用键盘在对象和帧之间快速导航来编辑属性。
-    打开顶部面板中的下拉列表，然后选择“属性标注模式”。
-![在这里插入图片描述](https://img-blog.csdnimg.cn/20200807104519185.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzMzNjI4MQ==,size_16,color_FFFFFF,t_70)
+-   In this mode you can edit attributes with fast navigation between objects and frames using a keyboard.
+    Open the drop-down list in the top panel and select Attribute annotation Mode.
 
--   在此模式下，对象面板更改为特殊面板：
-![在这里插入图片描述](https://img-blog.csdnimg.cn/20200807104613676.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzMzNjI4MQ==,size_16,color_FFFFFF,t_70)
+    ![](static/documentation/images/image023_affectnet.jpg)
 
--   The active attribute will be red. In this case it is ``gender`` . Look at the bottom side panel to see all possible shortcuts for changing the attribute. Press key ``2`` on your keyboard to assign a value (female) for the attribute or select from the drop-down list.
-![在这里插入图片描述](https://img-blog.csdnimg.cn/20200807104821549.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzMzNjI4MQ==,size_16,color_FFFFFF,t_70)
+-   In this mode objects panel change to a special panel :
+
+    ![](static/documentation/images/image026.jpg)
+
+-   The active attribute will be red. In this case it is ``gender`` . Look at the bottom side panel to see all possible
+    shortcuts for changing the attribute. Press key ``2`` on your keyboard to assign a value (female) for the attribute
+    or select from the drop-down list.
+
+    ![](static/documentation/images/image024_affectnet.jpg)
 
 -   Press ``Up Arrow``/``Down Arrow`` on your keyboard or click the buttons in the UI to go to the next/previous
     attribute. In this case, after pressing ``Down Arrow`` you will be able to edit the ``Age`` attribute.
-![在这里插入图片描述](https://img-blog.csdnimg.cn/20200807104844880.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzMzNjI4MQ==,size_16,color_FFFFFF,t_70)
+
+    ![](static/documentation/images/image025_affectnet.jpg)
 
 -   Use ``Right Arrow``/``Left Arrow`` keys to move to the previous/next image with annotation.
 
 To see all the hot keys available in the attribute annotation mode, press ``F2``.
 Read more in the section [attribute annotation mode (advanced)](#attribute-annotation-mode-advanced).
 
-### 下载标注
+### Downloading annotations
 
-1.  要下载最新的标注，必须先保存所有更改。点击“保存”按钮，或者“Ctrl+S”快捷键可以快速保存标注。
-1.  然后，点击“菜单”按钮。
-1.  按“转储标注”按钮。
+1.  To download the latest annotations, you have to save all changes first.
+    click the ``Save`` button. There is a ``Ctrl+S`` shortcut to save annotations quickly.
+1.  After that, сlick the ``Menu`` button.
+1.  Press the ``Dump Annotation`` button.
 
-![在这里插入图片描述](https://img-blog.csdnimg.cn/20200802111422527.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzMzNjI4MQ==,size_16,color_FFFFFF,t_70)
+    ![](static/documentation/images/image028.jpg)
 
-
-1.  选择转储标注文件的格式.：
+1.  Choose format dump annotation file. Dump annotation are available in several formats:
     - [CVAT for video](/cvat/apps/documentation/xml_format.md#interpolation)
-      如果任务具有插值模式，则突出显示。
+      is highlighted if a task has the interpolation mode.
     - [CVAT for images](/cvat/apps/documentation/xml_format.md#annotation)
-      如果任务具有标注模式，则突出显示。
-![在这里插入图片描述](https://img-blog.csdnimg.cn/20200802111650976.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzMzNjI4MQ==,size_16,color_FFFFFF,t_70)
+      is highlighted if a task has the annotation mode.
+
+    ![](static/documentation/images/image029.jpg "Example XML format")
 
     - [PASCAL VOC](http://host.robots.ox.ac.uk/pascal/VOC/)
-    - [(VOC) Segmentation mask](http://host.robots.ox.ac.uk/pascal/VOC/) — archive包含png格式的每个帧的类和实例掩码，以及一个文本文件，其中包含每个颜色的值。
+    - [(VOC) Segmentation mask](http://host.robots.ox.ac.uk/pascal/VOC/) —
+      archive contains class and instance masks for each frame in the png
+      format and a text file with the value of each color.
     - [YOLO](https://pjreddie.com/darknet/yolo/)
     - [COCO](http://cocodataset.org/#format-data)
     - [TFRecord](https://www.tensorflow.org/tutorials/load_data/tf_records)
@@ -498,187 +556,206 @@ Read more in the section [attribute annotation mode (advanced)](#attribute-annot
     - [LabelMe 3.0](http://labelme.csail.mit.edu/Release3.0/)
     - [Datumaro](https://github.com/opencv/cvat/blob/develop/datumaro/)
 
-### 同步存储库任务
+### Task synchronization with a repository
 
-1.  在注释过程结束时，通过单击任务页上的“同步”来同步任务。注意：只有在创建任务时指定了git存储库时，此功能才有效。
-![在这里插入图片描述](https://img-blog.csdnimg.cn/20200807105053946.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzMzNjI4MQ==,size_16,color_FFFFFF,t_70)
+1.  At the end of the annotation process, a task is synchronized by clicking
+    `` Synchronize`` on the task page. Notice: this feature
+    works only if a git repository was specified when the task was created.
 
+    ![](static/documentation/images/image106.jpg)
 
-1.  同步后，按钮“Sync”以绿色突出显示。注释现在位于存储库中的临时分支中。
-![在这里插入图片描述](https://img-blog.csdnimg.cn/20200807105159288.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzMzNjI4MQ==,size_16,color_FFFFFF,t_70)
+1.  After synchronization the button ``Sync`` is highlighted in green. The
+    annotation is now in the repository in a temporary branch.
 
-1.  下一步是转到存储库并手动创建对主分支的请求。
-1.  确认PR后，当注释保存在主分支中时，任务的颜色变为蓝色。
-![在这里插入图片描述](https://img-blog.csdnimg.cn/20200807105329792.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzMzNjI4MQ==,size_16,color_FFFFFF,t_70)
+    ![](static/documentation/images/image109.jpg)
 
-### 词汇
+1.  The next step is to go to the repository and manually create a pull request to the main branch.
+1.  After confirming the PR, when the annotation is saved in the main branch, the color of the task changes to blue.
 
-**Label** 是带标注对象的一种类型（例如人、车等）
-![在这里插入图片描述](https://img-blog.csdnimg.cn/20200802111749794.jpg)
+    ![](static/documentation/images/image110.jpg)
 
+### Vocabulary
 
----
+**Label** is a type of an annotated object (e.g. person, car, vehicle, etc.)
 
-**Attribute** 是标注对象的属性（例如颜色、模型、质量等），有两种类型的属性：
-
--   **Unique**: 不可变，不能在帧之间更改（例如年龄、性别、颜色等）
-![在这里插入图片描述](https://img-blog.csdnimg.cn/20200802111841546.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzMzNjI4MQ==,size_16,color_FFFFFF,t_70)
-
--   **Temporary**: 可变，可在任何帧上更改（例如质量、姿势、截断等）
-![在这里插入图片描述](https://img-blog.csdnimg.cn/20200802111921330.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzMzNjI4MQ==,size_16,color_FFFFFF,t_70)
-
+![](static/documentation/images/image032_detrac.jpg)
 
 ---
-**Track** 是不同框架上对应于一个对象的一组形状。
-轨迹是在``轨迹模式``下创建的
-![在这里插入图片描述](https://img-blog.csdnimg.cn/20200802112014746.gif)
 
+**Attribute** is a property of an annotated object (e.g. color, model,
+quality, etc.). There are two types of attributes:
 
----
-**Annotation** 是一组形状和轨迹。有几种类型的标注：
-- _Manual_ 是个人创造的
-- _Semi-automatic_ 主要是自动创建，但用户提供一些数据（例如插值）
-- _Automatic_ 它是在没有人参与的情况下自动创建的
----
-### 工作区
+-   **Unique**: immutable and can't be changed from frame to frame (e.g. age, gender, color, etc.)
 
-这是用于绘制和编辑对象的主字段。
-此外，工作区还具有以下功能：
--   右键单击一个对象会调用“对象卡”—这是一个包含更改对象标签和属性以及操作菜单所需控件的元素。
-![在这里插入图片描述](https://img-blog.csdnimg.cn/20200802154617918.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzMzNjI4MQ==,size_16,color_FFFFFF,t_70)
+    ![](static/documentation/images/image073.jpg)
 
--   右键单击一个点将删除该点。![在这里插入图片描述](https://img-blog.csdnimg.cn/20200802154635241.jpg)
+-   **Temporary**: mutable and can be changed on any frame (e.g. quality, pose, truncated, etc.)
 
--   ``Z-axis slider`` - 允许您切换隐藏上层的批注层（如果帧上有多个z层，则启用滑块）。
-    此元素有一个用于添加新层的按钮。按下时，会添加一个新层并切换到该层。
-    可以使用`+``和`-``键在层中移动对象。
-![在这里插入图片描述](https://img-blog.csdnimg.cn/20200802154559600.jpg)
+    ![](static/documentation/images/image072.jpg)
 
 ---
-### 设置
+**Track** is a set of shapes on different frames which corresponds to one object.
+Tracks are created in ``Track mode``
 
-要打开“设置”，请打开标题中的“用户”菜单，然后选择“设置”项。
-![在这里插入图片描述](https://img-blog.csdnimg.cn/20200802112137439.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzMzNjI4MQ==,size_16,color_FFFFFF,t_70)
+![](static/documentation/images/gif003_detrac.gif)
 
+---
+**Annotation** is a set of shapes and tracks. There are several types of annotations:
+- _Manual_ which is created by a person
+- _Semi-automatic_ which is created mainly automatically, but the user provides some data (e.g. interpolation)
+- _Automatic_ which is created automatically without a person in the loop
 
-``Settings`` 有两个选项卡：
+---
+### Workspace
 
-在``Player``选项卡中，您可以：
+This is the main field in which drawing and editing objects takes place.
+In addition the workspace also has the following functions:
+-   Right-clicking on an object calls up the ``Object card`` - this is an element containing
+    the necessary controls for changing the label and attributes of the object, as well as the action menu.
+
+    ![](static/documentation/images/image138_mapillary_vistas.jpg)
+
+-   Right-clicking a point deletes it.
+
+    ![](static/documentation/images/image139_mapillary_vistas.jpg)
+
+-   ``Z-axis slider`` - Allows you to switch annotation layers hiding the upper layers
+    (slider is enabled if several z layers are on a frame).
+    This element has a button for adding a new layer. When pressed, a new layer is added and switched to it.
+    You can move objects in layers using the ``+`` and ``-`` keys.
+
+    ![](static/documentation/images/image140.jpg)
+
+---
+### Settings
+
+To open the settings open the user menu in the header and select the settings item or press ``F3``.
+
+![](static/documentation/images/image067.jpg)
+
+``Settings`` have two tabs:
+
+In tab ``Player`` you can:
 -   Control step of ``C`` and ``V`` shortcuts.
--   控制``Space``/``Play``按钮的速度。
--   显示“网格”，更改网格大小，选择颜色和透明度：
+-   Control speed of ``Space``/``Play`` button.
+-   Show ``Grid``, change grid size, choose color and transparency:
 
-![在这里插入图片描述](https://img-blog.csdnimg.cn/20200802112241948.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzMzNjI4MQ==,size_16,color_FFFFFF,t_70)
+    ![](static/documentation/images/image068_mapillary_vistas.jpg)
 
-
--   以全尺寸显示每个图像或像以前一样缩小（默认情况下，插值模式启用，注释模式禁用）。
-- ``Rotate all images``  checkbox — 切换所有帧或单个帧的旋转。
--   调整``Brightness``/``Contrast``/``Saturation`` 太暴露或太暗的图像使用 ``F3`` — 颜色设置（更改显示设置而不是图像本身）。
+-   Show every image in full size or zoomed out like previous
+    (it is enabled by default for interpolation mode and disabled for annotation mode).
+- ``Rotate all images``  checkbox — switch the rotation of all frames or an individual frame.
+-   Adjust ``Brightness``/``Contrast``/``Saturation`` of too exposed or too
+    dark images using ``F3`` — color settings (changes displaying settings and not the
+    image itself).
 
 Shortcuts:
 -   ``Shift+B+=``/``Shift+B+-`` for brightness.
 -   ``Shift+C+=``/``Shift+C+-`` for contrast.
 -   ``Shift+S+=``/``Shift+S+-`` for saturation.
-![在这里插入图片描述](https://img-blog.csdnimg.cn/20200802112304449.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzMzNjI4MQ==,size_16,color_FFFFFF,t_70)
 
+    ![](static/documentation/images/image164_mapillary_vistas.jpg)
 
--   ``Reset color settings`` to 默认值。
+-   ``Reset color settings`` to default values.
 
 ---
 
-在“工作区”选项卡中，您可以：
-![在这里插入图片描述](https://img-blog.csdnimg.cn/20200802112324316.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzMzNjI4MQ==,size_16,color_FFFFFF,t_70)
+In tab ``Workspace`` you can:
 
+![](static/documentation/images/image155.jpg)
 
-- ``Enable auto save`` 复选框-默认情况下处于禁用状态。
-- ``Auto save interval (min)`` 输入框-默认为15分钟。
-- ``Show all interpolation tracks`` 复选框-在侧面板上为每个插值对象显示隐藏对象（默认情况下禁用）。
-- ``Always show object details`` - 不仅在激活对象时在画布上显示对象的文本：
-![在这里插入图片描述](https://img-blog.csdnimg.cn/2020080211234424.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzMzNjI4MQ==,size_16,color_FFFFFF,t_70)
+- ``Enable auto save`` checkbox — turned off by default.
+- ``Auto save interval (min)`` input box — 15 minutes by default.
+- ``Show all interpolation tracks`` checkbox — shows hidden objects on the
+  side panel for every interpolated object (turned off by default).
+- ``Always show object details`` - show text for an object on the canvas not only when the object is activated:
 
+   ![](static/documentation/images/image152_detrac.jpg)
 
-- ``Automatic bordering`` - 在绘图/编辑期间启用多边形和多段线的自动边界。
+- ``Automatic bordering`` - enable automatic bordering for polygons and polylines during drawing/editing.
   For more information To find out more, go to the section [annotation with polygons](#Annotation-with-polygons).
-- ``Attribute annotation mode (AAM) zoom margin`` 输入框-定义属性标注模式下形状的边距（以px为单位）。
+- ``Attribute annotation mode (AAM) zoom margin`` input box — defines margins (in px)
+  for shape in the attribute annotation mode.
 - Press `` Go back`` or ``F3`` to return to the annotation.
 
 ---
 
-### 顶部面板
-![在这里插入图片描述](https://img-blog.csdnimg.cn/20200802112406493.jpg)
+### Top Panel
 
+![](static/documentation/images/image035.jpg)
 
 ---
 
-#### 菜单按钮
+#### Menu button
 
-它是标注工具的主菜单。它可以用来下载，上传和删除标注。
-![在这里插入图片描述](https://img-blog.csdnimg.cn/2020080211244810.jpg)
+It is the main menu of the annotation tool. It can be used to download, upload and remove annotations.
 
-按钮分配：
+![](static/documentation/images/image051.jpg)
 
-- ``Dump Annotations`` — 从任务下载标注。
-- ``Upload Annotations`` — 将批注上载到任务中。
-- ``Remove Annotations`` — 从当前作业中删除标注。
-- ``Export as a dataset`` — 从任务下载数据集。有几种格式可用：
+Button assignment:
+
+- ``Dump Annotations`` — downloads annotations from a task.
+- ``Upload Annotations`` — uploads annotations into a task.
+- ``Remove Annotations`` — removes annotations from the current job.
+- ``Export as a dataset`` — download a data set from a task. Several formats are available:
   - [Datumaro](https://github.com/opencv/cvat/blob/develop/datumaro/docs/design.md)
   - [Pascal VOC 2012](http://host.robots.ox.ac.uk/pascal/VOC/)
   - [MS COCO](http://cocodataset.org/#format-data)
   - [YOLO](https://pjreddie.com/darknet/yolo/)
-- ``Open the task`` — 打开包含任务详细信息的页面。
-- ``Run ReID merge`` —  形状或轨迹的自动合并。
-  它用于在单个轨迹中组合由自动标注创建的单个对象。
-  更多信息请点击[这里](cvat/apps/reid/README.md)。
+- ``Open the task`` — opens a page with details about the task.
+- ``Run ReID merge`` —  automatic merge of shapes or tracks.
+  It is used to combine individual objects - created by automatic annotation in a single track.
+  For more information click [here](cvat/apps/reid/README.md).
 
-#### 保存工作
+#### Save Work
+Saves annotations for the current job. The button has an indication of the saving process.
 
-保存当前作业的批注。该按钮指示保存过程。
-![在这里插入图片描述](https://img-blog.csdnimg.cn/20200802112929554.jpg)
+  ![](static/documentation/images/image141.jpg)
 
-#### 撤消重做按钮
+#### Undo-redo buttons
 
-使用按钮撤消或重做操作。
-![在这里插入图片描述](https://img-blog.csdnimg.cn/20200802113019542.jpg)
+  Use buttons to undo actions or redo them.
+
+  ![](static/documentation/images/image061.jpg)
 
 ---
 
 #### Player
 
-转到第一帧/最后一帧。
+  Go to the first /the latest frames.
 
-![在这里插入图片描述](https://img-blog.csdnimg.cn/20200802113036170.jpg)
-
+  ![](static/documentation/images/image036.jpg)
 
 Go to the next/previous frame with a predefined step. Shortcuts:
 ``V`` — step backward, ``C`` — step forward. By default the step is ``10`` frames
 (change at ``Account Menu`` —> ``Settings`` —> ``Player Step``).
-![在这里插入图片描述](https://img-blog.csdnimg.cn/20200802113105899.jpg)
 
+  ![](static/documentation/images/image037.jpg)
 
 Go to the next/previous frame (the step is 1 frame). Shortcuts: ``D`` — previous, ``F`` — next.
-![在这里插入图片描述](https://img-blog.csdnimg.cn/20200802113123129.jpg)
 
+  ![](static/documentation/images/image040.jpg)
 
 Play the sequence of frames or the set of images.
 Shortcut: ``Space`` (change at ``Account Menu`` —> ``Settings`` —> ``Player Speed``).
-![在这里插入图片描述](https://img-blog.csdnimg.cn/20200802113137438.jpg)
 
+  ![](static/documentation/images/image041.jpg)
 
 Go to a specific frame. Press ``~`` to focus on the element.
-![在这里插入图片描述](https://img-blog.csdnimg.cn/20200802113152656.jpg)
 
+  ![](static/documentation/images/image060.jpg)
 
 ---
 
-#### 全屏播放器
-全屏播放模式。键盘快捷键是“F11”。
-![在这里插入图片描述](https://img-blog.csdnimg.cn/20200802113331523.jpg)
+#### Fullscreen Player
+The fullscreen player mode. The keyboard shortcut is ``F11``.
 
+  ![](static/documentation/images/image143.jpg)
 
 #### Info
 Open the job info.
 
-  [外链图片转存失败,源站可能有防盗链机制,建议将图片保存下来直接上传(img-Cw3RtBeZ-1596171612020)(static/documentation/images/image144_detrac.jpg)]
+  ![](static/documentation/images/image144_detrac.jpg)
 
 - Job status: ``annotation``, ``validation`` or ``completed`` task
 
@@ -698,60 +775,61 @@ _Annotations statistics_:
 #### UI switcher
 Switching between user interface modes.
 
-  [外链图片转存失败,源站可能有防盗链机制,建议将图片保存下来直接上传(img-yklCr3i6-1596171612022)(static/documentation/images/image145.jpg)]
+  ![](static/documentation/images/image145.jpg)
 
 ---
 
-### 控件边栏
+### Controls sidebar
 
-**Navigation block** - 包含用于移动和旋转图像的工具。
-
+**Navigation block** - contains tools for moving and rotating images.
 |Icon                                         |Description                                                           |
 |--                                           |--                                                                    |
-|![在这里插入图片描述](https://img-blog.csdnimg.cn/2020080211342813.jpg)|``Cursor`` (``Esc``)- a basic annotation pedacting tool.              |
-|[外链图片转存失败,源站可能有防盗链机制,建议将图片保存下来直接上传(img-tU6iHk4u-1596171612023)(static/documentation/images/image149.jpg)]|``Move the image``- a tool for moving around the image without<br/> the possibility of editing.|
-|[外链图片转存失败,源站可能有防盗链机制,建议将图片保存下来直接上传(img-Bw0lVxrL-1596171612024)(static/documentation/images/image102.jpg)]|``Rotate``- two buttons to rotate the current frame<br/> a clockwise (``Ctrl+R``) and anticlockwise (``Ctrl+Shift+R``).<br/> You can enable ``Rotate all images`` in the settings to rotate all the images in the job
+|![](static/documentation/images/image148.jpg)|``Cursor`` (``Esc``)- a basic annotation pedacting tool.              |
+|![](static/documentation/images/image149.jpg)|``Move the image``- a tool for moving around the image without<br/> the possibility of editing.|
+|![](static/documentation/images/image102.jpg)|``Rotate``- two buttons to rotate the current frame<br/> a clockwise (``Ctrl+R``) and anticlockwise (``Ctrl+Shift+R``).<br/> You can enable ``Rotate all images`` in the settings to rotate all the images in the job
 
 **Zoom block** - contains tools for image zoom.
 |Icon                                         |Description                                                           |
 |--                                           |--                                                                    |
-|[外链图片转存失败,源站可能有防盗链机制,建议将图片保存下来直接上传(img-DDYuWn0b-1596171612025)(static/documentation/images/image151.jpg)]|``Fit image``- fits image into the workspace size.<br/> Shortcut - double click on an image|
-|[外链图片转存失败,源站可能有防盗链机制,建议将图片保存下来直接上传(img-cvEN197d-1596171612027)(static/documentation/images/image166.jpg)]|``Select a region of interest``- zooms in on a selected region.<br/> You can use this tool to quickly zoom in on a specific part of the frame.|
+|![](static/documentation/images/image151.jpg)|``Fit image``- fits image into the workspace size.<br/> Shortcut - double click on an image|
+|![](static/documentation/images/image166.jpg)|``Select a region of interest``- zooms in on a selected region.<br/> You can use this tool to quickly zoom in on a specific part of the frame.|
 
 **Shapes block** - contains all the tools for creating shapes.
 |Icon                                         |Description   |Links to section  |
 |--                                           |--            |--                |
-|[外链图片转存失败,源站可能有防盗链机制,建议将图片保存下来直接上传(img-lxhHLtW9-1596171612028)(static/documentation/images/image167.jpg)]|``Rectangle``|[Shape mode](#shape-mode-basics); [Track mode](#track-mode-basics);<br/> [Drawing by 4 points](#annotation-with-rectangle-by-4-points)|
-|[外链图片转存失败,源站可能有防盗链机制,建议将图片保存下来直接上传(img-HJ3fmllq-1596171612029)(static/documentation/images/image168.jpg)]|``Polygon``  |[Annotation with polygons](#annotation-with-polygons)  |
-|[外链图片转存失败,源站可能有防盗链机制,建议将图片保存下来直接上传(img-I4Lb4jxW-1596171612030)(static/documentation/images/image169.jpg)]|``Polyline`` |[Annotation with polylines](#annotation-with-polylines)|
-|[外链图片转存失败,源站可能有防盗链机制,建议将图片保存下来直接上传(img-elI2Xwb5-1596171612030)(static/documentation/images/image170.jpg)]|``Points``   |[Annotation with points](#annotation-with-points)      |
-|[外链图片转存失败,源站可能有防盗链机制,建议将图片保存下来直接上传(img-CHTtzaws-1596171612031)(static/documentation/images/image176.jpg)]|``Cuboid``   |[Annotation with cuboids](#annotation-with-cuboids)    |
-|[外链图片转存失败,源站可能有防盗链机制,建议将图片保存下来直接上传(img-2r1dheNM-1596171612032)(static/documentation/images/image171.jpg)]|``Tag``      |[Annotation with tags](#annotation-with-tag)s            |
+|![](static/documentation/images/image167.jpg)|``Rectangle``|[Shape mode](#shape-mode-basics); [Track mode](#track-mode-basics);<br/> [Drawing by 4 points](#annotation-with-rectangle-by-4-points)|
+|![](static/documentation/images/image168.jpg)|``Polygon``  |[Annotation with polygons](#annotation-with-polygons)  |
+|![](static/documentation/images/image169.jpg)|``Polyline`` |[Annotation with polylines](#annotation-with-polylines)|
+|![](static/documentation/images/image170.jpg)|``Points``   |[Annotation with points](#annotation-with-points)      |
+|![](static/documentation/images/image176.jpg)|``Cuboid``   |[Annotation with cuboids](#annotation-with-cuboids)    |
+|![](static/documentation/images/image171.jpg)|``Tag``      |[Annotation with tags](#annotation-with-tag)s            |
 
 **Edit block** - contains tools for editing tracks and shapes.
 |Icon                                         |Description                                        |Links to section  |
 |--                                           |--                                                 |--                |
-|[外链图片转存失败,源站可能有防盗链机制,建议将图片保存下来直接上传(img-BECK3ozg-1596171612033)(static/documentation/images/image172.jpg)]|``Merge Shapes``(``M``) — starts/stops the merging shapes mode.  |[Track mode (basics)](#track-mode-basics)|
-|[外链图片转存失败,源站可能有防盗链机制,建议将图片保存下来直接上传(img-Kceg3Cro-1596171612034)(static/documentation/images/image173.jpg)]|``Group Shapes`` (``G``) — starts/stops the grouping shapes mode.|[Shape grouping](#shape-grouping)|
-|[外链图片转存失败,源站可能有防盗链机制,建议将图片保存下来直接上传(img-GZPRgbEJ-1596171612035)(static/documentation/images/image174.jpg)]|``Split`` — splits a track.                                      |[Track mode (advanced)](#track-mode-advanced)|
+|![](static/documentation/images/image172.jpg)|``Merge Shapes``(``M``) — starts/stops the merging shapes mode.  |[Track mode (basics)](#track-mode-basics)|
+|![](static/documentation/images/image173.jpg)|``Group Shapes`` (``G``) — starts/stops the grouping shapes mode.|[Shape grouping](#shape-grouping)|
+|![](static/documentation/images/image174.jpg)|``Split`` — splits a track.                                      |[Track mode (advanced)](#track-mode-advanced)|
 
 ---
 
-### 对象提要栏
-``Hide`` - 该按钮隐藏对象的侧栏。
-![在这里插入图片描述](https://img-blog.csdnimg.cn/20200802113523901.jpg)
+### Objects sidebar
 
+``Hide`` - the button hides the object's sidebar.
+
+![](static/documentation/images/image146.jpg)
 
 #### Objects
 
 **Filter** input box
-![在这里插入图片描述](https://img-blog.csdnimg.cn/20200802113542639.jpg)
+
+![](static/documentation/images/image059.jpg)
 
 The way how to use filters is described in the advanced guide [here](#filter).
 
 **List of objects**
-![在这里插入图片描述](https://img-blog.csdnimg.cn/20200802113600704.jpg)
 
+![](static/documentation/images/image147.jpg)
 
   - Switch lock property for all - switches  lock property of all objects in the frame.
   - Switch hidden property for all - switches hide property of all objects in the frame.
@@ -763,20 +841,20 @@ frame. The following figure is an example of how the list might look like:
 
 | Shape mode                                    | Track mode                                    |
 |--                                             |--                                             |
-| [外链图片转存失败,源站可能有防盗链机制,建议将图片保存下来直接上传(img-Qod8ZqOE-1596171612040)(static/documentation/images/image044.jpg)] | [外链图片转存失败,源站可能有防盗链机制,建议将图片保存下来直接上传(img-4vcy4vWx-1596171612041)(static/documentation/images/image045.jpg)] |
+| ![](static/documentation/images/image044.jpg) | ![](static/documentation/images/image045.jpg) |
 
 ---
 **Objects** on the side bar
 
 The type of a shape can be changed by selecting **Label** property. For instance, it can look like shown on the figure below:
 
-[外链图片转存失败,源站可能有防盗链机制,建议将图片保存下来直接上传(img-wb0mblHM-1596171612043)(static/documentation/images/image050.jpg)]
+![](static/documentation/images/image050.jpg)
 
 **Object action menu**
 
 The action menu calls up the button:
 
-  [外链图片转存失败,源站可能有防盗链机制,建议将图片保存下来直接上传(img-DQfRhG12-1596171612044)(static/documentation/images/image047.jpg)]
+  ![](static/documentation/images/image047.jpg)
 
 The action menu contains:
 
@@ -786,7 +864,7 @@ The action menu contains:
   invokes a dialog box in which you can specify the number of copies
   or the frame onto which you want to copy the object. The keyboard shortcut ``Ctrl + B``.
 
-  [外链图片转存失败,源站可能有防盗链机制,建议将图片保存下来直接上传(img-6Kodjp9M-1596171612045)(static/documentation/images/image053.jpg)]
+  ![](static/documentation/images/image053.jpg)
 
 - ``To background`` - moves the object to the background. The keyboard shortcut ``-``,``_``.
 - ``To foreground`` - moves the object to the foreground. The keyboard shortcut ``+``,``=``.
@@ -794,30 +872,30 @@ The action menu contains:
 
 A shape can be locked to prevent its modification or moving by an accident. Shortcut to lock an object: ``L``.
 
-[外链图片转存失败,源站可能有防盗链机制,建议将图片保存下来直接上传(img-MvfGUOW4-1596171612046)(static/documentation/images/image046.jpg)]
+![](static/documentation/images/image046.jpg)
 
 A shape can be **Occluded**. Shortcut: ``Q``. Such shapes have dashed boundaries.
 
-[外链图片转存失败,源站可能有防盗链机制,建议将图片保存下来直接上传(img-4rGP0SaB-1596171612047)(static/documentation/images/image048.jpg)]
+![](static/documentation/images/image048.jpg)
 
-[外链图片转存失败,源站可能有防盗链机制,建议将图片保存下来直接上传(img-9NajWWCM-1596171612048)(static/documentation/images/image049_detrac.jpg)]
+![](static/documentation/images/image049_detrac.jpg)
 
 You can change the way an object is displayed on a frame (show or hide).
 
-[外链图片转存失败,源站可能有防盗链机制,建议将图片保存下来直接上传(img-R7xQHxdn-1596171612048)(static/documentation/images/image055.jpg)]
+![](static/documentation/images/image055.jpg)
 
 ``Switch pinned property`` - when enabled, a shape cannot be moved by dragging or dropping.
 
-[外链图片转存失败,源站可能有防盗链机制,建议将图片保存下来直接上传(img-rNnliAlA-1596171612049)(static/documentation/images/image052.jpg)]
+![](static/documentation/images/image052.jpg)
 
 You can change an object's color.
 To do so, click on the color bar of the object and select a color from the palette that appears.
 
-[外链图片转存失败,源站可能有防盗链机制,建议将图片保存下来直接上传(img-etCLn1m8-1596171612050)(static/documentation/images/image153.jpg)]
+![](static/documentation/images/image153.jpg)
 
 By clicking on the ``Details`` button you can collapse or expand the field with all the attributes of the object.
 
-[外链图片转存失败,源站可能有防盗链机制,建议将图片保存下来直接上传(img-DEPNyTd2-1596171612051)(static/documentation/images/image154.jpg)]
+![](static/documentation/images/image154.jpg)
 
 ---
 
@@ -826,7 +904,7 @@ You can also change the color of any object to random, to do so just hover
 the mouse over the object on the frame and highlight them by clicking on a label you need.
 In this tab, you can lock or hide objects of a certain label.
 
-[外链图片转存失败,源站可能有防盗链机制,建议将图片保存下来直接上传(img-49LY3VIq-1596171612051)(static/documentation/images/image062.jpg)]
+![](static/documentation/images/image062.jpg)
 
 ---
 
@@ -837,15 +915,15 @@ In this tab, you can lock or hide objects of a certain label.
 Change the color scheme of annotation:
 -   ``Instance`` — every  shape has random color
 
-    [外链图片转存失败,源站可能有防盗链机制,建议将图片保存下来直接上传(img-mHqmzAQt-1596171612052)(static/documentation/images/image095_detrac.jpg)]
+    ![](static/documentation/images/image095_detrac.jpg)
 
 -   ``Group`` — every group of shape has its own random color, ungrouped shapes are white
 
-    [外链图片转存失败,源站可能有防盗链机制,建议将图片保存下来直接上传(img-6SvfwThS-1596171612053)(static/documentation/images/image094_detrac.jpg)]
+    ![](static/documentation/images/image094_detrac.jpg)
 
 -   ``Label`` — every label (e.g. car, person) has its own random color
 
-    [外链图片转存失败,源站可能有防盗链机制,建议将图片保存下来直接上传(img-GbkZocQQ-1596171612054)(static/documentation/images/image093_detrac.jpg)]
+    ![](static/documentation/images/image093_detrac.jpg)
 
     You can change any random color pointing to a needed box on a frame or on an
     object sidebar.
@@ -854,30 +932,31 @@ Change the color scheme of annotation:
 
 Change the opacity of every shape in the annotation.
 
-[外链图片转存失败,源站可能有防盗链机制,建议将图片保存下来直接上传(img-UeteOcRo-1596171612055)(static/documentation/images/image086_detrac.jpg)]
+![](static/documentation/images/image086_detrac.jpg)
 
 **Selected Fill Opacity** slider
 
 Change the opacity of the selected object's fill.
 
-[外链图片转存失败,源站可能有防盗链机制,建议将图片保存下来直接上传(img-zghcnStt-1596171612055)(static/documentation/images/image089_detrac.jpg)]
+![](static/documentation/images/image089_detrac.jpg)
 
 **Black Stroke** checkbox
 
 Changes the shape border from colored to black.
 
-[外链图片转存失败,源站可能有防盗链机制,建议将图片保存下来直接上传(img-CIXr81rO-1596171612056)(static/documentation/images/image088_detrac.jpg)]
+![](static/documentation/images/image088_detrac.jpg)
 
 **Show bitmap** checkbox
 
 If enabled all shapes are displayed in white and the background is black.
 
-[外链图片转存失败,源站可能有防盗链机制,建议将图片保存下来直接上传(img-WntHqkZe-1596171612057)(static/documentation/images/image087_detrac.jpg)]
+![](static/documentation/images/image087_detrac.jpg)
 
 **Show projections** checkbox
 
 Enables / disables the display of auxiliary perspective lines. Only relevant for cuboids
-![在这里插入图片描述](https://img-blog.csdnimg.cn/20200802153033686.jpg)
+
+![](static/documentation/images/image090_detrac.jpg)
 
 ## Shape mode (advanced)
 
@@ -888,18 +967,19 @@ Occlusion is an attribute used if an object is occluded by another object or
 isn't fully visible on the frame. Use ``Q`` shortcut to set the property
 quickly.
 
-[外链图片转存失败,源站可能有防盗链机制,建议将图片保存下来直接上传(img-BnWehcKu-1596171612060)(static/documentation/images/image065.jpg)]
+![](static/documentation/images/image065.jpg)
 
 Example: the three cars on the figure below should be labeled as **occluded**.
-![在这里插入图片描述](https://img-blog.csdnimg.cn/2020080215301486.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzMzNjI4MQ==,size_16,color_FFFFFF,t_70)
+
+![](static/documentation/images/image054_mapillary_vistas.jpg)
 
 If a frame contains too many objects and it is difficult to annotate them
 due to many shapes placed mostly in the same place, it makes sense
 to lock them. Shapes for locked objects are transparent, and it is easy to
 annotate new objects. Besides, you can't change previously annotated objects
 by accident. Shortcut: ``L``.
-![在这里插入图片描述](https://img-blog.csdnimg.cn/20200802152959786.jpg)
 
+![](static/documentation/images/image066.jpg)
 
 ## Track mode (advanced)
 
@@ -907,26 +987,33 @@ Basic operations in the mode were described in section [track mode (basics)](#tr
 
 Shapes that were created in the track mode, have extra navigation buttons.
 -   These buttons help to jump to the previous/next keyframe.
-![在这里插入图片描述](https://img-blog.csdnimg.cn/20200802152940871.jpg)
+
+    ![](static/documentation/images/image056.jpg)
 
 -   The button helps to jump to the initial frame and to the last keyframe.
-![在这里插入图片描述](https://img-blog.csdnimg.cn/20200802152923987.jpg)
+
+    ![](static/documentation/images/image057.jpg)
 
 You can use the `` Split '' function to split one track into two tracks:
-![在这里插入图片描述](https://img-blog.csdnimg.cn/20200802152826786.gif)
+
+![](static/documentation/images/gif010_detrac.gif)
 
 ## Attribute annotation mode (advanced)
 
 Basic operations in the mode were described in section [attribute annotation mode (basics)](#attribute-annotation-mode-basics).
 
 It is possible to handle lots of objects on the same frame in the mode.
-![在这里插入图片描述](https://img-blog.csdnimg.cn/2020080215254159.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzMzNjI4MQ==,size_16,color_FFFFFF,t_70)
 
-It is more convenient to annotate objects of the same type. In this case you can apply the appropriate filter. For example, the following filter will hide all objects except person: ``label=="Person"``.
+![](static/documentation/images/image058_detrac.jpg)
+
+It is more convenient to annotate objects of the same type. In this case you can apply
+the appropriate filter. For example, the following filter will
+hide all objects except person: ``label=="Person"``.
 
 To navigate between objects (person in this case),
 use the following buttons ``switch between objects in the frame`` on the special panel:
-![在这里插入图片描述](https://img-blog.csdnimg.cn/20200802152524636.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzMzNjI4MQ==,size_16,color_FFFFFF,t_70)
+
+![](static/documentation/images/image026.jpg)
 
 or shortcuts:
 - ``Tab`` — go to the next object
@@ -939,67 +1026,77 @@ in the workspace tab and set the value Attribute annotation mode (AAM) zoom marg
 It is an efficient method of bounding box annotation, proposed
 [here](https://arxiv.org/pdf/1708.02750.pdf).
 Before starting, you need to make sure that the drawing method by 4 points is selected.
-![在这里插入图片描述](https://img-blog.csdnimg.cn/20200802152457598.jpg)
+
+![](static/documentation/images/image134.jpg)
 
 Press ``Shape`` or ``Track`` for entering drawing mode. Click on four extreme points:
 the top, bottom, left- and right-most physical points on the object.
 Drawing will be automatically completed right after clicking the fourth point.
 Press ``Esc`` to cancel editing.
-![在这里插入图片描述](https://img-blog.csdnimg.cn/20200802152438683.gif)
 
+![](static/documentation/images/gif016_mapillary_vistas.gif)
 
-## 带多边形的标注
+## Annotation with polygons
 
-### 手工绘图
-一般被被用于语义分割。
+### Manual drawing
 
-如果要标注多边形，请确保启用了“创建新任务”对话框中的“Z-Order”标志。
+It is used for semantic / instance segmentation.
 
-Z-Order标志定义绘图顺序。有必要获得正确的注释蒙版而不需要额外的工作（额外的边界绘制）。
+If you want to annotate polygons, make sure the ``Z-Order`` flag in ``Create new task`` dialog is enabled.
+The Z-Order flag defines the order of drawing. It is necessary to
+get the right annotation mask without extra work (additional drawing of borders).
+Z-Order can be changed by pressing ``+``/``-`` which set maximum/minimum z-order
+accordingly.
 
-按``+``/``-``可改变Z-Order，相应地设置最大/最小Z-Order。
-![在这里插入图片描述](https://img-blog.csdnimg.cn/20200802151756850.jpg)
-开始之前，您需要选择控件侧栏上的``Polygon``并选择正确的标签。
-![在这里插入图片描述](https://img-blog.csdnimg.cn/20200802151934875.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzMzNjI4MQ==,size_16,color_FFFFFF,t_70)
-- 单击``Shape``进入绘图模式。
-  有两种绘制多边形的方法：通过单击创建点，或者在按住“Shift”的同时在屏幕上拖动鼠标。
+![](static/documentation/images/image074.jpg)
 
-| 点击点 | 按住Shift+拖动 |
-| -- | -- |
-| ![在这里插入图片描述](https://img-blog.csdnimg.cn/20200802152026101.gif) | ![在这里插入图片描述](https://img-blog.csdnimg.cn/2020080215204832.gif) |
+Before starting, you need to select ``Polygon`` on the controls sidebar and choose the correct Label.
 
-- 未按“Shift”时，您可以放大/缩小（滚动鼠标滚轮时）和移动（单击鼠标滚轮并移动鼠标时），也可以通过右键单击删除上一个点。
-- 按“N”完成形状。
-- 创建多边形后，可以通过右键单击并选择“删除点”来移动或删除这些点或者在上下文菜单中按“Ctrl”键双击。
+![](static/documentation/images/image084.jpg)
+
+- Click ``Shape`` to enter drawing mode.
+  There are two ways to draw a polygon: either create points by clicking or
+  by dragging the mouse on the screen while holding ``Shift``.
+
+| Clicking points                                   | Holding Shift+Dragging                            |
+| --                                                | --                                                |
+| ![](static/documentation/images/gif005_detrac.gif)| ![](static/documentation/images/gif006_detrac.gif)|
+
+- When ``Shift`` isn't pressed, you can zoom in/out (when scrolling the mouse
+  wheel) and move (when clicking the mouse wheel and moving the mouse), you can also
+  delete the previous point by right-clicking on it.
+- Press ``N`` again for completing the shape.
+- After creating the polygon, you can move the points or delete them by right-clicking and selecting ``Delete point``
+  or double-clicking with pressed ``Ctrl`` key in the context menu.
 
 ### Drawing using automatic borders
 
-[外链图片转存失败,源站可能有防盗链机制,建议将图片保存下来直接上传(img-xVPM86Mr-1596171612075)(static/documentation/images/gif025_mapillary_vistas.gif)]
+![](static/documentation/images/gif025_mapillary_vistas.gif)
 
 You can use auto borders when drawing a polygon. Using automatic borders allows you to automatically trace
 the outline of polygons existing in the annotation.
 - To do this, go to settings -> workspace tab and enable ``Automatic Bordering``
   or press ``Ctrl`` while drawing a polygon.
 
-  [外链图片转存失败,源站可能有防盗链机制,建议将图片保存下来直接上传(img-ONmw5PTS-1596171612076)(static/documentation/images/image161.jpg)]
+  ![](static/documentation/images/image161.jpg)
 
 - Start drawing / editing a polygon.
 - Points of other shapes will be highlighted, which means that the polygon can be attached to them.
 - Define the part of the polygon path that you want to repeat.
 
-  [外链图片转存失败,源站可能有防盗链机制,建议将图片保存下来直接上传(img-7qbhZXyO-1596171612079)(static/documentation/images/image157_mapillary_vistas.jpg)]
+  ![](static/documentation/images/image157_mapillary_vistas.jpg)
 
 - Click on the first point of the contour part.
 
-  [外链图片转存失败,源站可能有防盗链机制,建议将图片保存下来直接上传(img-rRyviGx0-1596171612080)(static/documentation/images/image158_mapillary_vistas.jpg)]
+  ![](static/documentation/images/image158_mapillary_vistas.jpg)
 
 - Then click on any point located on part of the path. The selected point will be highlighted in purple.
 
-  [外链图片转存失败,源站可能有防盗链机制,建议将图片保存下来直接上传(img-wcB3owkv-1596171612081)(static/documentation/images/image159_mapillary_vistas.jpg)]
+  ![](static/documentation/images/image159_mapillary_vistas.jpg)
 
 - Сlick on the last point and the outline to this point will be built automatically.
 
-  [外链图片转存失败,源站可能有防盗链机制,建议将图片保存下来直接上传(img-KUffn1b2-1596171612082)(static/documentation/images/image160_mapillary_vistas.jpg)]
+  ![](static/documentation/images/image160_mapillary_vistas.jpg)
 
 Besides, you can set a fixed number of points in the ``Number of points`` field, then
 drawing will be stopped automatically. To enable dragging you should right-click
@@ -1007,7 +1104,7 @@ inside the polygon and choose ``Switch pinned property``.
 
 Below you can see results with opacity and black stroke:
 
-[外链图片转存失败,源站可能有防盗链机制,建议将图片保存下来直接上传(img-GpBr65qx-1596171612083)(static/documentation/images/image064_mapillary_vistas.jpg)]
+![](static/documentation/images/image064_mapillary_vistas.jpg)
 
 If you need to annotate small objects, increase ``Image Quality`` to
 ``95`` in ``Create task`` dialog for your convenience.
@@ -1017,7 +1114,7 @@ If you need to annotate small objects, increase ``Image Quality`` to
 Used to create a polygon semi-automatically.
 - Before starting, you have to make sure that the ``Make AI polygon`` is selected.
 
-  [外链图片转存失败,源站可能有防盗链机制,建议将图片保存下来直接上传(img-7C4hoVbm-1596171612084)(static/documentation/images/image114.jpg)]
+  ![](static/documentation/images/image114.jpg)
 
 - Click ``Shape`` to enter drawing mode. Now you can start annotating the necessary area.
   A shape must consist of 4 points minimum. You can set a fixed number of points in the ``Number of points`` field,
@@ -1025,28 +1122,28 @@ Used to create a polygon semi-automatically.
 - Press ``N`` again to finish marking the area. At the end of Auto Segmentation,
   a shape is created and you can work with it as a polygon.
 
-  [外链图片转存失败,源站可能有防盗链机制,建议将图片保存下来直接上传(img-71Ym3qTH-1596171612085)(static/documentation/images/gif009_detrac.gif)]
+  ![](static/documentation/images/gif009_detrac.gif)
 
-### 编辑多边形
+### Edit polygon
 
-要编辑多边形，您必须双击按“Shift”键，它将打开多边形编辑器。
-- 在那里，您可以创建新的点或删除多边形的一部分，使其与另一点上的直线闭合。
-- 关闭多边形后，可以选择要离开的多边形部分。
-- 您可以按“Esc”取消编辑。
+To edit a polygon you have to double-click with pressed ``Shift``, it will open the polygon editor.
+- There you can create new points or delete part of a polygon closing the line on another point.
+- After closing the polygon, you can select the part of the polygon that you want to leave.
+- You can press ``Esc`` to cancel editing.
 
+  ![](static/documentation/images/gif007_mapillary_vistas.gif)
 
+## Annotation with polylines
 
-![在这里插入图片描述](https://img-blog.csdnimg.cn/20200807113102976.gif)
+It is used for road markup annotation etc.
 
-## 带多段线的标注
+Before starting, you need to select the ``Polyline``. You can set a fixed number of points
+in the ``Number of points`` field, then drawing will be stopped automatically.
 
-用于道路标记标注等。
+![](static/documentation/images/image085.jpg)
 
-在开始之前，您需要选择“折线”。您可以在“点数”字段中设置固定点数，绘图将自动停止。
-![在这里插入图片描述](https://img-blog.csdnimg.cn/20200802151442163.jpg)
-
-单击“形状”进入绘图模式。绘制折线有两种方法-您可以通过单击创建点，也可以在按住“Shift”的同时在屏幕上拖动鼠标来创建点。
-
+Click ``Shape`` to enter drawing mode. There are two ways to draw a polyline —
+you either create points by clicking or by dragging a mouse on the screen while holding ``Shift``.
 When ``Shift`` isn't pressed, you can zoom in/out (when scrolling the mouse wheel)
 and move (when clicking the mouse wheel and moving the mouse), you can delete
 previous points by right-clicking on it. Press ``N`` again to complete the shape.
@@ -1054,175 +1151,221 @@ You can delete a point by double-clicking on it with pressed ``Ctrl`` or right-c
 and selecting ``Delete point``. Double-click with pressed ``Shift`` will open a polyline editor.
 There you can create new points(by clicking or dragging) or delete part of a polygon closing
 the red line on another point. Press ``Esc`` to cancel editing.
-![在这里插入图片描述](https://img-blog.csdnimg.cn/20200802151423515.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzMzNjI4MQ==,size_16,color_FFFFFF,t_70)
 
-## 点标注
+![](static/documentation/images/image039_mapillary_vistas.jpg)
 
-### 形状模式中的点
+## Annotation with points
 
-用于人脸、地标标注等。
+### Points in shape mode
 
-开始之前，您需要选择 ``Points``. 如果需要，可以在 ``Number of points`` 字段, 然后绘图将自动停止。
-![在这里插入图片描述](https://img-blog.csdnimg.cn/20200802151405645.jpg)
+It is used for face, landmarks annotation etc.
 
-点击``Shape`` 进入绘图模式。现在您可以开始标注所需的区域。点自动分组-所有点将被视为在每个起点和终点之间链接。
+Before you start you need to select the ``Points``. If necessary you can set a fixed number of points
+in the ``Number of points`` field, then drawing will be stopped automatically.
 
-按``N`` 再次完成标记区域。可以通过双击并按下来``Ctrl``删除点或者右键单击一个点并选择 ``Delete point``. 按``Shift``键双击将打开点形状编辑器。在那里，可以将新点添加到现有形状中。可以在绘图时放大/缩小（滚动鼠标滚轮时）和移动（单击鼠标滚轮并移动鼠标时）。可以在绘制对象后拖动该对象，并在完成对象后更改各个点的位置。
-![在这里插入图片描述](https://img-blog.csdnimg.cn/20200802151347261.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzMzNjI4MQ==,size_16,color_FFFFFF,t_70)
+![](static/documentation/images/image042.jpg)
 
+Click ``Shape`` to entering the drawing mode. Now you can start annotation of the necessary area.
+Points are automatically grouped — all points will be considered linked between each start and finish.
+Press ``N`` again to finish marking the area. You can delete a point by double-clicking with pressed ``Ctrl``
+or right-clicking on a point and selecting ``Delete point``. Double-clicking with pressed ``Shift`` will open the points
+shape editor. There you can add new points into an existing shape. You can zoom in/out (when scrolling the mouse wheel)
+and move (when clicking the mouse wheel and moving the mouse) while drawing. You can drag an object after
+it has been drawn and change the position of individual points after finishing an object.
 
-### 单点线性插值
+![](static/documentation/images/image063_affectnet.jpg)
 
-可以对点使用线性插值来标注移动对象：
+### Linear interpolation with one point
 
-1.  开始之前，请选择 ``Points``.
-1.  线性插值仅适用于一个点，因此需要设置``Number of points`` 为1.
-1.  之后，选择 ``Track``.
-![在这里插入图片描述](https://img-blog.csdnimg.cn/20200802151330336.jpg)
+You can use linear interpolation for points to annotate a moving object:
 
+1.  Before you start, select the ``Points``.
+1.  Linear interpolation works only with one point, so you need to set ``Number of points`` to 1.
+1.  After that select the ``Track``.
 
-1.  点击``Track`` 完成图形后，单击该模式将自动创建一个点。
-![在这里插入图片描述](https://img-blog.csdnimg.cn/20200802151310714.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzMzNjI4MQ==,size_16,color_FFFFFF,t_70)
+    ![](static/documentation/images/image122.jpg)
 
-1.  向前移动几帧并将点移动到所需位置，这样您将创建一个关键帧，中间帧将自动绘制。可以像处理插值轨迹一样处理该对象：可以使用“Outside”隐藏它，在关键帧周围移动等。![在这里插入图片描述](https://img-blog.csdnimg.cn/20200802151252180.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzMzNjI4MQ==,size_16,color_FFFFFF,t_70)
+1.  Click ``Track`` to enter the drawing mode left-click to create a point and after that shape will be automatically completed.
 
+    ![](static/documentation/images/image163_detrac.jpg)
 
-1.  这样你就可以用“点”得到线性插值。
-![在这里插入图片描述](https://img-blog.csdnimg.cn/2020080215123148.gif)
+1.  Move forward a few frames and move the point to the desired position,
+    this way you will create a keyframe and intermediate frames will be drawn automatically.
+    You can work with this object as with an interpolated track: you can hide it using the ``Outside``,
+    move around keyframes, etc.
 
+    ![](static/documentation/images/image165_detrac.jpg)
 
-## 长方体标注
+1.  This way you'll get linear interpolation using the `` Points``.
 
-它被用来标注三维物体，如汽车、盒子等……
-目前，该特征支持单点透视，并具有垂直边与边完全平行的约束。
+    ![](static/documentation/images/gif013_detrac.gif)
 
-### 创建长方体
+## Annotation with cuboids
 
-在开始之前，你必须确保长方体被选中，并选择一种绘图方法 ”from rectangle” 或者 “by 4 points”.
-![在这里插入图片描述](https://img-blog.csdnimg.cn/20200802151214103.jpg)
+It is used to annotate 3 dimensional objects such as cars, boxes, etc...
+Currently the feature supports one point perspective and has the constraint
+where the vertical edges are exactly parallel to the sides.
 
-#### 四点画法
+### Creating the cuboid
 
-选择“按4点”绘制方法，然后单击“形状”进入绘图模式。画长方体的方法有很多种。
-您可以通过放置4个点来绘制长方体，然后绘图将自动完成。前3个点确定长方体的平面，而最后一个点确定该平面的深度。对于前3个点，建议只绘制两个最近的侧面以及顶面和底面。
+Before you start, you have to make sure that Cuboid is selected
+ and choose a drawing method ”from rectangle” or “by 4 points”.
 
-几个例子：
-![在这里插入图片描述](https://img-blog.csdnimg.cn/20200802150917720.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzMzNjI4MQ==,size_16,color_FFFFFF,t_70)
+![](static/documentation/images/image091.jpg)
 
-### 从矩形画长方体
+#### Drawing cuboid by 4 points
 
-选择绘图方法“from rectangle” 然后单击“形状”进入绘图模式。使用矩形方法绘制时，必须使用边界选择对象的前平面盒子。那个生成的长方体的深度和透视图可以编辑。
+Choose a drawing method “by 4 points” and click Shape to enter the drawing mode. There are many ways to draw a cuboid.
+You can draw the cuboid by placing 4 points, after that the drawing will be completed automatically.
+The first 3 points determine the plane of the cuboid while the last point determines the depth of that plane.
+For the first 3 points, it is recommended to only draw the 2 closest side faces, as well as the top and bottom face.
 
-例子：
-![在这里插入图片描述](https://img-blog.csdnimg.cn/20200802150858184.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzMzNjI4MQ==,size_16,color_FFFFFF,t_70)
+A few examples:
 
+![](static/documentation/images/image177_mapillary_vistas.jpg)
 
-### 编辑长方体
-![在这里插入图片描述](https://img-blog.csdnimg.cn/2020080215084057.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzMzNjI4MQ==,size_16,color_FFFFFF,t_70)
+### Drawing cuboid from rectangle
 
+Choose a drawing method “from rectangle” and click Shape to enter the drawing mode.
+When you draw using the rectangle method, you must select the frontal plane of the object using the bounding box.
+The depth and perspective of the resulting cuboid can be edited.
 
-可以通过多种方式编辑长方体：拖动点、拖动某些面或拖动平面。首先请注意，有一张脸只画了灰色的线条，让我们称之为前脸。
+Example:
 
-只需在前脸后面拖动形状，就可以移动长方体。
-长方体可以通过拖动边中间的点来扩展。
-也可以通过拖动顶点处的点来上下扩展长方体。
-![在这里插入图片描述](https://img-blog.csdnimg.cn/20200802150821809.gif)
+![](static/documentation/images/image182_mapillary_vistas.jpg)
 
+### Editing the cuboid
 
-要使用透视效果进行绘制，应假定正面离摄影机最近。若要开始，只需在按住``Shift``时拖动不在灰色/正面上的顶点上的点。然后可以像往常一样编辑长方体。
-![在这里插入图片描述](https://img-blog.csdnimg.cn/20200802150800441.gif)
+![](static/documentation/images/image178_mapillary_vistas.jpg)
 
+The cuboid can be edited in multiple ways: by dragging points, by dragging certain faces or by dragging planes.
+First notice that there is a face that is painted with gray lines only, let us call it the front face.
 
-如果要重置透视效果，可以右键单击长方体，然后选择 ``Reset perspective`` 回到正长方体。
-![在这里插入图片描述](https://img-blog.csdnimg.cn/20200802150738232.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzMzNjI4MQ==,size_16,color_FFFFFF,t_70)
+You can move the cuboid by simply dragging the shape behind the front face.
+The cuboid can be extended by dragging on the point in the middle of the edges.
+The cuboid can also be extended up and down by dragging the point at the vertices.
 
+![](static/documentation/images/gif017_mapillary_vistas.gif)
 
-灰色面的位置可以与相邻的可见侧面交换。你可以通过右击长方体并选择 ``Switch perspective orientation``。请注意，这也将重置透视效果。
-![在这里插入图片描述](https://img-blog.csdnimg.cn/20200802150720528.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzMzNjI4MQ==,size_16,color_FFFFFF,t_70)
+To draw with perspective effects it should be assumed that the front face is the closest to the camera.
+To begin simply drag the points on the vertices that are not on the gray/front face while holding ``Shift``.
+The cuboid can then be edited as usual.
 
-长方体的某些面也可以编辑，这些面是：左、右、背面，相对于灰色面。只需拖动面，就可以独立于长方体的其他部分移动面。
-![在这里插入图片描述](https://img-blog.csdnimg.cn/20200802150631997.gif)
+![](static/documentation/images/gif018_mapillary_vistas.gif)
 
-也可以在“轨迹”模式下使用长方体，类似于“轨迹模式”中的矩形 ([basics](#track-mode-basics) and [advanced](#track-mode-advanced))
+If you wish to reset perspective effects, you may right click on the cuboid,
+and select ``Reset perspective`` to return to a regular cuboid.
 
-## 带标记的标注
-用于标注框架，工作区中没有形状。在开始标记之前，请确保已选择。
-![在这里插入图片描述](https://img-blog.csdnimg.cn/20200802113700502.jpg)
+![](static/documentation/images/image180_mapillary_vistas.jpg)
 
-单击标记以创建。您只能在侧栏上使用Tag。可以使用lock函数更改标签和属性。“操作”菜单中提供了其他功能，如传播、复制和删除。
-![在这里插入图片描述](https://img-blog.csdnimg.cn/20200802150438777.jpg)
+The location of the gray face can be swapped with the adjacent visible side face.
+You can do it by right clicking on the cuboid and selecting ``Switch perspective orientation``.
+Note that this will also reset the perspective effects.
 
+![](static/documentation/images/image179_mapillary_vistas.jpg)
 
-## 自动标注
+Certain faces of the cuboid can also be edited,
+these faces are: the left, right and dorsal faces, relative to the gray face.
+Simply drag the faces to move them independently from the rest of the cuboid.
 
-自动标注用于创建初步标注。要使用自动标注，您需要一个DL模型。您可以使用主模型或用户上载的模型。
-您可以在“models”部分找到可用模型的列表。
+![](static/documentation/images/gif020_mapillary_vistas.gif)
 
-1.  要启动自动标注，应打开仪表板并查找要标注的任务。
-    然后单击“操作”按钮，从下拉菜单中选择“自动批注”选项。
-![在这里插入图片描述](https://img-blog.csdnimg.cn/20200802113925617.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzMzNjI4MQ==,size_16,color_FFFFFF,t_70)
+You can also use cuboids in track mode, similar to rectangles in track mode ([basics](#track-mode-basics) and [advanced](#track-mode-advanced))
 
+## Annotation with Tags
 
-1.  在对话框窗口中，选择所需的模型。DL模型是为特定的标签创建的，例如，十字路口模型是使用位于高速公路上方的摄像机的镜头进行教学的，对于具有类似摄像机角度的任务，最好使用此模型。
-    如果需要，请选中“清除旧注释”复选框。
-	调整标签，使任务标签与DL模型的标签相对应。
-    例如，让我们考虑一个任务，其中您必须标注标签“car”和“person”。
-    您应该将模型中的“person”标签连接到任务中的“person”标签。
-    至于“汽车”标签，你应该选择模型中最合适的标签——“车辆”标签。
-    此任务只需要对汽车进行注释，选择“车辆”标签意味着对所有车辆进行注释，在这种情况下，使用自动注释将帮助您更快地完成任务。
-    单击“提交”开始自动标注过程。
-![在这里插入图片描述](https://img-blog.csdnimg.cn/20200802114503788.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzMzNjI4MQ==,size_16,color_FFFFFF,t_70)
+Used to annotate frames, does not have a shape in the workspace.
+Before you start, you have to make sure that Tag is selected.
 
-1.  在运行时-您可以看到完成的百分比，您可以单击“取消”按钮取消自动批注。![在这里插入图片描述](https://img-blog.csdnimg.cn/2020080211444943.jpg)
+![](static/documentation/images/image181.jpg)
 
+Click tag to create. You can work with Tag only on the sidebar.
+You can use the lock function and change label and attribute.
+Other functions such as propagate, make a copy and remove are available in the action menu.
 
-1.  自动批注的最终结果是带有单独矩形（或其他形状）的批注
-![在这里插入图片描述](https://img-blog.csdnimg.cn/20200802114430432.gif)
+![](static/documentation/images/image135.jpg)
 
-1.  可以通过删除误报、添加未标记的对象以及使用“ReID merge”函数合并到轨迹来编辑分离的边界框。单击菜单中的“ReID merge”按钮。
-    您可以使用默认设置 (有关详细信息，请单击 [here](cvat/apps/reid/README.md)).
-    要启动合并过程，请单击 ``Merge``。轨道的每一帧都是一个关键帧。
-![在这里插入图片描述](https://img-blog.csdnimg.cn/20200802114412309.jpg)
+## Automatic annotation
 
-1.  您可以使用“Split”和“Merge”函数删除误报和编辑跟踪。
-![在这里插入图片描述](https://img-blog.csdnimg.cn/20200802114353890.gif)
+Automatic Annotation is used for creating preliminary annotations.
+To use Automatic Annotation you need a DL model. You can use primary models or models uploaded by a user.
+You can find the list of available models in the ``Models`` section.
 
+1.  To launch automatic annotation, you should open the dashboard and find a task which you want to annotate.
+    Then click the ``Actions`` button and choose option ``Automatic Annotation`` from the dropdown menu.
 
+    ![](static/documentation/images/image119_detrac.jpg)
 
-## 形状分组
+1.  In the dialog window select a model you need. DL models are created for specific labels, e.g.
+    the Crossroad model was taught using footage from cameras located above the highway and it is best to
+    use this model for the tasks with similar camera angles.
+    If it's necessary select the ``Clean old annotations`` checkbox.
+    Adjust the labels so that the task labels will correspond to the labels of the DL model.
+    For example, let’s consider a task where you have to annotate labels “car” and “person”.
+    You should connect the “person” label from the model to the “person” label in the task.
+    As for the “car” label, you should choose the most fitting label available in the model - the “vehicle” label.
+    The task requires to annotate cars only and choosing the “vehicle” label implies annotation of all vehicles,
+    in this case using auto annotation will help you complete the task faster.
+    Click ``Submit`` to begin the automatic annotation process.
 
-此功能允许我们对多个形状进行分组。
+    ![](static/documentation/images/image120.jpg)
 
-您可以使用“分组形状”按钮或快捷方式：
-- ``G`` — 在组模式下开始选择/结束选择
-- ``Esc`` — 关闭组模式
-- ``Shift+G`` — 重置选定形状的组
+1.  At runtime - you can see the percentage of completion.
+    You can cancel the automatic annotation by clicking on the ``Cancel``button.
 
-您可以通过单击形状或选择区域来选择形状。
+    ![](static/documentation/images/image121_detrac.jpg)
 
-分组形状将在转储批注中包含“group”id“字段。
+1.  The end result of an automatic annotation is an annotation with separate rectangles (or other shapes)
 
-也可以将颜色分布从实例（默认）切换到组。
-您必须切换“按组颜色”复选框。
+    ![](static/documentation/images/gif014_detrac.gif)
+
+1.  Separated bounding boxes can be edited by removing false positives, adding unlabeled objects and
+    merging into tracks using ``ReID merge`` function. Click the ``ReID merge`` button in the menu.
+    You can use the default settings (for more information click [here](cvat/apps/reid/README.md)).
+    To launch the merging process click ``Merge``. Each frame of the track will be a key frame.
+
+    ![](static/documentation/images/image133.jpg)
+
+1.  You can remove false positives and edit tracks using ``Split`` and ``Merge`` functions.
+
+    ![](static/documentation/images/gif015_detrac.gif)
+
+## Shape grouping
+
+This feature allows us to group several shapes.
+
+You may use the ``Group Shapes`` button or shortcuts:
+- ``G`` — start selection / end selection in group mode
+- ``Esc`` — close group mode
+- ``Shift+G`` — reset group for selected shapes
+
+You may select shapes clicking on them or selecting an area.
+
+Grouped shapes will have ``group_id`` filed in dumped annotation.
+
+Also you may switch color distribution from an instance (default) to a group.
+You have to switch ``Color By Group`` checkbox for that.
 
 Shapes that don't have ``group_id``, will be highlighted in white.
-![在这里插入图片描述](https://img-blog.csdnimg.cn/20200802114314865.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzMzNjI4MQ==,size_16,color_FFFFFF,t_70)
-![在这里插入图片描述](https://img-blog.csdnimg.cn/20200802114331845.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzMzNjI4MQ==,size_16,color_FFFFFF,t_70)
 
+![](static/documentation/images/image078_detrac.jpg)
 
-## 过滤器
+![](static/documentation/images/image077_detrac.jpg)
 
+## Filter
 
-![在这里插入图片描述](https://img-blog.csdnimg.cn/20200802114122722.jpg)
+![](static/documentation/images/image059.jpg)
 
-使用此功能的原因如下：
+There are some reasons to use the feature:
 
-1. 使用过滤器时，与过滤器不匹配的对象将被隐藏。
-1. 在具有感兴趣对象的帧之间快速导航。Use ``Left Arrow`` / ``Right Arrow`` keys for this purpose. If there are no objects matching the filter,
+1. When you use a filter, objects that don't match the filter will be hidden.
+1. Fast navigation between the frames that have an object of interest. Use
+``Left Arrow`` / ``Right Arrow`` keys for this purpose. If there are no objects matching the filter,
 the will go to arrows the previous/next frames which contains any objects.
-1. 该列表包含常用和最近使用的筛选器。
+1. The list contains frequently used and recent filters.
 
-要使用该函数，只需在“Filter”文本中指定一个值就足够了字段并按“回车”键。之后，将应用过滤器。
+To use the function, it is enough to specify a value inside the ``Filter`` text
+field and press ``Enter``. After that, the filter will be applied.
 
 ---
 **Supported properties:**
@@ -1265,37 +1408,47 @@ All properties and values are case-sensitive. CVAT uses json queries to perform 
   and have a width of more than 150 pixels, and those listed should have a height of more than 150 pixels
   and their clientID is equal to serverID.
 
-**筛选器历史记录**
-![在这里插入图片描述](https://img-blog.csdnimg.cn/20200807111044808.jpg)
+**Filter history**
 
-您可以添加以前输入的过滤器并将它们组合起来。为此，单击输入字段，将打开以前输入的过滤器列表。单击过滤器以将其添加到输入字段中。组合过滤器与“或”运算符一起出现。
+![](static/documentation/images/image175.jpg)
+
+You can add previously entered filters and combine them. To do so, click on the input field and a list of previously
+entered filters will open. Click on the filters to add them to the input field.
+Combined filters occur with the "or" operator.
 
 ---
 
-## 分析
+## Analytics
 
-如果您的CVAT实例是使用analytics支持创建的，则可以在仪表板中按“analytics”按钮，分析和日志将在新选项卡中打开。
-![在这里插入图片描述](https://img-blog.csdnimg.cn/20200807110850773.jpg)
-分析可以让你看到每个用户在每个任务上花费了多少时间，以及他们在任何时间范围内做了多少工作。
-![在这里插入图片描述](https://img-blog.csdnimg.cn/20200807110924674.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzMzNjI4MQ==,size_16,color_FFFFFF,t_70)
-它还有一个活动图，可以根据显示的用户数和时间范围进行修改。![在这里插入图片描述](https://img-blog.csdnimg.cn/20200807110808521.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzMzNjI4MQ==,size_16,color_FFFFFF,t_70)
+If your CVAT instance was created with analytics support, you can press the ``Analytics`` button in the dashboard
+and analytics and journals will be opened in a new tab.
 
+![](static/documentation/images/image113.jpg)
 
-## 快捷键
+The analytics allows you to see how much time every user spends on each task
+and how much work they did over any time range.
 
-许多UI元素都有快捷方式提示。将指针指向必需的元素以查看它。
-![在这里插入图片描述](https://img-blog.csdnimg.cn/20200801124233363.jpg#pic_center)
+![](static/documentation/images/image097.jpg)
 
+It also has an activity graph which can be modified with a number of users shown and a timeframe.
 
-| 快捷键 | 功能 |
-|-|-|
-|  | 主要功能 |
-| ``F2`` | 打开/隐藏可用快捷键列表 |
-| ``F3`` | 转到“设置”页或返回 |
-| ``Ctrl+S`` | 转到“设置”页或返回 |
-| ``Ctrl+Z`` | 取消与对象相关的最新操作 |
-| ``Ctrl+Shift+Z`` or ``Ctrl+Y`` | 取消撤消操作 |
-| Hold ``Mouse Wheel`` | 移动图像框（例如，在绘图时） |
+![](static/documentation/images/image096.jpg)
+
+## Shortcuts
+
+Many UI elements have shortcut hints. Put your pointer to a required element to see it.
+
+![](static/documentation/images/image075.jpg)
+
+| Shortcut                       | Common                                                                          |
+|--------------------------------|---------------------------------------------------------------------------------|
+|                                | _Main functions_                                                                |
+| ``F2``                         | Open/hide the list of available shortcuts                                       |
+| ``F3``                         | Go to the settings page or go back                                              |
+| ``Ctrl+S``                     | Go to the settings page or go back                                              |
+| ``Ctrl+Z``                     | Cancel the latest action related with objects                                   |
+| ``Ctrl+Shift+Z`` or ``Ctrl+Y`` | Cancel undo action                                                              |
+| Hold ``Mouse Wheel``           | To move an image frame (for example, while drawing)                             |
 |                                | _Player_                                                                        |
 | ``F``                          | Go to the next frame                                                            |
 | ``D``                          | Go to the previous frame                                                        |

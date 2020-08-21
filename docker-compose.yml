@@ -1,8 +1,3 @@
-#
-# Copyright (C) 2018-2020 Intel Corporation
-#
-# SPDX-License-Identifier: MIT
-#
 version: "2.3"
 
 services:
@@ -20,8 +15,6 @@ services:
             POSTGRES_HOST_AUTH_METHOD: trust
         volumes:
             - cvat_db:/var/lib/postgresql/data
-        ports:
-            - "5432:5432"
 
     cvat_redis:
         container_name: cvat_redis
@@ -46,9 +39,9 @@ services:
                 https_proxy:
                 no_proxy:
                 socks_proxy:
-                TF_ANNOTATION: "yes"
-                AUTO_SEGMENTATION: "yes"
-                USER: "django"
+                TF_ANNOTATION: "no"
+                AUTO_SEGMENTATION: "no"
+                USER: "alex"
                 DJANGO_CONFIGURATION: "production"
                 TZ: "Etc/UTC"
                 OPENVINO_TOOLKIT: "no"
@@ -63,32 +56,12 @@ services:
             - cvat_models:/home/django/models
             - cvat_share:/home/django/share:ro
 
-    cvat_ui:
-        container_name: cvat_ui
-        restart: always
-        build:
-            context: .
-            args:
-                http_proxy:
-                https_proxy:
-                no_proxy:
-                socks_proxy:
-            dockerfile: Dockerfile.ui
-
-        networks:
-            default:
-                aliases:
-                    - ui
-        depends_on:
-            - cvat
-
     cvat_proxy:
         container_name: cvat_proxy
         image: nginx:stable-alpine
         restart: always
         depends_on:
             - cvat
-            - cvat_ui
         environment:
             CVAT_HOST: alexking.site
         ports:
