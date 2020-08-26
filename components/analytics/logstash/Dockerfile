@@ -1,5 +1,5 @@
 ARG ELK_VERSION
-FROM docker.elastic.co/logstash/logstash-oss:${ELK_VERSION}
+FROM logstash:${ELK_VERSION}
 RUN logstash-plugin install logstash-input-http logstash-filter-aggregate \
     logstash-filter-prune logstash-output-email
 

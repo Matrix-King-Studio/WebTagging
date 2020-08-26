@@ -202,7 +202,7 @@ ROOT_URLCONF = 'cvat.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -409,16 +409,17 @@ LOCAL_LOAD_MAX_FILES_SIZE = 512 * 1024 * 1024  # 512 MB
 DATUMARO_PATH = os.path.join(BASE_DIR, 'datumaro')
 sys.path.append(DATUMARO_PATH)
 
+# 全局的一些限制
 RESTRICTIONS = {
     'user_agreements': [],
 
-    # this setting limits the number of tasks for the user
+    # 此设置限制用户的任务数
     'task_limit': None,
 
-    # this setting reduse task visibility to owner and assignee only
+    # 此设置只会降低任务对所有者和受让人的可见性
     'reduce_task_visibility': False,
 
-    # allow access to analytics component to users with the following roles
+    # 允许具有以下角色的用户访问分析组件
     'analytics_access': (
         'engine.role.observer',
         'engine.role.annotator',

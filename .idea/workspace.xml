@@ -19,200 +19,449 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e2fd5767-3d4d-4226-8c86-65e39b2024b3" name="Default Changelist" comment="2020-8-21">
-      <change beforePath="$PROJECT_DIR$/cvat/apps/authentication/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/authentication/forms.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/AWS-Deployment-Guide.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/admin.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/apps.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/installation.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/migrations/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/models.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/static/documentation/images/cvat.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/static/documentation/images/gif001_detrac.gif" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/static/documentation/images/gif003_detrac.gif" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/static/documentation/images/gif005_detrac.gif" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/static/documentation/images/gif006_detrac.gif" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/static/documentation/images/gif007_mapillary_vistas.gif" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/static/documentation/images/gif009_detrac.gif" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/static/documentation/images/gif010_detrac.gif" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/static/documentation/images/gif013_detrac.gif" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/static/documentation/images/gif014_detrac.gif" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/static/documentation/images/gif015_detrac.gif" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/static/documentation/images/gif016_mapillary_vistas.gif" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/static/documentation/images/gif017_mapillary_vistas.gif" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/static/documentation/images/gif018_mapillary_vistas.gif" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/static/documentation/images/gif019_detrac.gif" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/static/documentation/images/gif020_mapillary_vistas.gif" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/static/documentation/images/gif025_mapillary_vistas.gif" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/static/documentation/images/image001.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/static/documentation/images/image002.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/static/documentation/images/image003.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/static/documentation/images/image004.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/static/documentation/images/image005.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/static/documentation/images/image006_detrac.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/static/documentation/images/image007_detrac.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/static/documentation/images/image008.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/static/documentation/images/image009_mapillary_vistas.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/static/documentation/images/image010_affectnet.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/static/documentation/images/image011_detrac.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/static/documentation/images/image012.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/static/documentation/images/image013_detrac.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/static/documentation/images/image014.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/static/documentation/images/image015_detrac.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/static/documentation/images/image016.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/static/documentation/images/image017_detrac.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/static/documentation/images/image019.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/static/documentation/images/image020.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/static/documentation/images/image023_affectnet.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/static/documentation/images/image024_affectnet.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/static/documentation/images/image025_affectnet.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/static/documentation/images/image026.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/static/documentation/images/image028.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/static/documentation/images/image029.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/static/documentation/images/image032_detrac.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/static/documentation/images/image033_detrac.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/static/documentation/images/image034_detrac.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/static/documentation/images/image035.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/static/documentation/images/image036.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/static/documentation/images/image037.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/static/documentation/images/image038_detrac.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/static/documentation/images/image039_mapillary_vistas.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/static/documentation/images/image040.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/static/documentation/images/image041.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/static/documentation/images/image042.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/static/documentation/images/image044.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/static/documentation/images/image045.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/static/documentation/images/image046.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/static/documentation/images/image047.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/static/documentation/images/image048.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/static/documentation/images/image049_detrac.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/static/documentation/images/image050.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/static/documentation/images/image051.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/static/documentation/images/image052.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/static/documentation/images/image053.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/static/documentation/images/image054_mapillary_vistas.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/static/documentation/images/image055.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/static/documentation/images/image056.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/static/documentation/images/image057.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/static/documentation/images/image058_detrac.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/static/documentation/images/image059.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/static/documentation/images/image060.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/static/documentation/images/image061.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/static/documentation/images/image062.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/static/documentation/images/image063_affectnet.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/static/documentation/images/image064_mapillary_vistas.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/static/documentation/images/image065.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/static/documentation/images/image066.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/static/documentation/images/image067.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/static/documentation/images/image068_mapillary_vistas.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/static/documentation/images/image072.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/static/documentation/images/image073.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/static/documentation/images/image074.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/static/documentation/images/image075.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/static/documentation/images/image077_detrac.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/static/documentation/images/image078_detrac.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/static/documentation/images/image080.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/static/documentation/images/image081.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/static/documentation/images/image082.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/static/documentation/images/image083.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/static/documentation/images/image084.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/static/documentation/images/image085.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/static/documentation/images/image086_detrac.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/static/documentation/images/image087_detrac.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/static/documentation/images/image088_detrac.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/static/documentation/images/image089_detrac.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/static/documentation/images/image090_detrac.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/static/documentation/images/image091.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/static/documentation/images/image093_detrac.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/static/documentation/images/image094_detrac.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/static/documentation/images/image095_detrac.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/static/documentation/images/image096.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/static/documentation/images/image097.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/static/documentation/images/image098.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/static/documentation/images/image099.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/static/documentation/images/image100_detrac.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/static/documentation/images/image102.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/static/documentation/images/image104.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/static/documentation/images/image106.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/static/documentation/images/image109.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/static/documentation/images/image110.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/static/documentation/images/image113.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/static/documentation/images/image114.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/static/documentation/images/image115.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/static/documentation/images/image119_detrac.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/static/documentation/images/image120.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/static/documentation/images/image121_detrac.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/static/documentation/images/image122.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/static/documentation/images/image123.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/static/documentation/images/image124.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/static/documentation/images/image125.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/static/documentation/images/image126.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/static/documentation/images/image127.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/static/documentation/images/image128.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/static/documentation/images/image130.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/static/documentation/images/image131_detrac.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/static/documentation/images/image133.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/static/documentation/images/image134.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/static/documentation/images/image135.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/static/documentation/images/image136.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/static/documentation/images/image137.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/static/documentation/images/image138_mapillary_vistas.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/static/documentation/images/image139_mapillary_vistas.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/static/documentation/images/image140.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/static/documentation/images/image141.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/static/documentation/images/image143.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/static/documentation/images/image144_detrac.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/static/documentation/images/image145.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/static/documentation/images/image146.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/static/documentation/images/image147.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/static/documentation/images/image148.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/static/documentation/images/image149.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/static/documentation/images/image151.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/static/documentation/images/image152_detrac.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/static/documentation/images/image153.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/static/documentation/images/image154.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/static/documentation/images/image155.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/static/documentation/images/image157_mapillary_vistas.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/static/documentation/images/image158_mapillary_vistas.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/static/documentation/images/image159_mapillary_vistas.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/static/documentation/images/image160_mapillary_vistas.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/static/documentation/images/image161.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/static/documentation/images/image162_detrac.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/static/documentation/images/image163_detrac.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/static/documentation/images/image164_mapillary_vistas.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/static/documentation/images/image165_detrac.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/static/documentation/images/image166.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/static/documentation/images/image167.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/static/documentation/images/image168.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/static/documentation/images/image169.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/static/documentation/images/image170.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/static/documentation/images/image171.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/static/documentation/images/image172.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/static/documentation/images/image173.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/static/documentation/images/image174.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/static/documentation/images/image175.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/static/documentation/images/image176.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/static/documentation/images/image177_mapillary_vistas.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/static/documentation/images/image178_mapillary_vistas.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/static/documentation/images/image179_mapillary_vistas.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/static/documentation/images/image180_mapillary_vistas.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/static/documentation/images/image181.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/static/documentation/images/image182_mapillary_vistas.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/static/documentation/js/3rdparty/showdown-toc.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/static/documentation/js/3rdparty/showdown.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/static/documentation/js/3rdparty/showdown.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/templates/documentation/base_page.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/templates/documentation/user_guide.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/templates/documentation/xml_format.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/tests.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/authentication/tests.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/urls.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/user_guide.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/views.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/documentation/xml_format.md" beforeDir="false" />
+    <list default="true" id="e2fd5767-3d4d-4226-8c86-65e39b2024b3" name="Default Changelist" comment="添加文档">
+      <change afterPath="$PROJECT_DIR$/an/.browserslistrc" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/an/.eslintrc.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/an/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/an/README.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/an/babel.config.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/an/package-lock.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/an/package.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/an/public/favicon.ico" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/an/public/index.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/an/src/App.vue" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/an/src/assets/css/global.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/an/src/assets/font/demo.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/an/src/assets/font/demo_index.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/an/src/assets/font/iconfont.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/an/src/assets/font/iconfont.eot" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/an/src/assets/font/iconfont.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/an/src/assets/font/iconfont.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/an/src/assets/font/iconfont.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/an/src/assets/font/iconfont.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/an/src/assets/font/iconfont.woff" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/an/src/assets/font/iconfont.woff2" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/an/src/assets/image/1.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/an/src/assets/image/2.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/an/src/assets/js/DrawTools.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/an/src/assets/js/jszip-utils.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/an/src/assets/js/jszip-utils.min.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/an/src/assets/js/jszip.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/an/src/assets/js/jszip.min.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/an/src/components/allproject/project.vue" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/an/src/components/allproject/projectitem.vue" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/an/src/components/login.vue" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/an/src/components/management/setting.vue" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/an/src/components/newproject/basicinfo.vue" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/an/src/components/newproject/module.vue" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/an/src/components/newproject/newproject.vue" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/an/src/components/newproject/newprojectitem.vue" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/an/src/components/newproject/uploaddata.vue" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/an/src/components/usercenter/user.vue" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/an/src/components/workbench/drawPage.vue" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/an/src/components/workbench/setting.vue" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/an/src/cvat-canvas/.eslintrc.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/an/src/cvat-canvas/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/an/src/cvat-canvas/README.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/an/src/cvat-canvas/images/states.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/an/src/cvat-canvas/package-lock.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/an/src/cvat-canvas/package.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/an/src/cvat-canvas/postcss.config.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/an/src/cvat-canvas/src/scss/canvas.scss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/an/src/cvat-canvas/src/typescript/autoborderHandler.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/an/src/cvat-canvas/src/typescript/canvas.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/an/src/cvat-canvas/src/typescript/canvasController.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/an/src/cvat-canvas/src/typescript/canvasModel.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/an/src/cvat-canvas/src/typescript/canvasView.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/an/src/cvat-canvas/src/typescript/consts.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/an/src/cvat-canvas/src/typescript/cuboid.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/an/src/cvat-canvas/src/typescript/drawHandler.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/an/src/cvat-canvas/src/typescript/editHandler.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/an/src/cvat-canvas/src/typescript/groupHandler.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/an/src/cvat-canvas/src/typescript/master.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/an/src/cvat-canvas/src/typescript/mergeHandler.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/an/src/cvat-canvas/src/typescript/shared.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/an/src/cvat-canvas/src/typescript/splitHandler.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/an/src/cvat-canvas/src/typescript/svg.patch.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/an/src/cvat-canvas/src/typescript/zoomHandler.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/an/src/cvat-canvas/tsconfig.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/an/src/cvat-canvas/webpack.config.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/an/src/cvat-core/.dockerignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/an/src/cvat-core/.eslintrc.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/an/src/cvat-core/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/an/src/cvat-core/README.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/an/src/cvat-core/jest.config.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/an/src/cvat-core/jsdoc.config.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/an/src/cvat-core/package.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/an/src/cvat-core/src/annotation-formats.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/an/src/cvat-core/src/annotations-collection.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/an/src/cvat-core/src/annotations-filter.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/an/src/cvat-core/src/annotations-history.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/an/src/cvat-core/src/annotations-objects.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/an/src/cvat-core/src/annotations-saver.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/an/src/cvat-core/src/annotations.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/an/src/cvat-core/src/api-implementation.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/an/src/cvat-core/src/api.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/an/src/cvat-core/src/common.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/an/src/cvat-core/src/config.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/an/src/cvat-core/src/download.worker.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/an/src/cvat-core/src/enums.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/an/src/cvat-core/src/exceptions.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/an/src/cvat-core/src/frames.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/an/src/cvat-core/src/labels.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/an/src/cvat-core/src/log.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/an/src/cvat-core/src/logger-storage.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/an/src/cvat-core/src/object-state.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/an/src/cvat-core/src/plugins.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/an/src/cvat-core/src/server-proxy.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/an/src/cvat-core/src/session.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/an/src/cvat-core/src/statistics.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/an/src/cvat-core/src/user.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/an/src/cvat-core/tests/api/annotations.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/an/src/cvat-core/tests/api/frames.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/an/src/cvat-core/tests/api/jobs.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/an/src/cvat-core/tests/api/object-state.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/an/src/cvat-core/tests/api/plugins.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/an/src/cvat-core/tests/api/server.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/an/src/cvat-core/tests/api/tasks.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/an/src/cvat-core/tests/api/user.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/an/src/cvat-core/tests/internal/filter.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/an/src/cvat-core/tests/mocks/dummy-data.mock.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/an/src/cvat-core/tests/mocks/server-proxy.mock.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/an/src/cvat-core/webpack.config.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/an/src/cvat-data/.eslintignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/an/src/cvat-data/.eslintrc.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/an/src/cvat-data/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/an/src/cvat-data/README.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/an/src/cvat-data/package-lock.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/an/src/cvat-data/package.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/an/src/cvat-data/src/js/3rdparty/Decoder.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/an/src/cvat-data/src/js/3rdparty/Decoder.worker.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/an/src/cvat-data/src/js/3rdparty/README.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/an/src/cvat-data/src/js/3rdparty/avc.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/an/src/cvat-data/src/js/3rdparty/mp4.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/an/src/cvat-data/src/js/3rdparty_patch.diff" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/an/src/cvat-data/src/js/cvat-data.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/an/src/cvat-data/src/js/unzip_imgs.worker.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/an/src/cvat-data/webpack.config.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/an/src/main.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/an/src/plugins/element.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/an/src/router/index.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/an/src/store/index.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/an/src/views/Home.vue" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/an/src/views/LoginPage.vue" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/an/src/views/workbench.vue" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/an/vue.config.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/.dockerignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/.env" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/.eslintrc.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/README.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/index.d.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/package-lock.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/package.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/postcss.config.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/react_nginx.conf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/actions/about-actions.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/actions/annotation-actions.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/actions/auth-actions.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/actions/boundaries-actions.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/actions/formats-actions.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/actions/models-actions.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/actions/notification-actions.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/actions/plugins-actions.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/actions/settings-actions.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/actions/share-actions.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/actions/shortcuts-actions.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/actions/tasks-actions.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/actions/useragreements-actions.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/actions/users-actions.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/assets/account-icon.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/assets/back-jump-icon.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/assets/background-icon.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/assets/cube-icon.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/assets/cursor-icon.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/assets/cvat-logo.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/assets/empty-tasks-icon.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/assets/exit-fullscreen-icon.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/assets/first-icon.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/assets/fit-to-window-icon.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/assets/foreground-icon.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/assets/forward-jump-icon.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/assets/fullscreen-icon.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/assets/group-icon.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/assets/info-icon.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/assets/last-icon.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/assets/main-menu-icon.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/assets/menu-icon.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/assets/merge-icon.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/assets/move-icon.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/assets/next-icon.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/assets/object-filter-icon.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/assets/object-hide-icon.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/assets/object-inside-icon.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/assets/object-occlude-icon.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/assets/object-outside-icon.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/assets/pause-icon.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/assets/play-icon.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/assets/plus-icon.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/assets/point-icon.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/assets/polygon-icon.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/assets/polyline-icon.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/assets/previous-icon.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/assets/rectangle-icon.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/assets/redo-icon.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/assets/rotate-icon.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/assets/save-icon.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/assets/settings-icon.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/assets/show-sidebar-icon.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/assets/side-icon-object-lock.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/assets/split-icon.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/assets/tag-icon.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/assets/undo-icon.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/assets/zoom-icon.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/base.scss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/components/actions-menu/actions-menu.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/components/actions-menu/dump-submenu.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/components/actions-menu/export-submenu.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/components/actions-menu/load-submenu.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/components/actions-menu/styles.scss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/components/annotation-page/annotation-page.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/components/annotation-page/annotations-filters-input.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/components/annotation-page/attribute-annotation-workspace/attribute-annotation-sidebar/attribute-annotation-sidebar.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/components/annotation-page/attribute-annotation-workspace/attribute-annotation-sidebar/attribute-editor.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/components/annotation-page/attribute-annotation-workspace/attribute-annotation-sidebar/attribute-switcher.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/components/annotation-page/attribute-annotation-workspace/attribute-annotation-sidebar/object-basics-edtior.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/components/annotation-page/attribute-annotation-workspace/attribute-annotation-sidebar/object-switcher.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/components/annotation-page/attribute-annotation-workspace/attribute-annotation-workspace.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/components/annotation-page/attribute-annotation-workspace/styles.scss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/components/annotation-page/standard-workspace/canvas-context-menu.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/components/annotation-page/standard-workspace/canvas-point-context-menu.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/components/annotation-page/standard-workspace/canvas-wrapper.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/components/annotation-page/standard-workspace/controls-side-bar/controls-side-bar.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/components/annotation-page/standard-workspace/controls-side-bar/cursor-control.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/components/annotation-page/standard-workspace/controls-side-bar/dextr-plugin.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/components/annotation-page/standard-workspace/controls-side-bar/draw-cuboid-control.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/components/annotation-page/standard-workspace/controls-side-bar/draw-points-control.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/components/annotation-page/standard-workspace/controls-side-bar/draw-polygon-control.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/components/annotation-page/standard-workspace/controls-side-bar/draw-polyline-control.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/components/annotation-page/standard-workspace/controls-side-bar/draw-rectangle-control.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/components/annotation-page/standard-workspace/controls-side-bar/draw-shape-popover.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/components/annotation-page/standard-workspace/controls-side-bar/fit-control.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/components/annotation-page/standard-workspace/controls-side-bar/group-control.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/components/annotation-page/standard-workspace/controls-side-bar/merge-control.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/components/annotation-page/standard-workspace/controls-side-bar/move-control.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/components/annotation-page/standard-workspace/controls-side-bar/resize-control.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/components/annotation-page/standard-workspace/controls-side-bar/rotate-control.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/components/annotation-page/standard-workspace/controls-side-bar/setup-tag-control.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/components/annotation-page/standard-workspace/controls-side-bar/setup-tag-popover.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/components/annotation-page/standard-workspace/controls-side-bar/split-control.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/components/annotation-page/standard-workspace/objects-side-bar/appearance-block.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/components/annotation-page/standard-workspace/objects-side-bar/color-changer.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/components/annotation-page/standard-workspace/objects-side-bar/label-item.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/components/annotation-page/standard-workspace/objects-side-bar/labels-list.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/components/annotation-page/standard-workspace/objects-side-bar/object-item.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/components/annotation-page/standard-workspace/objects-side-bar/objects-list-header.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/components/annotation-page/standard-workspace/objects-side-bar/objects-list.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/components/annotation-page/standard-workspace/objects-side-bar/objects-side-bar.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/components/annotation-page/standard-workspace/objects-side-bar/styles.scss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/components/annotation-page/standard-workspace/propagate-confirm.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/components/annotation-page/standard-workspace/standard-workspace.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/components/annotation-page/standard-workspace/styles.scss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/components/annotation-page/styles.scss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/components/annotation-page/top-bar/annotation-menu.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/components/annotation-page/top-bar/left-group.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/components/annotation-page/top-bar/player-buttons.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/components/annotation-page/top-bar/player-navigation.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/components/annotation-page/top-bar/reid-plugin.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/components/annotation-page/top-bar/right-group.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/components/annotation-page/top-bar/statistics-modal.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/components/annotation-page/top-bar/top-bar.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/components/create-model-page/create-model-content.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/components/create-model-page/create-model-form.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/components/create-model-page/create-model-page.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/components/create-model-page/styles.scss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/components/create-task-page/advanced-configuration-form.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/components/create-task-page/basic-configuration-form.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/components/create-task-page/create-task-content.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/components/create-task-page/create-task-page.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/components/create-task-page/styles.scss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/components/cvat-app.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/components/feedback/feedback.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/components/feedback/styles.scss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/components/file-manager/file-manager.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/components/file-manager/styles.scss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/components/global-error-boundary/global-error-boundary.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/components/global-error-boundary/styles.scss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/components/header/header.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/components/header/styles.scss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/components/labels-editor/common.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/components/labels-editor/constructor-creator.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/components/labels-editor/constructor-updater.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/components/labels-editor/constructor-viewer-item.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/components/labels-editor/constructor-viewer.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/components/labels-editor/label-form.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/components/labels-editor/labels-editor.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/components/labels-editor/raw-viewer.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/components/labels-editor/styles.scss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/components/login-page/cookie-policy-drawer.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/components/login-page/login-form.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/components/login-page/login-page.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/components/model-runner-modal/model-runner-modal.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/components/model-runner-modal/styles.scss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/components/models-page/built-model-item.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/components/models-page/built-models-list.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/components/models-page/empty-list.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/components/models-page/models-page.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/components/models-page/styles.scss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/components/models-page/top-bar.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/components/models-page/uploaded-model-item.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/components/models-page/uploaded-models-list.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/components/register-page/register-form.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/components/register-page/register-page.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/components/register-page/styles.scss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/components/settings-page/player-settings.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/components/settings-page/settings-page.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/components/settings-page/styles.scss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/components/settings-page/workspace-settings.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/components/shortcuts-dialog/shortcuts-dialog.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/components/task-page/details.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/components/task-page/job-list.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/components/task-page/styles.scss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/components/task-page/task-page.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/components/task-page/top-bar.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/components/task-page/user-selector.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/components/tasks-page/empty-list.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/components/tasks-page/styles.scss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/components/tasks-page/task-item.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/components/tasks-page/task-list.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/components/tasks-page/tasks-page.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/components/tasks-page/top-bar.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/consts.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/containers/actions-menu/actions-menu.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/containers/annotation-page/annotation-page.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/containers/annotation-page/standard-workspace/canvas-context-menu.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/containers/annotation-page/standard-workspace/canvas-point-context-menu.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/containers/annotation-page/standard-workspace/canvas-wrapper.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/containers/annotation-page/standard-workspace/controls-side-bar/controls-side-bar.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/containers/annotation-page/standard-workspace/controls-side-bar/draw-shape-popover.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/containers/annotation-page/standard-workspace/controls-side-bar/setup-tag-popover.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/containers/annotation-page/standard-workspace/objects-side-bar/label-item.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/containers/annotation-page/standard-workspace/objects-side-bar/labels-list.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/containers/annotation-page/standard-workspace/objects-side-bar/object-item.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/containers/annotation-page/standard-workspace/objects-side-bar/objects-list.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/containers/annotation-page/standard-workspace/objects-side-bar/objects-side-bar.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/containers/annotation-page/standard-workspace/propagate-confirm.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/containers/annotation-page/top-bar/annotation-menu.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/containers/annotation-page/top-bar/statistics-modal.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/containers/annotation-page/top-bar/top-bar.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/containers/create-model-page/create-model-page.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/containers/create-task-page/create-task-page.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/containers/file-manager/file-manager.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/containers/header/header.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/containers/login-page/login-page.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/containers/model-runner-dialog/model-runner-dialog.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/containers/models-page/models-page.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/containers/register-page/register-page.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/containers/settings-page/player-settings.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/containers/settings-page/settings-page.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/containers/settings-page/workspace-settings.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/containers/task-page/details.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/containers/task-page/job-list.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/containers/task-page/task-page.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/containers/tasks-page/task-item.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/containers/tasks-page/tasks-list.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/containers/tasks-page/tasks-page.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/cvat-canvas-wrapper.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/cvat-core-wrapper.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/cvat-logger.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/cvat-store.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/icons.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/index.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/index.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/reducers/about-reducer.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/reducers/annotation-reducer.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/reducers/auth-reducer.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/reducers/formats-reducer.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/reducers/interfaces.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/reducers/models-reducer.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/reducers/notifications-reducer.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/reducers/plugins-reducer.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/reducers/root-reducer.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/reducers/settings-reducer.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/reducers/share-reducer.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/reducers/shortcuts-reducer.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/reducers/tasks-reducer.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/reducers/useragreements-reducer.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/reducers/users-reducer.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/styles.scss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/utils/dextr-utils.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/utils/enviroment.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/utils/git-utils.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/utils/math.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/utils/plugin-checker.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/utils/redux.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/utils/reid-utils.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/src/utils/validation-patterns.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/tsconfig.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cvat-ui/webpack.config.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/admin/404.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/admin/500.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/admin/actions.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/admin/app_index.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/admin/auth/user/add_form.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/admin/auth/user/change_password.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/admin/base.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/admin/base_site.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/admin/change_form.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/admin/change_form_object_tools.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/admin/change_list.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/admin/change_list_object_tools.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/admin/change_list_results.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/admin/date_hierarchy.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/admin/delete_confirmation.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/admin/delete_selected_confirmation.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/admin/edit_inline/stacked.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/admin/edit_inline/tabular.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/admin/filter.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/admin/includes/fieldset.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/admin/includes/object_delete_summary.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/admin/index.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/admin/invalid_setup.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/admin/login.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/admin/object_history.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/admin/pagination.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/admin/popup_response.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/admin/prepopulated_fields_js.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/admin/search_form.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/admin/submit_line.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/admin/widgets/clearable_file_input.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/admin/widgets/foreign_key_raw_id.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/admin/widgets/many_to_many_raw_id.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/admin/widgets/radio.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/admin/widgets/related_widget_wrapper.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/admin/widgets/split_datetime.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/admin/widgets/url.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/registration/logged_out.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/registration/password_change_done.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/registration/password_change_form.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/registration/password_reset_complete.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/registration/password_reset_confirm.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/registration/password_reset_done.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/registration/password_reset_email.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/registration/password_reset_form.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/Dockerfile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LICENSE" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/analytics/elasticsearch/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/components/analytics/elasticsearch/Dockerfile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/analytics/kibana/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/components/analytics/kibana/Dockerfile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/analytics/logstash/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/components/analytics/logstash/Dockerfile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cvat/apps/engine/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/engine/admin.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cvat/apps/engine/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/engine/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cvat/apps/log_viewer/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/log_viewer/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cvat/apps/log_viewer/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/log_viewer/views.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cvat/settings/base.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/settings/base.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/wsgi.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/wsgi.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -226,6 +475,8 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Python Script" />
+        <option value="HTML File" />
+        <option value="JavaScript File" />
       </list>
     </option>
   </component>
@@ -246,6 +497,7 @@
   <component name="PropertiesComponent">
     <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
     <property name="DatabaseDriversLRU" value="postgresql" />
+    <property name="DefaultHtmlFileTemplate" value="HTML File" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
@@ -263,7 +515,7 @@
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
     <property name="node.js.selected.package.standard" value="" />
     <property name="nodejs_package_manager_path" value="npm" />
-    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
+    <property name="settings.editor.selected.configurable" value="editor.preferences.tabs" />
     <property name="ts.external.directory.path" value="D:\Jetbrains\apps\PyCharm-P\ch-0\201.7846.77\plugins\JavaScriptLanguage\jsLanguageServicesImpl\external" />
   </component>
   <component name="RecentsManager">
@@ -271,8 +523,8 @@
       <recent name="W:\softsz\WebTagging\开发文档" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="W:\softsz\WebTagging\cvat\apps" />
       <recent name="W:\softsz\WebTagging" />
+      <recent name="W:\softsz\WebTagging\cvat\apps" />
     </key>
   </component>
   <component name="RunManager">
@@ -381,7 +633,11 @@
       <workItem from="1598057600783" duration="18000" />
       <workItem from="1598081055408" duration="28000" />
       <workItem from="1598081275400" duration="602000" />
-      <workItem from="1598083633458" duration="919000" />
+      <workItem from="1598083633458" duration="11523000" />
+      <workItem from="1598276022608" duration="8000" />
+      <workItem from="1598280043426" duration="15512000" />
+      <workItem from="1598402334487" duration="590000" />
+      <workItem from="1598418004166" duration="600000" />
     </task>
     <task id="LOCAL-00001" summary="初始化CVAT">
       <created>1596186022091</created>
@@ -544,7 +800,14 @@
       <option name="project" value="LOCAL" />
       <updated>1597995695173</updated>
     </task>
-    <option name="localTasksCounter" value="24" />
+    <task id="LOCAL-00024" summary="添加文档">
+      <created>1598085436482</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1598085436482</updated>
+    </task>
+    <option name="localTasksCounter" value="25" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -589,17 +852,18 @@
     <MESSAGE value="2020-8-17" />
     <MESSAGE value="2020-8-18" />
     <MESSAGE value="2020-8-21" />
-    <option name="LAST_COMMIT_MESSAGE" value="2020-8-21" />
+    <MESSAGE value="添加文档" />
+    <option name="LAST_COMMIT_MESSAGE" value="添加文档" />
   </component>
   <component name="WindowStateProjectService">
     <state x="361" y="71" key="#Deployment" timestamp="1597900221901">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="361" y="71" key="#Deployment/0.0.1536.824/1920.0.1440.860@0.0.1536.824" timestamp="1597900221901" />
-    <state x="630" y="303" key="#ESLint" timestamp="1596420812269">
+    <state x="630" y="303" key="#ESLint" timestamp="1598323626843">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="630" y="303" key="#ESLint/0.0.1536.824/1920.0.1440.860@0.0.1536.824" timestamp="1596420812269" />
+    <state x="630" y="303" key="#ESLint/0.0.1536.824/1920.0.1440.860@0.0.1536.824" timestamp="1598323626843" />
     <state x="2438" y="60" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1596778377449">
       <screen x="1920" y="0" width="1440" height="860" />
     </state>
@@ -639,14 +903,14 @@
     </state>
     <state width="1493" height="178" key="GridCell.Tab.0.right/0.0.1536.824/1920.0.1440.860@0.0.1536.824" timestamp="1596600762535" />
     <state width="1493" height="178" key="GridCell.Tab.0.right/0.0.1536.824/1920.0.1440.860@1920.0.1440.860" timestamp="1596451835240" />
-    <state x="270" y="57" key="SettingsEditor" timestamp="1597995433552">
+    <state x="315" y="73" key="SettingsEditor" timestamp="1598327908018">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="270" y="57" key="SettingsEditor/0.0.1536.824/1920.0.1440.860@0.0.1536.824" timestamp="1597995433552" />
-    <state x="361" y="145" key="Vcs.Push.Dialog.v2" timestamp="1597995778102">
+    <state x="315" y="73" key="SettingsEditor/0.0.1536.824/1920.0.1440.860@0.0.1536.824" timestamp="1598327908018" />
+    <state x="361" y="145" key="Vcs.Push.Dialog.v2" timestamp="1598085439162">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="361" y="145" key="Vcs.Push.Dialog.v2/0.0.1536.824/1920.0.1440.860@0.0.1536.824" timestamp="1597995778102" />
+    <state x="361" y="145" key="Vcs.Push.Dialog.v2/0.0.1536.824/1920.0.1440.860@0.0.1536.824" timestamp="1598085439162" />
     <state x="361" y="145" key="Vcs.Push.Dialog.v2/0.0.1536.824@0.0.1536.824" timestamp="1596699154573" />
     <state x="264" y="1" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser" timestamp="1597286850927">
       <screen x="0" y="0" width="1536" height="824" />
@@ -656,23 +920,23 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="563" y="325" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1536.824/1920.0.1440.860@0.0.1536.824" timestamp="1597662300050" />
-    <state x="1920" y="0" width="1185" height="556" maximized="true" key="dock-window-1" timestamp="1597890315572">
+    <state x="1920" y="4" width="1101" height="610" maximized="true" key="dock-window-1" timestamp="1598089464603">
       <screen x="1920" y="0" width="1440" height="860" />
     </state>
-    <state x="1920" y="0" width="1185" height="556" maximized="true" key="dock-window-1/0.0.1536.824/1920.0.1440.860@0.0.1536.824" timestamp="1597890315572" />
-    <state x="1920" y="0" width="1185" height="556" maximized="true" key="dock-window-2" timestamp="1597892955040">
+    <state x="1920" y="4" width="1101" height="610" maximized="true" key="dock-window-1/0.0.1536.824/1920.0.1440.860@0.0.1536.824" timestamp="1598089464603" />
+    <state x="1920" y="0" width="1101" height="607" maximized="true" key="dock-window-2" timestamp="1598089464603">
       <screen x="1920" y="0" width="1440" height="860" />
     </state>
-    <state x="1920" y="0" width="1185" height="556" maximized="true" key="dock-window-2/0.0.1536.824/1920.0.1440.860@0.0.1536.824" timestamp="1597892955040" />
+    <state x="1920" y="0" width="1101" height="607" maximized="true" key="dock-window-2/0.0.1536.824/1920.0.1440.860@0.0.1536.824" timestamp="1598089464603" />
     <state x="0" y="80" width="1550" height="830" key="dock-window-2/0.0.1536.824@0.0.1536.824" timestamp="1596697390379" />
-    <state x="1920" y="0" width="1185" height="556" maximized="true" key="dock-window-3" timestamp="1597893028175">
+    <state x="1920" y="0" width="1101" height="586" key="dock-window-3" timestamp="1598089652716">
       <screen x="1920" y="0" width="1440" height="860" />
     </state>
-    <state x="1920" y="0" width="1185" height="556" maximized="true" key="dock-window-3/0.0.1536.824/1920.0.1440.860@0.0.1536.824" timestamp="1597893028175" />
-    <state x="1920" y="0" width="1185" height="572" maximized="true" key="dock-window-4" timestamp="1597893496469">
+    <state x="1920" y="0" width="1101" height="586" key="dock-window-3/0.0.1536.824/1920.0.1440.860@0.0.1536.824" timestamp="1598089652716" />
+    <state x="1920" y="0" width="1101" height="571" maximized="true" key="dock-window-4" timestamp="1598100090001">
       <screen x="1920" y="0" width="1440" height="860" />
     </state>
-    <state x="1920" y="0" width="1185" height="572" maximized="true" key="dock-window-4/0.0.1536.824/1920.0.1440.860@0.0.1536.824" timestamp="1597893496469" />
+    <state x="1920" y="0" width="1101" height="571" maximized="true" key="dock-window-4/0.0.1536.824/1920.0.1440.860@0.0.1536.824" timestamp="1598100090001" />
     <state x="1920" y="144" width="1185" height="488" maximized="true" key="dock-window-5" timestamp="1597895041999">
       <screen x="1920" y="0" width="1440" height="860" />
     </state>
@@ -693,9 +957,9 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="647" y="143" width="571" height="538" key="ftp.server.browser/0.0.1536.824/1920.0.1440.860@0.0.1536.824" timestamp="1597900220045" />
-    <state x="431" y="145" width="672" height="678" key="search.everywhere.popup" timestamp="1597826045474">
+    <state x="431" y="145" width="672" height="678" key="search.everywhere.popup" timestamp="1598327996670">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="431" y="145" width="672" height="678" key="search.everywhere.popup/0.0.1536.824/1920.0.1440.860@0.0.1536.824" timestamp="1597826045474" />
+    <state x="431" y="145" width="672" height="678" key="search.everywhere.popup/0.0.1536.824/1920.0.1440.860@0.0.1536.824" timestamp="1598327996670" />
   </component>
 </project>
