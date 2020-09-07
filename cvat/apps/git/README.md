@@ -1,10 +1,10 @@
-## Git Integration For Annotation Storage
+## 标注存储的Git集成
 
-### Description
+### 说明
 
-The application allows to integrate any git repository like an annotation storage for a CVAT task.
-It supports github or gitlab repositories.
-The SSH protocol is used for an authorization.
+该应用程序允许集成任何git存储库，比如CVAT任务的注释存储。
+它支持github或gitlab存储库。
+SSH协议用于授权。
 
 ### Using
 
