@@ -19,14 +19,9 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e2fd5767-3d4d-4226-8c86-65e39b2024b3" name="Default Changelist" comment="2020-9-7">
-      <change afterPath="$PROJECT_DIR$/documentation/installation.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/documentation/user_guide.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/documentation/xml_format.md" afterDir="false" />
+    <list default="true" id="e2fd5767-3d4d-4226-8c86-65e39b2024b3" name="Default Changelist" comment="开始编写安装指南">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/analytics/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/components/analytics/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/dataset_manager/formats/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/dataset_manager/formats/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/documentation/installation.md" beforeDir="false" afterPath="$PROJECT_DIR$/documentation/installation.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -209,7 +204,7 @@
       <workItem from="1598917220944" duration="47000" />
       <workItem from="1598921118836" duration="833000" />
       <workItem from="1599089596216" duration="12000" />
-      <workItem from="1599442493143" duration="3655000" />
+      <workItem from="1599442493143" duration="4307000" />
     </task>
     <task id="LOCAL-00001" summary="初始化CVAT">
       <created>1596186022091</created>
@@ -400,7 +395,14 @@
       <option name="project" value="LOCAL" />
       <updated>1599445178730</updated>
     </task>
-    <option name="localTasksCounter" value="28" />
+    <task id="LOCAL-00028" summary="开始编写安装指南">
+      <created>1599447114524</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1599447114526</updated>
+    </task>
+    <option name="localTasksCounter" value="29" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -448,7 +450,8 @@
     <MESSAGE value="添加文档" />
     <MESSAGE value="2020-8-26" />
     <MESSAGE value="2020-9-7" />
-    <option name="LAST_COMMIT_MESSAGE" value="2020-9-7" />
+    <MESSAGE value="开始编写安装指南" />
+    <option name="LAST_COMMIT_MESSAGE" value="开始编写安装指南" />
   </component>
   <component name="WindowStateProjectService">
     <state x="361" y="71" key="#Deployment" timestamp="1597900221901">
@@ -502,11 +505,11 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="315" y="73" key="SettingsEditor/0.0.1536.824/1920.0.1440.860@0.0.1536.824" timestamp="1598327908018" />
-    <state x="361" y="145" key="Vcs.Push.Dialog.v2" timestamp="1599445181618">
+    <state x="361" y="145" key="Vcs.Push.Dialog.v2" timestamp="1599447186741">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="361" y="145" key="Vcs.Push.Dialog.v2/0.0.1536.824/1920.0.1440.860@0.0.1536.824" timestamp="1598419127725" />
-    <state x="361" y="145" key="Vcs.Push.Dialog.v2/0.0.1536.824@0.0.1536.824" timestamp="1599445181618" />
+    <state x="361" y="145" key="Vcs.Push.Dialog.v2/0.0.1536.824@0.0.1536.824" timestamp="1599447186741" />
     <state x="264" y="1" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser" timestamp="1597286850927">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
@@ -552,10 +555,10 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="647" y="143" width="571" height="538" key="ftp.server.browser/0.0.1536.824/1920.0.1440.860@0.0.1536.824" timestamp="1597900220045" />
-    <state x="431" y="145" width="672" height="678" key="search.everywhere.popup" timestamp="1599442772961">
+    <state x="431" y="145" width="672" height="678" key="search.everywhere.popup" timestamp="1599447185173">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="431" y="145" width="672" height="678" key="search.everywhere.popup/0.0.1536.824/1920.0.1440.860@0.0.1536.824" timestamp="1598419125943" />
-    <state x="431" y="145" width="672" height="678" key="search.everywhere.popup/0.0.1536.824@0.0.1536.824" timestamp="1599442772961" />
+    <state x="431" y="145" width="672" height="678" key="search.everywhere.popup/0.0.1536.824@0.0.1536.824" timestamp="1599447185173" />
   </component>
 </project>
