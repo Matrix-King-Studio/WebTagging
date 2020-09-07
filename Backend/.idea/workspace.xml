@@ -19,10 +19,7 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e2fd5767-3d4d-4226-8c86-65e39b2024b3" name="Default Changelist" comment="开始编写安装指南">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/documentation/installation.md" beforeDir="false" afterPath="$PROJECT_DIR$/documentation/installation.md" afterDir="false" />
-    </list>
+    <list default="true" id="e2fd5767-3d4d-4226-8c86-65e39b2024b3" name="Default Changelist" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -41,7 +38,7 @@
     </option>
   </component>
   <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
   <component name="ProjectId" id="1fRD1kzyRs1b1KXUxtrvvcU8lH1" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
@@ -64,7 +61,7 @@
     <property name="WebServerToolWindowPanel.toolwindow.show.date" value="false" />
     <property name="WebServerToolWindowPanel.toolwindow.show.permissions" value="false" />
     <property name="WebServerToolWindowPanel.toolwindow.show.size" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/.." />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.standard" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
@@ -72,7 +69,7 @@
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
     <property name="node.js.selected.package.standard" value="" />
     <property name="nodejs_package_manager_path" value="npm" />
-    <property name="settings.editor.selected.configurable" value="editor.preferences.tabs" />
+    <property name="settings.editor.selected.configurable" value="project.propVCSSupport.Mappings" />
     <property name="ts.external.directory.path" value="D:\Jetbrains\apps\PyCharm-P\ch-0\201.7846.77\plugins\JavaScriptLanguage\jsLanguageServicesImpl\external" />
   </component>
   <component name="RecentsManager">
@@ -204,7 +201,8 @@
       <workItem from="1598917220944" duration="47000" />
       <workItem from="1598921118836" duration="833000" />
       <workItem from="1599089596216" duration="12000" />
-      <workItem from="1599442493143" duration="4307000" />
+      <workItem from="1599442493143" duration="6930000" />
+      <workItem from="1599454890358" duration="1063000" />
     </task>
     <task id="LOCAL-00001" summary="初始化CVAT">
       <created>1596186022091</created>
@@ -402,7 +400,14 @@
       <option name="project" value="LOCAL" />
       <updated>1599447114526</updated>
     </task>
-    <option name="localTasksCounter" value="29" />
+    <task id="LOCAL-00029" summary="初步完成安装指南">
+      <created>1599447872660</created>
+      <option name="number" value="00029" />
+      <option name="presentableId" value="LOCAL-00029" />
+      <option name="project" value="LOCAL" />
+      <updated>1599447872660</updated>
+    </task>
+    <option name="localTasksCounter" value="30" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -428,7 +433,7 @@
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
     <ignored-roots>
-      <path value="$PROJECT_DIR$/.." />
+      <path value="$PROJECT_DIR$" />
     </ignored-roots>
     <MESSAGE value="初始化CVAT" />
     <MESSAGE value="更改登录界面语言+接口文档初始化" />
@@ -451,7 +456,8 @@
     <MESSAGE value="2020-8-26" />
     <MESSAGE value="2020-9-7" />
     <MESSAGE value="开始编写安装指南" />
-    <option name="LAST_COMMIT_MESSAGE" value="开始编写安装指南" />
+    <MESSAGE value="初步完成安装指南" />
+    <option name="LAST_COMMIT_MESSAGE" value="初步完成安装指南" />
   </component>
   <component name="WindowStateProjectService">
     <state x="361" y="71" key="#Deployment" timestamp="1597900221901">
@@ -476,11 +482,12 @@
     </state>
     <state x="480" y="169" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.1536.824/1920.0.1440.860@0.0.1536.824" timestamp="1597809267598" />
     <state x="2370" y="176" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.1536.824/1920.0.1440.860@1920.0.1440.860" timestamp="1596442097090" />
-    <state x="533" y="177" key="FileChooserDialogImpl" timestamp="1597900135020">
+    <state x="533" y="177" key="FileChooserDialogImpl" timestamp="1599455943337">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="533" y="177" key="FileChooserDialogImpl/0.0.1536.824/1920.0.1440.860@0.0.1536.824" timestamp="1597900135020" />
     <state x="2420" y="185" key="FileChooserDialogImpl/0.0.1536.824/1920.0.1440.860@1920.0.1440.860" timestamp="1596785526190" />
+    <state x="533" y="177" key="FileChooserDialogImpl/0.0.1536.824@0.0.1536.824" timestamp="1599455943337" />
     <state width="1493" height="178" key="GridCell.Tab.0.bottom" timestamp="1596600762535">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
@@ -501,15 +508,16 @@
     </state>
     <state width="1493" height="178" key="GridCell.Tab.0.right/0.0.1536.824/1920.0.1440.860@0.0.1536.824" timestamp="1596600762535" />
     <state width="1493" height="178" key="GridCell.Tab.0.right/0.0.1536.824/1920.0.1440.860@1920.0.1440.860" timestamp="1596451835240" />
-    <state x="315" y="73" key="SettingsEditor" timestamp="1598327908018">
+    <state x="315" y="73" key="SettingsEditor" timestamp="1599455957806">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="315" y="73" key="SettingsEditor/0.0.1536.824/1920.0.1440.860@0.0.1536.824" timestamp="1598327908018" />
-    <state x="361" y="145" key="Vcs.Push.Dialog.v2" timestamp="1599447186741">
+    <state x="315" y="73" key="SettingsEditor/0.0.1536.824@0.0.1536.824" timestamp="1599455957806" />
+    <state x="361" y="145" key="Vcs.Push.Dialog.v2" timestamp="1599447973619">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="361" y="145" key="Vcs.Push.Dialog.v2/0.0.1536.824/1920.0.1440.860@0.0.1536.824" timestamp="1598419127725" />
-    <state x="361" y="145" key="Vcs.Push.Dialog.v2/0.0.1536.824@0.0.1536.824" timestamp="1599447186741" />
+    <state x="361" y="145" key="Vcs.Push.Dialog.v2/0.0.1536.824@0.0.1536.824" timestamp="1599447973619" />
     <state x="264" y="1" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser" timestamp="1597286850927">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
@@ -555,10 +563,10 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="647" y="143" width="571" height="538" key="ftp.server.browser/0.0.1536.824/1920.0.1440.860@0.0.1536.824" timestamp="1597900220045" />
-    <state x="431" y="145" width="672" height="678" key="search.everywhere.popup" timestamp="1599447185173">
+    <state x="431" y="145" width="672" height="678" key="search.everywhere.popup" timestamp="1599447972215">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="431" y="145" width="672" height="678" key="search.everywhere.popup/0.0.1536.824/1920.0.1440.860@0.0.1536.824" timestamp="1598419125943" />
-    <state x="431" y="145" width="672" height="678" key="search.everywhere.popup/0.0.1536.824@0.0.1536.824" timestamp="1599447185173" />
+    <state x="431" y="145" width="672" height="678" key="search.everywhere.popup/0.0.1536.824@0.0.1536.824" timestamp="1599447972215" />
   </component>
 </project>

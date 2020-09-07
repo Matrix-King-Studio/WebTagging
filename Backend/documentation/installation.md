@@ -72,3 +72,12 @@
     docker exec -it cvat bash -ic 'python3 ~/manage.py createsuperuser'
     ```
     为您的管理员帐户选择登录名和密码。欲了解更多信息，请阅读 [Django documentation](https://docs.djangoproject.com/en/2.2/ref/django-admin/#createsuperuser).
+
+-   模型的迁移与同步。
+
+    请使用以下命令：
+
+    ```sh
+    docker exec -it cvat bash -ic 'python3 ~/manage.py makemigrations'
+    docker exec -it cvat bash -ic 'python3 ~/manage.py migrate'
+    ```

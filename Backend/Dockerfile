@@ -134,7 +134,6 @@ COPY ssh ${HOME}/.ssh
 COPY utils ${HOME}/utils
 COPY cvat/ ${HOME}/cvat
 COPY templates/ ${HOME}/templates
-COPY tests ${HOME}/tests
 COPY datumaro/ ${HOME}/datumaro
 
 RUN python3 -m pip install -r ${HOME}/datumaro/requirements.txt -i http://mirrors.aliyun.com/pypi/simple --trusted-host mirrors.aliyun.com

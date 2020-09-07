@@ -27,6 +27,20 @@ class CVATRegisterView(RegisterView):
             return Response(serializer.errors, status=status.HTTP_200_OK)
 
 
+# 继承 RegisterView
+class CVATLoginView(LoginView):
+    # 重写 post 方法
+    def post(self, request, *args, **kwargs):
+        self.request = request
+        self.serializer = self.get_serializer(data=self.request.data, context={'request': request})
+        if self.serializer.is_valid():
+            self.login()
+            return self.get_response()
+        else:
+            print(self.serializer.errors)
+            return Response(self.serializer.errors, status=status.HTTP_200_OK)
+
+
 urlpatterns = [
     path('login', LoginView.as_view(), name='rest_login'),
     path('logout', LogoutView.as_view(), name='rest_logout'),
