@@ -20,79 +20,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e2fd5767-3d4d-4226-8c86-65e39b2024b3" name="Default Changelist" comment="2020-9-7">
+      <change afterPath="$PROJECT_DIR$/documentation/installation.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/documentation/user_guide.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/documentation/xml_format.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/an/.browserslistrc" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/an/.eslintrc.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/an/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/an/README.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/an/babel.config.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/an/package-lock.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/an/package.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/an/public/favicon.ico" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/an/public/index.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/an/src/App.vue" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/an/src/assets/css/global.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/an/src/assets/font/demo.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/an/src/assets/font/demo_index.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/an/src/assets/font/iconfont.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/an/src/assets/font/iconfont.eot" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/an/src/assets/font/iconfont.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/an/src/assets/font/iconfont.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/an/src/assets/font/iconfont.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/an/src/assets/font/iconfont.ttf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/an/src/assets/font/iconfont.woff" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/an/src/assets/font/iconfont.woff2" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/an/src/assets/image/1.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/an/src/assets/image/2.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/an/src/assets/js/DrawTools.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/an/src/assets/js/jszip-utils.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/an/src/assets/js/jszip-utils.min.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/an/src/assets/js/jszip.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/an/src/assets/js/jszip.min.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/an/src/components/allproject/project.vue" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/an/src/components/allproject/projectitem.vue" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/an/src/components/login.vue" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/an/src/components/management/setting.vue" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/an/src/components/newproject/basicinfo.vue" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/an/src/components/newproject/module.vue" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/an/src/components/newproject/newproject.vue" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/an/src/components/newproject/newprojectitem.vue" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/an/src/components/newproject/uploaddata.vue" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/an/src/components/usercenter/user.vue" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/an/src/components/workbench/drawPage.vue" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/an/src/components/workbench/setting.vue" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/an/src/cvat-canvas/.eslintrc.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/an/src/cvat-canvas/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/an/src/cvat-canvas/README.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/an/src/cvat-canvas/images/states.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/an/src/cvat-canvas/package-lock.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/an/src/cvat-canvas/package.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/an/src/cvat-canvas/postcss.config.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/an/src/cvat-canvas/src/scss/canvas.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/an/src/cvat-canvas/src/typescript/autoborderHandler.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/an/src/cvat-canvas/src/typescript/canvas.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/an/src/cvat-canvas/src/typescript/canvasController.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/an/src/cvat-canvas/src/typescript/canvasModel.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/an/src/cvat-canvas/src/typescript/canvasView.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/an/src/cvat-canvas/src/typescript/consts.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/an/src/cvat-canvas/src/typescript/cuboid.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/an/src/cvat-canvas/src/typescript/drawHandler.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/an/src/cvat-canvas/src/typescript/editHandler.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/an/src/cvat-canvas/src/typescript/groupHandler.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/an/src/cvat-canvas/src/typescript/master.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/an/src/cvat-canvas/src/typescript/mergeHandler.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/an/src/cvat-canvas/src/typescript/shared.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/an/src/cvat-canvas/src/typescript/splitHandler.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/an/src/cvat-canvas/src/typescript/svg.patch.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/an/src/cvat-canvas/src/typescript/zoomHandler.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/an/src/cvat-canvas/tsconfig.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/an/src/cvat-canvas/webpack.config.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/an/src/cvat-core/.dockerignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/an/src/cvat-core/.eslintrc.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/an/src/cvat-core/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/an/src/cvat-core/jest.config.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/an/src/cvat-core/jsdoc.config.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/analytics/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/components/analytics/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cvat/apps/dataset_manager/formats/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/dataset_manager/formats/README.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -147,12 +81,13 @@
     <property name="ts.external.directory.path" value="D:\Jetbrains\apps\PyCharm-P\ch-0\201.7846.77\plugins\JavaScriptLanguage\jsLanguageServicesImpl\external" />
   </component>
   <component name="RecentsManager">
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="W:\softsz\WebTagging\开发文档" />
-    </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="W:\softsz\WebTagging" />
       <recent name="W:\softsz\WebTagging\cvat\apps" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="W:\softsz\WebTagging" />
+      <recent name="W:\softsz\WebTagging\开发文档" />
     </key>
   </component>
   <component name="RunManager">
@@ -274,7 +209,7 @@
       <workItem from="1598917220944" duration="47000" />
       <workItem from="1598921118836" duration="833000" />
       <workItem from="1599089596216" duration="12000" />
-      <workItem from="1599442493143" duration="1729000" />
+      <workItem from="1599442493143" duration="3655000" />
     </task>
     <task id="LOCAL-00001" summary="初始化CVAT">
       <created>1596186022091</created>
@@ -458,7 +393,14 @@
       <option name="project" value="LOCAL" />
       <updated>1599442706147</updated>
     </task>
-    <option name="localTasksCounter" value="27" />
+    <task id="LOCAL-00027" summary="2020-9-7">
+      <created>1599445178730</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1599445178730</updated>
+    </task>
+    <option name="localTasksCounter" value="28" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -560,11 +502,11 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="315" y="73" key="SettingsEditor/0.0.1536.824/1920.0.1440.860@0.0.1536.824" timestamp="1598327908018" />
-    <state x="361" y="145" key="Vcs.Push.Dialog.v2" timestamp="1599442777471">
+    <state x="361" y="145" key="Vcs.Push.Dialog.v2" timestamp="1599445181618">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="361" y="145" key="Vcs.Push.Dialog.v2/0.0.1536.824/1920.0.1440.860@0.0.1536.824" timestamp="1598419127725" />
-    <state x="361" y="145" key="Vcs.Push.Dialog.v2/0.0.1536.824@0.0.1536.824" timestamp="1599442777471" />
+    <state x="361" y="145" key="Vcs.Push.Dialog.v2/0.0.1536.824@0.0.1536.824" timestamp="1599445181618" />
     <state x="264" y="1" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser" timestamp="1597286850927">
       <screen x="0" y="0" width="1536" height="824" />
     </state>

@@ -169,7 +169,7 @@ features, so it can be used to make data backups.
 
 - attributes are supported
 
-- [Format specification](/cvat/apps/documentation/xml_format.md)
+- [Format specification](/documentation/xml_format.md)
 
 #### CVAT for images dumper
 

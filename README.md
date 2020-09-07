@@ -16,16 +16,12 @@ CVAT有许多强大的功能:
 
 特别针对我们团队开发的计算机视觉任务进行了用户体验和用户界面优化。
 
-![CVAT screenshot](cvat/apps/documentation/static/documentation/images/cvat.jpg)
-
 ## 文档
 
-- [安装指南](cvat/apps/documentation/installation.md)
-- [用户手册](cvat/apps/documentation/user_guide.md)
+- [安装指南](documentation/installation.md)
+- [用户手册](documentation/user_guide.md)
 - [Datumaro 数据集框架](datumaro/README.md)
-- [命令行界面](utils/cli/)
-- [XML 标注格式](cvat/apps/documentation/xml_format.md)
-- [AWS 部署指南](cvat/apps/documentation/AWS-Deployment-Guide.md)
+- [XML 标注格式](documentation/xml_format.md)
 
 ## 支持的标注格式
 
@@ -34,8 +30,8 @@ CVAT有许多强大的功能:
 
 | 标注格式                                                                          | Import | Export |
 | ------------------------------------------------------------------------------------------ | ------ | ------ |
-| [CVAT for images](cvat/apps/documentation/xml_format.md#annotation)                        | √      | √      |
-| [CVAT for a video](cvat/apps/documentation/xml_format.md#interpolation)                    | √      | √      |
+| [CVAT for images](documentation/xml_format.md#annotation)                        | √      | √      |
+| [CVAT for a video](documentation/xml_format.md#interpolation)                    | √      | √      |
 | [Datumaro](datumaro/README.md)                                                             |        | √      |
 | [PASCAL VOC](http://host.robots.ox.ac.uk/pascal/VOC/)                                      | √      | √      |
 | Segmentation masks from [PASCAL VOC](http://host.robots.ox.ac.uk/pascal/VOC/)              | √      | √      |
