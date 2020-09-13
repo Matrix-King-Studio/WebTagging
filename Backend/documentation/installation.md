@@ -37,8 +37,6 @@
 
 -   安装 docker-compose (≥1.19.0).
 
-    Compose是一个用于定义和运行多容器docker应用程序的工具。
-
     ```bash
     sudo apt-get --no-install-recommends install -y python3-pip
     sudo python3 -m pip install setuptools docker-compose
@@ -64,16 +62,17 @@
     docker-compose up -d
     ```
 
--   你应该创建一个超级用户。超级用户可以使用管理面板为用户分配正确的组。
+-   第一次使用应该创建一个超级用户，只有超级用户可以使用管理面板为用户分配正确的组。
 
     请使用以下命令：
 
     ```sh
     docker exec -it cvat bash -ic 'python3 ~/manage.py createsuperuser'
     ```
-    为您的管理员帐户选择登录名和密码。欲了解更多信息，请阅读 [Django documentation](https://docs.djangoproject.com/en/2.2/ref/django-admin/#createsuperuser).
+	
+    为您的管理员帐户选择登录名和密码。
 
--   模型的迁移与同步。
+-   第一次使用要进行模型的迁移与同步。
 
     请使用以下命令：
 

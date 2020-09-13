@@ -27,7 +27,7 @@ class CVATRegisterView(RegisterView):
             return Response(serializer.errors, status=status.HTTP_200_OK)
 
 
-# 继承 RegisterView
+# 继承 LoginView
 class CVATLoginView(LoginView):
     # 重写 post 方法
     def post(self, request, *args, **kwargs):
@@ -42,7 +42,7 @@ class CVATLoginView(LoginView):
 
 
 urlpatterns = [
-    path('login', LoginView.as_view(), name='rest_login'),
+    path('login', CVATLoginView.as_view(), name='rest_login'),
     path('logout', LogoutView.as_view(), name='rest_logout'),
     path('signing', SigningView.as_view(), name='signing')
 ]

@@ -149,7 +149,7 @@ class ServerViewSet(viewsets.ViewSet):
         Sends logs to the ELK if it is connected
         """
         serializer = LogEventSerializer(many=True, data=request.data)
-        if serializer.is_valid(raise_exception=True):
+        if serializer.is_valid():
             user = {"username": request.user.username}
             for event in serializer.data:
                 message = JSONRenderer().render({**event, **user}).decode('UTF-8')
@@ -162,6 +162,9 @@ class ServerViewSet(viewsets.ViewSet):
                 else:
                     clogger.glob.info(message)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
+        else:
+            print(serializer.errors)
+            return Response(serializer.errors, status=status.HTTP_200_OK)
 
     @staticmethod
     @swagger_auto_schema(
@@ -191,11 +194,14 @@ class ServerViewSet(viewsets.ViewSet):
                     data.append({"name": entry.name, "type": entry_type})
 
             serializer = FileInfoSerializer(many=True, data=data)
-            if serializer.is_valid(raise_exception=True):
+            if serializer.is_valid():
                 return Response(serializer.data)
+            else:
+                print(serializer.errors)
+                return Response(serializer.errors, status=status.HTTP_200_OK)
         else:
             return Response("{} is an invalid directory".format(param),
-                            status=status.HTTP_400_BAD_REQUEST)
+                            status=status.HTTP_200_OK)
 
     @staticmethod
     @swagger_auto_schema(method='get', operation_summary='Method provides the list of supported annotations formats',
@@ -339,7 +345,7 @@ class DjangoFilterInspector(CoreAPICompatInspector):
     filter_inspectors=[DjangoFilterInspector]))
 @method_decorator(name='create',
                   decorator=swagger_auto_schema(
-    operation_summary='Method creates a new task in a database without any attached images and videos'))
+                      operation_summary='Method creates a new task in a database without any attached images and videos'))
 @method_decorator(name='retrieve',
                   decorator=swagger_auto_schema(operation_summary='Method returns details of a specific task'))
 @method_decorator(name='update', decorator=swagger_auto_schema(operation_summary='Method updates a task by id'))
@@ -422,7 +428,7 @@ class TaskViewSet(auth.TaskGetQuerySetMixin, viewsets.ModelViewSet):
                                                in_=openapi.IN_QUERY,
                                                required=True,
                                                type=openapi.TYPE_STRING,
-                                               enum=['compressed', 'original'],
+                                               enum=['·', 'original'],
                                                description="Specifies the quality level of the requested data, doesn't matter for 'preview' type"),
                              openapi.Parameter('number',
                                                in_=openapi.IN_QUERY,
@@ -457,12 +463,12 @@ class TaskViewSet(auth.TaskGetQuerySetMixin, viewsets.ModelViewSet):
             possible_quality_values = ('compressed', 'original')
 
             if not data_type or data_type not in possible_data_type_values:
-                return Response(data='data type not specified or has wrong value', status=status.HTTP_400_BAD_REQUEST)
+                return Response(data='data type not specified or has wrong value', status=status.HTTP_200_OK)
             elif data_type == 'chunk' or data_type == 'frame':
                 if not data_id:
-                    return Response(data='number not specified', status=status.HTTP_400_BAD_REQUEST)
+                    return Response(data='number not specified', status=status.HTTP_200_OK)
                 elif data_quality not in possible_quality_values:
-                    return Response(data='wrong quality value', status=status.HTTP_400_BAD_REQUEST)
+                    return Response(data='wrong quality value', status=status.HTTP_200_OK)
             try:
                 db_task = self.get_object()
                 frame_provider = FrameProvider(db_task.data)
@@ -487,14 +493,14 @@ class TaskViewSet(auth.TaskGetQuerySetMixin, viewsets.ModelViewSet):
                 elif data_type == 'preview':
                     return sendfile(request, frame_provider.get_preview())
                 else:
-                    return Response(data='unknown data type {}.'.format(data_type), status=status.HTTP_400_BAD_REQUEST)
+                    return Response(data='unknown data type {}.'.format(data_type), status=status.HTTP_200_OK)
             except APIException as e:
                 return Response(data=e.default_detail, status=e.status_code)
             except Exception as e:
                 msg = 'cannot get requested data type: {}, number: {}, quality: {}'.format(data_type, data_id,
                                                                                            data_quality)
                 slogger.task[pk].error(msg, exc_info=True)
-                return Response(data=msg + '\n' + str(e), status=status.HTTP_400_BAD_REQUEST)
+                return Response(data=msg + '\n' + str(e), status=status.HTTP_200_OK)
 
     @swagger_auto_schema(method='get', operation_summary='Method allows to download task annotations',
                          manual_parameters=[
@@ -526,12 +532,16 @@ class TaskViewSet(auth.TaskGetQuerySetMixin, viewsets.ModelViewSet):
                          }
                          )
     @swagger_auto_schema(method='patch',
-                         operation_summary='Method performs a partial update of annotations in a specific task',
+                         operation_summary='方法对特定任务中的批注执行部分更新',
                          manual_parameters=[
-                             openapi.Parameter('action', in_=openapi.IN_QUERY, required=True, type=openapi.TYPE_STRING,
+                             openapi.Parameter('action',
+                                               in_=openapi.IN_QUERY,
+                                               required=True,
+                                               type=openapi.TYPE_STRING,
                                                enum=['create', 'update', 'delete'])])
     @swagger_auto_schema(method='delete', operation_summary='Method deletes all annotations for a specific task')
-    @action(detail=True, methods=['GET', 'DELETE', 'PUT', 'PATCH'],
+    @action(detail=True,
+            methods=['GET', 'DELETE', 'PUT', 'PATCH'],
             serializer_class=LabeledDataSerializer)
     def annotations(self, request, pk):
         db_task = self.get_object()  # force to call check_object_permissions
@@ -549,8 +559,11 @@ class TaskViewSet(auth.TaskGetQuerySetMixin, viewsets.ModelViewSet):
             else:
                 data = dm.task.get_task_data(pk)
                 serializer = LabeledDataSerializer(data=data)
-                if serializer.is_valid(raise_exception=True):
+                if serializer.is_valid():
                     return Response(serializer.data)
+                else:
+                    print(serializer.errors)
+                    return Response(serializer.errors, status=status.HTTP_200_OK)
         elif request.method == 'PUT':
             format_name = request.query_params.get('format')
             if format_name:
@@ -563,27 +576,34 @@ class TaskViewSet(auth.TaskGetQuerySetMixin, viewsets.ModelViewSet):
                 )
             else:
                 serializer = LabeledDataSerializer(data=request.data)
-                if serializer.is_valid(raise_exception=True):
+                if serializer.is_valid():
                     data = dm.task.put_task_data(pk, serializer.data)
                     return Response(data)
+                else:
+                    print(serializer.errors)
+                    return Response(serializer.errors, status=status.HTTP_200_OK)
         elif request.method == 'DELETE':
             dm.task.delete_task_data(pk)
             return Response(status=status.HTTP_204_NO_CONTENT)
         elif request.method == 'PATCH':
+            # 获取要执行的操作
             action = self.request.query_params.get("action", None)
+            # 判断操作是否允许
             if action not in dm.task.PatchAction.values():
-                raise serializers.ValidationError(
-                    "Please specify a correct 'action' for the request")
+                raise serializers.ValidationError("请为请求指定正确的“操作”")
             serializer = LabeledDataSerializer(data=request.data)
-            if serializer.is_valid(raise_exception=True):
+            if serializer.is_valid():
                 try:
                     data = dm.task.patch_task_data(pk, serializer.data, action)
                 except (AttributeError, IntegrityError) as e:
-                    return Response(data=str(e), status=status.HTTP_400_BAD_REQUEST)
+                    return Response(data=str(e), status=status.HTTP_200_OK)
                 return Response(data)
+            else:
+                print(serializer.errors)
+                return Response(serializer.errors, status=status.HTTP_200_OK)
 
     @swagger_auto_schema(method='get',
-                         operation_summary='When task is being created the method returns information about a status of the creation process')
+                         operation_summary='创建任务时，该方法返回有关创建进程状态的信息')
     @action(detail=True, methods=['GET'], serializer_class=RqStatusSerializer)
     def status(self, request, pk):
         self.get_object()  # force to call check_object_permissions
@@ -591,8 +611,11 @@ class TaskViewSet(auth.TaskGetQuerySetMixin, viewsets.ModelViewSet):
                                          job_id="/api/{}/tasks/{}".format(request.version, pk))
         serializer = RqStatusSerializer(data=response)
 
-        if serializer.is_valid(raise_exception=True):
+        if serializer.is_valid():
             return Response(serializer.data)
+        else:
+            print(serializer.errors)
+            return Response(serializer.errors, status=status.HTTP_200_OK)
 
     @staticmethod
     def _get_rq_response(queue, job_id):
@@ -720,12 +743,15 @@ class JobViewSet(viewsets.GenericViewSet,
                 )
             else:
                 serializer = LabeledDataSerializer(data=request.data)
-                if serializer.is_valid(raise_exception=True):
+                if serializer.is_valid():
                     try:
                         data = dm.task.put_job_data(pk, serializer.data)
                     except (AttributeError, IntegrityError) as e:
-                        return Response(data=str(e), status=status.HTTP_400_BAD_REQUEST)
+                        return Response(data=str(e), status=status.HTTP_200_OK)
                     return Response(data)
+                else:
+                    print(serializer.errors)
+                    return Response(serializer.errors, status=status.HTTP_200_OK)
         elif request.method == 'DELETE':
             dm.task.delete_job_data(pk)
             return Response(status=status.HTTP_204_NO_CONTENT)
@@ -735,12 +761,15 @@ class JobViewSet(viewsets.GenericViewSet,
                 raise serializers.ValidationError(
                     "Please specify a correct 'action' for the request")
             serializer = LabeledDataSerializer(data=request.data)
-            if serializer.is_valid(raise_exception=True):
+            if serializer.is_valid():
                 try:
                     data = dm.task.patch_job_data(pk, serializer.data, action)
                 except (AttributeError, IntegrityError) as e:
-                    return Response(data=str(e), status=status.HTTP_400_BAD_REQUEST)
+                    return Response(data=str(e), status=status.HTTP_200_OK)
                 return Response(data)
+            else:
+                print(serializer.errors)
+                return Response(serializer.errors, status=status.HTTP_200_OK)
 
 
 @method_decorator(name='list', decorator=swagger_auto_schema(

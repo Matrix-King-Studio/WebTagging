@@ -932,7 +932,7 @@
 
 **Request URL**: http://alexking.site:8080/api/v1/jobs/5/annotations?action=create
 
-**Request Method**: GET
+**Request Method**: PATCH
 
 **Request Data**：
 

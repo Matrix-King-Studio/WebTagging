@@ -1,8 +1,3 @@
-
-# Copyright (C) 2018-2019 Intel Corporation
-#
-# SPDX-License-Identifier: MIT
-
 from django.urls import path, include
 from . import views
 from rest_framework import routers

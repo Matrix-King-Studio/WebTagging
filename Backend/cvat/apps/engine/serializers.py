@@ -1,7 +1,3 @@
-# Copyright (C) 2019 Intel Corporation
-#
-# SPDX-License-Identifier: MIT
-
 import os
 import re
 import shutil
@@ -435,11 +431,6 @@ class AnnotationSerializer(serializers.Serializer):
     group = serializers.IntegerField(min_value=0, allow_null=True)
 
 
-class LabeledImageSerializer(AnnotationSerializer):
-    attributes = AttributeValSerializer(many=True,
-                                        source="labeledimageattributeval_set")
-
-
 class ShapeSerializer(serializers.Serializer):
     type = serializers.ChoiceField(choices=models.ShapeType.choices())
     occluded = serializers.BooleanField()
@@ -450,31 +441,12 @@ class ShapeSerializer(serializers.Serializer):
     )
 
 
-class LabeledShapeSerializer(ShapeSerializer, AnnotationSerializer):
-    attributes = AttributeValSerializer(many=True,
-                                        source="labeledshapeattributeval_set")
-
-
 class TrackedShapeSerializer(ShapeSerializer):
     id = serializers.IntegerField(default=None, allow_null=True)
     frame = serializers.IntegerField(min_value=0)
     outside = serializers.BooleanField()
     attributes = AttributeValSerializer(many=True,
                                         source="trackedshapeattributeval_set")
-
-
-class LabeledTrackSerializer(AnnotationSerializer):
-    shapes = TrackedShapeSerializer(many=True, allow_empty=False,
-                                    source="trackedshape_set")
-    attributes = AttributeValSerializer(many=True,
-                                        source="labeledtrackattributeval_set")
-
-
-class LabeledDataSerializer(serializers.Serializer):
-    version = serializers.IntegerField()
-    tags = LabeledImageSerializer(many=True)
-    shapes = LabeledShapeSerializer(many=True)
-    tracks = LabeledTrackSerializer(many=True)
 
 
 class FileInfoSerializer(serializers.Serializer):
@@ -485,15 +457,14 @@ class FileInfoSerializer(serializers.Serializer):
 class PluginSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Plugin
-        fields = ('name', 'description', 'maintainer', 'created_at',
-                  'updated_at')
+        fields = ('name', 'description', 'maintainer', 'created_at', 'updated_at')
 
 
 class LogEventSerializer(serializers.Serializer):
     job_id = serializers.IntegerField(required=False)
     task_id = serializers.IntegerField(required=False)
     proj_id = serializers.IntegerField(required=False)
-    client_id = serializers.IntegerField()
+    client_id = serializers.IntegerField(required=False)
 
     name = serializers.CharField(max_length=64)
     time = serializers.DateTimeField()
@@ -504,3 +475,23 @@ class LogEventSerializer(serializers.Serializer):
 
 class AnnotationFileSerializer(serializers.Serializer):
     annotation_file = serializers.FileField()
+
+
+class LabeledImageSerializer(AnnotationSerializer):
+    attributes = AttributeValSerializer(many=True, source="labeledimageattributeval_set")
+
+
+class LabeledShapeSerializer(ShapeSerializer, AnnotationSerializer):
+    attributes = AttributeValSerializer(many=True, source="labeledshapeattributeval_set")
+
+
+class LabeledTrackSerializer(AnnotationSerializer):
+    shapes = TrackedShapeSerializer(many=True, allow_empty=False, source="trackedshape_set")
+    attributes = AttributeValSerializer(many=True, source="labeledtrackattributeval_set")
+
+
+class LabeledDataSerializer(serializers.Serializer):
+    version = serializers.IntegerField()
+    tags = LabeledImageSerializer(many=True)
+    shapes = LabeledShapeSerializer(many=True)
+    tracks = LabeledTrackSerializer(many=True)

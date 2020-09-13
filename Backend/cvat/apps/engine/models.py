@@ -1,7 +1,3 @@
-# Copyright (C) 2018-2019 Intel Corporation
-#
-# SPDX-License-Identifier: MIT
-
 from enum import Enum
 import re
 import os
@@ -190,8 +186,7 @@ class Task(models.Model):
         return self.name
 
 
-# Redefined a couple of operation for FileSystemStorage to avoid renaming
-# or other side effects.
+# Redefined a couple of operation for FileSystemStorage to avoid renaming or other side effects.
 class MyFileSystemStorage(FileSystemStorage):
     def get_valid_name(self, name):
         return name
@@ -423,7 +418,7 @@ class Plugin(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now_add=True)
 
-    # Extend default permission model
+    # 扩展默认权限模型
     class Meta:
         default_permissions = ()
 
