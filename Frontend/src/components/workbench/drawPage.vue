@@ -161,6 +161,9 @@ export default {
   },
   mounted() {
     this.getImages()
+    window.onresize = ()=>{
+      this.resizeCanvas()
+    }
   },
   methods: {
     //右侧信息栏
@@ -233,6 +236,14 @@ export default {
       //设置鼠标样式
       document.getElementById('myCanvas').style.cursor = 'default'
     },
+    //改变画布大小
+    resizeCanvas(){
+      this.myCanvas.width = document.body.clientWidth - 46
+      this.myCanvas.height = document.body.clientHeight - 35
+      console.log('3.1重置画布大小完成')
+      this.drawImages()
+      this.reDrawTags(2, this.imageIndex)
+    },
     //绘制图片
     drawImages(){
       //将解压出的文件以base64格式放到图片对象中
@@ -276,28 +287,28 @@ export default {
           this.imageIndex = 0
           this.drawImages()
           this.removeRec('all')
-          this.reDrawTags(this.imageIndex)
+          this.reDrawTags(1, this.imageIndex)
         }
       } else if(mod === 'back'){
         if(this.imageIndex !== 0){
           this.imageIndex -= 1
           this.drawImages()
           this.removeRec('all')
-          this.reDrawTags(this.imageIndex)
+          this.reDrawTags(1, this.imageIndex)
         }
       } else if(mod === 'next'){
         if(this.imageIndex !== (this.imagesSize-1)){
           this.imageIndex += 1
           this.drawImages()
           this.removeRec('all')
-          this.reDrawTags(this.imageIndex)
+          this.reDrawTags(1, this.imageIndex)
         }
       } else if(mod === 'end'){
         if(this.imageIndex !== (this.imagesSize-1)){
           this.imageIndex = this.imagesSize - 1
           this.drawImages()
           this.removeRec('all')
-          this.reDrawTags(this.imageIndex)
+          this.reDrawTags(1, this.imageIndex)
         }
       }
 
@@ -446,8 +457,8 @@ export default {
       this.shapes.rectangles[this.shapes.rectangles.length - 1].el.style.height = bottom - top + 'px'
     },
     //删除元素
-    removeRec(node){
-      if(node === 'all'){
+    removeRec(mod){
+      if(mod === 'all'){
         this.$refs.recBox.innerHTML = ''
         this.shapes.rectangles = []
         this.rectangleIndex = 1
@@ -475,7 +486,6 @@ export default {
       })
     },
     //将标注信息存储到store中
-    /** 多次保存会保存重复信息 */
     saveTagsToStore(){
       this.$store.commit('cleanTagsInfo', this.imageIndex)
       this.$store.commit('saveTagsInfo', this.shapes)
@@ -494,12 +504,21 @@ export default {
       })
     },
     //切换图片接收信息重新绘制Tag
+    //或者窗口大小改变时重新绘制Tag
+    //mod:  1：切换图片  2：改变窗口大小
     /** 每个矩形框的标签没有绑定*/
-    reDrawTags(index){
+    reDrawTags(mod, index){
       //切换到了第几张图片
       let imgIndex = index + 1
-      //从store获取所有的标注信息
-      let TagsInfo = this.$store.state.imageTags.shapes
+      let TagsInfo = {}
+      let that = this
+      if(mod === 1){
+        //从store获取所有的标注信息
+        TagsInfo = that.$store.state.imageTags.shapes
+      } else if (mod === 2){
+        TagsInfo = that.shapes.rectangles
+        this.removeRec('all')
+      }
       //清洗出这张图片的标注信息
       console.log(TagsInfo);
       for(let item in TagsInfo){
@@ -510,11 +529,18 @@ export default {
           let rec = document.createElement('div')
           rec.className += 'rec-obj'
           //将矩形框在 !原图! 上的点的坐标缩放后展示到页面上
-          rec.style.left = (parseInt(TagsInfo[item].points[0]) + parseInt(this.imageInfo.left))*this.imageScale + 'px'
-          rec.style.top = (parseInt(TagsInfo[item].points[1]) + parseInt(this.imageInfo.top))*this.imageScale + 'px'
-          rec.style.width = (parseInt(TagsInfo[item].points[2]) - parseInt(TagsInfo[item].points[0]))*this.imageScale + 'px'
-          rec.style.height = (parseInt(TagsInfo[item].points[3]) - parseInt(TagsInfo[item].points[1]))*this.imageScale + 'px'
-          this.$refs.recBox.appendChild(rec)
+
+          setTimeout(()=>{
+            console.log(parseInt(TagsInfo[item].points[0]) * this.imageScale);
+            console.log(parseInt(this.imageInfo.left));
+            console.log(parseInt(TagsInfo[item].points[1]) * this.imageScale);
+            console.log(parseInt(this.imageInfo.top));
+            rec.style.left = parseInt(TagsInfo[item].points[0])*this.imageScale + parseInt(this.imageInfo.left) + 46 + 'px'
+            rec.style.top = parseInt(TagsInfo[item].points[1])*this.imageScale + parseInt(this.imageInfo.top) + 35 + 'px'
+            rec.style.width = (parseInt(TagsInfo[item].points[2]) - parseInt(TagsInfo[item].points[0]))*this.imageScale + 'px'
+            rec.style.height = (parseInt(TagsInfo[item].points[3]) - parseInt(TagsInfo[item].points[1]))*this.imageScale + 'px'
+            this.$refs.recBox.appendChild(rec)
+          },300)
 
           console.log(TagsInfo[item])
           //添加数据
@@ -539,7 +565,6 @@ export default {
         item.style.cursor = 'default'
       })
     },
-
   }
 }
 </script>
