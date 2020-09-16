@@ -51,7 +51,7 @@ export default new Vuex.Store({
     },
     saveTagsInfo(state, shapes) {
       console.log('开始保存新的矩形框信息');
-      for(let item in shapes.rectangles){
+      for(let item = 0;item < shapes.rectangles.length;item++){
         console.log('正在保存第'+shapes.rectangles[item].index+'个矩形框的信息')
         state.imageTags.shapes.push({
           "type":"rectangle",
@@ -73,11 +73,14 @@ export default new Vuex.Store({
     },
     cleanTagsInfo(state,frame){
       let imgIndex = frame + 1
-      console.log('开始删除第'+imgIndex+'张图片的信息');
-      for(let item in state.imageTags.shapes){
-        if(state.imageTags.shapes[item].frame === imgIndex){
-          console.log(state.imageTags.shapes[item]);
-          state.imageTags.shapes.splice(item,1)
+      console.log(state.imageTags.shapes)
+      console.log('开始删除第'+imgIndex+'张图片的信息')
+      for(let l = 0;l < state.imageTags.shapes.length;l++){
+        console.log(l)
+        if(state.imageTags.shapes[l].frame === imgIndex){
+          console.log(state.imageTags.shapes[l])
+          state.imageTags.shapes.splice(l,1)
+          l--
         }
       }
       console.log('删除完成');

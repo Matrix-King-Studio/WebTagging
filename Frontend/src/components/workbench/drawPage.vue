@@ -151,6 +151,9 @@ export default {
 
       //job信息
       jobId: 0,
+
+      //控制页面改变大小时刷新的变量
+      isResizing: '',
     }
   },
   created() {
@@ -161,8 +164,14 @@ export default {
   },
   mounted() {
     this.getImages()
+    //停止改变窗口大小后0.3秒重新绘制图片
     window.onresize = ()=>{
-      this.resizeCanvas()
+      if(this.isResizing){
+        clearTimeout(this.isResizing)
+      }
+      this.isResizing = setTimeout(()=>{
+        this.resizeCanvas()
+      },300)
     }
   },
   methods: {

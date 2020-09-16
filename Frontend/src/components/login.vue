@@ -5,48 +5,49 @@
     </div>
     <form :model="loginForm">
       <input
-        v-show=" whichmode === 'login' || whichmode === 'register' "
-        id="uname"
-        v-model="loginForm.username"
-        type="text"
-        placeholder="账户名"
+          v-show=" whichmode === 'login' || whichmode === 'register' "
+          id="uname"
+          v-model="loginForm.username"
+          type="text"
+          placeholder="账户名"
       >
       <input
-        v-show="whichmode === 'register' || whichmode === 'forget'"
-        id="email"
-        ref="email"
-        v-model="loginForm.email"
-        type="email"
-        placeholder="邮箱"
-        @keyup="correctEmail"
+          v-show="whichmode === 'register' || whichmode === 'forget'"
+          id="email"
+          ref="email"
+          v-model="loginForm.email"
+          type="email"
+          placeholder="邮箱"
+          @keyup="correctEmail"
       >
       <input
-        v-show="whichmode === 'login'"
-        id="passwd"
-        v-model="loginForm.password"
-        type="password"
-        placeholder="账户密码"
+          v-show="whichmode === 'login'"
+          id="passwd"
+          v-model="loginForm.password"
+          type="password"
+          placeholder="账户密码"
       >
       <input
         v-show="whichmode === 'register'"
         id="passwd1"
-        ref="passwd1"
-        v-model="loginForm.password1"
-        type="password"
-        placeholder="设置密码"
-        @keyup="correctpasswd()"
+          ref="passwd1"
+          v-model="loginForm.password1"
+          type="password"
+          placeholder="设置密码"
+          @keyup="correctpasswd()"
       >
       <input
-        v-show="whichmode === 'register'"
-        id="passwd2"
-        ref="passwd2"
-        v-model="loginForm.password2"
-        type="password"
-        placeholder="重复密码"
-        @keyup="isSame()"
+          v-show="whichmode === 'register'"
+          id="passwd2"
+          ref="passwd2"
+          v-model="loginForm.password2"
+          type="password"
+          placeholder="重复密码"
+          @keyup="isSame()"
       >
       <div class="err-box">
-        <!--        我太笨了，这块写的太辣鸡了，又想不到好的解决方案，只能重复好几遍这样子，才能满足得了需求 -->
+        <!-- 我太笨了，这块写的太辣鸡了，又想不到好的解决方案，只能重复好几遍这样子，才能满足得了需求 -->
+        <!-- 列表+for循环 -->
         <div class="err-info">
           {{ err1 }}
         </div>
@@ -78,16 +79,16 @@
     </div>
     <div class="btnbox">
       <input
-        class="regis-btn"
-        type="button"
-        :value="text2"
-        @click="changeMod(1)"
+          class="regis-btn"
+          type="button"
+          :value="text2"
+          @click="changeMod(1)"
       >
       <input
-        class="forget-btn"
-        type="button"
-        :value="text3"
-        @click="changeMod(2)"
+          class="forget-btn"
+          type="button"
+          :value="text3"
+          @click="changeMod(2)"
       >
     </div>
   </div>
@@ -95,7 +96,7 @@
 
 <script>
 export default {
-  data () {
+  data() {
     return {
       // 表单数据
       loginForm: {
@@ -131,18 +132,20 @@ export default {
   },
   methods: {
     // 点击按钮后先判断处于登录注册哪个状态，再调用相应的方法
-    whichMod () {
+    whichMod() {
       if (this.whichmode === 'login') this.login()
       else if (this.whichmode === 'register') this.register()
-      else if (this.whichmode === 'forget')this.forget()
+      else if (this.whichmode === 'forget') this.forget()
     },
     // 登陆的数据传输
-    login () {
+    login() {
       if (this.flag) {
         // 点击登录2秒后才能再次点击
         this.flag = 0
         let e = this // 闭包
-        setTimeout(function () { e.flag = 1 }, 2000)
+        setTimeout(function () {
+          e.flag = 1
+        }, 2000)
         this.$http.post('v1/auth/login', this.loginForm).then(e => {
           if (e.data.key) { // 登录成功(有key值)(e.data.key)
             console.log(e.data.key)
@@ -153,7 +156,7 @@ export default {
               t.$router.push('/home')
             }, 800)
           } else { // 登录失败
-            var errinfo
+            let errinfo;
             if (!this.loginForm.username || !this.loginForm.password) {
               errinfo = '请填写用户名或密码'
             } else {
@@ -165,13 +168,15 @@ export default {
       }
     },
     // 注册的数据传输
-    register () {
+    register() {
       console.log(1)
       if (this.rightEmail && this.rightPassword && this.flag) {
         this.flag = 0
         console.log(this.flag)
         var e = this // 闭包
-        setTimeout(function () { e.flag = 1 }, 2000)
+        setTimeout(function () {
+          e.flag = 1
+        }, 2000)
         this.$http.post('v1/auth/register', this.loginForm).then(e => {
           console.log(e.data)
           this.changeMod(1)
@@ -179,11 +184,11 @@ export default {
       }
     },
     // 忘记密码的数据传输
-    forget () {
+    forget() {
       console.log(2)
     },
     // 登录成功或失败后按钮显示效果
-    showSucLoginBtn () {
+    showSucLoginBtn() {
       var e = this.$refs.errbtn.style
       e.top = '0px'
       e.backgroundColor = '#75ff88'
@@ -192,8 +197,8 @@ export default {
         e.top = '30px'
       }, 1500)
     },
-    showErrLoginBtn (errinfo) {
-      var e = this.$refs.errbtn.style
+    showErrLoginBtn(errinfo) {
+      let e = this.$refs.errbtn.style;
       e.top = '0px'
       e.backgroundColor = '#ff5f5f'
       this.$refs.errbtn.innerText = errinfo
@@ -202,27 +207,27 @@ export default {
       }, 1500)
     },
     // 转换登录注册和忘记密码状态
-    changeMod (n) {
+    changeMod(n) {
       // 1 是点击左下的按钮
       if (n === 1) {
-        if(this.whichmode === 'login' || this.whichmode === 'forget'){
+        if (this.whichmode === 'login' || this.whichmode === 'forget') {
           this.whichmode = 'register'
           this.text1 = '注册'
           this.text2 = '登录'
           this.text3 = '忘记密码'
-        } else if (this.whichmode === 'register'){
+        } else if (this.whichmode === 'register') {
           this.whichmode = 'login'
           this.text1 = '登录'
           this.text2 = '注册'
           this.text3 = '忘记密码'
         }
-      } else if (n === 2){//2 是点击右下角的按钮
-        if(this.whichmode === 'login' || this.whichmode === 'register'){
+      } else if (n === 2) {//2 是点击右下角的按钮
+        if (this.whichmode === 'login' || this.whichmode === 'register') {
           this.whichmode = 'forget'
           this.text1 = '发送邮件'
           this.text2 = '注册'
           this.text3 = '登录'
-        } else if (this.whichmode === 'forget'){
+        } else if (this.whichmode === 'forget') {
           this.whichmode = 'login'
           this.text1 = '登录'
           this.text2 = '注册'
@@ -232,7 +237,7 @@ export default {
       this.clearErr()
     },
     //判断密码质量
-    correctpasswd () {
+    correctpasswd() {
       var passwdReg = /^(?=.*[0-9])(?=.*[a-zA-Z])(.{8,20})$/
       if (passwdReg.test(this.loginForm.password1)) {
         this.$refs.passwd1.style.border = '2px solid #75ff88'
@@ -243,7 +248,7 @@ export default {
       }
     },
     // 判断两次输入的密码是否相同
-    isSame () {
+    isSame() {
       if (this.loginForm.password1 !== this.loginForm.password2) {
         this.$refs.passwd2.style.border = '2px solid #ff5f5f'
         this.err4 = '两次密码不相同'
@@ -255,7 +260,7 @@ export default {
       }
     },
     // 邮箱正则验证
-    correctEmail () {
+    correctEmail() {
       var reg = /^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/
       if (reg.test(this.loginForm.email)) {
         this.$refs.email.style.border = '2px solid #75ff88'
@@ -268,7 +273,7 @@ export default {
       }
     },
     //转换模式时清除报错信息
-    clearErr(){
+    clearErr() {
       this.err1 = ''
       this.err2 = ''
       this.err3 = ''
@@ -279,11 +284,12 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.login-comp-box{
+.login-comp-box {
   width: 100%;
   height: 100%;
   background-color: transparent;
-  .title{
+
+  .title {
     text-align: center;
     color: white;
     font-size: 24px;
@@ -294,10 +300,12 @@ export default {
     -ms-user-select: none;
     user-select: none;
   }
-  form{
+
+  form {
     margin-top: 100px;
     position: relative;
-    input{
+
+    input {
       display: block;
       border: 1px solid #eeeeee;
       height: 30px;
@@ -308,13 +316,15 @@ export default {
       padding-left: 10px;
       box-sizing: border-box;
     }
-    .err-box{
+
+    .err-box {
       width: 200px;
       height: 144px;
       position: absolute;
       top: 0;
       right: -55px;
-      .err-info{
+
+      .err-info {
         height: 30px;
         width: 100%;
         margin: 0 auto 8px auto;
@@ -324,14 +334,16 @@ export default {
       }
     }
   }
-  .login-btn-box{
+
+  .login-btn-box {
     width: 300px;
     height: 30px;
     margin: 8px auto;
     overflow: hidden;
     border-radius: 6px;
     position: relative;
-    .login-btn{
+
+    .login-btn {
       display: block;
       border: 0;
       height: 30px;
@@ -343,7 +355,8 @@ export default {
       letter-spacing: 3px;
       cursor: pointer;
     }
-    .login-status{
+
+    .login-status {
       height: 30px;
       width: 300px;
       background-color: #ff5f5f;
@@ -360,10 +373,12 @@ export default {
       user-select: none;
     }
   }
-  .btnbox{
+
+  .btnbox {
     width: 300px;
     margin: 8px auto;
-    .regis-btn,.forget-btn{
+
+    .regis-btn, .forget-btn {
       width: 150px;
       background-color: transparent;
       border: 0;
