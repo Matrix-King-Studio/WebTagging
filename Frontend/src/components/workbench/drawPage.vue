@@ -28,7 +28,13 @@
         <i :class="[{'el-icon-right':flag2},{'el-icon-back':!flag2}]"></i>
       </div>
       <div class="label-obj-box">
-        <div v-for="item in shapes.rectangles" :key="item.index" class="label-obj">
+        <div
+          v-for="item in shapes.rectangles"
+          :key="item.index"
+          class="label-obj"
+          @mouseenter="showRecObj(item.index)"
+          @mouseleave="hideRecObj(item.index)"
+        >
           <div class="label-info">
             <span>{{ item.index }}</span>
             <div class="change-label">
@@ -48,13 +54,14 @@
             </div>
           </div>
           <div class="label-func">
-            <div class="func lock">
-              <i :class="[{'el-icon-lock':lock},{'el-icon-unlock':!lock}]"></i>
+            <div class="func lock" @click="lockRecObj(item.index)">
+              <i :class="[{'el-icon-lock':shapes.rectangles[item.index-1].isLock},{'el-icon-unlock':!shapes.rectangles[item.index-1].isLock}]"></i>
             </div>
-            <div class="func visible">
-              <span class="iconfont">&#xe9c1;</span>
+            <div class="func visible" @click="invisibleRecObj(item.index)">
+              <span v-show="!shapes.rectangles[item.index-1].isInvisible" class="iconfont">&#xe9c1;</span>
+              <span v-show="shapes.rectangles[item.index-1].isInvisible" class="iconfont">&#xe6fe;</span>
             </div>
-            <div class="func delete">
+            <div class="func delete" @click="deleteRecObj(item.index)">
               <i class="el-icon-delete"></i>
             </div>
           </div>
@@ -83,7 +90,7 @@
             <i class="el-icon-document-checked"></i>
             <span>保存</span>
           </div>
-          <div class="main-btn commit" @click="submitTags">
+          <div class="main-btn submit" @click="isPrepare">
             <i class="el-icon-upload"></i>
             <span>提交所有</span>
           </div>
@@ -174,6 +181,10 @@ export default {
       },300)
     }
   },
+  destroyed() {
+    //页面切换清除改变大小监听器
+    window.onresize = ()=>{}
+  },
   methods: {
     //右侧信息栏
     showBar(){
@@ -194,6 +205,8 @@ export default {
       })
     },
     //获取图片压缩包并解压，讲base64代码保存到imagesData里
+    /** 不能直接用url中的id去拿图片，如果暴力改变url需要回到home
+     * 要用路由守卫*/
     getImages(){
       //请求图片数据
       console.log("0.开始请求数据");
@@ -291,6 +304,7 @@ export default {
     },
     //切换图片
     changeImg(mod){
+
       if(mod === 'start'){
         if(this.imageIndex !== 0){
           this.imageIndex = 0
@@ -401,20 +415,21 @@ export default {
             this.recLeft = mPos.left
             //向矩形框数组添加对象
             let r = {
-              //矩形框的序号
               type: "rectangle",
               occluded:false,
               z_order:0,
-              index: this.rectangleIndex,
-              el: rec,
+              index: this.rectangleIndex,//矩形框序号
+              el: rec,//矩形框DOM元素
               // id:5,
-              frame: this.imageIndex + 1,
-              label_id: '请选择',
+              frame: this.imageIndex + 1,//第几张图片，从1开始
+              label_id: this.options[0].value,//一级标签默认选择第一个
               group:0,
+              isLock: false,
+              isInvisible: false,
               attributes:[
               ],
               points:[
-              ],
+              ],//记录矩形框位置
             }
             this.rectangleIndex ++
             this.shapes.rectangles.push(r)
@@ -429,8 +444,6 @@ export default {
             this.shapes.rectangles[this.shapes.rectangles.length - 1].points = [
               (parseInt(this.shapes.rectangles[this.shapes.rectangles.length - 1].el.style.left.replace('px','')) - (parseInt(this.imageInfo.left) + 46))/this.imageScale,
               (parseInt(this.shapes.rectangles[this.shapes.rectangles.length - 1].el.style.top.replace('px','')) - (parseInt(this.imageInfo.top) + 35))/this.imageScale,
-              // (parseInt((this.shapes.rectangles[this.shapes.rectangles.length - 1].el.style.width.replace('px',''))+(parseInt(this.shapes.rectangles[this.shapes.rectangles.length - 1].el.style.left.replace('px','')) - (parseInt(this.imageInfo.left) + 46))))/this.imageScale,
-              // (parseInt((this.shapes.rectangles[this.shapes.rectangles.length - 1].el.style.height.replace('px',''))+(parseInt(this.shapes.rectangles[this.shapes.rectangles.length - 1].el.style.top.replace('px','')) - (parseInt(this.imageInfo.top) + 35))))/this.imageScale,
               (parseInt(this.shapes.rectangles[this.shapes.rectangles.length - 1].el.style.width.replace('px',''))+parseInt(this.shapes.rectangles[this.shapes.rectangles.length - 1].el.style.left.replace('px','')) - (parseInt(this.imageInfo.left) + 46))/this.imageScale,
               (parseInt(this.shapes.rectangles[this.shapes.rectangles.length - 1].el.style.height.replace('px',''))+parseInt(this.shapes.rectangles[this.shapes.rectangles.length - 1].el.style.top.replace('px','')) - (parseInt(this.imageInfo.top) + 35))/this.imageScale,
             ]
@@ -498,16 +511,37 @@ export default {
     saveTagsToStore(){
       this.$store.commit('cleanTagsInfo', this.imageIndex)
       this.$store.commit('saveTagsInfo', this.shapes)
+      this.$message({
+        message: '保存成功',
+        type: "success"
+      })
+    },
+    //提交前询问
+    isPrepare(){
+      this.$confirm('提交后无法修改, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.submitTags()
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消提交'
+        });
+      });
     },
     //提交标注信息
+    /** 提交成功后的逻辑还需进一步确认*/
     submitTags(){
       let TagsInfo = this.$store.state.imageTags
       console.log(TagsInfo)
-      // this.$http.patch('v1/tasks?page_size=10&id=3&page=1', TagsInfo).then((e)=>{
-      //   console.log(e);
-      // })
       this.$http.patch('v1/jobs/'+this.jobId+'/annotations?action=create', TagsInfo).then((e)=>{
         console.log(e)
+        this.$message({
+          message: "提交成功",
+          type: "success"
+        })
       }).catch((err)=>{
         console.log(err);
       })
@@ -515,7 +549,8 @@ export default {
     //切换图片接收信息重新绘制Tag
     //或者窗口大小改变时重新绘制Tag
     //mod:  1：切换图片  2：改变窗口大小
-    /** 每个矩形框的标签没有绑定*/
+    /**   切换图片后矩形框内的鼠标样式有问题
+     * 是否锁定的参数没有保存回传*/
     reDrawTags(mod, index){
       //切换到了第几张图片
       let imgIndex = index + 1
@@ -570,10 +605,36 @@ export default {
         }
       }
       //恢复鼠标样式
+      this.initDrawTools('cursor')
+      /** 鼠标样式无法更改*/
       document.getElementsByClassName('rec-obj').forEach((item)=>{
         item.style.cursor = 'default'
       })
     },
+
+    //鼠标放到右侧信息栏高亮对应矩形框
+    showRecObj(index){
+      this.shapes.rectangles[index-1].el.style.backgroundColor = 'rgba(255,255,255,0.4)'
+    },
+    hideRecObj(index){
+      this.shapes.rectangles[index-1].el.style.backgroundColor = 'transparent'
+    },
+    //信息栏中的功能
+    lockRecObj(index){
+      this.shapes.rectangles[index - 1].isLock = !this.shapes.rectangles[index - 1].isLock
+      if(this.shapes.rectangles[index - 1].isLock){
+        this.shapes.rectangles[index - 1].el.classList.add('rec-obj-lock')
+      } else {
+        this.shapes.rectangles[index - 1].el.classList.remove('rec-obj-lock')
+      }
+    },
+    invisibleRecObj(index){
+      this.shapes.rectangles[index-1].isInvisible = !this.shapes.rectangles[index-1].isInvisible
+    },
+    deleteRecObj(index){
+      console.log(index);
+    }
+
   }
 }
 </script>
@@ -747,10 +808,10 @@ export default {
       float: left;
       margin: 10px 2px;
       border-radius: 5px;
-      background-color: #bbe6d6;
+      background-color: #d6efe6;
       line-height: 36px;
       text-align: center;
-      letter-spacing: 4px;
+      letter-spacing: 3px;
       font-size: 14px;
       transition: all 0.2s;
       i{
@@ -758,12 +819,12 @@ export default {
       }
     }
     .abandon{
-      width: 40px;
-      height: 20px;
-      font-size: 8px;
-      line-height: 20px;
+      width: 46px;
+      height: 26px;
+      font-size: 10px;
+      line-height: 26px;
       letter-spacing: 1px;
-      margin-top: 26px;
+      margin-top: 20px;
       border-radius: 2px;
     }
     .commit{
@@ -771,7 +832,7 @@ export default {
       letter-spacing: 2px;
     }
     .main-btn:hover{
-      background-color: #b1eed8;
+      background-color: #bbe6d6;
     }
   }
 }
@@ -809,6 +870,10 @@ export default {
   cursor: none;
   box-sizing: border-box;
   border: 1px solid #333333;
+  transition: background-color 0.1s;
+}
+/deep/ .rec-obj-lock{
+  background-color: transparent !important;
 }
 ///deep/ .rec-obj:hover{
 //  border: 2px solid #555555;

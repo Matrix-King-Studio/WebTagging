@@ -6,8 +6,8 @@ import {
     Tabs, TabPane,
     Menu, Submenu, MenuItem, MenuItemGroup,
     Upload, Tag, Input, Slider, Select, Option, OptionGroup,
-    Tooltip,Pagination,
-    Message,
+    Tooltip,Pagination,Transfer,
+    Message,MessageBox,
 } from 'element-ui'
 
 Vue.use(Button)
@@ -35,5 +35,12 @@ Vue.use(Option)
 Vue.use(OptionGroup)
 Vue.use(Tooltip)
 Vue.use(Pagination)
+Vue.use(Transfer)
 
 Vue.prototype.$message = Message
+Vue.prototype.$msgbox = MessageBox
+Vue.prototype.$alert = MessageBox.alert
+Vue.prototype.$confirm = MessageBox.confirm
+Vue.prototype.$prompt = MessageBox.prompt
+
+

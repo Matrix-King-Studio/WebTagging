@@ -1,6 +1,6 @@
 <template>
   <div class="module-box">
-    <el-tabs type="border-card">
+    <el-tabs type="border-card" @tab-click="getAllUsersInfo">
       <el-tab-pane label="选择标签">
         <!--      每一个label-box包着一个标签及其属性-->
         <div class="label-box" v-for="tag in labels" :key="tag.name">
@@ -64,19 +64,27 @@
         >
         </el-slider>
       </el-tab-pane>
-      <el-tab-pane label="任务分配">任务分配</el-tab-pane>
+      <el-tab-pane label="任务分配">
+        <el-transfer
+          v-model="userValue"
+          filterable
+          :filter-method="searchMethod"
+          filter-placeholder="搜索"
+          :data="userData"
+          :titles="['所有人员', '参与人员']"
+          @change="saveUserInfo"
+        >
+        </el-transfer>
+      </el-tab-pane>
     </el-tabs>
   </div>
 </template>
 
 <script>
 export default {
-  created() {
-    //转到选择标签时先从store中加载一遍labels
-    this.loadData()
-  },
   data(){
     return{
+
       //图像压缩质量
       image_quality: 70,
       //所有标签列表
@@ -85,8 +93,17 @@ export default {
       ],
       //控制添加标签输入框的变量
       mainInputVisible: false,
-      mainInputValue: ''
+      mainInputValue: '',
+
+      //任务分配数据
+      userData: [],
+      userValue: [],
+
     }
+  },
+  created() {
+    //转到选择标签时先从store中加载一遍labels
+    this.loadData()
   },
   methods: {
     //删除标签
@@ -97,7 +114,7 @@ export default {
     //开始添加标签
     showInput() {
       this.mainInputVisible = true;
-      this.$nextTick(_ => {
+      this.$nextTick(() => {
         this.$refs.mainSaveTagInput.$refs.input.focus();
       });
     },
@@ -128,10 +145,40 @@ export default {
     loadData(){
       this.labels = this.$store.state.projectInfo.labels
       this.image_quality = this.$store.state.image_quality
+      this.userValue = this.$store.state.allUsers
     },
-    //提交imagequality
+    //提交imageQuality
     pushImageQuality(){
       this.$store.commit('addImageQuality', this.image_quality)
+    },
+    //获取人员信息
+    getAllUsersInfo(event){
+      if(event.label === "任务分配"){
+        //清除原有数据
+        this.userData = []
+        //获取加载数据
+        this.$http.get('v1/users?page_size=all').then((e)=>{
+          e.data.results.forEach((user, index)=>{
+            this.userData.push({
+              label: user.username,
+              key: index,
+            })
+          })
+
+        })
+      }
+    },
+    //搜索策略
+    searchMethod(query, item) {
+      return item.label.indexOf(query) > -1;
+    },
+    //选定后保存到仓库
+    saveUserInfo(){
+      let allUsers = []
+      for(let i = 0; i<this.userValue.length; i++){
+        allUsers.push(this.userData[this.userValue[i]].key)
+      }
+      this.$store.commit('saveAllUsers',allUsers)
     }
   }
 }
@@ -185,5 +232,11 @@ export default {
     width: 868px;
     margin: 10px 0;
   }
+}
+/deep/ .el-transfer-panel__filter{
+  margin: 0;
+}
+/deep/ .el-input__inner{
+  border-radius: 0;
 }
 </style>

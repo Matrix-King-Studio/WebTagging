@@ -23,15 +23,20 @@ export default new Vuex.Store({
       "tags":[
       ],
       "version":26
-    }
+    },
+    //参与人员的key
+    allUsers: []
   },
   mutations: {
+    //新建项目时保存label信息
     addToStore(state, labData){
       state.projectInfo.labels = labData
     },
+    //新建项目时保存图片质量
     addImageQuality(state, image_quality){
       state.image_quality = image_quality
     },
+    //新建项目完成后清除信息
     cleanStore(){
       this.state.projectInfo = {
         "name": "",
@@ -42,13 +47,17 @@ export default new Vuex.Store({
         "z_order": false,
       }
       this.state.image_quality = 70
+      this.state.allUsers = []
     },
+    //图片数据上传完成后清除
     cleanFileList(){
       this.state.allFileList = []
     },
+    //啊这
     saveFileList(state, listData){
       state.allFileList = listData
     },
+    //标注时保存标注对象信息
     saveTagsInfo(state, shapes) {
       console.log('开始保存新的矩形框信息');
       for(let item = 0;item < shapes.rectangles.length;item++){
@@ -71,6 +80,7 @@ export default new Vuex.Store({
       }
       console.log(state.imageTags.shapes)
     },
+    //多次保存到时候先清除标注对象
     cleanTagsInfo(state,frame){
       let imgIndex = frame + 1
       console.log(state.imageTags.shapes)
@@ -84,6 +94,11 @@ export default new Vuex.Store({
         }
       }
       console.log('删除完成');
+    },
+    //保存任务分配
+    saveAllUsers(state, users){
+      state.allUsers = users
+      console.log(state.allUsers);
     }
   },
   actions: {

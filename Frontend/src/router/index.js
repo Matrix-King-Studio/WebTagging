@@ -5,7 +5,6 @@ const LoginPage = () => import(/* webpackChunkName: "loginPage" */ '../views/Log
 
 const Home = () => import(/* webpackChunkName: "home" */ '../views/Home.vue')
 const Project = () => import(/* webpackChunkName: "home" */ '../components/allproject/project.vue')
-const Manage = () => import(/* webpackChunkName: "home" */ '../components/management/setting.vue')
 const Usercenter = () => import(/* webpackChunkName: "home" */ '../components/usercenter/user.vue')
 const NewProject = () => import(/* webpackChunkName: "home" */ '../components/newproject/newproject.vue')
 // import Home from '../views/Home.vue'
@@ -31,7 +30,6 @@ const routes = [
     component: Home,
     children: [
       { path: 'project', component: Project },
-      { path: 'management', component: Manage },
       { path: 'user', component: Usercenter },
       { path: 'newproject', component: NewProject }
     ]
@@ -41,7 +39,7 @@ const routes = [
     component: WorkBench,
     children: [
       { path: 'task/:index', component: DrawPage },
-      { path: 'setting', component: Setting }
+      { path: 'setting/:index', component: Setting }
     ]
   }
 ]

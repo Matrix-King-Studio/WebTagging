@@ -136,14 +136,11 @@ export default {
     },
     //上传进度展示
     async showProgress(url){
-
-
       let state = await this.getStatus(url)
       console.log(state);
       if(state === "Finished"){
         this.progressText = '创建完成，正在上传数据'
         this.$refs.progressLine.style.width = "850px"
-
       }
     },
     //获取上传进度
