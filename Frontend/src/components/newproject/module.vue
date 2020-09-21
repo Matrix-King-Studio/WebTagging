@@ -75,6 +75,23 @@
           @change="saveUserInfo"
         >
         </el-transfer>
+        <div class="segment-size-box">
+          <div class="segment-size">
+            <div class="minus-one">
+              <i class="el-icon-minus"></i>
+            </div>
+            <div class="segment-size-number">
+              <input type="text" v-model="segment_size">
+            </div>
+            <div class="plus-one">
+              <i class="el-icon-plus"></i>
+            </div>
+          </div>
+          <div class="segment-tip">
+            <span class="tips">job数量</span><br>
+            <span>将项目中的图片分为几份,后期可更改,默认等于参与人员数量,自定义时需要大于人员数量,小于图片数量</span>
+          </div>
+        </div>
       </el-tab-pane>
     </el-tabs>
   </div>
@@ -98,6 +115,9 @@ export default {
       //任务分配数据
       userData: [],
       userValue: [],
+
+      //
+      segment_size: 1,
 
     }
   },
@@ -164,7 +184,6 @@ export default {
               key: index,
             })
           })
-
         })
       }
     },
@@ -232,11 +251,68 @@ export default {
     width: 868px;
     margin: 10px 0;
   }
+  .segment-size-box{
+    margin-top: 20px;
+    height: 100px;
+    width: 100%;
+    .segment-size{
+      height: 40px;
+      width: 160px;
+      margin: auto;
+      border: 1px solid #c2e8cc;
+      border-radius: 3px;
+      line-height: 40px;
+      text-align: center;
+      display: flex;
+      .minus-one{
+        height: 100%;
+        width: 40px;
+      }
+      .segment-size-number{
+        height: 100%;
+        width: 80px;
+        background-color: lightblue;
+        input{
+          overflow: hidden;
+          text-align: center;
+          display: block;
+          padding: 0;
+          margin: 0;
+          outline: none;
+          height: 100%;
+          width: 100%;
+          border: 0;
+        }
+      }
+      .plus-one{
+        height: 100%;
+        width: 40px;
+      }
+    }
+    .segment-tip{
+      height: 60px;
+      width: 600px;
+      margin: auto;
+      overflow: hidden;
+      text-align: center;
+      .tips{
+        font-size: 12px;
+      }
+      span{
+        font-size: 6px;
+        color: #999999;
+      }
+    }
+  }
 }
 /deep/ .el-transfer-panel__filter{
   margin: 0;
 }
 /deep/ .el-input__inner{
   border-radius: 0;
+}
+/deep/ .el-transfer{
+  width: 590px;
+  margin: auto;
 }
 </style>

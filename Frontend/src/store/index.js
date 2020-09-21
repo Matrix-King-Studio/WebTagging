@@ -96,9 +96,14 @@ export default new Vuex.Store({
       console.log('删除完成');
     },
     //保存任务分配
+    //没有设置人员列表无segmentsize，设置人员列表segmentsize等于列表长度
     saveAllUsers(state, users){
       state.allUsers = users
-      console.log(state.allUsers);
+      if(state.allUsers.length === 0){
+        delete state.projectInfo.segment_size
+      } else {
+        state.projectInfo["segment_size"] = state.allUsers.length
+      }
     }
   },
   actions: {

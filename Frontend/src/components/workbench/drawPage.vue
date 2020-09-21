@@ -532,7 +532,7 @@ export default {
       });
     },
     //提交标注信息
-    /** 提交成功后的逻辑还需进一步确认*/
+    /** 提交成功后的逻辑还需进一步改进*/
     submitTags(){
       let TagsInfo = this.$store.state.imageTags
       console.log(TagsInfo)
@@ -598,6 +598,8 @@ export default {
             frame: TagsInfo[item].frame,
             label_id: TagsInfo[item].label_id,
             group: TagsInfo[item].group,
+            isLock: false,
+            isInvisible: false,
             attributes: TagsInfo[item].attributes,
             points: TagsInfo[item].points,
           })
