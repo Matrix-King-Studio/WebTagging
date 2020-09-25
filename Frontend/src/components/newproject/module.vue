@@ -77,19 +77,19 @@
         </el-transfer>
         <div class="segment-size-box">
           <div class="segment-size">
-            <div class="minus-one">
+            <div class="minus-one" @click="changeSeg('minus')">
               <i class="el-icon-minus"></i>
             </div>
-            <div class="segment-size-number">
+            <div class="segment-size-number" @change="changeSeg('modify')">
               <input type="text" v-model="segment_size">
             </div>
-            <div class="plus-one">
+            <div class="plus-one" @click="changeSeg('plus')">
               <i class="el-icon-plus"></i>
             </div>
           </div>
           <div class="segment-tip">
-            <span class="tips">job数量</span><br>
-            <span>将项目中的图片分为几份,后期可更改,默认等于参与人员数量,自定义时需要大于人员数量,小于图片数量</span>
+            <span class="tips">一个job中图片的数量</span><br>
+            <span>将项目中的图片分为若干份，每份有多少张图片,默认为所有图片数量，即不将项目进行分割</span>
           </div>
         </div>
       </el-tab-pane>
@@ -166,6 +166,13 @@ export default {
       this.labels = this.$store.state.projectInfo.labels
       this.image_quality = this.$store.state.image_quality
       this.userValue = this.$store.state.allUsers
+
+      //加载人员的同时重新求job数量，保证segment_size至少为1
+      if(this.userValue.length === 0){
+        this.segment_size = 1
+      } else {
+        this.segment_size = this.userValue.length
+      }
     },
     //提交imageQuality
     pushImageQuality(){
@@ -182,22 +189,86 @@ export default {
             this.userData.push({
               label: user.username,
               key: index,
+              id: user.id
             })
           })
         })
       }
     },
-    //搜索策略
+    //搜索策略 穿梭框使用
     searchMethod(query, item) {
       return item.label.indexOf(query) > -1;
     },
-    //选定后保存到仓库
+    //参与人员选定后保存到仓库
     saveUserInfo(){
       let allUsers = []
+      //根据成员数改变job数
+      this.changeSeg('users')
+
       for(let i = 0; i<this.userValue.length; i++){
         allUsers.push(this.userData[this.userValue[i]].key)
       }
       this.$store.commit('saveAllUsers',allUsers)
+    },
+    //修改segment
+    //mod: 1.plus 点击+1 2.minus 点击-1 3.modify直接修改 4. 穿梭框变化时的修改
+    changeSeg(mod){
+
+      /**如果没有传图片先点这个会有undefined报错*/
+      // console.log(this.$store.state.allFileList.length);
+      // console.log(this.$store.state.allFileList[0].type.indexOf("zip"))
+      //如果传图片最大值是图片个数,如果是压缩包，最大值是999(因为无法判断压缩包内的图片数量)
+      let MAX = 999
+      if(this.$store.state.allFileList.length === 0){
+        this.$message({
+          message: "请先添加图片数据",
+          type: "error"
+        })
+        return //跳出函数不再继续执行
+      } else if(this.$store.state.allFileList[0].type.indexOf("zip") === -1) {
+        MAX = this.$store.state.allFileList.length
+      }
+
+      if(mod === 'plus'){
+        if(this.segment_size < MAX){
+          this.segment_size = parseInt(this.segment_size) + 1
+        } else {
+          this.$message({
+            message: '不能超过图片数量',
+            type: "warning"
+          })
+        }
+      } else if(mod === 'minus'){
+        if(this.segment_size > 1){
+          this.segment_size = parseInt(this.segment_size) - 1
+        }
+      } else if(mod === 'modify'){
+        if(this.segment_size < 1 || this.segment_size > MAX){
+          this.$message({
+            message: '非法数值，请重新输入',
+            type: "warning"
+          })
+          //警告结束后改为默认值
+          if(this.userValue.length === 0){
+            this.segment_size = 1
+          } else{
+            this.segment_size = this.userValue.length
+          }
+        }
+      } else if(mod === 'users'){
+        if(this.userValue.length === 0){//如果没有指定人员
+          this.segment_size = 1
+        } else if(this.userValue.length > MAX){
+          this.$message({
+            message: '人员数量超过图片数量',
+            type: "error"
+          })
+        } else {//jog数量等于人员数量
+          this.segment_size = this.userValue.length
+        }
+      }
+
+      this.$store.commit('saveSeg', this.segment_size)
     }
   }
 }
@@ -292,11 +363,12 @@ export default {
     .segment-tip{
       height: 60px;
       width: 600px;
-      margin: auto;
+      margin: 10px auto 0 auto;
       overflow: hidden;
       text-align: center;
       .tips{
-        font-size: 12px;
+        color: #666666;
+        font-size: 14px;
       }
       span{
         font-size: 6px;

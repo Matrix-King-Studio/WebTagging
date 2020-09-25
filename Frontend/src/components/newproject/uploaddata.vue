@@ -70,11 +70,10 @@ export default {
       this.$refs.getfile.dispatchEvent(new MouseEvent('click'))
     },
     //获取文件信息
+    /** 以后再解决上传文件重复的问题*/
     getFile(event){
       this.fileList.push(...event.target.files)
-
-      //以后再解决上传文件重复的问题吧
-
+      console.log(this.fileList);
       this.$store.commit('saveFileList', this.fileList)
     },
     //拖拽上传
@@ -83,8 +82,8 @@ export default {
 
       let files = [];
       [].forEach.call(e.dataTransfer.files, function(file) {
-        files.push(file);
-      },false);
+        files.push(file)
+      },false)
       this.fileList.push(...files)
       this.$store.commit('saveFileList', this.fileList)
     },

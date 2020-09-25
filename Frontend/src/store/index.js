@@ -5,6 +5,7 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
+    //项目基本信息
     projectInfo: {
       "name": "",
       "describe": '',
@@ -13,8 +14,11 @@ export default new Vuex.Store({
       ],
       "z_order": false,
     },
+    //所有图片数据
     allFileList: [],
+    //图片压缩质量
     image_quality: 70,
+    //图片标注信息
     imageTags: {
       "shapes":[
       ],
@@ -46,14 +50,13 @@ export default new Vuex.Store({
         ],
         "z_order": false,
       }
-      this.state.image_quality = 70
-      this.state.allUsers = []
     },
-    //图片数据上传完成后清除
+    //图片数据上传到服务器完成后清除
     cleanFileList(){
       this.state.allFileList = []
+      this.state.image_quality = 70
     },
-    //啊这
+    //图片数据
     saveFileList(state, listData){
       state.allFileList = listData
     },
@@ -104,6 +107,15 @@ export default new Vuex.Store({
       } else {
         state.projectInfo["segment_size"] = state.allUsers.length
       }
+      console.log(state.allUsers);
+    },
+    //单独修改job数量
+    saveSeg(state, seg){
+      state.projectInfo["segment_size"] = seg
+    },
+    //清除参与人员信息
+    cleanUsersInfo(state){
+      state.allUsers = []
     }
   },
   actions: {

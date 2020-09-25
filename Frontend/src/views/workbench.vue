@@ -48,14 +48,13 @@ export default {
     /** 这里还是无法区分task和setting*/
   },
   mounted() {
-    console.log('ok');
     this.getMod()
   },
   methods: {
     //加载时获取模式
     getMod(){
-      console.log(this.$route.path);
-      console.log(this.$route.path.indexOf('task'));
+      // console.log(this.$route.path);
+      // console.log(this.$route.path.indexOf('task'));
       if(this.$route.path.indexOf('task') !== -1){
         this.mod = 'task'
       } else if (this.$route.path.indexOf('setting') !== -1){
