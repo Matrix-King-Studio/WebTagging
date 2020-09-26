@@ -44,10 +44,10 @@
                 size="mini"
               >
                 <el-option
-                  v-for="item in options"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value"
+                  v-for="i in options"
+                  :key="i.value"
+                  :label="i.label"
+                  :value="i.value"
                 >
                 </el-option>
               </el-select>
@@ -86,10 +86,6 @@
           </div>
         </div>
         <div class="main-func">
-          <div class="main-btn save" @click="saveTagsToStore">
-            <i class="el-icon-document-checked"></i>
-            <span>保存</span>
-          </div>
           <div class="main-btn submit" @click="isPrepare">
             <i class="el-icon-upload"></i>
             <span>提交所有</span>
@@ -113,6 +109,9 @@
         class="level-line"
       ></div>
       <div class="rec-box" ref="recBox"></div>
+      <div class="tips-box" ref="tipsBox">
+        <span>正在加载</span>
+      </div>
     </div>
   </div>
 </template>
@@ -126,13 +125,12 @@ export default {
       flag: 'cursor',
       //项目栏是否展开
       flag2: true,
-      //
-      lock: false,
+      //是否是第一次打开
+      isFirst: true,
 
-      options: [
-
-      ],
-      value: '',
+      //保存所有Tag选项
+      options: [],
+      // value: '',
 
       //画布对象
       myCanvas: {},
@@ -201,6 +199,7 @@ export default {
     //获取images信息列表
     getImagesInfo(){
       this.$http.get('v1/tasks/' + this.$route.params.index + '/data/meta').then( e =>{
+        // console.log(e.data);
         this.imagesSize = e.data.size
       })
     },
@@ -278,7 +277,12 @@ export default {
         img.src = "data:image/png;base64," + this.imagesData[this.imageIndex]
         console.log("5.base64数据嵌入完成");
       },100)
+
+
       setTimeout(()=>{
+
+        // console.log('图片原始尺寸' + img.width, img.height);
+
         //图片比窗口长，则上下填充满
         if(img.width/img.height < (this.myCanvas.width-300)/this.myCanvas.height){
           this.imageInfo = {
@@ -295,11 +299,20 @@ export default {
             height: (this.myCanvas.width - 300)*img.height/img.width - 10
           }
         }
+
+        // console.log('图片缩放后的尺寸' + this.imageInfo.width, this.imageInfo.height);
+
         this.imageScale = img.width/this.imageInfo.width
         console.log("6.图片尺寸数据处理完成，图片缩放比例：" + this.imageScale);
         //将图片绘制到canvas上
         this.ctx.drawImage(img, this.imageInfo.left, this.imageInfo.top, this.imageInfo.width, this.imageInfo.height)
         console.log("7.图片绘制完成");
+
+        //加载完成后删除
+        if(this.isFirst){
+          this.$refs.tipsBox.parentNode.removeChild(this.$refs.tipsBox)
+          this.isFirst = false
+        }
       }, 200)
     },
     //切换图片
@@ -442,12 +455,14 @@ export default {
             document.body.removeEventListener('mousemove', this.resizeRec, false)
             //记录矩形框左上，右下两个点的x1,y1,x2,y2坐标在 !原图! 上的坐标
             this.shapes.rectangles[this.shapes.rectangles.length - 1].points = [
-              (parseInt(this.shapes.rectangles[this.shapes.rectangles.length - 1].el.style.left.replace('px','')) - (parseInt(this.imageInfo.left) + 46))/this.imageScale,
-              (parseInt(this.shapes.rectangles[this.shapes.rectangles.length - 1].el.style.top.replace('px','')) - (parseInt(this.imageInfo.top) + 35))/this.imageScale,
-              (parseInt(this.shapes.rectangles[this.shapes.rectangles.length - 1].el.style.width.replace('px',''))+parseInt(this.shapes.rectangles[this.shapes.rectangles.length - 1].el.style.left.replace('px','')) - (parseInt(this.imageInfo.left) + 46))/this.imageScale,
-              (parseInt(this.shapes.rectangles[this.shapes.rectangles.length - 1].el.style.height.replace('px',''))+parseInt(this.shapes.rectangles[this.shapes.rectangles.length - 1].el.style.top.replace('px','')) - (parseInt(this.imageInfo.top) + 35))/this.imageScale,
+              (parseInt(this.shapes.rectangles[this.shapes.rectangles.length - 1].el.style.left.replace('px','')) - (parseInt(this.imageInfo.left) + 46))*this.imageScale,
+              (parseInt(this.shapes.rectangles[this.shapes.rectangles.length - 1].el.style.top.replace('px','')) - (parseInt(this.imageInfo.top) + 35))*this.imageScale,
+              (parseInt(this.shapes.rectangles[this.shapes.rectangles.length - 1].el.style.width.replace('px',''))+parseInt(this.shapes.rectangles[this.shapes.rectangles.length - 1].el.style.left.replace('px','')) - (parseInt(this.imageInfo.left) + 46))*this.imageScale,
+              (parseInt(this.shapes.rectangles[this.shapes.rectangles.length - 1].el.style.height.replace('px',''))+parseInt(this.shapes.rectangles[this.shapes.rectangles.length - 1].el.style.top.replace('px','')) - (parseInt(this.imageInfo.top) + 35))*this.imageScale,
             ]
-            console.log(this.shapes.rectangles[this.shapes.rectangles.length - 1].points);
+            console.log('矩形框两点数据', this.shapes.rectangles[this.shapes.rectangles.length - 1].points);
+            //画完自动保存
+            this.saveTagsToStore()
             //完成一个标记,切换回鼠标模式
             this.initDrawTools('cursor')
           }
@@ -496,7 +511,7 @@ export default {
         }
       }).then((e)=>{
         this.jobId = e.data.results[0].segments[0].jobs[0].id
-        console.log(e)
+        // console.log(e)
         for(let item in e.data.results[0].labels){
           let label = {
             value: e.data.results[0].labels[item].id,
@@ -504,7 +519,7 @@ export default {
           }
           this.options.push(label)
         }
-        console.log(this.options);
+        console.log('标签列表', this.options);
       })
     },
     //将标注信息存储到store中
@@ -512,7 +527,7 @@ export default {
       this.$store.commit('cleanTagsInfo', this.imageIndex)
       this.$store.commit('saveTagsInfo', this.shapes)
       this.$message({
-        message: '保存成功',
+        message: '自动保存成功',
         type: "success"
       })
     },
@@ -532,7 +547,7 @@ export default {
       });
     },
     //提交标注信息
-    /** 提交成功后的逻辑还需进一步改进*/
+    /** 提交成功后的逻辑还需进一步改进 暂时改成不能再次进入*/
     submitTags(){
       let TagsInfo = this.$store.state.imageTags
       console.log(TagsInfo)
@@ -542,6 +557,7 @@ export default {
           message: "提交成功",
           type: "success"
         })
+        this.$router.push('/home')
       }).catch((err)=>{
         console.log(err);
       })
@@ -567,26 +583,28 @@ export default {
       console.log(TagsInfo);
       for(let item in TagsInfo){
         if(TagsInfo[item].frame === imgIndex){
-          console.log(TagsInfo[item].points);
+
+          console.log('矩形框在页面上的位置',TagsInfo[item].points);
 
           //创建矩形框
           let rec = document.createElement('div')
           rec.className += 'rec-obj'
-          //将矩形框在 !原图! 上的点的坐标缩放后展示到页面上
 
           setTimeout(()=>{
-            console.log(parseInt(TagsInfo[item].points[0]) * this.imageScale);
-            console.log(parseInt(this.imageInfo.left));
-            console.log(parseInt(TagsInfo[item].points[1]) * this.imageScale);
-            console.log(parseInt(this.imageInfo.top));
-            rec.style.left = parseInt(TagsInfo[item].points[0])*this.imageScale + parseInt(this.imageInfo.left) + 46 + 'px'
-            rec.style.top = parseInt(TagsInfo[item].points[1])*this.imageScale + parseInt(this.imageInfo.top) + 35 + 'px'
-            rec.style.width = (parseInt(TagsInfo[item].points[2]) - parseInt(TagsInfo[item].points[0]))*this.imageScale + 'px'
-            rec.style.height = (parseInt(TagsInfo[item].points[3]) - parseInt(TagsInfo[item].points[1]))*this.imageScale + 'px'
+            // console.log(parseInt(TagsInfo[item].points[0]) / this.imageScale);
+            // console.log(parseInt(this.imageInfo.left));
+            // console.log(parseInt(TagsInfo[item].points[1]) / this.imageScale);
+            // console.log(parseInt(this.imageInfo.top));
+            rec.style.left = parseInt(TagsInfo[item].points[0])/this.imageScale + parseInt(this.imageInfo.left) + 46 + 'px'
+            rec.style.top = parseInt(TagsInfo[item].points[1])/this.imageScale + parseInt(this.imageInfo.top) + 35 + 'px'
+            rec.style.width = (parseInt(TagsInfo[item].points[2]) - parseInt(TagsInfo[item].points[0]))/this.imageScale + 'px'
+            rec.style.height = (parseInt(TagsInfo[item].points[3]) - parseInt(TagsInfo[item].points[1]))/this.imageScale + 'px'
+            rec.style.cursor = 'default'
             this.$refs.recBox.appendChild(rec)
           },300)
 
-          console.log(TagsInfo[item])
+          // console.log('标记的真实数据', TagsInfo[item])
+
           //添加数据
           this.shapes.rectangles.push({
             type: TagsInfo[item].type,
@@ -613,7 +631,6 @@ export default {
         item.style.cursor = 'default'
       })
     },
-
     //鼠标放到右侧信息栏高亮对应矩形框
     showRecObj(index){
       this.shapes.rectangles[index-1].el.style.backgroundColor = 'rgba(255,255,255,0.4)'
@@ -622,6 +639,7 @@ export default {
       this.shapes.rectangles[index-1].el.style.backgroundColor = 'transparent'
     },
     //信息栏中的功能
+      //锁定
     lockRecObj(index){
       this.shapes.rectangles[index - 1].isLock = !this.shapes.rectangles[index - 1].isLock
       if(this.shapes.rectangles[index - 1].isLock){
@@ -630,11 +648,37 @@ export default {
         this.shapes.rectangles[index - 1].el.classList.remove('rec-obj-lock')
       }
     },
+      //不可见
     invisibleRecObj(index){
+      if(this.shapes.rectangles[index-1].isInvisible){
+        this.shapes.rectangles[index-1].el.style.display = 'block'
+      } else {
+        this.shapes.rectangles[index-1].el.style.display = 'none'
+      }
       this.shapes.rectangles[index-1].isInvisible = !this.shapes.rectangles[index-1].isInvisible
     },
+      //删除
     deleteRecObj(index){
-      console.log(index);
+
+      // console.log(this.shapes.rectangles[index-1].el);
+      //删除元素
+      this.shapes.rectangles[index-1].el.parentNode.removeChild(this.shapes.rectangles[index-1].el)
+      //
+      for(let i = index; i<this.shapes.rectangles.length; i++){
+        // console.log(this.shapes.rectangles[i]);
+        this.shapes.rectangles[i].index -= 1
+      }
+      //删除数据
+      this.shapes.rectangles.splice(index-1, 1)
+
+      // console.log(this.shapes.rectangles);
+
+      this.rectangleIndex --
+
+      this.$message({
+        message: "元素成功移除",
+        type: "success"
+      })
     }
 
   }
@@ -829,8 +873,8 @@ export default {
       margin-top: 20px;
       border-radius: 2px;
     }
-    .commit{
-      width: 100px;
+    .submit{
+      width: 200px;
       letter-spacing: 2px;
     }
     .main-btn:hover{
@@ -863,6 +907,15 @@ export default {
     width: 100%;
     background-color: rgba(255,0,0,0.4);
   }
+  .tips-box{
+    position: absolute;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    text-align: left;
+    padding: 400px 0 0 360px;
+    font-size: 24px;
+  }
 }
 /deep/ .rec-obj{
   position: absolute;
@@ -877,8 +930,8 @@ export default {
 /deep/ .rec-obj-lock{
   background-color: transparent !important;
 }
-///deep/ .rec-obj:hover{
-//  border: 2px solid #555555;
-//  background-color: rgba(228,254,239,0.3);
-//}
+/deep/ .rec-obj:hover{
+  border: 2px solid #555555;
+  background-color: rgba(228,254,239,0.3) !important;
+}
 </style>

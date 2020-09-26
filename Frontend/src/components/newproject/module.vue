@@ -64,35 +64,35 @@
         >
         </el-slider>
       </el-tab-pane>
-      <el-tab-pane label="任务分配">
-        <el-transfer
-          v-model="userValue"
-          filterable
-          :filter-method="searchMethod"
-          filter-placeholder="搜索"
-          :data="userData"
-          :titles="['所有人员', '参与人员']"
-          @change="saveUserInfo"
-        >
-        </el-transfer>
-        <div class="segment-size-box">
-          <div class="segment-size">
-            <div class="minus-one" @click="changeSeg('minus')">
-              <i class="el-icon-minus"></i>
-            </div>
-            <div class="segment-size-number" @change="changeSeg('modify')">
-              <input type="text" v-model="segment_size">
-            </div>
-            <div class="plus-one" @click="changeSeg('plus')">
-              <i class="el-icon-plus"></i>
-            </div>
-          </div>
-          <div class="segment-tip">
-            <span class="tips">一个job中图片的数量</span><br>
-            <span>将项目中的图片分为若干份，每份有多少张图片,默认为所有图片数量，即不将项目进行分割</span>
-          </div>
-        </div>
-      </el-tab-pane>
+<!--      <el-tab-pane label="任务分配">-->
+<!--        <el-transfer-->
+<!--          v-model="userValue"-->
+<!--          filterable-->
+<!--          :filter-method="searchMethod"-->
+<!--          filter-placeholder="搜索"-->
+<!--          :data="userData"-->
+<!--          :titles="['所有人员', '参与人员']"-->
+<!--          @change="saveUserInfo"-->
+<!--        >-->
+<!--        </el-transfer>-->
+<!--        <div class="segment-size-box">-->
+<!--          <div class="segment-size">-->
+<!--            <div class="minus-one" @click="changeSeg('minus')">-->
+<!--              <i class="el-icon-minus"></i>-->
+<!--            </div>-->
+<!--            <div class="segment-size-number" @change="changeSeg('modify')">-->
+<!--              <input type="text" v-model="segment_size">-->
+<!--            </div>-->
+<!--            <div class="plus-one" @click="changeSeg('plus')">-->
+<!--              <i class="el-icon-plus"></i>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--          <div class="segment-tip">-->
+<!--            <span class="tips">一个job中图片的数量</span><br>-->
+<!--            <span>将项目中的图片分为若干份，每份有多少张图片,默认为所有图片数量，即不将项目进行分割</span>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--      </el-tab-pane>-->
     </el-tabs>
   </div>
 </template>

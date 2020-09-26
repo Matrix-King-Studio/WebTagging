@@ -64,7 +64,9 @@ export default new Vuex.Store({
     saveTagsInfo(state, shapes) {
       console.log('开始保存新的矩形框信息');
       for(let item = 0;item < shapes.rectangles.length;item++){
-        console.log('正在保存第'+shapes.rectangles[item].index+'个矩形框的信息')
+
+        // console.log('正在保存第'+shapes.rectangles[item].index+'个矩形框的信息')
+
         state.imageTags.shapes.push({
           "type":"rectangle",
           "occluded":false,
@@ -81,13 +83,15 @@ export default new Vuex.Store({
           "group":0
         })
       }
-      console.log(state.imageTags.shapes)
+      console.log('新数据保存成功', state.imageTags.shapes)
     },
     //多次保存到时候先清除标注对象
     cleanTagsInfo(state,frame){
       let imgIndex = frame + 1
-      console.log(state.imageTags.shapes)
-      console.log('开始删除第'+imgIndex+'张图片的信息')
+
+      // console.log(state.imageTags.shapes)
+      // console.log('开始删除第'+imgIndex+'张图片的信息')
+
       for(let l = 0;l < state.imageTags.shapes.length;l++){
         console.log(l)
         if(state.imageTags.shapes[l].frame === imgIndex){
@@ -96,7 +100,7 @@ export default new Vuex.Store({
           l--
         }
       }
-      console.log('删除完成');
+      console.log('原数据清空完成');
     },
     //保存任务分配
     //没有设置人员列表无segmentsize，设置人员列表segmentsize等于列表长度

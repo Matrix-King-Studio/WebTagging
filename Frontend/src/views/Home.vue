@@ -61,11 +61,6 @@ export default {
         })
       })
     },
-    //转到管理界面
-    toManagePage(){
-      this.router.replace('http://alexking.site:8080/admin/')
-    }
-
   },
 }
 </script>

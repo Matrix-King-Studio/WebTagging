@@ -150,7 +150,7 @@ export default {
           if (e.data.key) { // 登录成功(有key值)(e.data.key)
             console.log(e.data.key)
             window.sessionStorage.setItem('token', e.data.key)
-            this.showSucLoginBtn()
+            this.showSucLoginBtn('登陆成功')
             let t = this
             setTimeout(function () {
               t.$router.push('/home')
@@ -169,7 +169,6 @@ export default {
     },
     // 注册的数据传输
     register() {
-      console.log(1)
       if (this.rightEmail && this.rightPassword && this.flag) {
         this.flag = 0
         console.log(this.flag)
@@ -179,7 +178,10 @@ export default {
         }, 2000)
         this.$http.post('v1/auth/register', this.loginForm).then(e => {
           console.log(e.data)
-          this.changeMod(1)
+          this.showSucLoginBtn('注册成功')
+          setTimeout(()=>{
+            this.changeMod(1)
+          },1000)
         })
       }
     },
@@ -188,11 +190,11 @@ export default {
       console.log(2)
     },
     // 登录成功或失败后按钮显示效果
-    showSucLoginBtn() {
+    showSucLoginBtn(msg) {
       var e = this.$refs.errbtn.style
       e.top = '0px'
       e.backgroundColor = '#75ff88'
-      this.$refs.errbtn.innerText = '登录成功'
+      this.$refs.errbtn.innerText = msg
       setTimeout(function () {
         e.top = '30px'
       }, 1500)

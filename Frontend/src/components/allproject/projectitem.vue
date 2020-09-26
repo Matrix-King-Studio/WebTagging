@@ -15,6 +15,7 @@
         开始标记
       </div>
       <div
+        v-if="userInfo"
         class="exam"
         @click="toTaskSetting(proInfo.id)"
       >
@@ -26,7 +27,7 @@
 
 <script>
 export default {
-  props: ["proInfo"],
+  props: ["proInfo","userInfo"],
   data() {
     return{
       projectId: '1',
@@ -63,9 +64,9 @@ export default {
       logs[0].time = newDate.toISOString()
       //创建log数据
       this.$http.post('v1/server/logs',logs).then(()=>{
-        console.log('-1.创建log成功')
+        // console.log('-1.创建log成功')
       }).catch(()=>{
-        console.log('-1.创建log失败')
+        // console.log('-1.创建log失败')
       })
       this.$router.push('/workbench/task/' + index)
     },
@@ -91,7 +92,8 @@ export default {
     position: relative;
     width: 300px;
     height: 200px;
-    background-size: cover;
+    background-size: cover !important;
+    background-repeat: no-repeat !important;
     border-radius: 16px;
     float: left;
     margin: 10px;
@@ -133,8 +135,10 @@ export default {
       width: 100%;
       height: 100%;
       transition: top 0.2s ease;
+
+      display: flex;
       div{
-        position: absolute;
+        //position: absolute;
         background-color: rgba(0,0,0,0.8);
         transition: background-color 0.2s;
         margin: 0;
@@ -152,6 +156,8 @@ export default {
         user-select: none;
       }
       .start{
+        flex: 2;
+
         left: 0;
         width: 200px;
         transition: all 0.2s;
@@ -161,6 +167,8 @@ export default {
         color: #eeeeee;
       }
       .exam{
+        flex: 1;
+
         right: 0;
         width: 100px;
         transition: all 0.2s;

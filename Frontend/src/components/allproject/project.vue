@@ -1,6 +1,6 @@
 <template>
   <div class="item-box">
-    <projectitem v-for="item in projectData" :key="item.url" :proInfo="item"></projectitem>
+    <projectitem v-for="item in projectData" :key="item.url" :proInfo="item" :userInfo="ifAdmin"></projectitem>
     <newprojectitem v-if="ifAdmin === 'admin'"></newprojectitem>
   </div>
 </template>
@@ -16,12 +16,17 @@ export default {
   data() {
     return{
       ifAdmin: '',
-      projectData: []
+      projectData: [],
+      userId: 0,
     }
   },
   created(){
-    this.getAllProject()
     this.getUserInfo()
+  },
+  mounted() {
+    setTimeout(()=>{
+      this.getAllProject()
+    },100)
   },
   methods: {
     getAllProject(){
@@ -32,11 +37,18 @@ export default {
         }
       }).then((res)=>{
         console.log(res);
-        this.projectData = res.data.results
+        for(let index = 0; index < res.data.results.length; index++){
+          for(let i = 0; i < res.data.results[index].segments[0].jobs.length; i++){
+            if(res.data.results[index].segments[0].jobs[i].assignee === this.userId || res.data.results[index].owner === this.userId){
+              this.projectData.push(res.data.results[index])
+            }
+          }
+        }
       })
     },
     getUserInfo(){
       this.$http.get('v1/users/self').then((res)=>{
+        this.userId = res.data.id
         this.ifAdmin = res.data.groups.find(val=>{
           return val === 'admin'
         })

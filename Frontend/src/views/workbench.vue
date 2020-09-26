@@ -6,10 +6,18 @@
       </div>
       <div class="user">
         <i class="el-icon-user-solid"></i>
-        <span>用户名</span>
+        <el-dropdown trigger="click" @command="handleUserClick">
+          <span class="el-dropdown-link">
+            <span v-text="userInfo.username"></span>
+            <i class="el-icon-arrow-down el-icon--right"></i>
+          </span>
+          <el-dropdown-menu slot="dropdown">
+            <el-dropdown-item command="logout">退出登录</el-dropdown-item>
+          </el-dropdown-menu>
+        </el-dropdown>
       </div>
       <router-link
-        v-if="mod === 'task'"
+        v-if="mod === 'task' && userId"
         class="to-setting"
 
         :to="'/workbench/setting/' + taskId"
@@ -20,7 +28,7 @@
         <span>项目设置</span>
       </router-link>
       <router-link
-        v-if="mod === 'set'"
+        v-if="mod === 'set' && userId"
         class="to-task"
         :to="'/workbench/task/' + taskId"
         tag="div"
@@ -39,13 +47,16 @@ export default {
   data(){
     return{
       mod: 'task',
-      taskId: ''
+      taskId: '',
+      userInfo: {},
+      userId: '',
     }
   },
   created() {
     //获取task id用于获取数据
     this.getTaskId(this.$route.params.index)
-    /** 这里还是无法区分task和setting*/
+    //获取当前用户信息
+    this.getCurrentUserInfo()
   },
   mounted() {
     this.getMod()
@@ -78,6 +89,33 @@ export default {
     //点击左上角图标回home
     backHome(){
       this.$router.push('/home')
+    },
+    //获取当前登录用户信息
+    /** 用户身份判断需完善*/
+    getCurrentUserInfo(){
+      this.$http.get('v1/users/self').then((e)=>{
+        console.log(e.data);
+        this.userInfo = e.data
+        if(e.data.groups[0] === 'annotator'){
+          this.userId = false
+        } else {
+          this.userId = true
+        }
+      })
+    },
+    //用户下拉菜单点击事件处理
+    handleUserClick(command){
+      if(command === 'logout'){
+        this.$http.post('v1/auth/logout').then((e)=>{
+          console.log(e);
+          window.sessionStorage.removeItem('token')
+          this.$message({
+            message:"退出登录成功",
+            type: "success"
+          })
+          this.$router.push('/login')
+        })
+      }
     }
   }
 }
@@ -111,9 +149,9 @@ export default {
     .to-setting,.to-task{
       position: absolute;
       top: 0;
-      right: 100px;
+      right: 120px;
       height: 100%;
-      width: 100px;
+      width: 120px;
       border-left: 1px solid #b3d9cb;
       line-height: 35px;
       text-align: center;
@@ -127,14 +165,18 @@ export default {
       top: 0;
       right: 0;
       height: 100%;
-      width: 100px;
+      width: 120px;
       border-left: 1px solid #b3d9cb;
       line-height: 35px;
       text-align: center;
+      cursor: pointer;
       span{
         font-size: 14px;
       }
     }
   }
+}
+/deep/ .el-dropdown-menu__item:hover{
+  background-color: transparent;
 }
 </style>
