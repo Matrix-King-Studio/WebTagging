@@ -2,54 +2,60 @@
   <div class="module-box">
     <el-tabs type="border-card" @tab-click="getAllUsersInfo">
       <el-tab-pane label="选择标签">
-        <!--      每一个label-box包着一个标签及其属性-->
-        <div class="label-box" v-for="tag in labels" :key="tag.name">
-          <!--        tab-box包着一级标签的名字-->
-          <div class="tab-box">
-            <el-tag
-              closable
-              :disable-transitions="false"
-              @close="handleClose(tag)"
-              class="tag"
+        <el-tabs active-name="raw" @tab-click="handleClick">
+          <el-tab-pane class="raw-label-box" label="Row格式添加" name="raw">
+            <textarea cols="30" rows="10" class="raw-label">
+
+            </textarea>
+          </el-tab-pane>
+          <el-tab-pane label="手动添加" name="ac">
+            <div class="label-box" v-for="tag in labels" :key="tag.name">
+              <div class="tab-box">
+                <el-tag
+                  closable
+                  :disable-transitions="false"
+                  @close="handleClose(tag)"
+                  class="tag"
+                >
+                  {{ tag.name }}
+                </el-tag>
+              </div>
+              <div class="attribute-box">
+                <!--          <el-tag-->
+                <!--            v-for="attr in tag.attributes"-->
+                <!--            :key="attr"-->
+                <!--            closable-->
+                <!--            :disable-transitions="false"-->
+                <!--            @close="handleAttrClose(attr.name)"-->
+                <!--          >-->
+                <!--            {{ attr.name }}-->
+                <!--          </el-tag>-->
+                <!--          <el-input-->
+                <!--            v-if="tag.attrInputVisible"-->
+                <!--            v-model="tag.attrInputValue"-->
+                <!--            ref="saveTagInput"-->
+                <!--            class="input-new-tag"-->
+                <!--            size="small"-->
+                <!--            @keyup.enter.native="handleInputConfirm"-->
+                <!--            @blur="handleInputConfirm"-->
+                <!--          >-->
+                <!--          </el-input>-->
+                <el-button class="button-new-tag" size="small">+ 添加属性(之后支持)</el-button>
+              </div>
+            </div>
+            <el-input
+              v-if="mainInputVisible"
+              v-model="mainInputValue"
+              ref="mainSaveTagInput"
+              class="input-new-tag"
+              size="small"
+              @keyup.enter.native="handleInputConfirm"
+              @blur="handleInputConfirm"
             >
-              {{ tag.name }}
-            </el-tag>
-          </div>
-          <!--        attributes-box包着属性及其创建-->
-          <div class="attribute-box">
-            <!--          <el-tag-->
-            <!--            v-for="attr in tag.attributes"-->
-            <!--            :key="attr"-->
-            <!--            closable-->
-            <!--            :disable-transitions="false"-->
-            <!--            @close="handleAttrClose(attr.name)"-->
-            <!--          >-->
-            <!--            {{ attr.name }}-->
-            <!--          </el-tag>-->
-            <!--          <el-input-->
-            <!--            v-if="tag.attrInputVisible"-->
-            <!--            v-model="tag.attrInputValue"-->
-            <!--            ref="saveTagInput"-->
-            <!--            class="input-new-tag"-->
-            <!--            size="small"-->
-            <!--            @keyup.enter.native="handleInputConfirm"-->
-            <!--            @blur="handleInputConfirm"-->
-            <!--          >-->
-            <!--          </el-input>-->
-            <el-button class="button-new-tag" size="small">+ 添加属性(之后支持)</el-button>
-          </div>
-        </div>
-        <el-input
-          v-if="mainInputVisible"
-          v-model="mainInputValue"
-          ref="mainSaveTagInput"
-          class="input-new-tag"
-          size="small"
-          @keyup.enter.native="handleInputConfirm"
-          @blur="handleInputConfirm"
-        >
-        </el-input>
-        <el-button v-else class="button-new-tag" size="small" @click="showInput">+ 添加标签</el-button>
+            </el-input>
+            <el-button v-else class="button-new-tag" size="small" @click="showInput">+ 添加标签</el-button>
+          </el-tab-pane>
+        </el-tabs>
       </el-tab-pane>
       <el-tab-pane label="图像质量">
         <span class="image-quality-text">图片压缩质量({{image_quality}}%)</span>
@@ -64,7 +70,7 @@
         >
         </el-slider>
       </el-tab-pane>
-<!--      <el-tab-pane label="任务分配">-->
+      <el-tab-pane label="任务分配">
 <!--        <el-transfer-->
 <!--          v-model="userValue"-->
 <!--          filterable-->
@@ -75,24 +81,24 @@
 <!--          @change="saveUserInfo"-->
 <!--        >-->
 <!--        </el-transfer>-->
-<!--        <div class="segment-size-box">-->
-<!--          <div class="segment-size">-->
-<!--            <div class="minus-one" @click="changeSeg('minus')">-->
-<!--              <i class="el-icon-minus"></i>-->
-<!--            </div>-->
-<!--            <div class="segment-size-number" @change="changeSeg('modify')">-->
-<!--              <input type="text" v-model="segment_size">-->
-<!--            </div>-->
-<!--            <div class="plus-one" @click="changeSeg('plus')">-->
-<!--              <i class="el-icon-plus"></i>-->
-<!--            </div>-->
-<!--          </div>-->
-<!--          <div class="segment-tip">-->
-<!--            <span class="tips">一个job中图片的数量</span><br>-->
-<!--            <span>将项目中的图片分为若干份，每份有多少张图片,默认为所有图片数量，即不将项目进行分割</span>-->
-<!--          </div>-->
-<!--        </div>-->
-<!--      </el-tab-pane>-->
+        <div class="segment-size-box">
+          <div class="segment-size">
+            <div class="minus-one" @click="changeSeg('minus')">
+              <i class="el-icon-minus"></i>
+            </div>
+            <div class="segment-size-number" @change="changeSeg('modify')">
+              <input type="text" v-model="segment_size">
+            </div>
+            <div class="plus-one" @click="changeSeg('plus')">
+              <i class="el-icon-plus"></i>
+            </div>
+          </div>
+          <div class="segment-tip">
+            <span class="tips">一个job中图片的数量</span><br>
+            <span>将项目中的图片分为若干份，每份有多少张图片,默认为所有图片数量，即不将项目进行分割</span>
+          </div>
+        </div>
+      </el-tab-pane>
     </el-tabs>
   </div>
 </template>
@@ -118,6 +124,9 @@ export default {
 
       //
       segment_size: 1,
+
+      //
+
 
     }
   },
@@ -306,6 +315,18 @@ export default {
         height: 32px;
         border-bottom: 1px solid #d9ecff;
       }
+    }
+  }
+  .raw-label-box{
+    width: 100%;
+    .raw-label{
+      width: 100%;
+      resize: vertical;
+      outline: none;
+      overflow: auto;
+      border-radius: 5px;
+      border:1px solid #318B71;
+      box-sizing: border-box;
     }
   }
   .slide-bar{

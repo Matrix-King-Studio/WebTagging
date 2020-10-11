@@ -26,16 +26,18 @@ export default {
   mounted() {
     setTimeout(()=>{
       this.getAllProject()
-    },100)
+    },200)
   },
   methods: {
     getAllProject(){
+      console.log('3.开始获取项目信息');
       this.$http.get('v1/tasks',{
         params: {
           pagesize: 9,
           page: 1
         }
       }).then((res)=>{
+        console.log('4.项目信息获取完成');
         console.log(res);
         for(let index = 0; index < res.data.results.length; index++){
           for(let i = 0; i < res.data.results[index].segments[0].jobs.length; i++){
@@ -44,14 +46,18 @@ export default {
             }
           }
         }
+        console.log('2.项目信息渲染完成');
       })
     },
     getUserInfo(){
+      console.log('1.开始获取用户信息');
       this.$http.get('v1/users/self').then((res)=>{
         this.userId = res.data.id
         this.ifAdmin = res.data.groups.find(val=>{
           return val === 'admin'
         })
+        console.log('2.获取用户信息完成');
+
       })
     }
   },

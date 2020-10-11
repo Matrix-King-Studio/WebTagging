@@ -230,7 +230,7 @@ export default {
     height: 50px;
     margin: 20px;
     .btn{
-      height: 100%;
+      height: 50px;
       background-color: #7EC492;
       position: absolute;
       border-radius: 8px;
@@ -257,6 +257,7 @@ export default {
       right: 0;
     }
     .upload-progress{
+      padding: 0;
       left: 0;
       width: 0;
       height: 50px;

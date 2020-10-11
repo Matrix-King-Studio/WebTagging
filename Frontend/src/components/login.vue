@@ -164,6 +164,11 @@ export default {
             }
             this.showErrLoginBtn(errinfo)
           }
+        }).catch((e)=>{
+          this.$message({
+            message: e,
+            type: "error"
+          })
         })
       }
     },
@@ -178,10 +183,19 @@ export default {
         }, 2000)
         this.$http.post('v1/auth/register', this.loginForm).then(e => {
           console.log(e.data)
-          this.showSucLoginBtn('注册成功')
-          setTimeout(()=>{
-            this.changeMod(1)
-          },1000)
+          if(e.data.key){
+            this.showSucLoginBtn('注册成功')
+            setTimeout(()=>{
+              this.changeMod(1)
+            },1000)
+          } else {
+            this.showErrLoginBtn(e.data.password1[0])
+          }
+        }).catch((e)=>{
+          this.$message({
+            message: e,
+            type: "error"
+          })
         })
       }
     },

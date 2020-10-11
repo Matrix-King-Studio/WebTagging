@@ -212,7 +212,7 @@ export default {
       this.$http.get('v1/tasks/'+ this.$route.params.index +'/data', {
         params: {
           type: 'chunk',
-          number: 0,
+          number: 2,
           quality: 'compressed'
         },
         //请求数据的格式
@@ -464,7 +464,7 @@ export default {
             //画完自动保存
             this.saveTagsToStore()
             //完成一个标记,切换回鼠标模式
-            this.initDrawTools('cursor')
+            // this.initDrawTools('cursor')
           }
         }
       }
@@ -674,6 +674,9 @@ export default {
       // console.log(this.shapes.rectangles);
 
       this.rectangleIndex --
+
+      this.$store.commit('cleanTagsInfo', this.imageIndex)
+      this.$store.commit('saveTagsInfo', this.shapes)
 
       this.$message({
         message: "元素成功移除",

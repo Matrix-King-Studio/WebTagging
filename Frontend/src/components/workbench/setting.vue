@@ -69,10 +69,10 @@
             <span v-text="item.jobs[0].status"></span>
           </div>
           <div class="start-time info-box">
-            <span>undefined</span>
+            <span>无</span>
           </div>
           <div class="duration info-box">
-            <span>undefined</span>
+            <span>无</span>
           </div>
           <div class="assignee info-box">
             <div class="select-box">
