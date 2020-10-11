@@ -5,6 +5,7 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
+    //项目基本信息
     projectInfo: {
       "name": "",
       "describe": '',
@@ -13,8 +14,11 @@ export default new Vuex.Store({
       ],
       "z_order": false,
     },
+    //所有图片数据
     allFileList: [],
+    //图片压缩质量
     image_quality: 70,
+    //图片标注信息
     imageTags: {
       "shapes":[
       ],
@@ -23,15 +27,20 @@ export default new Vuex.Store({
       "tags":[
       ],
       "version":26
-    }
+    },
+    //参与人员的key
+    allUsers: []
   },
   mutations: {
+    //新建项目时保存label信息
     addToStore(state, labData){
       state.projectInfo.labels = labData
     },
+    //新建项目时保存图片质量
     addImageQuality(state, image_quality){
       state.image_quality = image_quality
     },
+    //新建项目完成后清除信息
     cleanStore(){
       this.state.projectInfo = {
         "name": "",
@@ -41,18 +50,23 @@ export default new Vuex.Store({
         ],
         "z_order": false,
       }
-      this.state.image_quality = 70
     },
+    //图片数据上传到服务器完成后清除
     cleanFileList(){
       this.state.allFileList = []
+      this.state.image_quality = 70
     },
+    //图片数据
     saveFileList(state, listData){
       state.allFileList = listData
     },
+    //标注时保存标注对象信息
     saveTagsInfo(state, shapes) {
       console.log('开始保存新的矩形框信息');
-      for(let item in shapes.rectangles){
-        console.log('正在保存第'+shapes.rectangles[item].index+'个矩形框的信息')
+      for(let item = 0;item < shapes.rectangles.length;item++){
+
+        // console.log('正在保存第'+shapes.rectangles[item].index+'个矩形框的信息')
+
         state.imageTags.shapes.push({
           "type":"rectangle",
           "occluded":false,
@@ -69,18 +83,43 @@ export default new Vuex.Store({
           "group":0
         })
       }
-      console.log(state.imageTags.shapes)
+      console.log('新数据保存成功', state.imageTags.shapes)
     },
+    //多次保存到时候先清除标注对象
     cleanTagsInfo(state,frame){
       let imgIndex = frame + 1
-      console.log('开始删除第'+imgIndex+'张图片的信息');
-      for(let item in state.imageTags.shapes){
-        if(state.imageTags.shapes[item].frame === imgIndex){
-          console.log(state.imageTags.shapes[item]);
-          state.imageTags.shapes.splice(item,1)
+
+      // console.log(state.imageTags.shapes)
+      // console.log('开始删除第'+imgIndex+'张图片的信息')
+
+      for(let l = 0;l < state.imageTags.shapes.length;l++){
+        console.log(l)
+        if(state.imageTags.shapes[l].frame === imgIndex){
+          console.log(state.imageTags.shapes[l])
+          state.imageTags.shapes.splice(l,1)
+          l--
         }
       }
-      console.log('删除完成');
+      console.log('原数据清空完成');
+    },
+    //保存任务分配
+    //没有设置人员列表无segmentsize，设置人员列表segmentsize等于列表长度
+    saveAllUsers(state, users){
+      state.allUsers = users
+      if(state.allUsers.length === 0){
+        delete state.projectInfo.segment_size
+      } else {
+        state.projectInfo["segment_size"] = state.allUsers.length
+      }
+      console.log(state.allUsers);
+    },
+    //单独修改job数量
+    saveSeg(state, seg){
+      state.projectInfo["segment_size"] = seg
+    },
+    //清除参与人员信息
+    cleanUsersInfo(state){
+      state.allUsers = []
     }
   },
   actions: {

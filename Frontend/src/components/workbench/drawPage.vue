@@ -28,7 +28,13 @@
         <i :class="[{'el-icon-right':flag2},{'el-icon-back':!flag2}]"></i>
       </div>
       <div class="label-obj-box">
-        <div v-for="item in shapes.rectangles" :key="item.index" class="label-obj">
+        <div
+          v-for="item in shapes.rectangles"
+          :key="item.index"
+          class="label-obj"
+          @mouseenter="showRecObj(item.index)"
+          @mouseleave="hideRecObj(item.index)"
+        >
           <div class="label-info">
             <span>{{ item.index }}</span>
             <div class="change-label">
@@ -38,23 +44,24 @@
                 size="mini"
               >
                 <el-option
-                  v-for="item in options"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value"
+                  v-for="i in options"
+                  :key="i.value"
+                  :label="i.label"
+                  :value="i.value"
                 >
                 </el-option>
               </el-select>
             </div>
           </div>
           <div class="label-func">
-            <div class="func lock">
-              <i :class="[{'el-icon-lock':lock},{'el-icon-unlock':!lock}]"></i>
+            <div class="func lock" @click="lockRecObj(item.index)">
+              <i :class="[{'el-icon-lock':shapes.rectangles[item.index-1].isLock},{'el-icon-unlock':!shapes.rectangles[item.index-1].isLock}]"></i>
             </div>
-            <div class="func visible">
-              <span class="iconfont">&#xe9c1;</span>
+            <div class="func visible" @click="invisibleRecObj(item.index)">
+              <span v-show="!shapes.rectangles[item.index-1].isInvisible" class="iconfont">&#xe9c1;</span>
+              <span v-show="shapes.rectangles[item.index-1].isInvisible" class="iconfont">&#xe6fe;</span>
             </div>
-            <div class="func delete">
+            <div class="func delete" @click="deleteRecObj(item.index)">
               <i class="el-icon-delete"></i>
             </div>
           </div>
@@ -79,11 +86,7 @@
           </div>
         </div>
         <div class="main-func">
-          <div class="main-btn save" @click="saveTagsToStore">
-            <i class="el-icon-document-checked"></i>
-            <span>保存</span>
-          </div>
-          <div class="main-btn commit" @click="submitTags">
+          <div class="main-btn submit" @click="isPrepare">
             <i class="el-icon-upload"></i>
             <span>提交所有</span>
           </div>
@@ -106,6 +109,9 @@
         class="level-line"
       ></div>
       <div class="rec-box" ref="recBox"></div>
+      <div class="tips-box" ref="tipsBox">
+        <span>正在加载</span>
+      </div>
     </div>
   </div>
 </template>
@@ -119,13 +125,12 @@ export default {
       flag: 'cursor',
       //项目栏是否展开
       flag2: true,
-      //
-      lock: false,
+      //是否是第一次打开
+      isFirst: true,
 
-      options: [
-
-      ],
-      value: '',
+      //保存所有Tag选项
+      options: [],
+      // value: '',
 
       //画布对象
       myCanvas: {},
@@ -151,6 +156,9 @@ export default {
 
       //job信息
       jobId: 0,
+
+      //控制页面改变大小时刷新的变量
+      isResizing: '',
     }
   },
   created() {
@@ -161,6 +169,19 @@ export default {
   },
   mounted() {
     this.getImages()
+    //停止改变窗口大小后0.3秒重新绘制图片
+    window.onresize = ()=>{
+      if(this.isResizing){
+        clearTimeout(this.isResizing)
+      }
+      this.isResizing = setTimeout(()=>{
+        this.resizeCanvas()
+      },300)
+    }
+  },
+  destroyed() {
+    //页面切换清除改变大小监听器
+    window.onresize = ()=>{}
   },
   methods: {
     //右侧信息栏
@@ -178,17 +199,20 @@ export default {
     //获取images信息列表
     getImagesInfo(){
       this.$http.get('v1/tasks/' + this.$route.params.index + '/data/meta').then( e =>{
+        // console.log(e.data);
         this.imagesSize = e.data.size
       })
     },
     //获取图片压缩包并解压，讲base64代码保存到imagesData里
+    /** 不能直接用url中的id去拿图片，如果暴力改变url需要回到home
+     * 要用路由守卫*/
     getImages(){
       //请求图片数据
       console.log("0.开始请求数据");
       this.$http.get('v1/tasks/'+ this.$route.params.index +'/data', {
         params: {
           type: 'chunk',
-          number: 0,
+          number: 2,
           quality: 'compressed'
         },
         //请求数据的格式
@@ -233,6 +257,14 @@ export default {
       //设置鼠标样式
       document.getElementById('myCanvas').style.cursor = 'default'
     },
+    //改变画布大小
+    resizeCanvas(){
+      this.myCanvas.width = document.body.clientWidth - 46
+      this.myCanvas.height = document.body.clientHeight - 35
+      console.log('3.1重置画布大小完成')
+      this.drawImages()
+      this.reDrawTags(2, this.imageIndex)
+    },
     //绘制图片
     drawImages(){
       //将解压出的文件以base64格式放到图片对象中
@@ -245,7 +277,12 @@ export default {
         img.src = "data:image/png;base64," + this.imagesData[this.imageIndex]
         console.log("5.base64数据嵌入完成");
       },100)
+
+
       setTimeout(()=>{
+
+        // console.log('图片原始尺寸' + img.width, img.height);
+
         //图片比窗口长，则上下填充满
         if(img.width/img.height < (this.myCanvas.width-300)/this.myCanvas.height){
           this.imageInfo = {
@@ -262,42 +299,52 @@ export default {
             height: (this.myCanvas.width - 300)*img.height/img.width - 10
           }
         }
+
+        // console.log('图片缩放后的尺寸' + this.imageInfo.width, this.imageInfo.height);
+
         this.imageScale = img.width/this.imageInfo.width
         console.log("6.图片尺寸数据处理完成，图片缩放比例：" + this.imageScale);
         //将图片绘制到canvas上
         this.ctx.drawImage(img, this.imageInfo.left, this.imageInfo.top, this.imageInfo.width, this.imageInfo.height)
         console.log("7.图片绘制完成");
+
+        //加载完成后删除
+        if(this.isFirst){
+          this.$refs.tipsBox.parentNode.removeChild(this.$refs.tipsBox)
+          this.isFirst = false
+        }
       }, 200)
     },
     //切换图片
     changeImg(mod){
+
       if(mod === 'start'){
         if(this.imageIndex !== 0){
           this.imageIndex = 0
           this.drawImages()
           this.removeRec('all')
-          this.reDrawTags(this.imageIndex)
+          this.reDrawTags(1, this.imageIndex)
         }
       } else if(mod === 'back'){
         if(this.imageIndex !== 0){
           this.imageIndex -= 1
           this.drawImages()
           this.removeRec('all')
-          this.reDrawTags(this.imageIndex)
+          this.reDrawTags(1, this.imageIndex)
         }
       } else if(mod === 'next'){
         if(this.imageIndex !== (this.imagesSize-1)){
           this.imageIndex += 1
           this.drawImages()
           this.removeRec('all')
-          this.reDrawTags(this.imageIndex)
+          this.reDrawTags(1, this.imageIndex)
         }
       } else if(mod === 'end'){
         if(this.imageIndex !== (this.imagesSize-1)){
           this.imageIndex = this.imagesSize - 1
           this.drawImages()
           this.removeRec('all')
-          this.reDrawTags(this.imageIndex)
+          this.reDrawTags(1, this.imageIndex)
         }
       }
 
@@ -381,20 +428,21 @@ export default {
             this.recLeft = mPos.left
             //向矩形框数组添加对象
             let r = {
-              //矩形框的序号
               type: "rectangle",
               occluded:false,
               z_order:0,
-              index: this.rectangleIndex,
-              el: rec,
+              index: this.rectangleIndex,//矩形框序号
+              el: rec,//矩形框DOM元素
               // id:5,
-              frame: this.imageIndex + 1,
-              label_id: '请选择',
+              frame: this.imageIndex + 1,//第几张图片，从1开始
+              label_id: this.options[0].value,//一级标签默认选择第一个
               group:0,
+              isLock: false,
+              isInvisible: false,
               attributes:[
               ],
               points:[
-              ],
+              ],//记录矩形框位置
             }
             this.rectangleIndex ++
             this.shapes.rectangles.push(r)
@@ -407,16 +455,16 @@ export default {
             document.body.removeEventListener('mousemove', this.resizeRec, false)
             //记录矩形框左上，右下两个点的x1,y1,x2,y2坐标在 !原图! 上的坐标
             this.shapes.rectangles[this.shapes.rectangles.length - 1].points = [
-              (parseInt(this.shapes.rectangles[this.shapes.rectangles.length - 1].el.style.left.replace('px','')) - (parseInt(this.imageInfo.left) + 46))/this.imageScale,
-              (parseInt(this.shapes.rectangles[this.shapes.rectangles.length - 1].el.style.top.replace('px','')) - (parseInt(this.imageInfo.top) + 35))/this.imageScale,
-              // (parseInt((this.shapes.rectangles[this.shapes.rectangles.length - 1].el.style.width.replace('px',''))+(parseInt(this.shapes.rectangles[this.shapes.rectangles.length - 1].el.style.left.replace('px','')) - (parseInt(this.imageInfo.left) + 46))))/this.imageScale,
-              // (parseInt((this.shapes.rectangles[this.shapes.rectangles.length - 1].el.style.height.replace('px',''))+(parseInt(this.shapes.rectangles[this.shapes.rectangles.length - 1].el.style.top.replace('px','')) - (parseInt(this.imageInfo.top) + 35))))/this.imageScale,
-              (parseInt(this.shapes.rectangles[this.shapes.rectangles.length - 1].el.style.width.replace('px',''))+parseInt(this.shapes.rectangles[this.shapes.rectangles.length - 1].el.style.left.replace('px','')) - (parseInt(this.imageInfo.left) + 46))/this.imageScale,
-              (parseInt(this.shapes.rectangles[this.shapes.rectangles.length - 1].el.style.height.replace('px',''))+parseInt(this.shapes.rectangles[this.shapes.rectangles.length - 1].el.style.top.replace('px','')) - (parseInt(this.imageInfo.top) + 35))/this.imageScale,
+              (parseInt(this.shapes.rectangles[this.shapes.rectangles.length - 1].el.style.left.replace('px','')) - (parseInt(this.imageInfo.left) + 46))*this.imageScale,
+              (parseInt(this.shapes.rectangles[this.shapes.rectangles.length - 1].el.style.top.replace('px','')) - (parseInt(this.imageInfo.top) + 35))*this.imageScale,
+              (parseInt(this.shapes.rectangles[this.shapes.rectangles.length - 1].el.style.width.replace('px',''))+parseInt(this.shapes.rectangles[this.shapes.rectangles.length - 1].el.style.left.replace('px','')) - (parseInt(this.imageInfo.left) + 46))*this.imageScale,
+              (parseInt(this.shapes.rectangles[this.shapes.rectangles.length - 1].el.style.height.replace('px',''))+parseInt(this.shapes.rectangles[this.shapes.rectangles.length - 1].el.style.top.replace('px','')) - (parseInt(this.imageInfo.top) + 35))*this.imageScale,
             ]
-            console.log(this.shapes.rectangles[this.shapes.rectangles.length - 1].points);
+            console.log('矩形框两点数据', this.shapes.rectangles[this.shapes.rectangles.length - 1].points);
+            //画完自动保存
+            this.saveTagsToStore()
             //完成一个标记,切换回鼠标模式
-            this.initDrawTools('cursor')
+            // this.initDrawTools('cursor')
           }
         }
       }
@@ -446,8 +494,8 @@ export default {
       this.shapes.rectangles[this.shapes.rectangles.length - 1].el.style.height = bottom - top + 'px'
     },
     //删除元素
-    removeRec(node){
-      if(node === 'all'){
+    removeRec(mod){
+      if(mod === 'all'){
         this.$refs.recBox.innerHTML = ''
         this.shapes.rectangles = []
         this.rectangleIndex = 1
@@ -463,7 +511,7 @@ export default {
         }
       }).then((e)=>{
         this.jobId = e.data.results[0].segments[0].jobs[0].id
-        console.log(e)
+        // console.log(e)
         for(let item in e.data.results[0].labels){
           let label = {
             value: e.data.results[0].labels[item].id,
@@ -471,52 +519,92 @@ export default {
           }
           this.options.push(label)
         }
-        console.log(this.options);
+        console.log('标签列表', this.options);
       })
     },
     //将标注信息存储到store中
-    /** 多次保存会保存重复信息 */
     saveTagsToStore(){
       this.$store.commit('cleanTagsInfo', this.imageIndex)
       this.$store.commit('saveTagsInfo', this.shapes)
+      this.$message({
+        message: '自动保存成功',
+        type: "success"
+      })
+    },
+    //提交前询问
+    isPrepare(){
+      this.$confirm('提交后无法修改, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.submitTags()
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消提交'
+        });
+      });
     },
     //提交标注信息
+    /** 提交成功后的逻辑还需进一步改进 暂时改成不能再次进入*/
     submitTags(){
       let TagsInfo = this.$store.state.imageTags
       console.log(TagsInfo)
-      // this.$http.patch('v1/tasks?page_size=10&id=3&page=1', TagsInfo).then((e)=>{
-      //   console.log(e);
-      // })
       this.$http.patch('v1/jobs/'+this.jobId+'/annotations?action=create', TagsInfo).then((e)=>{
         console.log(e)
+        this.$message({
+          message: "提交成功",
+          type: "success"
+        })
+        this.$router.push('/home')
       }).catch((err)=>{
         console.log(err);
       })
     },
     //切换图片接收信息重新绘制Tag
-    /** 每个矩形框的标签没有绑定*/
-    reDrawTags(index){
+    //或者窗口大小改变时重新绘制Tag
+    //mod:  1：切换图片  2：改变窗口大小
+    /**   切换图片后矩形框内的鼠标样式有问题
+     * 是否锁定的参数没有保存回传*/
+    reDrawTags(mod, index){
       //切换到了第几张图片
       let imgIndex = index + 1
-      //从store获取所有的标注信息
-      let TagsInfo = this.$store.state.imageTags.shapes
+      let TagsInfo = {}
+      let that = this
+      if(mod === 1){
+        //从store获取所有的标注信息
+        TagsInfo = that.$store.state.imageTags.shapes
+      } else if (mod === 2){
+        TagsInfo = that.shapes.rectangles
+        this.removeRec('all')
+      }
       //清洗出这张图片的标注信息
       console.log(TagsInfo);
       for(let item in TagsInfo){
         if(TagsInfo[item].frame === imgIndex){
-          console.log(TagsInfo[item].points);
+
+          console.log('矩形框在页面上的位置',TagsInfo[item].points);
 
           //创建矩形框
           let rec = document.createElement('div')
           rec.className += 'rec-obj'
-          //将矩形框在 !原图! 上的点的坐标缩放后展示到页面上
-          rec.style.left = (parseInt(TagsInfo[item].points[0]) + parseInt(this.imageInfo.left))*this.imageScale + 'px'
-          rec.style.top = (parseInt(TagsInfo[item].points[1]) + parseInt(this.imageInfo.top))*this.imageScale + 'px'
-          rec.style.width = (parseInt(TagsInfo[item].points[2]) - parseInt(TagsInfo[item].points[0]))*this.imageScale + 'px'
-          rec.style.height = (parseInt(TagsInfo[item].points[3]) - parseInt(TagsInfo[item].points[1]))*this.imageScale + 'px'
-          this.$refs.recBox.appendChild(rec)
 
-          console.log(TagsInfo[item])
+          setTimeout(()=>{
+            // console.log(parseInt(TagsInfo[item].points[0]) / this.imageScale);
+            // console.log(parseInt(this.imageInfo.left));
+            // console.log(parseInt(TagsInfo[item].points[1]) / this.imageScale);
+            // console.log(parseInt(this.imageInfo.top));
+            rec.style.left = parseInt(TagsInfo[item].points[0])/this.imageScale + parseInt(this.imageInfo.left) + 46 + 'px'
+            rec.style.top = parseInt(TagsInfo[item].points[1])/this.imageScale + parseInt(this.imageInfo.top) + 35 + 'px'
+            rec.style.width = (parseInt(TagsInfo[item].points[2]) - parseInt(TagsInfo[item].points[0]))/this.imageScale + 'px'
+            rec.style.height = (parseInt(TagsInfo[item].points[3]) - parseInt(TagsInfo[item].points[1]))/this.imageScale + 'px'
+            rec.style.cursor = 'default'
+            this.$refs.recBox.appendChild(rec)
+          },300)
+
+          // console.log('标记的真实数据', TagsInfo[item])
+
           //添加数据
           this.shapes.rectangles.push({
             type: TagsInfo[item].type,
@@ -528,6 +616,8 @@ export default {
             frame: TagsInfo[item].frame,
             label_id: TagsInfo[item].label_id,
             group: TagsInfo[item].group,
+            isLock: false,
+            isInvisible: false,
             attributes: TagsInfo[item].attributes,
             points: TagsInfo[item].points,
           })
@@ -535,10 +625,64 @@ export default {
         }
       }
       //恢复鼠标样式
+      this.initDrawTools('cursor')
+      /** 鼠标样式无法更改*/
       document.getElementsByClassName('rec-obj').forEach((item)=>{
         item.style.cursor = 'default'
       })
     },
+    //鼠标放到右侧信息栏高亮对应矩形框
+    showRecObj(index){
+      this.shapes.rectangles[index-1].el.style.backgroundColor = 'rgba(255,255,255,0.4)'
+    },
+    hideRecObj(index){
+      this.shapes.rectangles[index-1].el.style.backgroundColor = 'transparent'
+    },
+    //信息栏中的功能
+      //锁定
+    lockRecObj(index){
+      this.shapes.rectangles[index - 1].isLock = !this.shapes.rectangles[index - 1].isLock
+      if(this.shapes.rectangles[index - 1].isLock){
+        this.shapes.rectangles[index - 1].el.classList.add('rec-obj-lock')
+      } else {
+        this.shapes.rectangles[index - 1].el.classList.remove('rec-obj-lock')
+      }
+    },
+      //不可见
+    invisibleRecObj(index){
+      if(this.shapes.rectangles[index-1].isInvisible){
+        this.shapes.rectangles[index-1].el.style.display = 'block'
+      } else {
+        this.shapes.rectangles[index-1].el.style.display = 'none'
+      }
+      this.shapes.rectangles[index-1].isInvisible = !this.shapes.rectangles[index-1].isInvisible
+    },
+      //删除
+    deleteRecObj(index){
+
+      // console.log(this.shapes.rectangles[index-1].el);
+      //删除元素
+      this.shapes.rectangles[index-1].el.parentNode.removeChild(this.shapes.rectangles[index-1].el)
+      //
+      for(let i = index; i<this.shapes.rectangles.length; i++){
+        // console.log(this.shapes.rectangles[i]);
+        this.shapes.rectangles[i].index -= 1
+      }
+      //删除数据
+      this.shapes.rectangles.splice(index-1, 1)
+
+      // console.log(this.shapes.rectangles);
+
+      this.rectangleIndex --
+
+      this.$store.commit('cleanTagsInfo', this.imageIndex)
+      this.$store.commit('saveTagsInfo', this.shapes)
+
+      this.$message({
+        message: "元素成功移除",
+        type: "success"
+      })
+    }
 
   }
 }
@@ -713,10 +857,10 @@ export default {
       float: left;
       margin: 10px 2px;
       border-radius: 5px;
-      background-color: #bbe6d6;
+      background-color: #d6efe6;
       line-height: 36px;
       text-align: center;
-      letter-spacing: 4px;
+      letter-spacing: 3px;
       font-size: 14px;
       transition: all 0.2s;
       i{
@@ -724,20 +868,20 @@ export default {
       }
     }
     .abandon{
-      width: 40px;
-      height: 20px;
-      font-size: 8px;
-      line-height: 20px;
+      width: 46px;
+      height: 26px;
+      font-size: 10px;
+      line-height: 26px;
       letter-spacing: 1px;
-      margin-top: 26px;
+      margin-top: 20px;
       border-radius: 2px;
     }
-    .commit{
-      width: 100px;
+    .submit{
+      width: 200px;
       letter-spacing: 2px;
     }
     .main-btn:hover{
-      background-color: #b1eed8;
+      background-color: #bbe6d6;
     }
   }
 }
@@ -766,6 +910,15 @@ export default {
     width: 100%;
     background-color: rgba(255,0,0,0.4);
   }
+  .tips-box{
+    position: absolute;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    text-align: left;
+    padding: 400px 0 0 360px;
+    font-size: 24px;
+  }
 }
 /deep/ .rec-obj{
   position: absolute;
@@ -775,9 +928,13 @@ export default {
   cursor: none;
   box-sizing: border-box;
   border: 1px solid #333333;
+  transition: background-color 0.1s;
 }
-///deep/ .rec-obj:hover{
-//  border: 2px solid #555555;
-//  background-color: rgba(228,254,239,0.3);
-//}
+/deep/ .rec-obj-lock{
+  background-color: transparent !important;
+}
+/deep/ .rec-obj:hover{
+  border: 2px solid #555555;
+  background-color: rgba(228,254,239,0.3) !important;
+}
 </style>
