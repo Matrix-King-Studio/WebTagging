@@ -20,7 +20,11 @@
             tag="div"
             active-class="selected"
           >
-            <i class="el-icon-user-solid"> 个人中心</i>
+            <i class="el-icon-user-solid">
+              &nbsp;
+<!--              <span id="myCenter">{{userInfo.username | handleText}}</span>-->
+              <span id="myCenter" :title="userInfo.username+'个人中心'" >{{userInfo.username}}</span>
+            </i>
           </router-link>
           <a
             v-if="ifAdmin === 'admin'"
@@ -46,7 +50,8 @@ export default {
   data(){
     return {
       path: '',
-      ifAdmin: ''
+      ifAdmin: '',
+      userInfo:{}
     }
   },
   created() {
@@ -56,12 +61,24 @@ export default {
     //判断是不是管理员
     getUserInfo(){
       this.$http.get('v1/users/self').then((res)=>{
+        this.userInfo = res.data;
+        console.log(this.userInfo);
         this.ifAdmin = res.data.groups.find(val=>{
           return val === 'admin'
         })
       })
     },
   },
+  filters:{
+    //显示省略号的过滤器，目前没有使用
+    handleText(value) {
+      // if (!value) return '';
+      if (value.length > 6) {
+        return value.slice(0, 6) + '...'
+      }
+      return value
+    }
+  }
 }
 </script>
 
@@ -119,5 +136,18 @@ export default {
     .el-main{
       background-color: #eeeeee;
     }
+  }
+
+  #myCenter{
+    width: 75px;
+    height: 48px;
+    /*border: 1px solid #9ce8d2;*/
+    white-space:nowrap;
+    /*使用下面这两行会导致图标下坠一点点*/
+    overflow: hidden;
+    text-overflow:ellipsis;
+    display: inline-block;
+    /*解决塌陷问题*/
+    vertical-align:top;
   }
 </style>
