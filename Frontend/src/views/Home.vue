@@ -22,15 +22,13 @@
           >
             <i class="el-icon-user-solid"> 个人中心</i>
           </router-link>
-          <router-link
+          <a
             v-if="ifAdmin === 'admin'"
-            to="/home/management"
+            href="http://alexking.site:8080/admin/"
             class="management tabs"
-            tag="div"
-            active-class="selected"
           >
             <i class="el-icon-s-tools"> 管理中心</i>
-          </router-link>
+          </a>
         </div>
       </el-aside>
       <el-container>
@@ -62,7 +60,7 @@ export default {
           return val === 'admin'
         })
       })
-    }
+    },
   },
 }
 </script>
@@ -93,6 +91,7 @@ export default {
         width: 100%;
         padding-top: 20px;
         .tabs{
+          display: block;
           width: 100%;
           height: 50px;
           margin-bottom: 8px;

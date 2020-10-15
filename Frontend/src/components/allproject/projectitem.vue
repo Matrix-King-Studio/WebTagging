@@ -2,10 +2,10 @@
   <div class="item" ref="item" @mouseenter="showStart" @mouseleave="hideStart">
     <span class="pro-name">{{ proInfo.name }}</span>
     <span class="pro-info">{{ proInfo.describe }}</span>
-    <div class="done">
-      <span class="remain">剩余待标记: {{ remain }}</span>
-      <span class="ratio">任务完成度: {{ ratio }}</span>
-    </div>
+<!--    <div class="done">-->
+<!--      <span class="remain">剩余待标记: {{ remain }}</span>-->
+<!--      <span class="ratio">任务完成度: {{ ratio }}</span>-->
+<!--    </div>-->
     <div class="bg"></div>
     <div class="cover" ref="cover">
       <div
@@ -14,20 +14,20 @@
       >
         开始标记
       </div>
-      <router-link
-        tag="div"
+      <div
+        v-if="userInfo"
         class="exam"
-        :to="'/workbench/setting'"
+        @click="toTaskSetting(proInfo.id)"
       >
         配置
-      </router-link>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 export default {
-  props: ["proInfo"],
+  props: ["proInfo","userInfo"],
   data() {
     return{
       projectId: '1',
@@ -64,11 +64,15 @@ export default {
       logs[0].time = newDate.toISOString()
       //创建log数据
       this.$http.post('v1/server/logs',logs).then(()=>{
-        console.log('-1.创建log成功');
+        // console.log('-1.创建log成功')
       }).catch(()=>{
-        console.log('-1.创建log失败');
+        // console.log('-1.创建log失败')
       })
       this.$router.push('/workbench/task/' + index)
+    },
+    //转到Task控制台
+    toTaskSetting(index){
+      this.$router.push('/workbench/setting/' + index)
     },
     //获取预览图片
     getCoverImg(){
@@ -88,8 +92,9 @@ export default {
     position: relative;
     width: 300px;
     height: 200px;
-    background-size: cover;
-    border-radius: 20px;
+    background-size: cover !important;
+    background-repeat: no-repeat !important;
+    border-radius: 16px;
     float: left;
     margin: 10px;
     overflow: hidden;
@@ -130,8 +135,10 @@ export default {
       width: 100%;
       height: 100%;
       transition: top 0.2s ease;
+
+      display: flex;
       div{
-        position: absolute;
+        //position: absolute;
         background-color: rgba(0,0,0,0.8);
         transition: background-color 0.2s;
         margin: 0;
@@ -149,6 +156,8 @@ export default {
         user-select: none;
       }
       .start{
+        flex: 2;
+
         left: 0;
         width: 200px;
         transition: all 0.2s;
@@ -158,19 +167,21 @@ export default {
         color: #eeeeee;
       }
       .exam{
+        flex: 1;
+
         right: 0;
         width: 100px;
         transition: all 0.2s;
       }
       .exam:hover{
-        background-color: rgba(0,0,0,0.4);
+        background-color: rgba(0,0,0,0.3);
         color: #eeeeee;
       }
     }
     .bg{
       width: 100%;
       height: 100%;
-      background-color: rgba(0,0,0,0.6);
+      background-color: rgba(0,0,0,0.4);
     }
   }
 </style>

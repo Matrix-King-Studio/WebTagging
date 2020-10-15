@@ -1,6 +1,6 @@
 <template>
   <div class="item-box">
-    <projectitem v-for="item in projectData" :key="item.url" :proInfo="item"></projectitem>
+    <projectitem v-for="item in projectData" :key="item.url" :proInfo="item" :userInfo="ifAdmin"></projectitem>
     <newprojectitem v-if="ifAdmin === 'admin'"></newprojectitem>
   </div>
 </template>
@@ -16,30 +16,48 @@ export default {
   data() {
     return{
       ifAdmin: '',
-      projectData: []
+      projectData: [],
+      userId: 0,
     }
   },
   created(){
-    this.getAllProject()
     this.getUserInfo()
+  },
+  mounted() {
+    setTimeout(()=>{
+      this.getAllProject()
+    },200)
   },
   methods: {
     getAllProject(){
+      console.log('3.开始获取项目信息');
       this.$http.get('v1/tasks',{
         params: {
           pagesize: 9,
           page: 1
         }
       }).then((res)=>{
+        console.log('4.项目信息获取完成');
         console.log(res);
-        this.projectData = res.data.results
+        for(let index = 0; index < res.data.results.length; index++){
+          for(let i = 0; i < res.data.results[index].segments[0].jobs.length; i++){
+            if(res.data.results[index].segments[0].jobs[i].assignee === this.userId || res.data.results[index].owner === this.userId){
+              this.projectData.push(res.data.results[index])
+            }
+          }
+        }
+        console.log('2.项目信息渲染完成');
       })
     },
     getUserInfo(){
+      console.log('1.开始获取用户信息');
       this.$http.get('v1/users/self').then((res)=>{
+        this.userId = res.data.id
         this.ifAdmin = res.data.groups.find(val=>{
           return val === 'admin'
         })
+        console.log('2.获取用户信息完成');
+
       })
     }
   },
