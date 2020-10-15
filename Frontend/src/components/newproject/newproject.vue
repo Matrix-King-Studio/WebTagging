@@ -120,6 +120,7 @@ export default {
         data.append("client_files["+ index +"]", item)
       })
       data.append("use_zip_chunks", false)
+      data.append("chunk_size", 1)
 
       //展示进度条
       this.$refs.progress.style.width = "900px"

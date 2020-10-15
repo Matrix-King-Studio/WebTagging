@@ -212,7 +212,7 @@ export default {
       this.$http.get('v1/tasks/'+ this.$route.params.index +'/data', {
         params: {
           type: 'chunk',
-          number: 2,
+          number: 0,
           quality: 'compressed'
         },
         //请求数据的格式
