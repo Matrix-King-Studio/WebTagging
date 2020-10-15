@@ -7,6 +7,7 @@ import {
     Menu, Submenu, MenuItem, MenuItemGroup,
     Upload, Tag, Input, Slider, Select, Option, OptionGroup,
     Tooltip,Pagination,Transfer,Dropdown,DropdownMenu,DropdownItem,
+    Checkbox, CheckboxGroup, CheckboxButton,
     Message,MessageBox,
 } from 'element-ui'
 
@@ -39,7 +40,9 @@ Vue.use(Transfer)
 Vue.use(Dropdown)
 Vue.use(DropdownMenu)
 Vue.use(DropdownItem)
-
+Vue.use(Checkbox)
+Vue.use(CheckboxButton)
+Vue.use(CheckboxGroup)
 Vue.prototype.$message = Message
 Vue.prototype.$msgbox = MessageBox
 Vue.prototype.$alert = MessageBox.alert

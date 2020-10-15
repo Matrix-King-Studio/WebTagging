@@ -212,7 +212,7 @@ export default {
       this.$http.get('v1/tasks/'+ this.$route.params.index +'/data', {
         params: {
           type: 'chunk',
-          number: 2,
+          number: 0,
           quality: 'compressed'
         },
         //请求数据的格式
@@ -226,8 +226,8 @@ export default {
             //获取图片base64格式信息
             for(let key in imgData.files){
               let base = imgData.file(zip.files[key].name).async('base64')
-              base.then(res=>{
-                this.imagesData.push(res)
+                base.then(res=>{
+                  this.imagesData.push(res)
               })
             }
             console.log("2.图片解压完成")

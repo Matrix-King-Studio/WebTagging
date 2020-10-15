@@ -2,7 +2,7 @@
   <div class="module-box">
     <el-tabs type="border-card" @tab-click="getAllUsersInfo">
       <el-tab-pane label="选择标签">
-        <el-tabs active-name="raw" @tab-click="handleClick">
+        <el-tabs active-name="raw">
           <el-tab-pane class="raw-label-box" label="Row格式添加" name="raw">
             <textarea cols="30" rows="10" class="raw-label">
 
@@ -21,26 +21,95 @@
                 </el-tag>
               </div>
               <div class="attribute-box">
-                <!--          <el-tag-->
-                <!--            v-for="attr in tag.attributes"-->
-                <!--            :key="attr"-->
-                <!--            closable-->
-                <!--            :disable-transitions="false"-->
-                <!--            @close="handleAttrClose(attr.name)"-->
-                <!--          >-->
-                <!--            {{ attr.name }}-->
-                <!--          </el-tag>-->
-                <!--          <el-input-->
-                <!--            v-if="tag.attrInputVisible"-->
-                <!--            v-model="tag.attrInputValue"-->
-                <!--            ref="saveTagInput"-->
-                <!--            class="input-new-tag"-->
-                <!--            size="small"-->
-                <!--            @keyup.enter.native="handleInputConfirm"-->
-                <!--            @blur="handleInputConfirm"-->
-                <!--          >-->
-                <!--          </el-input>-->
-                <el-button class="button-new-tag" size="small">+ 添加属性(之后支持)</el-button>
+                <div
+                  v-show="!tag.attrInputVisible"
+                  class="attr-item-box"
+                >
+                  <div
+                    class="attribute-item"
+                    v-for="attr in tag.attributes"
+                    :key="attr.name"
+                  >
+                    <div class="attr-name">
+                      <span></span>
+                      <el-tag
+                        closable
+                        :disable-transitions="false"
+                        :type="'success'"
+                        @close="handleAttrClose(tag,attr)"
+                      >
+                        {{ attr.name }}
+                      </el-tag>
+                    </div>
+                    <div class="attr-mod">
+
+                    </div>
+                    <div class="attr-value">
+
+                    </div>
+                    <div class="attr-delete">
+
+                    </div>
+                  </div>
+                </div>
+                <div
+                  v-show="tag.attrInputVisible"
+                  class="attr-input-box"
+                >
+                  <div class="input-box-tip">
+                      <span>添加属性</span>
+                  </div>
+                  <div class="input-box-content">
+                    <div class="attr-name-input-box">
+                      <div class="attr-name-input">
+                        <el-input
+                          v-model="tag.attrInputValue"
+                          placeholder="属性名"
+                        ></el-input>
+                      </div>
+                    </div>
+                    <div class="attr-mod-select-box">
+                      <div class="attr-mod-select">
+                        <el-select v-model="attrOption" placeholder="请选择">
+                          <el-option
+                            v-for="item in options"
+                            :key="item.value"
+                            :label="item.label"
+                            :value="item.value"
+                          >
+                          </el-option>
+                        </el-select>
+                      </div>
+                    </div>
+                    <div class="attr-value-input-box">
+                      <div class="attr-value-input">
+                        <el-tag
+                          :key="attrVal"
+                          v-for="attrVal in newAttributeData.values"
+                          closable
+                          :disable-transitions="false"
+                          @close="handleClose(attrVal)">
+                          {{ tag }}
+                        </el-tag>
+                        <el-input
+                          class="input-new-tag"
+                          v-model="attrValue"
+                          ref="saveTagInput"
+                          size="small"
+                          @keyup.enter.native="handleInputConfirm"
+                          @blur="handleInputConfirm"
+                        >
+                        </el-input>
+                      </div>
+                    </div>
+                    <div class="attr-input-confirm-box">
+                      <div class="attr-input-confirm">
+                        <el-button type="success" plain icon="el-icon-check" size="small"></el-button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <el-button v-show="!tag.attrInputVisible" class="button-new-tag" size="small" @click="showInput(2, tag)">+ 添加属性</el-button>
               </div>
             </div>
             <el-input
@@ -49,11 +118,11 @@
               ref="mainSaveTagInput"
               class="input-new-tag"
               size="small"
-              @keyup.enter.native="handleInputConfirm"
-              @blur="handleInputConfirm"
+              @keyup.enter.native="inputBlur($event)"
+              @blur="handleInputConfirm()"
             >
             </el-input>
-            <el-button v-else class="button-new-tag" size="small" @click="showInput">+ 添加标签</el-button>
+            <el-button v-else class="button-new-tag" size="small" @click="showInput(1)">+ 添加标签</el-button>
           </el-tab-pane>
         </el-tabs>
       </el-tab-pane>
@@ -125,9 +194,38 @@ export default {
       //
       segment_size: 1,
 
-      //
+      //标签的序号
+      labelIndex: 1,
 
+      //新建属性中选择属性标注模式的选项
+      options: [{
+        value: '选项1',
+        label: '黄金糕'
+      }, {
+        value: '选项2',
+        label: '双皮奶'
+      }, {
+        value: '选项3',
+        label: '蚵仔煎'
+      }, {
+        value: '选项4',
+        label: '龙须面'
+      }, {
+        value: '选项5',
+        label: '北京烤鸭'
+      }],
+      attrOption: '',
+      attrValue: '',
+      //新建属性
+      newAttributeData: {
+        id: 0,
+        name: '',
+        input_type: '',
+        mutable: false,
+        values: [
 
+        ],
+      },
     }
   },
   created() {
@@ -140,35 +238,63 @@ export default {
       this.labels.splice(this.labels.indexOf(tag), 1);
       this.$store.commit('addToStore', this.labels)
     },
+    handleAttrClose(tag,attr){
+      console.log(tag);
+      console.log(attr);
+      this.labels[this.labels.indexOf(tag)].attributes.splice(this.labels[this.labels.indexOf(tag)].attributes.indexOf(attr), 1)
+    },
     //开始添加标签
-    showInput() {
-      this.mainInputVisible = true;
-      this.$nextTick(() => {
-        this.$refs.mainSaveTagInput.$refs.input.focus();
-      });
+    showInput(mod, tag) {
+      if(mod === 1){
+        this.mainInputVisible = true;
+        this.$nextTick(() => {
+          this.$refs.mainSaveTagInput.$refs.input.focus()
+        })
+      } else if(mod === 2){
+        tag.attrInputVisible = true
+        this.$nextTick(() => {
+          this.$refs.saveTagInput[0].$refs.input.focus()
+        })
+      }
+    },
+    //回车失去焦点以触发
+    inputBlur(e){
+      e.srcElement.blur()
     },
     //添加标签结束
     handleInputConfirm() {
-      let inputValue = this.mainInputValue;
+      let inputValue = this.mainInputValue
+      let labelIndex = this.labelIndex
       if (inputValue) {
         this.labels.push(
           {
+            labelIndex: labelIndex,
             name: inputValue,
             attributes: [
-              {
-                "name": 'select',
-                "mutable": false,
-                "input_type": 'select',
-                "default_value": 'select',
-                "values": []
-              }
-            ]
+            ],
+            attrInputValue: '',
+            attrInputVisible: false,
           }
         );
       }
       this.mainInputVisible = false;
       this.mainInputValue = '';
+      console.log(this.labels);
       this.$store.commit('addToStore', this.labels)
+    },
+    //添加属性结束
+    handleAttrConfirm(tag){
+      if(tag.attrInputValue){
+        this.labels[this.labels.indexOf(tag)].attributes.push({
+          "name": tag.attrInputValue,
+          "mutable": false,
+          "input_type": 'select',
+          "default_value": 'select',
+          "values": []
+        })
+      }
+      this.labels[this.labels.indexOf(tag)].attrInputVisible = false
+      this.labels[this.labels.indexOf(tag)].attrInputValue = ''
     },
     //从仓库加载数据
     loadData(){
@@ -292,11 +418,13 @@ export default {
     overflow: hidden;
   }
   .label-box{
+    box-sizing: border-box;
     border: 1px solid #318B71;
     border-radius: 8px;
     margin: 10px 0;
     display: inline-block;
     width: 868px;
+    overflow: hidden;
     .tab-box{
       width: 200px;
       .tag{
@@ -306,14 +434,76 @@ export default {
         border-bottom: 1px solid #6fcdb2;
         background-color: transparent;
         color: #318B71;
+        font-size: 16px;
       }
     }
     .attribute-box{
-      width: 700px;
-      float: left;
-      .attribute{
-        height: 32px;
-        border-bottom: 1px solid #d9ecff;
+      width: 100%;
+      box-sizing: border-box;
+      .attribute-item{
+        min-height: 46px;
+        padding-top: 6px;
+        box-sizing: border-box;
+        display: flex;
+        .attr-name{
+          flex: 3;
+        }
+        .attr-value{
+          flex: 5;
+        }
+        .attr-mod{
+          flex: 1;
+        }
+        .attr-delete{
+          flex: 1;
+        }
+      }
+      .attr-input-box{
+        min-height: 46px;
+        border-radius: 3px;
+        box-sizing: border-box;
+        background-color: #edf8f3;
+        .input-box-tip{
+          width: 100%;
+          height: 18px;
+          padding: 4px 0 0 6px;
+          line-height: 14px;
+          span{
+            font-size: 14px;
+            color: #999;
+          }
+        }
+        .input-box-content{
+          display: flex;
+          .attr-name-input-box{
+            flex: 3;
+            .attr-name-input{
+              margin: 8px;
+              height: 40px;
+            }
+          }
+          .attr-mod-select-box{
+            flex: 3;
+            .attr-mod-select{
+              margin: 8px;
+              height: 40px;
+            }
+          }
+          .attr-value-input-box{
+            flex: 5;
+            .attr-value-input{
+              margin: 8px;
+              height: 40px;
+            }
+          }
+          .attr-input-confirm-box{
+            flex: 1;
+            .attr-input-confirm{
+              margin: 12px;
+              height: 40px;
+            }
+          }
+        }
       }
     }
   }
@@ -340,7 +530,7 @@ export default {
     margin: 10px;
   }
   .input-new-tag{
-    width: 868px;
+    width: 90%;
     margin: 10px 0;
   }
   .segment-size-box{
