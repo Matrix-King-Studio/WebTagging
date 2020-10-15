@@ -203,7 +203,7 @@ export default {
         this.imagesSize = e.data.size
       })
     },
-    //获取图片压缩包并解压，讲base64代码保存到imagesData里
+    //获取图片压缩包并解压，将 base64 代码保存到 imagesData 里
     /** 不能直接用url中的id去拿图片，如果暴力改变url需要回到home
      * 要用路由守卫*/
     getImages(){
