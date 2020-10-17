@@ -6,25 +6,32 @@
           安软标记平台
         </div>
         <div class="tab-box">
+            <!--全部项目-->
           <router-link
             to="/home/project"
             class="app-project tabs"
             tag="div"
             active-class="selected"
+            style="cursor: pointer;"
           >
             <i class="el-icon-menu"> 全部项目</i>
           </router-link>
+
+            <!--用户中心-->
           <router-link
             to="/home/user"
             class="user-center tabs"
             tag="div"
             active-class="selected"
+            style="cursor: pointer;"
           >
             <i class="el-icon-user-solid">
               &nbsp;
 <!--              <span id="myCenter">{{userInfo.username | handleText}}</span>-->
               <span id="myCenter" :title="userInfo.username+'个人中心'" >{{userInfo.username}}</span>
             </i>
+
+            <!--管理中心-->
           </router-link>
           <a
             v-if="ifAdmin === 'admin'"
