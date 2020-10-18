@@ -212,6 +212,7 @@ export default {
       this.$http.get('v1/tasks/'+ this.$route.params.index +'/data', {
         params: {
           type: 'chunk',
+          //数字0是加载图片，2是禁止加载
           number: 0,
           quality: 'compressed'
         },

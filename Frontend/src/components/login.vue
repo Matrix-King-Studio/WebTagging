@@ -10,6 +10,7 @@
           v-model="loginForm.username"
           type="text"
           placeholder="账户名"
+          @keyup.enter="whichMod"
       >
       <input
           v-show="whichmode === 'register' || whichmode === 'forget'"
@@ -26,6 +27,7 @@
           v-model="loginForm.password"
           type="password"
           placeholder="账户密码"
+          @keyup.enter="whichMod"
       >
       <input
         v-show="whichmode === 'register'"
@@ -62,20 +64,23 @@
         </div>
       </div>
     </form>
+
     <div class="login-btn-box">
+      <!--登录按钮,回车登录效果在上面的表单中，账户名和账户密码中添加了@keyup.enter="whichMod"-->
       <input
         class="login-btn"
         type="button"
         :value="text1"
         @click="whichMod"
-        @keydown.enter="whichMod"
       >
+      <!--错误后展示-->
       <div
         ref="errbtn"
         class="login-status"
       >
         error
       </div>
+
     </div>
     <div class="btnbox">
       <input
@@ -141,6 +146,8 @@ export default {
     login() {
       if (this.flag) {
         // 点击登录2秒后才能再次点击
+        //更改文字为登录中
+        this.text1 = '登录中..'
         this.flag = 0
         let e = this // 闭包
         setTimeout(function () {
@@ -163,6 +170,7 @@ export default {
               errinfo = '用户名或密码错误'
             }
             this.showErrLoginBtn(errinfo)
+            this.text1 = '登录'
           }
         }).catch((e)=>{
           this.$message({

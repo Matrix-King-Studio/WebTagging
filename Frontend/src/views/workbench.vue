@@ -1,8 +1,8 @@
 <template>
   <div class="workbench">
     <div class="header">
-      <div class="icon" @click="backHome">
-        <span>安软标记平台</span>
+      <div title="返回主界面" class="icon" @click="backHome">
+        <span>◀安软标记平台</span>
       </div>
       <div class="user">
         <i class="el-icon-user-solid"></i>
@@ -137,7 +137,7 @@ export default {
     z-index: 4;
     .icon{
       height: 100%;
-      width: 120px;
+      width: 140px;
       text-align: center;
       cursor: pointer;
       span{

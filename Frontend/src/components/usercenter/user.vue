@@ -1,6 +1,9 @@
 <template>
-  <div class="logout" @click="logout">
-    <span>退出登录</span>
+  <div>
+    <div class="logout"  @click="logout">
+      <span>退出登录</span>
+    </div>
+
   </div>
 </template>
 
@@ -8,7 +11,7 @@
 export default {
   data(){
     return{
-
+      userInfo:{}
     }
   },
   methods: {
@@ -23,6 +26,7 @@ export default {
         this.$router.push('/login')
       })
     }
+
   }
 }
 </script>
