@@ -33,6 +33,7 @@ export default new Vuex.Store({
   },
   mutations: {
     //新建项目时保存label信息
+    /** label中的信息有变化，需要清洗*/
     addToStore(state, labData){
       state.projectInfo.labels = labData
     },
