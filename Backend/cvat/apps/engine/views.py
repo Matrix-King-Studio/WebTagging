@@ -325,34 +325,47 @@ class DjangoFilterInspector(CoreAPICompatInspector):
 
 
 @method_decorator(name='list', decorator=swagger_auto_schema(
-    operation_summary='Returns a paginated list of tasks according to query parameters (10 tasks per page)',
+    operation_summary='根据查询参数返回分页的任务列表（每页10个任务）',
     manual_parameters=[
-        openapi.Parameter('id', openapi.IN_QUERY, description="A unique number value identifying this task",
+        openapi.Parameter('id',
+                          openapi.IN_QUERY,
+                          description="标识此任务的唯一数值",
                           type=openapi.TYPE_NUMBER),
-        openapi.Parameter('name', openapi.IN_QUERY, description="Find all tasks where name contains a parameter value",
+        openapi.Parameter('name',
+                          openapi.IN_QUERY,
+                          description="查找名称中包含参数值的所有任务",
                           type=openapi.TYPE_STRING),
-        openapi.Parameter('owner', openapi.IN_QUERY,
+        openapi.Parameter('owner',
+                          openapi.IN_QUERY,
                           description="Find all tasks where owner name contains a parameter value",
                           type=openapi.TYPE_STRING),
-        openapi.Parameter('mode', openapi.IN_QUERY, description="Find all tasks with a specific mode",
-                          type=openapi.TYPE_STRING, enum=['annotation', 'interpolation']),
-        openapi.Parameter('status', openapi.IN_QUERY, description="Find all tasks with a specific status",
-                          type=openapi.TYPE_STRING, enum=['annotation', 'validation', 'completed']),
-        openapi.Parameter('assignee', openapi.IN_QUERY,
+        openapi.Parameter('mode',
+                          openapi.IN_QUERY,
+                          description="Find all tasks with a specific mode",
+                          type=openapi.TYPE_STRING,
+                          enum=['annotation', 'interpolation']),
+        openapi.Parameter('status',
+                          openapi.IN_QUERY,
+                          description="Find all tasks with a specific status",
+                          type=openapi.TYPE_STRING,
+                          enum=['annotation', 'validation', 'completed']),
+        openapi.Parameter('assignee',
+                          openapi.IN_QUERY,
                           description="Find all tasks where assignee name contains a parameter value",
                           type=openapi.TYPE_STRING)
     ],
     filter_inspectors=[DjangoFilterInspector]))
 @method_decorator(name='create',
-                  decorator=swagger_auto_schema(
-                      operation_summary='Method creates a new task in a database without any attached images and videos'))
+                  decorator=swagger_auto_schema(operation_summary='在没有任何附加的方法的情况下创建一个新的视频数据库和任务'))
 @method_decorator(name='retrieve',
-                  decorator=swagger_auto_schema(operation_summary='Method returns details of a specific task'))
-@method_decorator(name='update', decorator=swagger_auto_schema(operation_summary='Method updates a task by id'))
-@method_decorator(name='destroy', decorator=swagger_auto_schema(
-    operation_summary='Method deletes a specific task, all attached jobs, annotations, and data'))
-@method_decorator(name='partial_update', decorator=swagger_auto_schema(
-    operation_summary='Methods does a partial update of chosen fields in a task'))
+                  decorator=swagger_auto_schema(operation_summary='方法返回特定任务的详细信息'))
+@method_decorator(name='update',
+                  decorator=swagger_auto_schema(operation_summary='方法按id更新任务'))
+@method_decorator(name='destroy',
+                  decorator=swagger_auto_schema(operation_summary='方法删除特定任务、所有附加的作业、批注和数据'))
+@method_decorator(name='partial_update',
+                  decorator=swagger_auto_schema(
+                      operation_summary='方法对任务中选定的字段执行部分更新'))
 class TaskViewSet(auth.TaskGetQuerySetMixin, viewsets.ModelViewSet):
     queryset = Task.objects.all().prefetch_related(
         "label_set__attributespec_set",
@@ -386,7 +399,7 @@ class TaskViewSet(auth.TaskGetQuerySetMixin, viewsets.ModelViewSet):
             is_admin = admin_perm.has_permission(self.request, self)
             if not is_admin and settings.RESTRICTIONS['task_limit'] is not None and \
                 Task.objects.filter(owner=owner).count() >= settings.RESTRICTIONS['task_limit']:
-                raise serializers.ValidationError('The user has the maximum number of tasks')
+                raise serializers.ValidationError('用户拥有最大数量的任务')
 
         owner = self.request.data.get('owner', None)
         if owner:
@@ -404,37 +417,38 @@ class TaskViewSet(auth.TaskGetQuerySetMixin, viewsets.ModelViewSet):
             shutil.rmtree(instance.data.get_data_dirname(), ignore_errors=True)
             instance.data.delete()
 
-    @swagger_auto_schema(method='get', operation_summary='Returns a list of jobs for a specific task',
+    @swagger_auto_schema(method='get',
+                         operation_summary='返回特定任务的作业列表',
                          responses={'200': JobSerializer(many=True)})
     @action(detail=True, methods=['GET'], serializer_class=JobSerializer)
     def jobs(self, request, pk):
         self.get_object()  # force to call check_object_permissions
         queryset = Job.objects.filter(segment__task_id=pk)
-        serializer = JobSerializer(queryset, many=True,
-                                   context={"request": request})
-
+        serializer = JobSerializer(queryset, many=True, context={"request": request})
         return Response(serializer.data)
 
-    @swagger_auto_schema(method='post', operation_summary='Method permanently attaches images or video to a task')
-    @swagger_auto_schema(method='get', operation_summary='Method returns data for a specific task',
+    @swagger_auto_schema(method='post',
+                         operation_summary='方法将图像或视频永久附加到任务')
+    @swagger_auto_schema(method='get',
+                         operation_summary='方法返回特定任务的数据',
                          manual_parameters=[
                              openapi.Parameter('type',
                                                in_=openapi.IN_QUERY,
                                                required=True,
                                                type=openapi.TYPE_STRING,
                                                enum=['chunk', 'frame', 'preview'],
-                                               description="Specifies the type of the requested data"),
+                                               description="指定请求数据的类型"),
                              openapi.Parameter('quality',
                                                in_=openapi.IN_QUERY,
                                                required=True,
                                                type=openapi.TYPE_STRING,
                                                enum=['·', 'original'],
-                                               description="Specifies the quality level of the requested data, doesn't matter for 'preview' type"),
+                                               description="指定所请求数据的质量级别，对于“预览”类型无所谓"),
                              openapi.Parameter('number',
                                                in_=openapi.IN_QUERY,
                                                required=True,
                                                type=openapi.TYPE_NUMBER,
-                                               description="A unique number value identifying chunk or frame, doesn't matter for 'preview' type"),
+                                               description="标识块或帧的唯一数值对于“预览”类型无关紧要"),
                          ]
                          )
     @action(detail=True, methods=['POST', 'GET'])
@@ -455,6 +469,7 @@ class TaskViewSet(auth.TaskGetQuerySetMixin, viewsets.ModelViewSet):
             task.create(db_task.id, data)
             return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
         else:
+            jobId = request.query_params.get('jobId', None)
             data_type = request.query_params.get('type', None)
             data_id = request.query_params.get('number', None)
             data_quality = request.query_params.get('quality', 'compressed')
@@ -463,33 +478,31 @@ class TaskViewSet(auth.TaskGetQuerySetMixin, viewsets.ModelViewSet):
             possible_quality_values = ('compressed', 'original')
 
             if not data_type or data_type not in possible_data_type_values:
-                return Response(data='data type not specified or has wrong value', status=status.HTTP_200_OK)
+                return Response(data='数据类型未指定或值错误', status=status.HTTP_200_OK)
             elif data_type == 'chunk' or data_type == 'frame':
                 if not data_id:
-                    return Response(data='number not specified', status=status.HTTP_200_OK)
+                    return Response(data='未指定编号', status=status.HTTP_200_OK)
                 elif data_quality not in possible_quality_values:
-                    return Response(data='wrong quality value', status=status.HTTP_200_OK)
+                    return Response(data='错误的质量值', status=status.HTTP_200_OK)
             try:
+                # get_object()获取单个的object对象
                 db_task = self.get_object()
                 frame_provider = FrameProvider(db_task.data)
                 if data_type == 'chunk':
                     data_id = int(data_id)
                     data_quality = FrameProvider.Quality.COMPRESSED \
                         if data_quality == 'compressed' else FrameProvider.Quality.ORIGINAL
+                    # 获取当前执行脚本的绝对路径
                     path = os.path.realpath(frame_provider.get_chunk(data_id, data_quality))
-
-                    # Follow symbol links if the chunk is a link on a real image otherwise
-                    # mimetype detection inside sendfile will work incorrectly.
+                    print(path)
+                    # 如果块是真实图像上的链接，请遵循符号链接，否则sendfile中的mimetype检测将无法正常工作。
                     return sendfile(request, path)
-
                 elif data_type == 'frame':
                     data_id = int(data_id)
                     data_quality = FrameProvider.Quality.COMPRESSED \
                         if data_quality == 'compressed' else FrameProvider.Quality.ORIGINAL
                     buf, mime = frame_provider.get_frame(data_id, data_quality)
-
                     return HttpResponse(buf.getvalue(), content_type=mime)
-
                 elif data_type == 'preview':
                     return sendfile(request, frame_provider.get_preview())
                 else:
@@ -502,25 +515,33 @@ class TaskViewSet(auth.TaskGetQuerySetMixin, viewsets.ModelViewSet):
                 slogger.task[pk].error(msg, exc_info=True)
                 return Response(data=msg + '\n' + str(e), status=status.HTTP_200_OK)
 
-    @swagger_auto_schema(method='get', operation_summary='Method allows to download task annotations',
+    @swagger_auto_schema(method='get',
+                         operation_summary='方法允许下载任务标注',
                          manual_parameters=[
-                             openapi.Parameter('format', openapi.IN_QUERY,
-                                               description="Desired output format name\nYou can get the list of supported formats at:\n/server/annotation/formats",
-                                               type=openapi.TYPE_STRING, required=False),
-                             openapi.Parameter('filename', openapi.IN_QUERY,
-                                               description="Desired output file name",
-                                               type=openapi.TYPE_STRING, required=False),
-                             openapi.Parameter('action', in_=openapi.IN_QUERY,
-                                               description='Used to start downloading process after annotation file had been created',
-                                               type=openapi.TYPE_STRING, required=False, enum=['download'])
+                             openapi.Parameter('format',
+                                               openapi.IN_QUERY,
+                                               description="所需的输出格式名称，您可以在以下位置获取支持格式的列表：/server/annotation/formats",
+                                               type=openapi.TYPE_STRING,
+                                               required=False),
+                             openapi.Parameter('filename',
+                                               openapi.IN_QUERY,
+                                               description="所需的输出文件名",
+                                               type=openapi.TYPE_STRING,
+                                               required=False),
+                             openapi.Parameter('action',
+                                               in_=openapi.IN_QUERY,
+                                               description='用于在创建批注文件后开始下载进程',
+                                               type=openapi.TYPE_STRING,
+                                               required=False,
+                                               enum=['download'])
                          ],
                          responses={
-                             '202': openapi.Response(description='Dump of annotations has been started'),
-                             '201': openapi.Response(description='Annotations file is ready to download'),
-                             '200': openapi.Response(description='Download of file started')
+                             '202': openapi.Response(description='已开始转储批注'),
+                             '201': openapi.Response(description='注释文件已准备好下载'),
+                             '200': openapi.Response(description='已开始下载文件')
                          }
                          )
-    @swagger_auto_schema(method='put', operation_summary='Method allows to upload task annotations',
+    @swagger_auto_schema(method='put', operation_summary='方法允许上载任务批注',
                          manual_parameters=[
                              openapi.Parameter('format', openapi.IN_QUERY,
                                                description="Input format name\nYou can get the list of supported formats at:\n/server/annotation/formats",
@@ -539,7 +560,7 @@ class TaskViewSet(auth.TaskGetQuerySetMixin, viewsets.ModelViewSet):
                                                required=True,
                                                type=openapi.TYPE_STRING,
                                                enum=['create', 'update', 'delete'])])
-    @swagger_auto_schema(method='delete', operation_summary='Method deletes all annotations for a specific task')
+    @swagger_auto_schema(method='delete', operation_summary='方法删除特定任务的所有批注')
     @action(detail=True,
             methods=['GET', 'DELETE', 'PUT', 'PATCH'],
             serializer_class=LabeledDataSerializer)
@@ -607,10 +628,8 @@ class TaskViewSet(auth.TaskGetQuerySetMixin, viewsets.ModelViewSet):
     @action(detail=True, methods=['GET'], serializer_class=RqStatusSerializer)
     def status(self, request, pk):
         self.get_object()  # force to call check_object_permissions
-        response = self._get_rq_response(queue="default",
-                                         job_id="/api/{}/tasks/{}".format(request.version, pk))
+        response = self._get_rq_response(queue="default", job_id="/api/{}/tasks/{}".format(request.version, pk))
         serializer = RqStatusSerializer(data=response)
-
         if serializer.is_valid():
             return Response(serializer.data)
         else:
@@ -637,10 +656,9 @@ class TaskViewSet(auth.TaskGetQuerySetMixin, viewsets.ModelViewSet):
 
     @staticmethod
     @swagger_auto_schema(method='get',
-                         operation_summary='Method provides a meta information about media files which are related with the task',
+                         operation_summary='元任务提供了与媒体相关的信息',
                          responses={'200': DataMetaSerializer()})
-    @action(detail=True, methods=['GET'], serializer_class=DataMetaSerializer,
-            url_path='data/meta')
+    @action(detail=True, methods=['GET'], serializer_class=DataMetaSerializer, url_path='data/meta')
     def data_info(request, pk):
         db_task = models.Task.objects.prefetch_related('data__images').select_related('data__video').get(pk=pk)
 
@@ -661,21 +679,27 @@ class TaskViewSet(auth.TaskGetQuerySetMixin, viewsets.ModelViewSet):
         serializer = DataMetaSerializer(db_data)
         return Response(serializer.data)
 
-    @swagger_auto_schema(method='get', operation_summary='Export task as a dataset in a specific format',
+    @swagger_auto_schema(method='get', operation_summary='将任务导出为特定格式的数据集',
                          manual_parameters=[
-                             openapi.Parameter('format', openapi.IN_QUERY,
-                                               description="Desired output format name\nYou can get the list of supported formats at:\n/server/annotation/formats",
+                             openapi.Parameter('format',
+                                               openapi.IN_QUERY,
+                                               description="所需的输出格式名称\n您可以在以下位置获取支持格式的列表：\n/server/annotation/formats",
                                                type=openapi.TYPE_STRING, required=True),
-                             openapi.Parameter('filename', openapi.IN_QUERY,
-                                               description="Desired output file name",
-                                               type=openapi.TYPE_STRING, required=False),
-                             openapi.Parameter('action', in_=openapi.IN_QUERY,
-                                               description='Used to start downloading process after annotation file had been created',
-                                               type=openapi.TYPE_STRING, required=False, enum=['download'])
+                             openapi.Parameter('filename',
+                                               openapi.IN_QUERY,
+                                               description="所需的输出文件名",
+                                               type=openapi.TYPE_STRING,
+                                               required=False),
+                             openapi.Parameter('action',
+                                               in_=openapi.IN_QUERY,
+                                               description='用于在创建批注文件后开始下载进程',
+                                               type=openapi.TYPE_STRING,
+                                               required=False,
+                                               enum=['download'])
                          ],
-                         responses={'202': openapi.Response(description='Exporting has been started'),
-                                    '201': openapi.Response(description='Output file is ready for downloading'),
-                                    '200': openapi.Response(description='Download of file started')
+                         responses={'202': openapi.Response(description='已开始导出'),
+                                    '201': openapi.Response(description='输出文件已准备好下载'),
+                                    '200': openapi.Response(description='已开始下载文件')
                                     }
                          )
     @action(detail=True, methods=['GET'], serializer_class=None,
@@ -694,12 +718,16 @@ class TaskViewSet(auth.TaskGetQuerySetMixin, viewsets.ModelViewSet):
                                    )
 
 
-@method_decorator(name='retrieve', decorator=swagger_auto_schema(operation_summary='Method returns details of a job'))
-@method_decorator(name='update', decorator=swagger_auto_schema(operation_summary='Method updates a job by id'))
-@method_decorator(name='partial_update', decorator=swagger_auto_schema(
-    operation_summary='Methods does a partial update of chosen fields in a job'))
+@method_decorator(name='retrieve',
+                  decorator=swagger_auto_schema(operation_summary='方法返回作业的详细信息'))
+@method_decorator(name='update',
+                  decorator=swagger_auto_schema(operation_summary='方法按id更新作业'))
+@method_decorator(name='partial_update',
+                  decorator=swagger_auto_schema(
+                      operation_summary='方法对作业中的选定字段执行部分更新'))
 class JobViewSet(viewsets.GenericViewSet,
-                 mixins.RetrieveModelMixin, mixins.UpdateModelMixin):
+                 mixins.RetrieveModelMixin,
+                 mixins.UpdateModelMixin):
     queryset = Job.objects.all().order_by('id')
     serializer_class = JobSerializer
 
@@ -716,15 +744,22 @@ class JobViewSet(viewsets.GenericViewSet,
 
         return [perm() for perm in permissions]
 
-    @swagger_auto_schema(method='get', operation_summary='Method returns annotations for a specific job')
+    @swagger_auto_schema(method='get',
+                         operation_summary='方法返回特定作业的批注')
     @swagger_auto_schema(method='put',
-                         operation_summary='Method performs an update of all annotations in a specific job')
-    @swagger_auto_schema(method='patch', manual_parameters=[
-        openapi.Parameter('action', in_=openapi.IN_QUERY, type=openapi.TYPE_STRING, required=True,
-                          enum=['create', 'update', 'delete'])],
-                         operation_summary='Method performs a partial update of annotations in a specific job')
-    @swagger_auto_schema(method='delete', operation_summary='Method deletes all annotations for a specific job')
-    @action(detail=True, methods=['GET', 'DELETE', 'PUT', 'PATCH'],
+                         operation_summary='方法对特定作业中的所有批注执行更新')
+    @swagger_auto_schema(method='patch',
+                         manual_parameters=[
+                             openapi.Parameter('action',
+                                               in_=openapi.IN_QUERY,
+                                               type=openapi.TYPE_STRING,
+                                               required=True,
+                                               enum=['create', 'update', 'delete'])],
+                         operation_summary='方法对特定作业中的批注执行部分更新')
+    @swagger_auto_schema(method='delete',
+                         operation_summary='方法删除特定作业的所有批注')
+    @action(detail=True,
+            methods=['GET', 'DELETE', 'PUT', 'PATCH'],
             serializer_class=LabeledDataSerializer)
     def annotations(self, request, pk):
         self.get_object()  # force to call check_object_permissions
@@ -758,8 +793,7 @@ class JobViewSet(viewsets.GenericViewSet,
         elif request.method == 'PATCH':
             action = self.request.query_params.get("action", None)
             if action not in dm.task.PatchAction.values():
-                raise serializers.ValidationError(
-                    "Please specify a correct 'action' for the request")
+                raise serializers.ValidationError("请为请求指定正确的“操作”")
             serializer = LabeledDataSerializer(data=request.data)
             if serializer.is_valid():
                 try:
@@ -772,16 +806,23 @@ class JobViewSet(viewsets.GenericViewSet,
                 return Response(serializer.errors, status=status.HTTP_200_OK)
 
 
-@method_decorator(name='list', decorator=swagger_auto_schema(
-    operation_summary='Method provides a paginated list of users registered on the server'))
-@method_decorator(name='retrieve', decorator=swagger_auto_schema(
-    operation_summary='Method provides information of a specific user'))
-@method_decorator(name='partial_update', decorator=swagger_auto_schema(
-    operation_summary='Method updates chosen fields of a user'))
-@method_decorator(name='destroy', decorator=swagger_auto_schema(
-    operation_summary='Method deletes a specific user from the server'))
-class UserViewSet(viewsets.GenericViewSet, mixins.ListModelMixin,
-                  mixins.RetrieveModelMixin, mixins.UpdateModelMixin, mixins.DestroyModelMixin):
+@method_decorator(name='list',
+                  decorator=swagger_auto_schema(
+                      operation_summary='方法提供在服务器上注册的用户的分页列表'))
+@method_decorator(name='retrieve',
+                  decorator=swagger_auto_schema(
+                      operation_summary='方法提供特定用户的信息'))
+@method_decorator(name='partial_update',
+                  decorator=swagger_auto_schema(
+                      operation_summary='更新用户选择的方法字段'))
+@method_decorator(name='destroy',
+                  decorator=swagger_auto_schema(
+                      operation_summary='方法从服务器中删除特定用户'))
+class UserViewSet(viewsets.GenericViewSet,
+                  mixins.ListModelMixin,
+                  mixins.RetrieveModelMixin,
+                  mixins.UpdateModelMixin,
+                  mixins.DestroyModelMixin):
     queryset = User.objects.all().order_by('id')
     http_method_names = ['get', 'post', 'head', 'patch', 'delete']
 
@@ -908,13 +949,13 @@ def _import_annotations(request, rq_id, rq_func, pk, format_name):
 
 
 def _export_annotations(db_task, rq_id, request, format_name, action, callback, filename):
+    # 如果action提供了意外的参数，返回错误结果
     if action not in {"", "download"}:
-        raise serializers.ValidationError(
-            "Unexpected action specified for the request")
+        raise serializers.ValidationError("为请求指定了意外的操作")
 
+    # 如果format_name不是允许的格式，返回错误结果
     if format_name not in [f.DISPLAY_NAME for f in dm.views.get_export_formats()]:
-        raise serializers.ValidationError(
-            "Unknown format specified for the request")
+        raise serializers.ValidationError("为请求指定的格式未知")
 
     queue = django_rq.get_queue("default")
 

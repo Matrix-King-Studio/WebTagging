@@ -17,6 +17,7 @@ ImageFile.LOAD_TRUNCATED_IMAGES = True
 
 from cvat.apps.engine.mime_types import mimetypes
 
+
 def get_mime(name):
     for type_name, type_def in MEDIA_TYPES.items():
         if type_def['has_mime_type'](name):
@@ -24,12 +25,15 @@ def get_mime(name):
 
     return 'unknown'
 
+
 def create_tmp_dir():
     return tempfile.mkdtemp(prefix='cvat-', suffix='.data')
+
 
 def delete_tmp_dir(tmp_dir):
     if tmp_dir:
         shutil.rmtree(tmp_dir)
+
 
 class IMediaReader(ABC):
     def __init__(self, source_path, step, start, stop):
@@ -64,6 +68,7 @@ class IMediaReader(ABC):
     @abstractmethod
     def get_image_size(self):
         pass
+
 
 class ImageListReader(IMediaReader):
     def __init__(self, source_path, step=1, start=0, stop=None):
@@ -105,6 +110,7 @@ class ImageListReader(IMediaReader):
         img = Image.open(self._source_path[0])
         return img.width, img.height
 
+
 class DirectoryReader(ImageListReader):
     def __init__(self, source_path, step=1, start=0, stop=None):
         image_paths = []
@@ -119,6 +125,7 @@ class DirectoryReader(ImageListReader):
             start=start,
             stop=stop,
         )
+
 
 class ArchiveReader(DirectoryReader):
     def __init__(self, source_path, step=1, start=0, stop=None):
@@ -138,6 +145,7 @@ class ArchiveReader(DirectoryReader):
     def get_path(self, i):
         base_dir = os.path.dirname(self._archive_source)
         return os.path.join(base_dir, os.path.relpath(self._source_path[i], self._tmp_dir))
+
 
 class PdfReader(DirectoryReader):
     def __init__(self, source_path, step=1, start=0, stop=None):
@@ -167,6 +175,7 @@ class PdfReader(DirectoryReader):
         base_dir = os.path.dirname(self._pdf_source)
         return os.path.join(base_dir, os.path.relpath(self._source_path[i], self._tmp_dir))
 
+
 class ZipReader(ImageListReader):
     def __init__(self, source_path, step=1, start=0, stop=None):
         self._zip_source = zipfile.ZipFile(source_path[0], mode='r')
@@ -189,6 +198,7 @@ class ZipReader(ImageListReader):
 
     def get_path(self, i):
         return os.path.join(os.path.dirname(self._zip_source.filename), self._source_path[i])
+
 
 class VideoReader(IMediaReader):
     def __init__(self, source_path, step=1, start=0, stop=None):
@@ -242,6 +252,7 @@ class VideoReader(IMediaReader):
         image = (next(iter(self)))[0]
         return image.width, image.height
 
+
 class IChunkWriter(ABC):
     def __init__(self, quality):
         self._image_quality = quality
@@ -254,7 +265,7 @@ class IChunkWriter(ABC):
             # Image mode is 32bit integer pixels.
             # Autoscale pixels by factor 2**8 / im_data.max() to fit into 8bit
             im_data = np.array(image)
-            im_data = im_data * (2**8 / im_data.max())
+            im_data = im_data * (2 ** 8 / im_data.max())
             image = Image.fromarray(im_data.astype(np.int32))
         converted_image = image.convert('RGB')
         image.close()
@@ -269,6 +280,7 @@ class IChunkWriter(ABC):
     def save_as_chunk(self, images, chunk_path):
         pass
 
+
 class ZipChunkWriter(IChunkWriter):
     def save_as_chunk(self, images, chunk_path):
         with zipfile.ZipFile(chunk_path, 'x') as zip_chunk:
@@ -282,17 +294,19 @@ class ZipChunkWriter(IChunkWriter):
         # and does not decode it to know img size.
         return []
 
+
 class ZipCompressedChunkWriter(IChunkWriter):
     def save_as_chunk(self, images, chunk_path):
         image_sizes = []
         with zipfile.ZipFile(chunk_path, 'x') as zip_chunk:
-            for idx, (image, _ , _) in enumerate(images):
+            for idx, (image, _, _) in enumerate(images):
                 w, h, image_buf = self._compress_image(image, self._image_quality)
                 image_sizes.append((w, h))
                 arcname = '{:06d}.jpeg'.format(idx)
                 zip_chunk.writestr(arcname, image_buf.getvalue())
 
         return image_sizes
+
 
 class Mpeg4ChunkWriter(IChunkWriter):
     def __init__(self, _):
@@ -301,20 +315,20 @@ class Mpeg4ChunkWriter(IChunkWriter):
 
     @staticmethod
     def _create_av_container(path, w, h, rate, options):
-            # x264 requires width and height must be divisible by 2 for yuv420p
-            if h % 2:
-                h += 1
-            if w % 2:
-                w += 1
+        # x264 requires width and height must be divisible by 2 for yuv420p
+        if h % 2:
+            h += 1
+        if w % 2:
+            w += 1
 
-            container = av.open(path, 'w')
-            video_stream = container.add_stream('libx264', rate=rate)
-            video_stream.pix_fmt = "yuv420p"
-            video_stream.width = w
-            video_stream.height = h
-            video_stream.options = options
+        container = av.open(path, 'w')
+        video_stream = container.add_stream('libx264', rate=rate)
+        video_stream.pix_fmt = "yuv420p"
+        video_stream.width = w
+        video_stream.height = h
+        video_stream.options = options
 
-            return container, video_stream
+        return container, video_stream
 
     def save_as_chunk(self, images, chunk_path):
         if not images:
@@ -352,12 +366,12 @@ class Mpeg4ChunkWriter(IChunkWriter):
         for packet in stream.encode():
             container.mux(packet)
 
+
 class Mpeg4CompressedChunkWriter(Mpeg4ChunkWriter):
     def __init__(self, quality):
         # translate inversed range [1:100] to [0:51]
         self._image_quality = round(51 * (100 - quality) / 99)
         self._output_fps = 25
-
 
     def save_as_chunk(self, images, chunk_path):
         if not images:
@@ -391,31 +405,37 @@ class Mpeg4CompressedChunkWriter(Mpeg4ChunkWriter):
         output_container.close()
         return [(input_w, input_h)]
 
+
 def _is_archive(path):
     mime = mimetypes.guess_type(path)
     mime_type = mime[0]
     encoding = mime[1]
     supportedArchives = ['application/x-rar-compressed',
-        'application/x-tar', 'application/x-7z-compressed', 'application/x-cpio',
-        'gzip', 'bzip2']
+                         'application/x-tar', 'application/x-7z-compressed', 'application/x-cpio',
+                         'gzip', 'bzip2']
     return mime_type in supportedArchives or encoding in supportedArchives
+
 
 def _is_video(path):
     mime = mimetypes.guess_type(path)
     return mime[0] is not None and mime[0].startswith('video')
 
+
 def _is_image(path):
     mime = mimetypes.guess_type(path)
     # Exclude vector graphic images because Pillow cannot work with them
     return mime[0] is not None and mime[0].startswith('image') and \
-        not mime[0].startswith('image/svg')
+           not mime[0].startswith('image/svg')
+
 
 def _is_dir(path):
     return os.path.isdir(path)
 
+
 def _is_pdf(path):
     mime = mimetypes.guess_type(path)
     return mime[0] == 'application/pdf'
+
 
 def _is_zip(path):
     mime = mimetypes.guess_type(path)
@@ -423,6 +443,7 @@ def _is_zip(path):
     encoding = mime[1]
     supportedArchives = ['application/zip']
     return mime_type in supportedArchives or encoding in supportedArchives
+
 
 # 'has_mime_type': function receives 1 argument - path to file.
 #                  Should return True if file has specified media type.
