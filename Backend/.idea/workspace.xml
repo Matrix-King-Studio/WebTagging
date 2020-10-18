@@ -20,7 +20,21 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e2fd5767-3d4d-4226-8c86-65e39b2024b3" name="Default Changelist" comment="完成标注数据的存储">
+      <change beforePath="$PROJECT_DIR$/../.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/WebTagging.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/WebTagging.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cvat/apps/authentication/auth.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/authentication/auth.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cvat/apps/dataset_manager/task.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/dataset_manager/task.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cvat/apps/dataset_manager/util.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/dataset_manager/util.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cvat/apps/dataset_manager/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/dataset_manager/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cvat/apps/engine/frame_provider.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/engine/frame_provider.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cvat/apps/engine/media_extractors.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/engine/media_extractors.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cvat/apps/engine/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/engine/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cvat/apps/engine/task.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/engine/task.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cvat/apps/engine/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/engine/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cvat/requirements/production.txt" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/requirements/production.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cvat/simpleworker.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/simpleworker.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -39,10 +53,21 @@
       </list>
     </option>
   </component>
+  <component name="FlaskConsoleOptions" custom-start-script="import sys&#10;sys.path.extend([WORKING_DIR_AND_PYTHON_PATHS])&#10;from flask.cli import ScriptInfo&#10;locals().update(ScriptInfo(create_app=None).load_app().make_shell_context())&#10;print(&quot;Python %s on %s\nApp: %s [%s]\nInstance: %s&quot; % (sys.version, sys.platform, app.import_name, app.env, app.instance_path))">
+    <envs>
+      <env key="FLASK_APP" value="app" />
+    </envs>
+    <option name="myCustomStartScript" value="import sys&#10;sys.path.extend([WORKING_DIR_AND_PYTHON_PATHS])&#10;from flask.cli import ScriptInfo&#10;locals().update(ScriptInfo(create_app=None).load_app().make_shell_context())&#10;print(&quot;Python %s on %s\nApp: %s [%s]\nInstance: %s&quot; % (sys.version, sys.platform, app.import_name, app.env, app.instance_path))" />
+    <option name="myEnvs">
+      <map>
+        <entry key="FLASK_APP" value="app" />
+      </map>
+    </option>
+  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
-  <component name="JupyterTrust" id="2c06357a-3bee-4795-ad08-73c733f8572f" />
+  <component name="JupyterTrust" id="9abe9d29-baca-44a5-b6ed-c3f2b250183f" />
   <component name="ProjectId" id="1fRD1kzyRs1b1KXUxtrvvcU8lH1" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <ConfirmationsSetting value="2" id="Add" />
@@ -64,7 +89,7 @@
     <property name="WebServerToolWindowPanel.toolwindow.show.date" value="false" />
     <property name="WebServerToolWindowPanel.toolwindow.show.permissions" value="false" />
     <property name="WebServerToolWindowPanel.toolwindow.show.size" value="false" />
-    <property name="last_opened_file_path" value="G:/Project/GestureRecognition/利用简单CNN完成简单的手势数字识别" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.standard" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
@@ -72,7 +97,7 @@
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
     <property name="node.js.selected.package.standard" value="" />
     <property name="nodejs_package_manager_path" value="npm" />
-    <property name="settings.editor.selected.configurable" value="project.propVCSSupport.Mappings" />
+    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
     <property name="ts.external.directory.path" value="D:\Jetbrains\apps\PyCharm-P\ch-0\201.7846.77\plugins\JavaScriptLanguage\jsLanguageServicesImpl\external" />
   </component>
   <component name="RecentsManager">
@@ -133,6 +158,7 @@
       <method v="2" />
     </configuration>
   </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="SvnConfiguration">
     <configuration />
   </component>
@@ -213,6 +239,33 @@
       <workItem from="1599902458732" duration="2019000" />
       <workItem from="1599963283679" duration="24000" />
       <workItem from="1599976313911" duration="2806000" />
+      <workItem from="1600432397027" duration="1105000" />
+      <workItem from="1600483895971" duration="849000" />
+      <workItem from="1600496008524" duration="2316000" />
+      <workItem from="1600513753052" duration="250000" />
+      <workItem from="1600692322456" duration="1022000" />
+      <workItem from="1600733443938" duration="666000" />
+      <workItem from="1600784766370" duration="532000" />
+      <workItem from="1600840870176" duration="517000" />
+      <workItem from="1600905045941" duration="1213000" />
+      <workItem from="1601091203383" duration="1685000" />
+      <workItem from="1601179129563" duration="494000" />
+      <workItem from="1601253378454" duration="1601000" />
+      <workItem from="1601340648153" duration="950000" />
+      <workItem from="1601450664073" duration="1155000" />
+      <workItem from="1601517179799" duration="368000" />
+      <workItem from="1601612052779" duration="3295000" />
+      <workItem from="1601684127433" duration="8658000" />
+      <workItem from="1601773346462" duration="1577000" />
+      <workItem from="1601862006396" duration="7244000" />
+      <workItem from="1601942992920" duration="664000" />
+      <workItem from="1602118508797" duration="471000" />
+      <workItem from="1602289001731" duration="5439000" />
+      <workItem from="1602383046037" duration="166000" />
+      <workItem from="1602406347313" duration="710000" />
+      <workItem from="1602585366576" duration="226000" />
+      <workItem from="1602595589944" duration="173000" />
+      <workItem from="1602642100947" duration="1354000" />
     </task>
     <task id="LOCAL-00001" summary="初始化CVAT">
       <created>1596186022091</created>
@@ -442,7 +495,7 @@
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
-    <option name="version" value="2" />
+    <option name="version" value="3" />
   </component>
   <component name="UnknownFeatures">
     <option featureType="com.intellij.fileTypeFactory" implementationName="*.sh" />
@@ -493,15 +546,24 @@
     <option name="LAST_COMMIT_MESSAGE" value="完成标注数据的存储" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="323" y="73" key="#Deployment" timestamp="1599456422972">
-      <screen x="0" y="0" width="1536" height="824" />
+    <state x="404" y="96" key="#Deployment" timestamp="1600432897224">
+      <screen x="0" y="0" width="1920" height="1080" />
     </state>
     <state x="361" y="71" key="#Deployment/0.0.1536.824/1920.0.1440.860@0.0.1536.824" timestamp="1597900221901" />
     <state x="323" y="73" key="#Deployment/0.0.1536.824@0.0.1536.824" timestamp="1599456422972" />
+    <state x="404" y="96" key="#Deployment/0.0.1920.1080@0.0.1920.1080" timestamp="1600432897224" />
     <state x="630" y="303" key="#ESLint" timestamp="1598323626843">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="630" y="303" key="#ESLint/0.0.1536.824/1920.0.1440.860@0.0.1536.824" timestamp="1598323626843" />
+    <state x="689" y="371" key="#Notifications" timestamp="1600498237274">
+      <screen x="0" y="0" width="1920" height="1080" />
+    </state>
+    <state x="689" y="371" key="#Notifications/0.0.1920.1080@0.0.1920.1080" timestamp="1600498237274" />
+    <state x="388" y="83" key="#SSH_Configurations" timestamp="1600432857792">
+      <screen x="0" y="0" width="1920" height="1080" />
+    </state>
+    <state x="388" y="83" key="#SSH_Configurations/0.0.1920.1080@0.0.1920.1080" timestamp="1600432857791" />
     <state x="2438" y="60" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1596778377449">
       <screen x="1920" y="0" width="1440" height="860" />
     </state>
@@ -543,11 +605,12 @@
     </state>
     <state width="1493" height="178" key="GridCell.Tab.0.right/0.0.1536.824/1920.0.1440.860@0.0.1536.824" timestamp="1596600762535" />
     <state width="1493" height="178" key="GridCell.Tab.0.right/0.0.1536.824/1920.0.1440.860@1920.0.1440.860" timestamp="1596451835240" />
-    <state x="315" y="73" key="SettingsEditor" timestamp="1599455957806">
-      <screen x="0" y="0" width="1536" height="824" />
+    <state x="889" y="140" key="SettingsEditor" timestamp="1601871261315">
+      <screen x="0" y="0" width="1920" height="1080" />
     </state>
     <state x="315" y="73" key="SettingsEditor/0.0.1536.824/1920.0.1440.860@0.0.1536.824" timestamp="1598327908018" />
     <state x="315" y="73" key="SettingsEditor/0.0.1536.824@0.0.1536.824" timestamp="1599455957806" />
+    <state x="889" y="140" key="SettingsEditor/0.0.1920.1080@0.0.1920.1080" timestamp="1601871261315" />
     <state x="-1469" y="183" key="Vcs.Push.Dialog.v2" timestamp="1599984672983">
       <screen x="-1920" y="0" width="1920" height="1040" />
     </state>
@@ -595,15 +658,17 @@
       <screen x="1920" y="0" width="1440" height="860" />
     </state>
     <state x="1920" y="59" width="1185" height="508" maximized="true" key="dock-window-8/0.0.1536.824/1920.0.1440.860@0.0.1536.824" timestamp="1597928079653" />
-    <state x="647" y="143" width="571" height="538" key="ftp.server.browser" timestamp="1599456407182">
-      <screen x="0" y="0" width="1536" height="824" />
+    <state x="809" y="187" width="571" height="538" key="ftp.server.browser" timestamp="1600432895815">
+      <screen x="0" y="0" width="1920" height="1080" />
     </state>
     <state x="647" y="143" width="571" height="538" key="ftp.server.browser/0.0.1536.824/1920.0.1440.860@0.0.1536.824" timestamp="1597900220045" />
     <state x="647" y="143" key="ftp.server.browser/0.0.1536.824@0.0.1536.824" timestamp="1599456407182" />
-    <state x="431" y="145" width="672" height="678" key="search.everywhere.popup" timestamp="1599447972215">
-      <screen x="0" y="0" width="1536" height="824" />
+    <state x="809" y="187" key="ftp.server.browser/0.0.1920.1080@0.0.1920.1080" timestamp="1600432895815" />
+    <state x="539" y="190" width="840" height="889" key="search.everywhere.popup" timestamp="1601700715131">
+      <screen x="0" y="0" width="1920" height="1080" />
     </state>
     <state x="431" y="145" width="672" height="678" key="search.everywhere.popup/0.0.1536.824/1920.0.1440.860@0.0.1536.824" timestamp="1598419125943" />
     <state x="431" y="145" width="672" height="678" key="search.everywhere.popup/0.0.1536.824@0.0.1536.824" timestamp="1599447972215" />
+    <state x="539" y="190" width="840" height="889" key="search.everywhere.popup/0.0.1920.1080@0.0.1920.1080" timestamp="1601700715131" />
   </component>
 </project>

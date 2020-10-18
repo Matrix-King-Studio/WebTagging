@@ -1,16 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="9979c6a2-867f-4b36-b6ab-e5fcc973a2f6" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Backend/.eslintrc.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Backend/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Backend/.idea/deployment.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Backend/.idea/deployment.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Backend/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Backend/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Backend/cvat/apps/authentication/api_urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/Backend/cvat/apps/authentication/api_urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Backend/cvat/apps/engine/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/Backend/cvat/apps/engine/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Backend/documentation/installation.md" beforeDir="false" afterPath="$PROJECT_DIR$/Backend/documentation/installation.md" afterDir="false" />
-    </list>
+    <list default="true" id="9979c6a2-867f-4b36-b6ab-e5fcc973a2f6" name="Default Changelist" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -19,6 +10,7 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="JupyterTrust" id="9abe9d29-baca-44a5-b6ed-c3f2b250183f" />
   <component name="ProjectId" id="1hImRP8elX5NMpmkz3NtEO1MemC" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -28,7 +20,7 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/Backend" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
   </component>
   <component name="SvnConfiguration">
     <configuration />
@@ -41,6 +33,7 @@
       <option name="presentableId" value="Default" />
       <updated>1599706972019</updated>
       <workItem from="1599706976366" duration="106000" />
+      <workItem from="1600432370432" duration="7000" />
     </task>
     <servers />
   </component>
