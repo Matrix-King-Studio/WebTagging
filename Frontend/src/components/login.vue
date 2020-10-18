@@ -147,7 +147,7 @@ export default {
       if (this.flag) {
         // 点击登录2秒后才能再次点击
         //更改文字为登录中
-        this.text1 = '登录中..'
+        this.text1 = '登录中...'
         this.flag = 0
         let e = this // 闭包
         setTimeout(function () {
@@ -173,6 +173,7 @@ export default {
             this.text1 = '登录'
           }
         }).catch((e)=>{
+          this.text1 = '登录'
           this.$message({
             message: e,
             type: "error"
