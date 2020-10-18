@@ -14,7 +14,7 @@
                 <el-tag
                   closable
                   :disable-transitions="false"
-                  @close="handleClose(tag)"
+                  @close="handleLabelClose(tag)"
                   class="tag"
                 >
                   {{ tag.name }}
@@ -82,24 +82,19 @@
                       </div>
                     </div>
                     <div class="attr-value-input-box">
-                      <div class="attr-value-input">
+                      <div class="attr-value-input" @click="attrValInputFocus($event)">
                         <el-tag
                           :key="attrVal"
                           v-for="attrVal in newAttributeData.values"
+                          class="attr-val-item"
                           closable
+                          effect="plain"
+                          type="success"
                           :disable-transitions="false"
                           @close="handleClose(attrVal)">
-                          {{ tag }}
+                          {{ attrVal }}
                         </el-tag>
-                        <el-input
-                          class="input-new-tag"
-                          v-model="attrValue"
-                          ref="saveTagInput"
-                          size="small"
-                          @keyup.enter.native="handleInputConfirm"
-                          @blur="handleInputConfirm"
-                        >
-                        </el-input>
+                        <div contenteditable="true" class="val-input"></div>
                       </div>
                     </div>
                     <div class="attr-input-confirm-box">
@@ -223,7 +218,12 @@ export default {
         input_type: '',
         mutable: false,
         values: [
-
+          "123",
+          "12",
+          "1",
+          "143",
+          "345",
+          "567245",
         ],
       },
     }
@@ -234,7 +234,7 @@ export default {
   },
   methods: {
     //删除标签
-    handleClose(tag) {
+    handleLabelClose(tag) {
       this.labels.splice(this.labels.indexOf(tag), 1);
       this.$store.commit('addToStore', this.labels)
     },
@@ -243,7 +243,7 @@ export default {
       console.log(attr);
       this.labels[this.labels.indexOf(tag)].attributes.splice(this.labels[this.labels.indexOf(tag)].attributes.indexOf(attr), 1)
     },
-    //开始添加标签
+    //开始添加 标签：1/属性：2
     showInput(mod, tag) {
       if(mod === 1){
         this.mainInputVisible = true;
@@ -252,14 +252,15 @@ export default {
         })
       } else if(mod === 2){
         tag.attrInputVisible = true
-        this.$nextTick(() => {
-          this.$refs.saveTagInput[0].$refs.input.focus()
-        })
       }
     },
     //回车失去焦点以触发
     inputBlur(e){
       e.srcElement.blur()
+    },
+    //点击添加属性里的属性值方框对其中的input进行聚焦
+    attrValInputFocus(e){
+      e.target.children[e.target.children.length - 1].focus()
     },
     //添加标签结束
     handleInputConfirm() {
@@ -491,9 +492,35 @@ export default {
           }
           .attr-value-input-box{
             flex: 5;
+            padding: 8px;
+            max-width: 40%;
+            cursor: text;
             .attr-value-input{
-              margin: 8px;
-              height: 40px;
+              min-height: 40px;
+              background-color: #fff;
+              border: 1px solid #dcdfe6;
+              box-sizing: border-box;
+              display: flex;
+              flex-wrap: wrap;
+              transition: border .2s ease;
+              .attr-val-item{
+                margin: 4px 0 0 4px;
+              }
+              .val-input{
+                display: inline-block;
+                outline: none;
+                margin: 4px;
+                height: 32px;
+                padding: 0;
+                line-height: 32px;
+                min-width: 1em;
+                max-width: 100%;
+                overflow: hidden;
+                white-space: nowrap;
+              }
+            }
+            .attr-value-input:hover{
+              border: 1px solid #c2c3c6;
             }
           }
           .attr-input-confirm-box{
