@@ -57,7 +57,8 @@
                   class="attr-input-box"
                 >
                   <div class="input-box-tip">
-                      <span>添加属性</span>
+                    <span>添加属性</span>
+                    <i class="el-icon-close" @click="endAttrInput(tag)"></i>
                   </div>
                   <div class="input-box-content">
                     <div class="attr-name-input-box">
@@ -192,8 +193,7 @@ export default {
 
       //
       segment_size: 1,
-
-      //标签的序号
+      //
       labelIndex: 1,
 
       //新建属性中选择属性标注模式的选项
@@ -253,6 +253,7 @@ export default {
         for(let i = 0; i < this.labels.length; i++){
           this.labels[i].attrInputVisible = false
         }
+        console.log("开始添加属性",tag);
         tag.attrInputVisible = true
       }
     },
@@ -264,12 +265,11 @@ export default {
     //添加标签结束
     handleInputConfirm() {
       let inputValue = this.mainInputValue
-      let labelIndex = this.labelIndex
       if (inputValue) {
         this.labels.push(
           {
-            labelIndex: labelIndex,
             name: inputValue,
+            id: this.labelIndex,
             attributes: [],
             attrInputVisible: false,
           }
@@ -277,7 +277,7 @@ export default {
       }
       this.mainInputVisible = false;
       this.mainInputValue = '';
-      console.log(this.labels);
+      console.log("添加标签成功", this.labels);
       this.$store.commit('addToStore', this.labels)
     },
     //点击添加属性里的属性值方框对其中的input进行聚焦
@@ -332,6 +332,17 @@ export default {
         })
       }
     },
+    //终止添加属性值
+    endAttrInput(tag){
+      this.labels[this.labels.indexOf(tag)].attrInputVisible = false
+      this.newAttributeData = {
+        "id": 0,
+        "name": '',
+        "input_type": '',
+        "mutable": false,
+        "values": [],
+      }
+    },
     //添加属性值结束
     /** 属性值过长的时候会跑到框外面*/
     handleAttrValInput(e){
@@ -342,8 +353,25 @@ export default {
       }
     },
     //从仓库加载数据
+    /** 加载人员数据可能不会再用到了，记得删掉*/
     loadData(){
-      this.labels = this.$store.state.projectInfo.labels
+      let labData = this.$store.state.projectInfo.labels
+      console.log('开始从仓库加载数据', labData);
+      for(let i = 0; i < labData.length; i++){
+        let item = {}
+        item.name = labData[i].name
+        item.id = labData[i].id
+        item.attributes = labData[i].attributes
+        item.attrInputVisible = false
+        this.labels.push(item)
+
+        // labData[i].attrInputVisible = false
+        // this.labels.push(labData[i])
+      }
+      // this.labels = this.$store.state.projectInfo.labels
+      console.log("从仓库重新加载数据完成", this.labels);
+
+
       this.image_quality = this.$store.state.image_quality
       this.userValue = this.$store.state.allUsers
 
@@ -510,12 +538,22 @@ export default {
         background-color: #edf8f3;
         .input-box-tip{
           width: 100%;
-          height: 18px;
-          padding: 8px 0 0 8px;
+          height: 24px;
+          padding: 8px 0 0 10px;
+          box-sizing: border-box;
           line-height: 14px;
+          display: flex;
+          justify-content: space-between;
+          color: #999;
           span{
             font-size: 14px;
-            color: #999;
+          }
+          i{
+            margin-right: 6px;
+            cursor: pointer;
+          }
+          i:hover{
+            background-color: #ccc;
           }
         }
         .input-box-content{

@@ -35,7 +35,18 @@ export default new Vuex.Store({
     //新建项目时保存label信息
     /** label中的信息有变化，需要清洗*/
     addToStore(state, labData){
-      state.projectInfo.labels = labData
+      //先删除原有数据
+      state.projectInfo.labels = []
+      //添加更新后的数据
+      console.log('开始更新仓库数据', labData);
+      for(let i = 0; i < labData.length; i++){
+        let item = {}
+        item.name = labData[i].name
+        item.id = labData[i].id
+        item.attributes = labData[i].attributes
+        state.projectInfo.labels.push(item)
+      }
+      console.log("仓库数据更新完成", state.projectInfo.labels);
     },
     //新建项目时保存图片质量
     addImageQuality(state, image_quality){
