@@ -28,27 +28,30 @@
                   <div
                     class="attribute-item"
                     v-for="attr in tag.attributes"
-                    :key="attr.name"
+                    :key="attr.id"
                   >
                     <div class="attr-name">
-                      <span></span>
-                      <el-tag
-                        closable
-                        :disable-transitions="false"
-                        :type="'success'"
-                        @close="handleAttrClose(tag,attr)"
-                      >
+                      <span>
                         {{ attr.name }}
-                      </el-tag>
+                      </span>
                     </div>
                     <div class="attr-mod">
-
+                      <span>
+                        {{ attr.input_type }}
+                      </span>
                     </div>
                     <div class="attr-value">
-
+                      <span>
+                        {{ attr.values }}
+                      </span>
                     </div>
-                    <div class="attr-delete">
-
+                    <div class="attr-edit-box">
+                      <div class="attr-edit">
+                        <i class="el-icon-edit" @click="editAttrInfo(tag,attr)"></i>
+                      </div>
+                      <div class="attr-delete">
+                        <i class="el-icon-delete" @click="handleAttrClose(tag,attr)"></i>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -231,6 +234,11 @@ export default {
     this.loadData()
   },
   methods: {
+    //
+    updateLabels(e){
+      this.$store.commit('updateLabels', e.target.value)
+    },
+    /** 记得解决重复值问题*/
     //删除 标签/属性/属性值
     handleLabelClose(tag) {
       this.labels.splice(this.labels.indexOf(tag), 1);
@@ -282,7 +290,10 @@ export default {
     },
     //点击添加属性里的属性值方框对其中的input进行聚焦
     attrValInputFocus(e){
-      e.target.children[e.target.children.length - 1].focus()
+      //如果点到的不是输入框本身，再进行主动聚焦
+      if(e.target.children.length !== 0){
+        e.target.children[e.target.children.length - 1].focus()
+      }
     },
     //检查新建属性输入的信息是否完善，否则给出提示
     ifAttrReady(){
@@ -351,6 +362,13 @@ export default {
         e.target.innerText = ''
         e.target.focus()
       }
+    },
+    //修改属性
+    editAttrInfo(tag,attr){
+      console.log(tag);
+      console.log(attr);
+      this.newAttributeData = attr;
+      tag.attrInputVisible = true
     },
     //从仓库加载数据
     /** 加载人员数据可能不会再用到了，记得删掉*/
@@ -515,21 +533,63 @@ export default {
       box-sizing: border-box;
       .attribute-item{
         min-height: 46px;
-        padding-top: 6px;
+        padding-top: 3px;
         box-sizing: border-box;
         display: flex;
+        border-bottom: 1px solid #f7fff9;
         .attr-name{
           flex: 3;
+          text-align: center;
+        }
+        .attr-mod{
+          flex: 3;
+          text-align: center;
         }
         .attr-value{
           flex: 5;
         }
-        .attr-mod{
-          flex: 1;
+        .attr-name,.attr-mod,.attr-value{
+          padding-left: 10px;
+          line-height: 40px;
+          overflow: hidden;
         }
-        .attr-delete{
+        .attr-edit-box{
           flex: 1;
+          display: flex;
+          .attr-edit{
+            flex: 1;
+            text-align: center;
+            line-height: 40px;
+            i{
+              display: block;
+              padding: 10px;
+              cursor: pointer;
+              border-radius: 3px;
+              margin: 2px;
+            }
+            i:hover{
+              background-color: #c9e3d6;
+            }
+          }
+          .attr-delete{
+            text-align: center;
+            line-height: 40px;
+            flex: 1;
+            i{
+              display: block;
+              padding: 10px;
+              cursor: pointer;
+              border-radius: 3px;
+              margin: 2px;
+            }
+            i:hover{
+              background-color: #c9e3d6;
+            }
+          }
         }
+      }
+      .attribute-item:hover{
+        background-color: #f7fff9;
       }
       .attr-input-box{
         min-height: 46px;

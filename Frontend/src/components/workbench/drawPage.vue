@@ -237,7 +237,6 @@ export default {
   destroyed() {
     //页面切换清除改变大小监听器
     window.onresize = () => {
-
     }
   },
   methods: {
@@ -262,7 +261,6 @@ export default {
         this.stop_frame = e.data.stop_frame
       })
     },
-
     //获取图片压缩包并解压，将 base64 代码保存到 imagesData 里
     /** 不能直接用 url 中的 id 去拿图片，如果暴力改变 url 需要回到 home 要用路由守卫*/
     getImages() {
@@ -301,7 +299,6 @@ export default {
         console.log(err);
       })
     },
-
     //初始化画布
     initCanvas() {
       //获取元素
@@ -318,7 +315,6 @@ export default {
       //设置鼠标样式
       document.getElementById('myCanvas').style.cursor = 'default'
     },
-
     //改变画布大小
     resizeCanvas() {
       this.myCanvas.width = document.body.clientWidth - 46
@@ -327,7 +323,6 @@ export default {
       this.drawImages()
       this.reDrawTags(2, this.imageIndex)
     },
-
     //绘制图片
     drawImages() {
       //将解压出的文件以base64格式放到图片对象中
@@ -768,7 +763,6 @@ export default {
         type: "success"
       })
     }
-
   }
 }
 </script>

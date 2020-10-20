@@ -48,6 +48,9 @@ export default new Vuex.Store({
       }
       console.log("仓库数据更新完成", state.projectInfo.labels);
     },
+    updateLabels(state, labdata){
+      state.projectInfo.labels = labdata
+    },
     //新建项目时保存图片质量
     addImageQuality(state, image_quality){
       state.image_quality = image_quality
