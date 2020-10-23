@@ -11,6 +11,11 @@ import axios from 'axios'
 //导入element ui
 import './plugins/element.js'
 
+/* Alex Start */
+import ElementUI from 'element-ui'
+Vue.use(ElementUI)
+/* Alex End */
+
 // 配置请求根路径
 axios.defaults.baseURL = 'http://alexking.site:8080/api/'
 // axios.defaults.timeout = 3000 //超时时间
