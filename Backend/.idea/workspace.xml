@@ -20,21 +20,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e2fd5767-3d4d-4226-8c86-65e39b2024b3" name="Default Changelist" comment="完成标注数据的存储">
-      <change beforePath="$PROJECT_DIR$/../.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/WebTagging.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/WebTagging.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/authentication/auth.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/authentication/auth.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/dataset_manager/task.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/dataset_manager/task.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/dataset_manager/util.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/dataset_manager/util.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/dataset_manager/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/dataset_manager/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/engine/frame_provider.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/engine/frame_provider.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/engine/media_extractors.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/engine/media_extractors.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/engine/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/engine/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/engine/task.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/engine/task.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/engine/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/engine/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/requirements/production.txt" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/requirements/production.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/simpleworker.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/simpleworker.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -266,6 +252,9 @@
       <workItem from="1602585366576" duration="226000" />
       <workItem from="1602595589944" duration="173000" />
       <workItem from="1602642100947" duration="1354000" />
+      <workItem from="1603334652307" duration="590000" />
+      <workItem from="1603415117163" duration="816000" />
+      <workItem from="1603417020300" duration="390000" />
     </task>
     <task id="LOCAL-00001" summary="初始化CVAT">
       <created>1596186022091</created>
