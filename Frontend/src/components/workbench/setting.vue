@@ -26,7 +26,7 @@
         <div class="func-box">
           <div
             class="export-data func-btn"
-            @click="updateData"
+            @click="exportTaggingDialogVisible = true"
           >
             <span>导出数据</span>
           </div>
@@ -107,16 +107,24 @@
     </div>
     <el-dialog
       title="提示"
-      :visible.sync="dialogVisible"
+      :visible.sync="exportTaggingDialogVisible"
       width="30%"
     >
-      <span>这是一段信息</span>
+      <span>
+        <el-button
+          v-for="item in exportTaggingFormat"
+          type="success"
+          plain
+          @click="updateData(item.format)"
+        >{{ item.name }}</el-button>
+      </span>
       <span
         slot="footer"
         class="dialog-footer"
       >
         <el-button
-          @click="dialogVisible = false">取 消</el-button>
+          @click="exportTaggingDialogVisible = false"
+        >取 消</el-button>
       </span>
     </el-dialog>
   </div>
@@ -127,7 +135,11 @@ export default {
   data() {
     return {
       /* Alex Start */
-      dialogVisible: false,   // 是否显示导出标注数据 dialog
+      exportTaggingDialogVisible: false,   // 是否显示导出标注数据 dialog
+      exportTaggingFormat: [
+        {name: 'COCO', format: 'COCO%201.0'},
+        {name: 'YOLO', format: 'YOLO%201.1'},
+      ],
       /* Alex End */
 
       jobsInfo: [],
@@ -140,8 +152,8 @@ export default {
   },
   methods: {
     //两个用于下载标注数据
-    updateData() {
-      this.$http.get('v1/tasks/' + this.$route.params.index + '/annotations?format=COCO%201.0', {
+    updateData(format) {
+      this.$http.get('v1/tasks/' + this.$route.params.index + '/annotations?format=' + format, {
         responseType: 'blob'
       }).then((e) => {
         console.log(e);
@@ -169,6 +181,10 @@ export default {
         link.click()
         body.removeChild(link)
         window.URL.revokeObjectURL(link.href)
+        /* Alex Start */
+        // 隐藏导出标注数据 dialog
+        this.exportTaggingDialogVisible = false
+        /* Alex End */
       })
     },
     //删除项目
