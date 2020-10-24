@@ -24,20 +24,30 @@
           </div>
         </div>
         <div class="func-box">
-          <div class="export-data func-btn" @click="updateData">
+          <div
+            class="export-data func-btn"
+            @click="exportTaggingDialogVisible = true"
+          >
             <span>导出数据</span>
           </div>
-          <div class="delete func-btn" @click="deleteTask">
+          <div
+            class="delete func-btn"
+            @click="deleteTask"
+          >
             <span>删除</span>
           </div>
         </div>
       </div>
       <div class="update-info-box">
-        <div class="labels-box"></div>
+        <div class="labels-box" />
       </div>
     </div>
     <div class="jobs-info">
-      <div class="job" v-for="item in jobsInfo" :key="item.jobs[0].id">
+      <div
+        v-for="item in jobsInfo"
+        :key="item.jobs[0].id"
+        class="job"
+      >
         <div class="job-title">
           <div class="job-id title-box">
             <span>jobId</span>
@@ -58,15 +68,15 @@
             <span>标注人</span>
           </div>
         </div>
-        <div class="job-info" >
+        <div class="job-info">
           <div class="job-id info-box">
-            <span v-text="item.jobs[0].id"></span>
+            <span v-text="item.jobs[0].id" />
           </div>
           <div class="frames info-box">
-            <span v-text="item.start_frame + '-' + item.stop_frame"></span>
+            <span v-text="item.start_frame + '-' + item.stop_frame" />
           </div>
           <div class="status info-box">
-            <span v-text="item.jobs[0].status"></span>
+            <span v-text="item.jobs[0].status" />
           </div>
           <div class="start-time info-box">
             <span>无</span>
@@ -88,21 +98,50 @@
                   :key="i.key"
                   :label="i.label"
                   :value="i.id"
-                >
-                </el-option>
+                />
               </el-select>
             </div>
           </div>
         </div>
       </div>
     </div>
+    <el-dialog
+      title="提示"
+      :visible.sync="exportTaggingDialogVisible"
+      width="30%"
+    >
+      <span>
+        <el-button
+          v-for="item in exportTaggingFormat"
+          type="success"
+          plain
+          @click="updateData(item.format)"
+        >{{ item.name }}</el-button>
+      </span>
+      <span
+        slot="footer"
+        class="dialog-footer"
+      >
+        <el-button
+          @click="exportTaggingDialogVisible = false"
+        >取 消</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
 <script>
 export default {
-  data(){
-    return{
+  data() {
+    return {
+      /* Alex Start */
+      exportTaggingDialogVisible: false,   // 是否显示导出标注数据 dialog
+      exportTaggingFormat: [
+        {name: 'COCO', format: 'COCO%201.0'},
+        {name: 'YOLO', format: 'YOLO%201.1'},
+      ],
+      /* Alex End */
+
       jobsInfo: [],
       usersInfo: []
     }
@@ -113,22 +152,22 @@ export default {
   },
   methods: {
     //两个用于下载标注数据
-    updateData(){
-      this.$http.get('v1/tasks/'+ this.$route.params.index +'/annotations?format=COCO%201.0',{
+    updateData(format) {
+      this.$http.get('v1/tasks/' + this.$route.params.index + '/annotations?format=' + format, {
         responseType: 'blob'
-      }).then((e)=>{
+      }).then((e) => {
         console.log(e);
-        if(e.status === 202){
+        if (e.status === 202) {
           this.updateData()
-        } else if(e.status === 201){
+        } else if (e.status === 201) {
           this.downloadData()
         }
       })
     },
-    downloadData(){
-      this.$http.get('v1/tasks/'+ this.$route.params.index +'/annotations?action=download',{
+    downloadData() {
+      this.$http.get('v1/tasks/' + this.$route.params.index + '/annotations?action=download', {
         responseType: 'blob'
-      }).then((res)=>{
+      }).then((res) => {
         console.log(res);
         const blob = new Blob([res.data], {
           type: 'application/octet-stream'
@@ -142,32 +181,36 @@ export default {
         link.click()
         body.removeChild(link)
         window.URL.revokeObjectURL(link.href)
+        /* Alex Start */
+        // 隐藏导出标注数据 dialog
+        this.exportTaggingDialogVisible = false
+        /* Alex End */
       })
     },
     //删除项目
-    deleteTask(){
+    deleteTask() {
       console.log('delete');
     },
     //拿task数据用于job配置
-    getTaskInfo(){
-      this.$http.get('v1/tasks',{
+    getTaskInfo() {
+      this.$http.get('v1/tasks', {
         params: {
           page_size: 10,
           id: this.$route.params.index
         }
-      }).then((e)=>{
+      }).then((e) => {
         console.log(e);
         this.jobsInfo = e.data.results[0].segments
-        for(let i = 0; i<this.jobsInfo.length; i++){
+        for (let i = 0; i < this.jobsInfo.length; i++) {
           this.jobsInfo[i]["index"] = i
         }
         console.log(this.jobsInfo);
       })
     },
     //拿所有人员的数据用于分配任务
-    getUsersInfo(){
-      this.$http.get('v1/users?page_size=all').then((e)=>{
-        e.data.results.forEach((user, index)=>{
+    getUsersInfo() {
+      this.$http.get('v1/users?page_size=all').then((e) => {
+        e.data.results.forEach((user, index) => {
           this.usersInfo.push({
             label: user.username,
             key: index,
@@ -178,12 +221,12 @@ export default {
       })
     },
     //点选之后patch修改后端数据
-    modifyJobAssign(index){
-      this.$http.patch('v1/jobs/'+this.jobsInfo[index].jobs[0].id,{
-        "status":"annotation",
-        "assignee":this.jobsInfo[index].jobs[0].assignee
-      }).then((e)=>{
-        if(e.status === 200){
+    modifyJobAssign(index) {
+      this.$http.patch('v1/jobs/' + this.jobsInfo[index].jobs[0].id, {
+        "status": "annotation",
+        "assignee": this.jobsInfo[index].jobs[0].assignee
+      }).then((e) => {
+        if (e.status === 200) {
           this.$message({
             message: "修改成功",
             type: "success"
@@ -197,12 +240,13 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.setting-page{
+.setting-page {
   width: 100%;
   height: 100%;
   background-color: #e4f5ef;
   overflow: auto;
-  .task-info,.jobs-info{
+
+  .task-info, .jobs-info {
     width: 800px;
     height: 300px;
     margin: 30px auto;
@@ -211,52 +255,62 @@ export default {
     border: 1px solid #9ce8d2;
     overflow: hidden;
   }
-  .task-info{
+
+  .task-info {
     overflow: hidden;
-    .basic-info-box{
+
+    .basic-info-box {
       height: 100%;
       width: 240px;
       float: left;
       position: relative;
-      .task-name{
+
+      .task-name {
         width: 100%;
         height: 60px;
         padding: 0 16px;
         overflow: hidden;
-        span{
+
+        span {
           font-size: 22px;
           line-height: 60px;
         }
       }
-      .basic-info{
+
+      .basic-info {
         width: 100%;
         height: 120px;
         box-sizing: border-box;
         padding-left: 16px;
-        .info{
+
+        .info {
           width: 110px;
           height: 60px;
           float: left;
-          div{
+
+          div {
             width: 100%;
             height: 30px;
             line-height: 30px;
             font-size: 16px;
             font-weight: 500;
           }
-          span{
+
+          span {
             font-size: 14px;
             font-weight: 300;
           }
         }
       }
-      .func-box{
+
+      .func-box {
         position: absolute;
         bottom: 0;
         width: 100%;
         height: 80px;
         box-sizing: border-box;
         padding: 20px 0;
+
         .func-btn {
           height: 40px;
           float: left;
@@ -266,90 +320,113 @@ export default {
           text-align: center;
           line-height: 40px;
           cursor: pointer;
-          transition: 0.2s ;
+          transition: 0.2s;
         }
-        .func-btn:hover{
+
+        .func-btn:hover {
           background-color: #cfefe1;
         }
-        .export-data{
+
+        .export-data {
           width: 100px;
         }
-        .delete{
+
+        .delete {
           width: 40px;
         }
       }
     }
-    .update-info-box{
+
+    .update-info-box {
       height: 100%;
       width: 560px;
       float: left;
       //background-color: green;
     }
   }
-  .jobs-info{
+
+  .jobs-info {
     height: auto;
-    .job{
+
+    .job {
       width: 100%;
       height: 100px;
       background-color: #f8f8f8;
       border-bottom: 1px solid #9ce8d2;
       box-sizing: border-box;
-      .job-title{
+
+      .job-title {
         height: 40px;
         width: 100%;
         display: flex;
         border-bottom: 1px solid #eeeeee;
-        .title-box{
+
+        .title-box {
           text-align: center;
           line-height: 40px;
           font-size: 12px;
         }
-        .job-id{
+
+        .job-id {
           flex: 1;
         }
-        .frames{
+
+        .frames {
           flex: 1;
         }
-        .status{
+
+        .status {
           flex: 1;
         }
-        .start-time{
+
+        .start-time {
           flex: 2;
         }
-        .duration{
+
+        .duration {
           flex: 1;
         }
-        .assignee{
+
+        .assignee {
           flex: 2;
         }
       }
-      .job-info{
+
+      .job-info {
         height: 60px;
         width: 100%;
         display: flex;
-        .info-box{
+
+        .info-box {
           text-align: center;
           line-height: 60px;
           font-size: 14px;
         }
-        .job-id{
+
+        .job-id {
           flex: 1;
         }
-        .frames{
+
+        .frames {
           flex: 1;
         }
-        .status{
+
+        .status {
           flex: 1;
         }
-        .start-time{
+
+        .start-time {
           flex: 2;
         }
-        .duration{
+
+        .duration {
           flex: 1;
         }
-        .assignee{
+
+        .assignee {
           flex: 2;
-          .select-box{
+
+          .select-box {
             width: 80%;
             margin: auto;
           }

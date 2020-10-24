@@ -242,8 +242,7 @@ class Segment(models.Model):
 class Job(models.Model):
     segment = models.ForeignKey(Segment, on_delete=models.CASCADE)
     assignee = models.ForeignKey(User, null=True, blank=True, on_delete=models.SET_NULL)
-    status = models.CharField(max_length=32, choices=StatusChoice.choices(),
-                              default=StatusChoice.ANNOTATION)
+    status = models.CharField(max_length=32, choices=StatusChoice.choices(), default=StatusChoice.ANNOTATION)
 
     class Meta:
         default_permissions = ()

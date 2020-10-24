@@ -86,6 +86,7 @@ export default {
     },
 
     //开始提交新建项目请求
+    /** 判断项目基本信息是否填写不完全，数据集和标签没有进行检测*/
     submit(){
       //从vuex中获取要新建的项目数据
       let proData = this.$store.state.projectInfo
@@ -120,6 +121,8 @@ export default {
         data.append("client_files["+ index +"]", item)
       })
       data.append("use_zip_chunks", false)
+      //一张图片打成一个压缩包
+      data.append("chunk_size", 1)
 
       //展示进度条
       this.$refs.progress.style.width = "900px"
@@ -127,10 +130,12 @@ export default {
       //发送请求
       this.$http.post(url + '/data', data).then(e=>{
         if(e.status === 202){
-          this.progressText = '上传成功'
-          this.$refs.progressLine.style.transition = "width 0.5s ease"
-          this.$refs.progressLine.style.width = "850px"
-          this.autoDistribution()
+          this.progressText = '上传成功，等待初始化'
+          this.$refs.progressLine.style.transition = "width 2s ease"
+          this.$refs.progressLine.style.width = "900px"
+          setTimeout(()=>{
+            this.autoDistribution()
+          },2000)
           //清除文件列表
           this.$store.commit('cleanFileList')
         }

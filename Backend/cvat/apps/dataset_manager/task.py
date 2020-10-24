@@ -1,7 +1,3 @@
-# Copyright (C) 2019-2020 Intel Corporation
-#
-# SPDX-License-Identifier: MIT
-
 from collections import OrderedDict
 from enum import Enum
 
@@ -87,17 +83,12 @@ def _merge_table_rows(rows, keys_for_merge, field_id):
 
 class JobAnnotation:
     def __init__(self, pk):
-        self.db_job = models.Job.objects.select_related('segment__task') \
-            .select_for_update().get(id=pk)
-
+        self.db_job = models.Job.objects.select_related('segment__task').select_for_update().get(id=pk)
         db_segment = self.db_job.segment
         self.start_frame = db_segment.start_frame
         self.stop_frame = db_segment.stop_frame
         self.ir_data = AnnotationIR()
-
-        self.db_labels = {db_label.id: db_label
-                          for db_label in db_segment.task.label_set.all()}
-
+        self.db_labels = {db_label.id: db_label for db_label in db_segment.task.label_set.all()}
         self.db_attributes = {}
         for db_label in self.db_labels.values():
             self.db_attributes[db_label.id] = {

@@ -2,9 +2,9 @@
   <div class="module-box">
     <el-tabs type="border-card" @tab-click="getAllUsersInfo">
       <el-tab-pane label="选择标签">
-        <el-tabs active-name="raw" @tab-click="handleClick">
-          <el-tab-pane class="raw-label-box" label="Row格式添加" name="raw">
-            <textarea cols="30" rows="10" class="raw-label">
+        <el-tabs active-name="raw">
+          <el-tab-pane class="raw-label-box" label="Raw格式添加" name="raw">
+            <textarea v-model="labelValues" cols="30" rows="10" class="raw-label">
 
             </textarea>
           </el-tab-pane>
@@ -14,33 +14,105 @@
                 <el-tag
                   closable
                   :disable-transitions="false"
-                  @close="handleClose(tag)"
+                  @close="handleLabelClose(tag)"
                   class="tag"
                 >
                   {{ tag.name }}
                 </el-tag>
               </div>
               <div class="attribute-box">
-                <!--          <el-tag-->
-                <!--            v-for="attr in tag.attributes"-->
-                <!--            :key="attr"-->
-                <!--            closable-->
-                <!--            :disable-transitions="false"-->
-                <!--            @close="handleAttrClose(attr.name)"-->
-                <!--          >-->
-                <!--            {{ attr.name }}-->
-                <!--          </el-tag>-->
-                <!--          <el-input-->
-                <!--            v-if="tag.attrInputVisible"-->
-                <!--            v-model="tag.attrInputValue"-->
-                <!--            ref="saveTagInput"-->
-                <!--            class="input-new-tag"-->
-                <!--            size="small"-->
-                <!--            @keyup.enter.native="handleInputConfirm"-->
-                <!--            @blur="handleInputConfirm"-->
-                <!--          >-->
-                <!--          </el-input>-->
-                <el-button class="button-new-tag" size="small">+ 添加属性(之后支持)</el-button>
+                <div
+                  v-show="!tag.attrInputVisible"
+                  class="attr-item-box"
+                >
+                  <div
+                    class="attribute-item"
+                    v-for="attr in tag.attributes"
+                    :key="attr.id"
+                  >
+                    <div class="attr-name">
+                      <span>
+                        {{ attr.name }}
+                      </span>
+                    </div>
+                    <div class="attr-mod">
+                      <span>
+                        {{ attr.input_type }}
+                      </span>
+                    </div>
+                    <div class="attr-value">
+                      <span>
+                        {{ attr.values }}
+                      </span>
+                    </div>
+                    <div class="attr-edit-box">
+                      <div class="attr-edit">
+                        <i class="el-icon-edit" @click="editAttrInfo(tag,attr)"></i>
+                      </div>
+                      <div class="attr-delete">
+                        <i class="el-icon-delete" @click="handleAttrClose(tag,attr)"></i>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  v-show="tag.attrInputVisible"
+                  class="attr-input-box"
+                >
+                  <div class="input-box-tip">
+                    <span>添加属性</span>
+                    <i class="el-icon-close" @click="endAttrInput(tag)"></i>
+                  </div>
+                  <div class="input-box-content">
+                    <div class="attr-name-input-box">
+                      <div class="attr-name-input" ref="attr_name_input">
+                        <el-input
+                          v-model="newAttributeData.name"
+                          placeholder="属性名"
+                        ></el-input>
+                      </div>
+                    </div>
+                    <div class="attr-mod-select-box">
+                      <div class="attr-mod-select" ref="attr_mod_select">
+                        <el-select v-model="newAttributeData.input_type" placeholder="请选择">
+                          <el-option
+                            v-for="item in options"
+                            :key="item.value"
+                            :label="item.label"
+                            :value="item.value"
+                          >
+                          </el-option>
+                        </el-select>
+                      </div>
+                    </div>
+                    <div class="attr-value-input-box">
+                      <div class="attr-value-input" ref="attr_value_input" @click="attrValInputFocus($event)">
+                        <el-tag
+                          :key="attrVal"
+                          v-for="attrVal in newAttributeData.values"
+                          class="attr-val-item"
+                          closable
+                          effect="plain"
+                          type="success"
+                          @close="handleAttrValClose(attrVal)">
+                          {{ attrVal }}
+                        </el-tag>
+                        <div
+                          contenteditable="true"
+                          class="val-input"
+                          @keydown.enter="inputBlur($event)"
+                          @blur="handleAttrValInput($event)"
+                        ></div>
+                      </div>
+                    </div>
+                    <div class="attr-input-confirm-box">
+                      <div class="attr-input-confirm">
+                        <el-button type="success" plain icon="el-icon-check" size="small" @click="handleAttrConfirm(tag)"></el-button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <el-button v-show="!tag.attrInputVisible" class="button-new-tag" size="small" @click="showInput(2, tag)">+ 添加属性</el-button>
               </div>
             </div>
             <el-input
@@ -49,11 +121,11 @@
               ref="mainSaveTagInput"
               class="input-new-tag"
               size="small"
-              @keyup.enter.native="handleInputConfirm"
-              @blur="handleInputConfirm"
+              @keyup.enter.native="inputBlur($event)"
+              @blur="handleInputConfirm()"
             >
             </el-input>
-            <el-button v-else class="button-new-tag" size="small" @click="showInput">+ 添加标签</el-button>
+            <el-button v-else class="button-new-tag" size="small" @click="showInput(1)">+ 添加标签</el-button>
           </el-tab-pane>
         </el-tabs>
       </el-tab-pane>
@@ -105,9 +177,20 @@
 
 <script>
 export default {
+  computed: {
+    //使用raw格式获取仓库中的数据，更改仓库中的数据
+    labelValues: {
+      get(){
+        return JSON.stringify(this.$store.state.projectInfo.labels)
+      },
+      set(val){
+        this.$store.commit("updateLabels", val)
+        // this.loadData()
+      }
+    }
+  },
   data(){
     return{
-
       //图像压缩质量
       image_quality: 70,
       //所有标签列表
@@ -122,11 +205,42 @@ export default {
       userData: [],
       userValue: [],
 
-      //
+      //分配任务
       segment_size: 1,
-
       //
+      labelIndex: 1,
+      //编辑标签中的属性
+      isEditAttr: false,
+      beingEditAttrIndex: -1,
 
+      //新建属性中选择属性标注模式的选项
+      options: [{
+        value: 'select',
+        label: '下拉框选择'
+      }, {
+        value: 'checkbox',
+        label: '选择是否有该值'
+      }, {
+        value: 'text',
+        label: '手动输入文本'
+      }, {
+        value: 'number',
+        label: '手动输入数字'
+      }],
+      attrOption: '',
+      attrValue: '',
+
+      attrIndex: 1,
+
+      //新建属性
+      newAttributeData: {
+        "id": 0,
+        "name": '',
+        "input_type": '',
+        "mutable": false,
+        "values": [
+        ],
+      },
 
     }
   },
@@ -135,44 +249,168 @@ export default {
     this.loadData()
   },
   methods: {
-    //删除标签
-    handleClose(tag) {
+    //
+    updateLabels(e){
+      this.$store.commit('updateLabels', e.target.value)
+    },
+    /** 记得解决重复值问题*/
+    //删除 标签/属性/属性值
+    handleLabelClose(tag) {
       this.labels.splice(this.labels.indexOf(tag), 1);
       this.$store.commit('addToStore', this.labels)
     },
-    //开始添加标签
-    showInput() {
-      this.mainInputVisible = true;
-      this.$nextTick(() => {
-        this.$refs.mainSaveTagInput.$refs.input.focus();
-      });
+    handleAttrClose(tag,attr){
+      this.labels[this.labels.indexOf(tag)].attributes.splice(this.labels[this.labels.indexOf(tag)].attributes.indexOf(attr), 1)
+    },
+    handleAttrValClose(attrVal){
+      this.newAttributeData.values.splice(this.newAttributeData.values.indexOf(attrVal), 1)
+    },
+    //开始添加 标签：1/属性：2
+    showInput(mod, tag) {
+      if(mod === 1){
+        this.mainInputVisible = true;
+        this.$nextTick(() => {
+          this.$refs.mainSaveTagInput.$refs.input.focus()
+        })
+      } else if(mod === 2){
+        for(let i = 0; i < this.labels.length; i++){
+          this.labels[i].attrInputVisible = false
+        }
+        console.log("开始添加属性",tag);
+        tag.attrInputVisible = true
+      }
+    },
+    //回车失去焦点以触发添加方法
+    inputBlur(e){
+      e.srcElement.blur()
+      e.preventDefault()
     },
     //添加标签结束
     handleInputConfirm() {
-      let inputValue = this.mainInputValue;
+      let inputValue = this.mainInputValue
       if (inputValue) {
         this.labels.push(
           {
             name: inputValue,
-            attributes: [
-              {
-                "name": 'select',
-                "mutable": false,
-                "input_type": 'select',
-                "default_value": 'select',
-                "values": []
-              }
-            ]
+            id: this.labelIndex,
+            attributes: [],
+            attrInputVisible: false,
           }
         );
       }
       this.mainInputVisible = false;
       this.mainInputValue = '';
+      console.log("添加标签成功", this.labels);
       this.$store.commit('addToStore', this.labels)
     },
+    //点击添加属性里的属性值方框对其中的input进行聚焦
+    attrValInputFocus(e){
+      //如果点到的不是输入框本身，再进行主动聚焦
+      if(e.target.children.length !== 0){
+        e.target.children[e.target.children.length - 1].focus()
+      }
+    },
+    //检查新建属性输入的信息是否完善，否则给出提示
+    ifAttrReady(){
+      let isReady = true
+      if(this.newAttributeData.name === ''){
+        console.log(this.$refs.attr_name_input);
+        this.$refs.attr_name_input[0].style.border = "1px solid #F56C6C"
+        isReady = false
+      }
+      if(this.newAttributeData.input_type === ''){
+        console.log(this.$refs.attr_mod_select);
+        this.$refs.attr_mod_select[0].style.border = "1px solid #F56C6C"
+        isReady = false
+      }
+      if(this.newAttributeData.values.length === 0){
+        console.log(this.$refs.attr_value_input);
+        this.$refs.attr_value_input[0].style.border = "1px solid #F56C6C"
+        isReady = false
+      }
+      setTimeout(()=>{
+        this.$refs.attr_name_input[0].removeAttribute("style")
+        this.$refs.attr_mod_select[0].removeAttribute("style")
+        this.$refs.attr_value_input[0].removeAttribute("style")
+      },1600)
+      return isReady
+    },
+    //添加属性结束
+    /** 提交创建项目后记得重置 attrIndex */
+    handleAttrConfirm(tag){
+      if(this.ifAttrReady()){
+        //如果是在编辑标签，提交修改之前先把原属性删除
+        if(this.isEditAttr){
+          tag.attributes.splice(this.beingEditAttrIndex, 1)
+          this.beingEditAttrIndex = -1
+          this.isEditAttr = false
+        }
+        this.newAttributeData.id = this.attrIndex
+        this.labels[this.labels.indexOf(tag)].attributes.push(this.newAttributeData)
+        this.attrIndex += 1
+        this.labels[this.labels.indexOf(tag)].attrInputVisible = false
+        this.newAttributeData = {
+          "id": 0,
+          "name": '',
+          "input_type": '',
+          "mutable": false,
+          "values": [],
+        }
+        this.$store.commit('addToStore', this.labels)
+      } else {
+        this.$message({
+          message: '请填写必要的参数',
+          type: 'warning'
+        })
+      }
+    },
+    //终止添加属性值
+    endAttrInput(tag){
+      this.labels[this.labels.indexOf(tag)].attrInputVisible = false
+      this.newAttributeData = {
+        "id": 0,
+        "name": '',
+        "input_type": '',
+        "mutable": false,
+        "values": [],
+      }
+    },
+    //添加属性值结束
+    /** 属性值过长的时候会跑到框外面*/
+    handleAttrValInput(e){
+      if(e.target.innerText !== ''){
+        this.newAttributeData.values.push(e.target.innerText)
+        e.target.innerText = ''
+        e.target.focus()
+      }
+    },
+    //修改属性
+    editAttrInfo(tag,attr){
+      this.isEditAttr = true
+      this.beingEditAttrIndex = tag.attributes.indexOf(attr)
+      this.newAttributeData = attr
+      tag.attrInputVisible = true
+    },
     //从仓库加载数据
+    /** 加载人员数据可能不会再用到了，记得删掉*/
     loadData(){
-      this.labels = this.$store.state.projectInfo.labels
+      let labData = this.$store.state.projectInfo.labels
+      console.log('开始从仓库加载数据', labData);
+      for(let i = 0; i < labData.length; i++){
+        let item = {}
+        item.name = labData[i].name
+        item.id = labData[i].id
+        item.attributes = labData[i].attributes
+        item.attrInputVisible = false
+        this.labels.push(item)
+
+        // labData[i].attrInputVisible = false
+        // this.labels.push(labData[i])
+      }
+      // this.labels = this.$store.state.projectInfo.labels
+      console.log("从仓库重新加载数据完成", this.labels);
+
+
       this.image_quality = this.$store.state.image_quality
       this.userValue = this.$store.state.allUsers
 
@@ -292,11 +530,13 @@ export default {
     overflow: hidden;
   }
   .label-box{
+    box-sizing: border-box;
     border: 1px solid #318B71;
     border-radius: 8px;
     margin: 10px 0;
     display: inline-block;
     width: 868px;
+    overflow: hidden;
     .tab-box{
       width: 200px;
       .tag{
@@ -306,14 +546,160 @@ export default {
         border-bottom: 1px solid #6fcdb2;
         background-color: transparent;
         color: #318B71;
+        font-size: 16px;
       }
     }
     .attribute-box{
-      width: 700px;
-      float: left;
-      .attribute{
-        height: 32px;
-        border-bottom: 1px solid #d9ecff;
+      width: 100%;
+      box-sizing: border-box;
+      .attribute-item{
+        min-height: 46px;
+        padding-top: 3px;
+        box-sizing: border-box;
+        display: flex;
+        border-bottom: 1px solid #f7fff9;
+        .attr-name{
+          flex: 3;
+          text-align: center;
+        }
+        .attr-mod{
+          flex: 3;
+          text-align: center;
+        }
+        .attr-value{
+          flex: 5;
+        }
+        .attr-name,.attr-mod,.attr-value{
+          padding-left: 10px;
+          line-height: 40px;
+          overflow: hidden;
+        }
+        .attr-edit-box{
+          flex: 1;
+          display: flex;
+          .attr-edit{
+            flex: 1;
+            text-align: center;
+            line-height: 40px;
+            i{
+              display: block;
+              padding: 10px;
+              cursor: pointer;
+              border-radius: 3px;
+              margin: 2px;
+            }
+            i:hover{
+              background-color: #c9e3d6;
+            }
+          }
+          .attr-delete{
+            text-align: center;
+            line-height: 40px;
+            flex: 1;
+            i{
+              display: block;
+              padding: 10px;
+              cursor: pointer;
+              border-radius: 3px;
+              margin: 2px;
+            }
+            i:hover{
+              background-color: #c9e3d6;
+            }
+          }
+        }
+      }
+      .attribute-item:hover{
+        background-color: #f7fff9;
+      }
+      .attr-input-box{
+        min-height: 46px;
+        border-radius: 3px;
+        box-sizing: border-box;
+        background-color: #edf8f3;
+        .input-box-tip{
+          width: 100%;
+          height: 24px;
+          padding: 8px 0 0 10px;
+          box-sizing: border-box;
+          line-height: 14px;
+          display: flex;
+          justify-content: space-between;
+          color: #999;
+          span{
+            font-size: 14px;
+          }
+          i{
+            margin-right: 6px;
+            cursor: pointer;
+          }
+          i:hover{
+            background-color: #ccc;
+          }
+        }
+        .input-box-content{
+          display: flex;
+          .attr-name-input-box{
+            flex: 3;
+            .attr-name-input{
+              margin: 8px;
+              height: 40px;
+              overflow: hidden;
+              box-sizing: border-box;
+              transition: border .2s ease;
+            }
+          }
+          .attr-mod-select-box{
+            flex: 3;
+            .attr-mod-select{
+              margin: 8px;
+              height: 40px;
+              overflow: hidden;
+              box-sizing: border-box;
+              transition: border .2s ease;
+            }
+          }
+          .attr-value-input-box{
+            flex: 5;
+            padding: 8px;
+            max-width: 40%;
+            cursor: text;
+            .attr-value-input{
+              min-height: 38px;
+              background-color: #fff;
+              box-sizing: border-box;
+              border: 1px solid #dcdfe6;
+              display: flex;
+              flex-wrap: wrap;
+              transition: border .2s ease;
+              .attr-val-item{
+                margin: 3px 0 0 3px;
+              }
+              .val-input{
+                display: inline-block;
+                outline: none;
+                margin: 3px;
+                height: 32px;
+                padding: 0;
+                line-height: 32px;
+                min-width: 1em;
+                max-width: 100%;
+                overflow: hidden;
+                white-space: nowrap;
+              }
+            }
+            .attr-value-input:hover{
+              border: 1px solid #c2c3c6;
+            }
+          }
+          .attr-input-confirm-box{
+            flex: 1;
+            .attr-input-confirm{
+              margin: 12px;
+              height: 40px;
+            }
+          }
+        }
       }
     }
   }
@@ -340,7 +726,7 @@ export default {
     margin: 10px;
   }
   .input-new-tag{
-    width: 868px;
+    width: 90%;
     margin: 10px 0;
   }
   .segment-size-box{
