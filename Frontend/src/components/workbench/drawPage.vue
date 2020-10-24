@@ -23,10 +23,7 @@
         </el-button>
       </el-tooltip>
     </div>
-    <div
-      ref="objBar"
-      class="object-bar"
-    >
+    <div ref="objBar" class="object-bar">
       <div
         ref="drawer"
         class="drawer"
@@ -132,10 +129,7 @@
         </div>
       </div>
     </div>
-    <div
-      ref="paintBox"
-      class="paint-box"
-    >
+    <div ref="paintBox" class="paint-box">
       <canvas
         id="myCanvas"
         ref="myCanvas"

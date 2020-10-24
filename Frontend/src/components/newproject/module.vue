@@ -3,8 +3,8 @@
     <el-tabs type="border-card" @tab-click="getAllUsersInfo">
       <el-tab-pane label="选择标签">
         <el-tabs active-name="raw">
-          <el-tab-pane class="raw-label-box" label="Row格式添加" name="raw">
-            <textarea cols="30" rows="10" class="raw-label">
+          <el-tab-pane class="raw-label-box" label="Raw格式添加" name="raw">
+            <textarea v-model="labelValues" cols="30" rows="10" class="raw-label">
 
             </textarea>
           </el-tab-pane>
@@ -177,9 +177,20 @@
 
 <script>
 export default {
+  computed: {
+    //使用raw格式获取仓库中的数据，更改仓库中的数据
+    labelValues: {
+      get(){
+        return JSON.stringify(this.$store.state.projectInfo.labels)
+      },
+      set(val){
+        this.$store.commit("updateLabels", val)
+        // this.loadData()
+      }
+    }
+  },
   data(){
     return{
-
       //图像压缩质量
       image_quality: 70,
       //所有标签列表
@@ -194,10 +205,13 @@ export default {
       userData: [],
       userValue: [],
 
-      //
+      //分配任务
       segment_size: 1,
       //
       labelIndex: 1,
+      //编辑标签中的属性
+      isEditAttr: false,
+      beingEditAttrIndex: -1,
 
       //新建属性中选择属性标注模式的选项
       options: [{
@@ -227,6 +241,7 @@ export default {
         "values": [
         ],
       },
+
     }
   },
   created() {
@@ -324,6 +339,12 @@ export default {
     /** 提交创建项目后记得重置 attrIndex */
     handleAttrConfirm(tag){
       if(this.ifAttrReady()){
+        //如果是在编辑标签，提交修改之前先把原属性删除
+        if(this.isEditAttr){
+          tag.attributes.splice(this.beingEditAttrIndex, 1)
+          this.beingEditAttrIndex = -1
+          this.isEditAttr = false
+        }
         this.newAttributeData.id = this.attrIndex
         this.labels[this.labels.indexOf(tag)].attributes.push(this.newAttributeData)
         this.attrIndex += 1
@@ -365,9 +386,9 @@ export default {
     },
     //修改属性
     editAttrInfo(tag,attr){
-      console.log(tag);
-      console.log(attr);
-      this.newAttributeData = attr;
+      this.isEditAttr = true
+      this.beingEditAttrIndex = tag.attributes.indexOf(attr)
+      this.newAttributeData = attr
       tag.attrInputVisible = true
     },
     //从仓库加载数据
