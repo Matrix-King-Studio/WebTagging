@@ -157,7 +157,7 @@ export default {
           if (e.data.key) { // 登录成功(有key值)(e.data.key)
             console.log(e.data.key)
             window.sessionStorage.setItem('token', e.data.key)
-            this.showSucLoginBtn('登陆成功')
+            this.showSucLoginBtn('登录成功')
             let t = this
             setTimeout(function () {
               t.$router.push('/home')
