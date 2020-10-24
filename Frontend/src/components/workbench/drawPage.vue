@@ -33,15 +33,15 @@
       </div>
 
       <!--右边的用来选择标签的框的box-->
-      <div class="label-obj-box">
+      <div class="label-obj-box" >
         <!--右边的用来选择标签的框，每一项-->
         <div
           v-for="item in shapes.rectangles"
           :key="item.index"
           :id="'style_'+(item.index)"
           class="label-obj"
-          @mouseenter="showRecObj(item.index)"
-          @mouseleave="hideRecObj(item.index)"
+          @mouseenter="showRecObj(item.index),showLabObj(item.index)"
+          @mouseleave="hideRecObj(item.index),hideLabObj(item.index)"
         >
           <!--右边的用来选择标签的框，上半部分，显示序号和标签下拉选择-->
           <div class="label-info">
@@ -675,6 +675,16 @@ export default {
           //创建矩形框
           let rec = document.createElement('div')
           rec.className += 'rec-obj'
+          //id用来标记是第几个div
+          rec.id = this.rectangleIndex
+          //添加鼠标移入，右侧对应标签栏高亮事件
+          rec.onmouseenter = (e) => {
+              this.showLabObj(e.target.id)
+          }
+          //添加鼠标移出，右侧对应标签栏高亮事件
+          rec.onmouseleave = (e) => {
+              this.hideLabObj(e.target.id)
+          }
 
           setTimeout(() => {
             // console.log(parseInt(TagsInfo[item].points[0]) / this.imageScale);
@@ -733,7 +743,7 @@ export default {
     },
     //鼠标移出颜色消失
     hideLabObj(index){
-      console.log("鼠标移入第" + index + "个标记框");
+      console.log("鼠标移出第" + index + "个标记框");
       let styleid = "style_"+index;
       let object = document.getElementById(styleid);
       object.style.background = 'rgb(255,255,255)'
@@ -882,9 +892,6 @@ export default {
     border-radius: 12px;
     overflow: auto;
     background-color: #fafbfc;
-    .label-obj:hover{
-      background:rgb(255,241,142)
-    }
     .label-obj{
       height: 80px;
       width: 100%;
@@ -956,7 +963,7 @@ export default {
     }
 
     .img-btn:hover {
-      background-color: #bbe6d6;
+      background-color: #bbe6d6 !important;;
     }
 
     .this {
