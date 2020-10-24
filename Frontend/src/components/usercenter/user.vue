@@ -6,7 +6,7 @@
           <li><i class="el-icon-user">&nbsp;用户名：</i>{{userInfo.username}}</li>
           <li><i class="el-icon-message">&nbsp;邮箱：</i>{{userInfo.email}}</li>
           <li><i class="el-icon-date">&nbsp;注册日期：</i>{{userInfo.date_joined|timefilters}}</li>
-          <li><i class="el-icon-time">&nbsp;上次登录：</i>{{userInfo.last_login|timefilters}}</li>
+<!--          <li><i class="el-icon-time">&nbsp;上次登录：</i>{{userInfo.last_login|timefilters}}</li>-->
         </ul>
     </div>
 
@@ -52,7 +52,7 @@ export default {
     //UTC时间格式转换为北京时间
     timefilters(val) {
       if (val == null || val == "") {
-        return "暂无时间";
+        return "加载中";
       } else {
         let d = new Date(val);   //val 为表格内取到的后台时间
         let month =
@@ -82,7 +82,7 @@ export default {
 }
 
 #userInformation{
-  width: 500px;
+  width: 400px;
   /*height: 300px;*/
   /*阴影*/
   box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
