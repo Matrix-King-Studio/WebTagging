@@ -374,6 +374,7 @@ export default {
         }
       }, 200)
     },
+
     //切换图片
     changeImg(mod) {
       if (mod === 'start') {
@@ -391,7 +392,13 @@ export default {
           this.reDrawTags(1, this.imageIndex)
         }
       } else if (mod === 'next') {
-        /* Alex */
+        if (this.imageIndex !== (this.imagesSize - 1)) {
+          this.imageIndex += 1
+          this.drawImages()
+          this.removeRec('all')
+          this.reDrawTags(1, this.imageIndex)
+        }
+        /* Alex Start */
         this.$http.get('v1/tasks/' + this.$route.params.index + '/data', {
           params: {
             type: 'chunk',
@@ -403,7 +410,7 @@ export default {
           responseType: 'arraybuffer',
         }).then(e => {
           console.log("1.图片获取完成")
-          // 使用JSZip解压数据
+          // 使用 JSZip 解压数据
           const zip = new JSZip()
           if (e.data) {
             zip.loadAsync(e.data).then((imgData) => {
@@ -419,13 +426,7 @@ export default {
             })
           }
         })
-        /* Alex */
-        if (this.imageIndex !== (this.imagesSize - 1)) {
-          this.imageIndex += 1
-          this.drawImages()
-          this.removeRec('all')
-          this.reDrawTags(1, this.imageIndex)
-        }
+        /* Alex End */
       } else if (mod === 'end') {
         if (this.imageIndex !== (this.imagesSize - 1)) {
           this.imageIndex = this.imagesSize - 1
