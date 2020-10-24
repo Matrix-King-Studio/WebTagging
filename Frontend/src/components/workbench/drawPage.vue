@@ -31,14 +31,19 @@
       >
         <i :class="[{'el-icon-right':flag2},{'el-icon-back':!flag2}]" />
       </div>
+
+      <!--右边的用来选择标签的框的box-->
       <div class="label-obj-box">
+        <!--右边的用来选择标签的框，每一项-->
         <div
           v-for="item in shapes.rectangles"
           :key="item.index"
+          :id="'style_'+(item.index)"
           class="label-obj"
           @mouseenter="showRecObj(item.index)"
           @mouseleave="hideRecObj(item.index)"
         >
+          <!--右边的用来选择标签的框，上半部分，显示序号和标签下拉选择-->
           <div class="label-info">
             <span>{{ item.index }}</span>
             <div class="change-label">
@@ -56,6 +61,7 @@
               </el-select>
             </div>
           </div>
+          <!--右边的用来选择标签的框，下半部分，显示一些按钮-->
           <div class="label-func">
             <div
               class="func lock"
@@ -145,15 +151,10 @@
         v-if="flag==='rectangle'"
         ref="ll"
         class="level-line"
-      />
-      <div
-        ref="recBox"
-        class="rec-box"
-      />
-      <div
-        ref="tipsBox"
-        class="tips-box"
-      >
+      ></div>
+      <!--用来放标记的矩形框-->
+      <div class="rec-box" ref="recBox"></div>
+      <div class="tips-box" ref="tipsBox">
         <span>正在加载</span>
       </div>
     </div>
@@ -499,8 +500,18 @@ export default {
             //创建元素并设置元素的左上角位置
             let rec = document.createElement('div')
             rec.className += 'rec-obj'
+            //id用来标记是第几个div
+            rec.id = this.rectangleIndex
             rec.style.top = mPos.top + 'px'
             rec.style.left = mPos.left + 'px'
+            //添加鼠标移入，右侧对应标签栏高亮事件
+            rec.onmouseenter = (e) => {
+              this.showLabObj(e.target.id)
+            }
+            //添加鼠标移出，右侧对应标签栏高亮事件
+            rec.onmouseleave = (e) => {
+              this.hideLabObj(e.target.id)
+            }
             this.recTop = mPos.top
             this.recLeft = mPos.left
             //向矩形框数组添加对象
@@ -710,8 +721,22 @@ export default {
     showRecObj(index) {
       this.shapes.rectangles[index - 1].el.style.backgroundColor = 'rgba(255,255,255,0.4)'
     },
-    hideRecObj(index) {
-      this.shapes.rectangles[index - 1].el.style.backgroundColor = 'transparent'
+    //鼠标放到矩形框高亮右侧信息栏
+    showLabObj(index){
+      console.log("鼠标移入第" + index + "个标记框");
+      let styleid = "style_"+index;
+      let object = document.getElementById(styleid);
+      object.style.background = 'rgb(255,241,142)'
+    },
+    hideRecObj(index){
+      this.shapes.rectangles[index-1].el.style.backgroundColor = 'transparent'
+    },
+    //鼠标移出颜色消失
+    hideLabObj(index){
+      console.log("鼠标移入第" + index + "个标记框");
+      let styleid = "style_"+index;
+      let object = document.getElementById(styleid);
+      object.style.background = 'rgb(255,255,255)'
     },
     //信息栏中的功能
     //锁定
@@ -857,8 +882,10 @@ export default {
     border-radius: 12px;
     overflow: auto;
     background-color: #fafbfc;
-
-    .label-obj {
+    .label-obj:hover{
+      background:rgb(255,241,142)
+    }
+    .label-obj{
       height: 80px;
       width: 100%;
       border-bottom: 1px solid #cae7dc;
