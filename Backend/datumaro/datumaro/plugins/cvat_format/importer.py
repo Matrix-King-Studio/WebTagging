@@ -1,8 +1,3 @@
-
-# Copyright (C) 2019 Intel Corporation
-#
-# SPDX-License-Identifier: MIT
-
 from glob import glob
 import logging as log
 import os.path as osp
@@ -18,7 +13,7 @@ class CvatImporter(Importer):
         return len(cls.find_subsets(path)) != 0
 
     def __call__(self, path, **extra_params):
-        from datumaro.components.project import Project # cyclic import
+        from datumaro.components.project import Project  # cyclic import
         project = Project()
 
         subset_paths = self.find_subsets(path)

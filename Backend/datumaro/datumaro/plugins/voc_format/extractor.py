@@ -1,8 +1,3 @@
-
-# Copyright (C) 2019 Intel Corporation
-#
-# SPDX-License-Identifier: MIT
-
 from collections import defaultdict
 import logging as log
 import numpy as np
@@ -10,8 +5,8 @@ import os.path as osp
 from defusedxml import ElementTree
 
 from datumaro.components.extractor import (SourceExtractor, DatasetItem,
-    AnnotationType, Label, Mask, Bbox, CompiledMask
-)
+                                           AnnotationType, Label, Mask, Bbox, CompiledMask
+                                           )
 from datumaro.util import dir_items
 from datumaro.util.image import Image
 from datumaro.util.mask_tools import lazy_mask, invert_colormap
@@ -20,8 +15,8 @@ from .format import (
     VocTask, VocPath, VocInstColormap, parse_label_map, make_voc_categories
 )
 
-
 _inverse_inst_colormap = invert_colormap(VocInstColormap)
+
 
 class _VocExtractor(SourceExtractor):
     def __init__(self, path):
@@ -33,7 +28,7 @@ class _VocExtractor(SourceExtractor):
 
         self._categories = self._load_categories(self._dataset_dir)
         log.debug("Loaded labels: %s", ', '.join("'%s'" % l.name
-            for l in self._categories[AnnotationType.label].items))
+                                                 for l in self._categories[AnnotationType.label].items))
         self._items = self._load_subset_list(path)
 
     def categories(self):
@@ -60,21 +55,22 @@ class _VocExtractor(SourceExtractor):
         with open(subset_path) as f:
             return [line.split()[0] for line in f]
 
+
 class VocClassificationExtractor(_VocExtractor):
     def __iter__(self):
         raw_anns = self._load_annotations()
         for item_id in self._items:
             image = osp.join(self._dataset_dir, VocPath.IMAGES_DIR,
-                item_id + VocPath.IMAGE_EXT)
+                             item_id + VocPath.IMAGE_EXT)
             anns = self._parse_annotations(raw_anns, item_id)
             yield DatasetItem(id=item_id, subset=self._subset,
-                image=image, annotations=anns)
+                              image=image, annotations=anns)
 
     def _load_annotations(self):
         annotations = defaultdict(list)
         task_dir = osp.dirname(self._path)
         anno_files = [s for s in dir_items(task_dir, '.txt')
-            if s.endswith('_' + osp.basename(self._path))]
+                      if s.endswith('_' + osp.basename(self._path))]
         for ann_filename in anno_files:
             with open(osp.join(task_dir, ann_filename)) as f:
                 label = ann_filename[:ann_filename.rfind('_')]
@@ -90,6 +86,7 @@ class VocClassificationExtractor(_VocExtractor):
     def _parse_annotations(raw_anns, item_id):
         return [Label(label_id) for label_id in raw_anns.get(item_id, [])]
 
+
 class _VocXmlExtractor(_VocExtractor):
     def __init__(self, path, task):
         super().__init__(path)
@@ -100,7 +97,7 @@ class _VocXmlExtractor(_VocExtractor):
 
         for item_id in self._items:
             image = osp.join(self._dataset_dir, VocPath.IMAGES_DIR,
-                item_id + VocPath.IMAGE_EXT)
+                             item_id + VocPath.IMAGE_EXT)
 
             anns = []
             ann_file = osp.join(anno_dir, item_id + '.xml')
@@ -118,7 +115,7 @@ class _VocXmlExtractor(_VocExtractor):
                 anns = self._parse_annotations(root_elem)
 
             yield DatasetItem(id=item_id, subset=self._subset,
-                image=image, annotations=anns)
+                              image=image, annotations=anns)
 
     def _parse_annotations(self, root_elem):
         item_annotations = []
@@ -140,15 +137,15 @@ class _VocXmlExtractor(_VocExtractor):
 
             difficult_elem = object_elem.find('difficult')
             attributes['difficult'] = difficult_elem is not None and \
-                difficult_elem.text == '1'
+                                      difficult_elem.text == '1'
 
             truncated_elem = object_elem.find('truncated')
             attributes['truncated'] = truncated_elem is not None and \
-                truncated_elem.text == '1'
+                                      truncated_elem.text == '1'
 
             occluded_elem = object_elem.find('occluded')
             attributes['occluded'] = occluded_elem is not None and \
-                occluded_elem.text == '1'
+                                     occluded_elem.text == '1'
 
             pose_elem = object_elem.find('pose')
             if pose_elem is not None:
@@ -163,8 +160,8 @@ class _VocXmlExtractor(_VocExtractor):
 
             actions_elem = object_elem.find('actions')
             actions = {a: False
-                for a in self._categories[AnnotationType.label] \
-                    .items[obj_label_id].attributes}
+                       for a in self._categories[AnnotationType.label] \
+                           .items[obj_label_id].attributes}
             if actions_elem is not None:
                 for action_elem in actions_elem:
                     actions[action_elem.tag] = (action_elem.text == '1')
@@ -183,7 +180,7 @@ class _VocXmlExtractor(_VocExtractor):
                     continue
                 has_parts = True
                 item_annotations.append(Bbox(*part_bbox, label=part_label_id,
-                    group=group))
+                                             group=group))
 
             if self._task is VocTask.person_layout and not has_parts:
                 continue
@@ -191,7 +188,7 @@ class _VocXmlExtractor(_VocExtractor):
                 continue
 
             item_annotations.append(Bbox(*obj_bbox, label=obj_label_id,
-                attributes=attributes, id=obj_id, group=group))
+                                         attributes=attributes, id=obj_id, group=group))
 
         return item_annotations
 
@@ -204,26 +201,30 @@ class _VocXmlExtractor(_VocExtractor):
         ymax = float(bbox_elem.find('ymax').text)
         return [xmin, ymin, xmax - xmin, ymax - ymin]
 
+
 class VocDetectionExtractor(_VocXmlExtractor):
     def __init__(self, path):
         super().__init__(path, task=VocTask.detection)
+
 
 class VocLayoutExtractor(_VocXmlExtractor):
     def __init__(self, path):
         super().__init__(path, task=VocTask.person_layout)
 
+
 class VocActionExtractor(_VocXmlExtractor):
     def __init__(self, path):
         super().__init__(path, task=VocTask.action_classification)
+
 
 class VocSegmentationExtractor(_VocExtractor):
     def __iter__(self):
         for item_id in self._items:
             image = osp.join(self._dataset_dir, VocPath.IMAGES_DIR,
-                item_id + VocPath.IMAGE_EXT)
+                             item_id + VocPath.IMAGE_EXT)
             anns = self._load_annotations(item_id)
             yield DatasetItem(id=item_id, subset=self._subset,
-                image=image, annotations=anns)
+                              image=image, annotations=anns)
 
     @staticmethod
     def _lazy_extract_mask(mask, c):
@@ -234,7 +235,7 @@ class VocSegmentationExtractor(_VocExtractor):
 
         class_mask = None
         segm_path = osp.join(self._dataset_dir, VocPath.SEGMENTATION_DIR,
-            item_id + VocPath.SEGM_EXT)
+                             item_id + VocPath.SEGM_EXT)
         if osp.isfile(segm_path):
             inverse_cls_colormap = \
                 self._categories[AnnotationType.mask].inverse_colormap
@@ -242,7 +243,7 @@ class VocSegmentationExtractor(_VocExtractor):
 
         instances_mask = None
         inst_path = osp.join(self._dataset_dir, VocPath.INSTANCES_DIR,
-            item_id + VocPath.SEGM_EXT)
+                             item_id + VocPath.SEGM_EXT)
         if osp.isfile(inst_path):
             instances_mask = lazy_mask(inst_path, _inverse_inst_colormap)
 
@@ -254,7 +255,7 @@ class VocSegmentationExtractor(_VocExtractor):
                 instance_labels = compiled_mask.get_instance_labels()
             else:
                 instance_labels = {i: None
-                    for i in range(compiled_mask.instance_count)}
+                                   for i in range(compiled_mask.instance_count)}
 
             for instance_id, label_id in instance_labels.items():
                 image = compiled_mask.lazy_extract(instance_id)
@@ -262,8 +263,8 @@ class VocSegmentationExtractor(_VocExtractor):
                 attributes = {}
                 if label_id is not None:
                     actions = {a: False
-                        for a in label_cat.items[label_id].attributes
-                    }
+                               for a in label_cat.items[label_id].attributes
+                               }
                     attributes.update(actions)
 
                 item_annotations.append(Mask(
@@ -272,7 +273,7 @@ class VocSegmentationExtractor(_VocExtractor):
                 ))
         elif class_mask is not None:
             log.warn("item '%s': has only class segmentation, "
-                "instance masks will not be available" % item_id)
+                     "instance masks will not be available" % item_id)
             class_mask = class_mask()
             classes = np.unique(class_mask)
             for label_id in classes:

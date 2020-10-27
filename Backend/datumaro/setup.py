@@ -1,8 +1,3 @@
-
-# Copyright (C) 2019 Intel Corporation
-#
-# SPDX-License-Identifier: MIT
-
 import os.path as osp
 import re
 import setuptools
@@ -11,7 +6,7 @@ import setuptools
 def find_version(file_path=None):
     if not file_path:
         file_path = osp.join(osp.dirname(osp.abspath(__file__)),
-            'datumaro', 'version.py')
+                             'datumaro', 'version.py')
 
     with open(file_path, 'r') as version_file:
         version_text = version_file.read()
@@ -24,7 +19,7 @@ def find_version(file_path=None):
     if not match:
         raise RuntimeError("Failed to find version string in '%s'" % file_path)
 
-    version = version_text[match.start(1) : match.end(1)]
+    version = version_text[match.start(1): match.end(1)]
     return version
 
 

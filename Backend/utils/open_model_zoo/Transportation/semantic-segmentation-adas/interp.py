@@ -3,7 +3,6 @@ from skimage.measure import approximate_polygon, find_contours
 
 import cv2
 
-
 for frame_results in detections:
     frame_height = frame_results['frame_height']
     frame_width = frame_results['frame_width']
@@ -13,7 +12,7 @@ for frame_results in detections:
     width, height = detection.shape
 
     for i in range(21):
-        zero = np.zeros((width,height),dtype=np.uint8)
+        zero = np.zeros((width, height), dtype=np.uint8)
 
         f = float(i)
         zero = ((detection == f) * 255).astype(np.float32)

@@ -1,9 +1,3 @@
-/*
- * Copyright (C) 2018 Intel Corporation
- *
- * SPDX-License-Identifier: MIT
- */
-
 /* exported PolyShapeModel buildShapeModel buildShapeController buildShapeView PolyShapeView */
 
 /* global

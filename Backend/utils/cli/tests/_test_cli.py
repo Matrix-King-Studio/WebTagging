@@ -1,7 +1,3 @@
-# Copyright (C) 2020 Intel Corporation
-#
-# SPDX-License-Identifier: MIT
-
 import io
 import logging
 import os
@@ -13,7 +9,7 @@ from PIL import Image
 from rest_framework.test import APITestCase, RequestsClient
 
 from cvat.apps.engine.tests._test_rest_api import (create_db_users,
-    generate_image_file)
+                                                   generate_image_file)
 from utils.cli.core import CLI, CVAT_API_V1, ResourceType
 
 
@@ -26,7 +22,7 @@ class TestCLI(APITestCase):
         self.cli = CLI(self.client, self.api, self.credentials)
         self.taskname = 'test_task'
         self.cli.tasks_create(self.taskname,
-                              [{'name' : 'car'}, {'name': 'person'}],
+                              [{'name': 'car'}, {'name': 'person'}],
                               '',
                               ResourceType.LOCAL,
                               [self.img_file])
@@ -131,6 +127,7 @@ class TestCLI(APITestCase):
                 }
             ]
             }"""
+
         content = generate_coco_anno() % (height, width)
         path = os.path.join(settings.SHARE_ROOT, 'test_cli.json')
         with open(path, "wb") as coco:

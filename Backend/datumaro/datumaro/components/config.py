@@ -1,8 +1,3 @@
-
-# Copyright (C) 2019 Intel Corporation
-#
-# SPDX-License-Identifier: MIT
-
 import yaml
 
 
@@ -63,6 +58,7 @@ class Schema:
         if self._fallback is not None:
             return self._fallback.get(key, default)
 
+
 class SchemaBuilder:
     def __init__(self):
         self._items = {}
@@ -76,6 +72,7 @@ class SchemaBuilder:
 
     def build(self):
         return Schema(self._items)
+
 
 class Config:
     def __init__(self, config=None, fallback=None, schema=None, mutable=True):
@@ -107,21 +104,21 @@ class Config:
 
     def items(self, allow_fallback=True, allow_internal=True):
         return self._items(
-                allow_fallback=allow_fallback,
-                allow_internal=allow_internal
-            ).items()
+            allow_fallback=allow_fallback,
+            allow_internal=allow_internal
+        ).items()
 
     def keys(self, allow_fallback=True, allow_internal=True):
         return self._items(
-                allow_fallback=allow_fallback,
-                allow_internal=allow_internal
-            ).keys()
+            allow_fallback=allow_fallback,
+            allow_internal=allow_internal
+        ).keys()
 
     def values(self, allow_fallback=True, allow_internal=True):
         return self._items(
-                allow_fallback=allow_fallback,
-                allow_internal=allow_internal
-            ).values()
+            allow_fallback=allow_fallback,
+            allow_internal=allow_internal
+        ).values()
 
     def __contains__(self, key):
         return key in self.keys()
@@ -195,7 +192,7 @@ class Config:
             schema_entry_instance = schema_entry()
             if not isinstance(value, type(schema_entry_instance)):
                 if isinstance(value, dict) and \
-                        isinstance(schema_entry_instance, Config):
+                    isinstance(schema_entry_instance, Config):
                     schema_entry_instance.update(value)
                     value = schema_entry_instance
                 else:
@@ -217,6 +214,7 @@ class Config:
     def dump(self, path):
         with open(path, 'w+') as f:
             yaml.dump(self, f)
+
 
 yaml.add_multi_representer(Config, Config.yaml_representer)
 

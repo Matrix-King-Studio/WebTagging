@@ -1,8 +1,3 @@
-
-# Copyright (C) 2019 Intel Corporation
-#
-# SPDX-License-Identifier: MIT
-
 from itertools import zip_longest
 import numpy as np
 
@@ -10,8 +5,7 @@ from datumaro.components.extractor import AnnotationType, LabelCategories
 
 
 class Comparator:
-    def __init__(self,
-            iou_threshold=0.5, conf_threshold=0.9):
+    def __init__(self, iou_threshold=0.5, conf_threshold=0.9):
         self.iou_threshold = iou_threshold
         self.conf_threshold = conf_threshold
 
@@ -35,17 +29,18 @@ class Comparator:
             if a_label != b_label:
                 mismatches.append((a_label, b_label))
         return mismatches
+
     # pylint: enable=no-self-use
 
     def compare_item_labels(self, item_a, item_b):
         conf_threshold = self.conf_threshold
 
         a_labels = set([ann.label for ann in item_a.annotations \
-            if ann.type is AnnotationType.label and \
-               conf_threshold < ann.attributes.get('score', 1)])
+                        if ann.type is AnnotationType.label and \
+                        conf_threshold < ann.attributes.get('score', 1)])
         b_labels = set([ann.label for ann in item_b.annotations \
-            if ann.type is AnnotationType.label and \
-               conf_threshold < ann.attributes.get('score', 1)])
+                        if ann.type is AnnotationType.label and \
+                        conf_threshold < ann.attributes.get('score', 1)])
 
         a_unmatched = a_labels - b_labels
         b_unmatched = b_labels - a_labels
@@ -58,11 +53,11 @@ class Comparator:
         conf_threshold = self.conf_threshold
 
         a_boxes = [ann for ann in item_a.annotations \
-            if ann.type is AnnotationType.bbox and \
-               conf_threshold < ann.attributes.get('score', 1)]
+                   if ann.type is AnnotationType.bbox and \
+                   conf_threshold < ann.attributes.get('score', 1)]
         b_boxes = [ann for ann in item_b.annotations \
-            if ann.type is AnnotationType.bbox and \
-               conf_threshold < ann.attributes.get('score', 1)]
+                   if ann.type is AnnotationType.bbox and \
+                   conf_threshold < ann.attributes.get('score', 1)]
         a_boxes.sort(key=lambda ann: 1 - ann.attributes.get('score', 1))
         b_boxes.sort(key=lambda ann: 1 - ann.attributes.get('score', 1))
 
@@ -86,7 +81,7 @@ class Comparator:
             matched_b = a_matches[a_idx]
             iou_max = max(iou_matrix[a_idx, matched_b], iou_threshold)
             for b_idx, b_bbox in enumerate(b_boxes):
-                if 0 <= b_matches[b_idx]: # assign a_bbox with max conf
+                if 0 <= b_matches[b_idx]:  # assign a_bbox with max conf
                     continue
                 iou = iou_matrix[a_idx, b_idx]
                 if iou < iou_max:
@@ -102,9 +97,9 @@ class Comparator:
             b_bbox = b_boxes[matched_b]
 
             if a_bbox.label == b_bbox.label:
-                matches.append( (a_bbox, b_bbox) )
+                matches.append((a_bbox, b_bbox))
             else:
-                mispred.append( (a_bbox, b_bbox) )
+                mispred.append((a_bbox, b_bbox))
 
         # *_umatched: boxes of (*) we failed to match
         a_unmatched = [a_boxes[i] for i, m in enumerate(a_matches) if m < 0]

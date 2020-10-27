@@ -6,7 +6,7 @@ import hashlib
 QUERY_PARAM = 'sign'
 MAX_AGE = 30
 
-# Got implementation ideas in https://github.com/marcgibbons/drf_signed_auth
+
 class Signer:
     @classmethod
     def get_salt(cls, url):

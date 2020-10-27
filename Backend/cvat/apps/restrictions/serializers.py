@@ -1,12 +1,8 @@
-# Copyright (C) 2020 Intel Corporation
-#
-# SPDX-License-Identifier: MIT
-
-
 from rest_framework import serializers
 from django.conf import settings
 
 from cvat.apps.authentication.serializers import RegisterSerializerEx
+
 
 class UserAgreementSerializer(serializers.Serializer):
     name = serializers.CharField(max_length=256)
@@ -20,6 +16,7 @@ class UserAgreementSerializer(serializers.Serializer):
         instance_ = instance.copy()
         instance_['displayText'] = instance_.pop('display_text')
         return instance_
+
 
 class RestrictedRegisterSerializer(RegisterSerializerEx):
     confirmations = UserAgreementSerializer(many=True, required=False)

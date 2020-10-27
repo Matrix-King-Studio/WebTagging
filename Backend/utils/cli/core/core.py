@@ -1,7 +1,3 @@
-# Copyright (C) 2020 Intel Corporation
-#
-# SPDX-License-Identifier: MIT
-
 import json
 import logging
 import os
@@ -12,6 +8,7 @@ import mimetypes
 from PIL import Image
 
 from .definition import ResourceType
+
 log = logging.getLogger(__name__)
 
 
@@ -64,7 +61,7 @@ class CLI():
         data = {'name': name,
                 'labels': labels,
                 'bug_tracker': bug,
-        }
+                }
         response = self.session.post(url, json=data)
         response.raise_for_status()
         response_json = response.json()
@@ -135,14 +132,14 @@ class CLI():
         while True:
             response = self.session.put(
                 url,
-                files={'annotation_file':open(filename, 'rb')}
-                )
+                files={'annotation_file': open(filename, 'rb')}
+            )
             response.raise_for_status()
             if response.status_code == 201:
                 break
 
-        logger_string = "Upload job for Task ID {} ".format(task_id) +\
-            "with annotation file {} finished".format(filename)
+        logger_string = "Upload job for Task ID {} ".format(task_id) + \
+                        "with annotation file {} finished".format(filename)
         log.info(logger_string)
 
     def login(self, credentials):

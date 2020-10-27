@@ -1,15 +1,10 @@
-
-# Copyright (C) 2019 Intel Corporation
-#
-# SPDX-License-Identifier: MIT
-
 from collections import OrderedDict
 import os.path as osp
 import re
 
 from datumaro.components.extractor import (SourceExtractor, Extractor,
-    DatasetItem, AnnotationType, Bbox, LabelCategories
-)
+                                           DatasetItem, AnnotationType, Bbox, LabelCategories
+                                           )
 from datumaro.util.image import Image
 
 from .format import YoloPath
@@ -38,7 +33,7 @@ class YoloExtractor(SourceExtractor):
 
         if not osp.isfile(config_path):
             raise Exception("Can't read dataset descriptor file '%s'" %
-                config_path)
+                            config_path)
 
         rootpath = osp.dirname(config_path)
         self._path = rootpath
@@ -80,7 +75,7 @@ class YoloExtractor(SourceExtractor):
 
         if not names_path:
             raise Exception("Failed to parse labels path from '%s'" % \
-                config_path)
+                            config_path)
 
         for subset_name, list_path in subsets.items():
             list_path = self._make_local_path(list_path)
@@ -104,9 +99,9 @@ class YoloExtractor(SourceExtractor):
 
     def _make_local_path(self, path):
         default_base = osp.join('data', '')
-        if path.startswith(default_base): # default path
-            path = path[len(default_base) : ]
-        return osp.join(self._path, path) # relative or absolute path
+        if path.startswith(default_base):  # default path
+            path = path[len(default_base):]
+        return osp.join(self._path, path)  # relative or absolute path
 
     def _get(self, item_id, subset_name):
         subset = self._subsets[subset_name]
@@ -121,7 +116,7 @@ class YoloExtractor(SourceExtractor):
             annotations = self._parse_annotations(anno_path, image)
 
             item = DatasetItem(id=item_id, subset=subset_name,
-                image=image, annotations=annotations)
+                               image=image, annotations=annotations)
             subset.items[item_id] = item
 
         return item
@@ -137,7 +132,7 @@ class YoloExtractor(SourceExtractor):
 
         annotations = []
         if lines:
-            image_height, image_width = image.size # use image info late
+            image_height, image_width = image.size  # use image info late
         for line in lines:
             label_id, xc, yc, w, h = line.split()
             label_id = int(label_id)

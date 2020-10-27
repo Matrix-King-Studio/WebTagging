@@ -1,9 +1,3 @@
-/*
- * Copyright (C) 2018-2019 Intel Corporation
- *
- * SPDX-License-Identifier: MIT
- */
-
 /* exported callAnnotationUI blurAllElements drawBoxSize copyToClipboard */
 
 /* global

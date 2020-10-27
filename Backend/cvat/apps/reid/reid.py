@@ -1,7 +1,3 @@
-# Copyright (C) 2018 Intel Corporation
-#
-# SPDX-License-Identifier: MIT
-
 import os
 import rq
 import cv2
@@ -30,14 +26,13 @@ class ReID:
     __input_height = None
     __input_width = None
 
-
     def __init__(self, jid, data):
         self.__threshold = data["threshold"]
         self.__max_distance = data["maxDistance"]
 
         self.__frame_boxes = {}
 
-        db_job = Job.objects.select_related('segment__task').get(pk = jid)
+        db_job = Job.objects.select_related('segment__task').get(pk=jid)
         db_segment = db_job.segment
         db_task = db_segment.task
         self.__frame_iter = itertools.islice(
@@ -69,7 +64,6 @@ class ReID:
         self.__executable_network = self.__plugin.load(network=network)
         del network
 
-
     def __del__(self):
         if self.__executable_network:
             del self.__executable_network
@@ -78,7 +72,6 @@ class ReID:
         if self.__plugin:
             del self.__plugin
             self.__plugin = None
-
 
     def __boxes_are_compatible(self, cur_box, next_box):
         cur_c_x = (cur_box["points"][0] + cur_box["points"][2]) / 2
@@ -89,10 +82,9 @@ class ReID:
         compatible_label = cur_box["label_id"] == next_box["label_id"]
         return compatible_distance and compatible_label and "path_id" not in next_box
 
-
     def __compute_difference(self, image_1, image_2):
-        image_1 = cv2.resize(image_1, (self.__input_width, self.__input_height)).transpose((2,0,1))
-        image_2 = cv2.resize(image_2, (self.__input_width, self.__input_height)).transpose((2,0,1))
+        image_1 = cv2.resize(image_1, (self.__input_width, self.__input_height)).transpose((2, 0, 1))
+        image_2 = cv2.resize(image_2, (self.__input_width, self.__input_height)).transpose((2, 0, 1))
 
         input_1 = {
             self.__input_blob_name: image_1[numpy.newaxis, ...]
@@ -102,14 +94,13 @@ class ReID:
             self.__input_blob_name: image_2[numpy.newaxis, ...]
         }
 
-        embedding_1 = self.__executable_network.infer(inputs = input_1)[self.__output_blob_name]
-        embedding_2 = self.__executable_network.infer(inputs = input_2)[self.__output_blob_name]
+        embedding_1 = self.__executable_network.infer(inputs=input_1)[self.__output_blob_name]
+        embedding_2 = self.__executable_network.infer(inputs=input_2)[self.__output_blob_name]
 
         embedding_1 = embedding_1.reshape(embedding_1.size)
         embedding_2 = embedding_2.reshape(embedding_2.size)
 
         return cosine(embedding_1, embedding_2)
-
 
     def __compute_difference_matrix(self, cur_boxes, next_boxes, cur_image, next_image):
         def _int(number, upper):
@@ -144,7 +135,6 @@ class ReID:
 
         return matrix
 
-
     def __apply_matching(self):
         frames = sorted(list(self.__frame_boxes.keys()))
         job = rq.get_current_job()
@@ -172,7 +162,8 @@ class ReID:
                 continue
 
             cur_image = next_image
-            next_image = cv2.imdecode(numpy.fromstring((next(self.__frame_iter)[0]).read(), numpy.uint8), cv2.IMREAD_COLOR)
+            next_image = cv2.imdecode(numpy.fromstring((next(self.__frame_iter)[0]).read(), numpy.uint8),
+                                      cv2.IMREAD_COLOR)
             difference_matrix = self.__compute_difference_matrix(cur_boxes, next_boxes, cur_image, next_image)
             cur_idxs, next_idxs = linear_sum_assignment(difference_matrix)
             for idx, cur_idx in enumerate(cur_idxs):
@@ -189,7 +180,6 @@ class ReID:
                 box_tracks[path_id] = [box]
 
         return box_tracks
-
 
     def run(self):
         box_tracks = self.__apply_matching()

@@ -1,8 +1,3 @@
-
-# Copyright (C) 2019 Intel Corporation
-#
-# SPDX-License-Identifier: MIT
-
 import argparse
 from enum import Enum
 import logging as log
@@ -24,7 +19,7 @@ from ...util.project import load_project, generate_next_dir_name
 
 def build_create_parser(parser_ctor=argparse.ArgumentParser):
     parser = parser_ctor(help="Create empty project",
-        description="""
+                         description="""
             Create a new empty project.|n
             |n
             Examples:|n
@@ -34,17 +29,18 @@ def build_create_parser(parser_ctor=argparse.ArgumentParser):
             - Create a project in other directory:|n
             |s|screate -o path/I/like/
         """,
-        formatter_class=MultilineFormatter)
+                         formatter_class=MultilineFormatter)
 
     parser.add_argument('-o', '--output-dir', default='.', dest='dst_dir',
-        help="Save directory for the new project (default: current dir")
+                        help="Save directory for the new project (default: current dir")
     parser.add_argument('-n', '--name', default=None,
-        help="Name of the new project (default: same as project dir)")
+                        help="Name of the new project (default: same as project dir)")
     parser.add_argument('--overwrite', action='store_true',
-        help="Overwrite existing files in the save directory")
+                        help="Overwrite existing files in the save directory")
     parser.set_defaults(command=create_command)
 
     return parser
+
 
 def create_command(args):
     project_dir = osp.abspath(args.dst_dir)
@@ -53,7 +49,7 @@ def create_command(args):
     if osp.isdir(project_env_dir) and os.listdir(project_env_dir):
         if not args.overwrite:
             raise CliException("Directory '%s' already exists "
-                "(pass --overwrite to force creation)" % project_env_dir)
+                               "(pass --overwrite to force creation)" % project_env_dir)
         else:
             shutil.rmtree(project_env_dir, ignore_errors=True)
 
@@ -61,7 +57,7 @@ def create_command(args):
     if osp.isdir(own_dataset_dir) and os.listdir(own_dataset_dir):
         if not args.overwrite:
             raise CliException("Directory '%s' already exists "
-                "(pass --overwrite to force creation)" % own_dataset_dir)
+                               "(pass --overwrite to force creation)" % own_dataset_dir)
         else:
             # NOTE: remove the dir to avoid using data from previous project
             shutil.rmtree(own_dataset_dir)
@@ -80,11 +76,12 @@ def create_command(args):
 
     return 0
 
+
 def build_import_parser(parser_ctor=argparse.ArgumentParser):
     builtins = sorted(Environment().importers.items)
 
     parser = parser_ctor(help="Create project from existing dataset",
-        description="""
+                         description="""
             Creates a project from an existing dataset. The source can be:|n
             - a dataset in a supported format (check 'formats' section below)|n
             - a Datumaro project|n
@@ -118,27 +115,28 @@ def build_import_parser(parser_ctor=argparse.ArgumentParser):
             - Create a project from COCO dataset in other directory:|n
             |s|simport -f coco -i path/to/coco -o path/I/like/
         """ % ', '.join(builtins),
-        formatter_class=MultilineFormatter)
+                         formatter_class=MultilineFormatter)
 
     parser.add_argument('-o', '--output-dir', default='.', dest='dst_dir',
-        help="Directory to save the new project to (default: current dir)")
+                        help="Directory to save the new project to (default: current dir)")
     parser.add_argument('-n', '--name', default=None,
-        help="Name of the new project (default: same as project dir)")
+                        help="Name of the new project (default: same as project dir)")
     parser.add_argument('--copy', action='store_true',
-        help="Copy the dataset instead of saving source links")
+                        help="Copy the dataset instead of saving source links")
     parser.add_argument('--skip-check', action='store_true',
-        help="Skip source checking")
+                        help="Skip source checking")
     parser.add_argument('--overwrite', action='store_true',
-        help="Overwrite existing files in the save directory")
+                        help="Overwrite existing files in the save directory")
     parser.add_argument('-i', '--input-path', required=True, dest='source',
-        help="Path to import project from")
+                        help="Path to import project from")
     parser.add_argument('-f', '--format',
-        help="Source project format. Will try to detect, if not specified.")
+                        help="Source project format. Will try to detect, if not specified.")
     parser.add_argument('extra_args', nargs=argparse.REMAINDER,
-        help="Additional arguments for importer (pass '-- -h' for help)")
+                        help="Additional arguments for importer (pass '-- -h' for help)")
     parser.set_defaults(command=import_command)
 
     return parser
+
 
 def import_command(args):
     project_dir = osp.abspath(args.dst_dir)
@@ -147,7 +145,7 @@ def import_command(args):
     if osp.isdir(project_env_dir) and os.listdir(project_env_dir):
         if not args.overwrite:
             raise CliException("Directory '%s' already exists "
-                "(pass --overwrite to force creation)" % project_env_dir)
+                               "(pass --overwrite to force creation)" % project_env_dir)
         else:
             shutil.rmtree(project_env_dir, ignore_errors=True)
 
@@ -155,7 +153,7 @@ def import_command(args):
     if osp.isdir(own_dataset_dir) and os.listdir(own_dataset_dir):
         if not args.overwrite:
             raise CliException("Directory '%s' already exists "
-                "(pass --overwrite to force creation)" % own_dataset_dir)
+                               "(pass --overwrite to force creation)" % own_dataset_dir)
         else:
             # NOTE: remove the dir to avoid using data from previous project
             shutil.rmtree(own_dataset_dir)
@@ -185,16 +183,16 @@ def import_command(args):
                     matches.append((format_name, importer))
             except NotImplementedError:
                 log.debug("Format '%s' does not support auto detection.",
-                    format_name)
+                          format_name)
 
         if len(matches) == 0:
             log.error("Failed to detect dataset format automatically. "
-                "Try to specify format with '-f/--format' parameter.")
+                      "Try to specify format with '-f/--format' parameter.")
             return 1
         elif len(matches) != 1:
             log.error("Multiple formats match the dataset: %s. "
-                "Try to specify format with '-f/--format' parameter.",
-                ', '.join(m[0] for m in matches))
+                      "Try to specify format with '-f/--format' parameter.",
+                      ', '.join(m[0] for m in matches))
             return 2
 
         format_name, importer = matches[0]
@@ -206,7 +204,7 @@ def import_command(args):
                 extra_args = importer.from_cmdline(args.extra_args)
         except KeyError:
             raise CliException("Importer for format '%s' is not found" % \
-                args.format)
+                               args.format)
 
     log.info("Importing project as '%s'" % args.format)
 
@@ -268,11 +266,12 @@ class FilterModes(Enum):
     def list_options(cls):
         return [m.name.replace('_', '+') for m in cls]
 
+
 def build_export_parser(parser_ctor=argparse.ArgumentParser):
     builtins = sorted(Environment().converters.items)
 
     parser = parser_ctor(help="Export project",
-        description="""
+                         description="""
             Exports the project dataset in some format. Optionally, a filter
             can be passed, check 'extract' command description for more info.
             Each dataset format has its own options, which
@@ -297,27 +296,28 @@ def build_export_parser(parser_ctor=argparse.ArgumentParser):
             - Export project as a COCO-like dataset in other directory:|n
             |s|sexport -f coco -o path/I/like/
         """ % ', '.join(builtins),
-        formatter_class=MultilineFormatter)
+                         formatter_class=MultilineFormatter)
 
     parser.add_argument('-e', '--filter', default=None,
-        help="Filter expression for dataset items")
+                        help="Filter expression for dataset items")
     parser.add_argument('--filter-mode', default=FilterModes.i.name,
-        type=FilterModes.parse,
-        help="Filter mode (options: %s; default: %s)" % \
-            (', '.join(FilterModes.list_options()) , '%(default)s'))
+                        type=FilterModes.parse,
+                        help="Filter mode (options: %s; default: %s)" % \
+                             (', '.join(FilterModes.list_options()), '%(default)s'))
     parser.add_argument('-o', '--output-dir', dest='dst_dir', default=None,
-        help="Directory to save output (default: a subdir in the current one)")
+                        help="Directory to save output (default: a subdir in the current one)")
     parser.add_argument('--overwrite', action='store_true',
-        help="Overwrite existing files in the save directory")
+                        help="Overwrite existing files in the save directory")
     parser.add_argument('-p', '--project', dest='project_dir', default='.',
-        help="Directory of the project to operate on (default: current dir)")
+                        help="Directory of the project to operate on (default: current dir)")
     parser.add_argument('-f', '--format', required=True,
-        help="Output format")
+                        help="Output format")
     parser.add_argument('extra_args', nargs=argparse.REMAINDER, default=None,
-        help="Additional arguments for converter (pass '-- -h' for help)")
+                        help="Additional arguments for converter (pass '-- -h' for help)")
     parser.set_defaults(command=export_command)
 
     return parser
+
 
 def export_command(args):
     project = load_project(args.project_dir)
@@ -326,17 +326,17 @@ def export_command(args):
     if dst_dir:
         if not args.overwrite and osp.isdir(dst_dir) and os.listdir(dst_dir):
             raise CliException("Directory '%s' already exists "
-                "(pass --overwrite to force creation)" % dst_dir)
+                               "(pass --overwrite to force creation)" % dst_dir)
     else:
         dst_dir = generate_next_dir_name('%s-%s' % \
-            (project.config.project_name, make_file_name(args.format)))
+                                         (project.config.project_name, make_file_name(args.format)))
     dst_dir = osp.abspath(dst_dir)
 
     try:
         converter = project.env.converters.get(args.format)
     except KeyError:
         raise CliException("Converter for format '%s' is not found" % \
-            args.format)
+                           args.format)
 
     if hasattr(converter, 'from_cmdline'):
         extra_args = converter.from_cmdline(args.extra_args)
@@ -354,13 +354,14 @@ def export_command(args):
         filter_expr=args.filter,
         **filter_args)
     log.info("Project exported to '%s' as '%s'" % \
-        (dst_dir, args.format))
+             (dst_dir, args.format))
 
     return 0
 
+
 def build_extract_parser(parser_ctor=argparse.ArgumentParser):
     parser = parser_ctor(help="Extract subproject",
-        description="""
+                         description="""
             Extracts a subproject that contains only items matching filter.
             A filter is an XPath expression, which is applied to XML
             representation of a dataset item. Check '--dry-run' parameter
@@ -394,25 +395,26 @@ def build_extract_parser(parser_ctor=argparse.ArgumentParser):
             - Filter occluded annotations and items, if no annotations left:|n
             |s|sextract -m i+a -e '/item/annotation[occluded="True"]'
         """,
-        formatter_class=MultilineFormatter)
+                         formatter_class=MultilineFormatter)
 
     parser.add_argument('-e', '--filter', default=None,
-        help="XML XPath filter expression for dataset items")
+                        help="XML XPath filter expression for dataset items")
     parser.add_argument('-m', '--mode', default=FilterModes.i.name,
-        type=FilterModes.parse,
-        help="Filter mode (options: %s; default: %s)" % \
-            (', '.join(FilterModes.list_options()) , '%(default)s'))
+                        type=FilterModes.parse,
+                        help="Filter mode (options: %s; default: %s)" % \
+                             (', '.join(FilterModes.list_options()), '%(default)s'))
     parser.add_argument('--dry-run', action='store_true',
-        help="Print XML representations to be filtered and exit")
+                        help="Print XML representations to be filtered and exit")
     parser.add_argument('-o', '--output-dir', dest='dst_dir', default=None,
-        help="Output directory (default: update current project)")
+                        help="Output directory (default: update current project)")
     parser.add_argument('--overwrite', action='store_true',
-        help="Overwrite existing files in the save directory")
+                        help="Overwrite existing files in the save directory")
     parser.add_argument('-p', '--project', dest='project_dir', default='.',
-        help="Directory of the project to operate on (default: current dir)")
+                        help="Directory of the project to operate on (default: current dir)")
     parser.set_defaults(command=extract_command)
 
     return parser
+
 
 def extract_command(args):
     project = load_project(args.project_dir)
@@ -422,10 +424,10 @@ def extract_command(args):
         if dst_dir:
             if not args.overwrite and osp.isdir(dst_dir) and os.listdir(dst_dir):
                 raise CliException("Directory '%s' already exists "
-                    "(pass --overwrite to force creation)" % dst_dir)
+                                   "(pass --overwrite to force creation)" % dst_dir)
         else:
             dst_dir = generate_next_dir_name('%s-filter' % \
-                project.config.project_name)
+                                             project.config.project_name)
         dst_dir = osp.abspath(dst_dir)
 
     dataset = project.make_dataset()
@@ -444,15 +446,16 @@ def extract_command(args):
         raise CliException("Expected a filter expression ('-e' argument)")
 
     dataset.extract_project(save_dir=dst_dir, filter_expr=args.filter,
-        **filter_args)
+                            **filter_args)
 
     log.info("Subproject has been extracted to '%s'" % dst_dir)
 
     return 0
 
+
 def build_merge_parser(parser_ctor=argparse.ArgumentParser):
     parser = parser_ctor(help="Merge projects",
-        description="""
+                         description="""
             Updates items of the current project with items
             from the other project.|n
             |n
@@ -460,19 +463,20 @@ def build_merge_parser(parser_ctor=argparse.ArgumentParser):
             - Update a project with items from other project:|n
             |s|smerge -p path/to/first/project path/to/other/project
         """,
-        formatter_class=MultilineFormatter)
+                         formatter_class=MultilineFormatter)
 
     parser.add_argument('other_project_dir',
-        help="Directory of the project to get data updates from")
+                        help="Directory of the project to get data updates from")
     parser.add_argument('-o', '--output-dir', dest='dst_dir', default=None,
-        help="Output directory (default: current project's dir)")
+                        help="Output directory (default: current project's dir)")
     parser.add_argument('--overwrite', action='store_true',
-        help="Overwrite existing files in the save directory")
+                        help="Overwrite existing files in the save directory")
     parser.add_argument('-p', '--project', dest='project_dir', default='.',
-        help="Directory of the project to operate on (default: current dir)")
+                        help="Directory of the project to operate on (default: current dir)")
     parser.set_defaults(command=merge_command)
 
     return parser
+
 
 def merge_command(args):
     first_project = load_project(args.project_dir)
@@ -482,7 +486,7 @@ def merge_command(args):
     if dst_dir:
         if not args.overwrite and osp.isdir(dst_dir) and os.listdir(dst_dir):
             raise CliException("Directory '%s' already exists "
-                "(pass --overwrite to force creation)" % dst_dir)
+                               "(pass --overwrite to force creation)" % dst_dir)
 
     first_dataset = first_project.make_dataset()
     first_dataset.update(second_project.make_dataset())
@@ -496,9 +500,10 @@ def merge_command(args):
 
     return 0
 
+
 def build_diff_parser(parser_ctor=argparse.ArgumentParser):
     parser = parser_ctor(help="Compare projects",
-        description="""
+                         description="""
         Compares two projects.|n
         |n
         Examples:|n
@@ -506,27 +511,28 @@ def build_diff_parser(parser_ctor=argparse.ArgumentParser):
         |s|s|s|sprint results to Tensorboard:
         |s|sdiff path/to/other/project -o diff/ -f tensorboard --iou-thresh 0.7
         """,
-        formatter_class=MultilineFormatter)
+                         formatter_class=MultilineFormatter)
 
     parser.add_argument('other_project_dir',
-        help="Directory of the second project to be compared")
+                        help="Directory of the second project to be compared")
     parser.add_argument('-o', '--output-dir', dest='dst_dir', default=None,
-        help="Directory to save comparison results (default: do not save)")
+                        help="Directory to save comparison results (default: do not save)")
     parser.add_argument('-f', '--format',
-        default=DiffVisualizer.DEFAULT_FORMAT,
-        choices=[f.name for f in DiffVisualizer.Format],
-        help="Output format (default: %(default)s)")
+                        default=DiffVisualizer.DEFAULT_FORMAT,
+                        choices=[f.name for f in DiffVisualizer.Format],
+                        help="Output format (default: %(default)s)")
     parser.add_argument('--iou-thresh', default=0.5, type=float,
-        help="IoU match threshold for detections (default: %(default)s)")
+                        help="IoU match threshold for detections (default: %(default)s)")
     parser.add_argument('--conf-thresh', default=0.5, type=float,
-        help="Confidence threshold for detections (default: %(default)s)")
+                        help="Confidence threshold for detections (default: %(default)s)")
     parser.add_argument('--overwrite', action='store_true',
-        help="Overwrite existing files in the save directory")
+                        help="Overwrite existing files in the save directory")
     parser.add_argument('-p', '--project', dest='project_dir', default='.',
-        help="Directory of the first project to be compared (default: current dir)")
+                        help="Directory of the first project to be compared (default: current dir)")
     parser.set_defaults(command=diff_command)
 
     return parser
+
 
 def diff_command(args):
     first_project = load_project(args.project_dir)
@@ -540,28 +546,29 @@ def diff_command(args):
     if dst_dir:
         if not args.overwrite and osp.isdir(dst_dir) and os.listdir(dst_dir):
             raise CliException("Directory '%s' already exists "
-                "(pass --overwrite to force creation)" % dst_dir)
+                               "(pass --overwrite to force creation)" % dst_dir)
     else:
         dst_dir = generate_next_dir_name('%s-%s-diff' % (
             first_project.config.project_name,
             second_project.config.project_name)
-        )
+                                         )
     dst_dir = osp.abspath(dst_dir)
     log.info("Saving diff to '%s'" % dst_dir)
 
     visualizer = DiffVisualizer(save_dir=dst_dir, comparator=comparator,
-        output_format=args.format)
+                                output_format=args.format)
     visualizer.save_dataset_diff(
         first_project.make_dataset(),
         second_project.make_dataset())
 
     return 0
 
+
 def build_transform_parser(parser_ctor=argparse.ArgumentParser):
     builtins = sorted(Environment().transforms.items)
 
     parser = parser_ctor(help="Transform project",
-        description="""
+                         description="""
             Applies some operation to dataset items in the project
             and produces a new project.|n
             |n
@@ -571,21 +578,22 @@ def build_transform_parser(parser_ctor=argparse.ArgumentParser):
             - Convert instance polygons to masks:|n
             |s|stransform -n polygons_to_masks
         """ % ', '.join(builtins),
-        formatter_class=MultilineFormatter)
+                         formatter_class=MultilineFormatter)
 
     parser.add_argument('-t', '--transform', required=True,
-        help="Transform to apply to the project")
+                        help="Transform to apply to the project")
     parser.add_argument('-o', '--output-dir', dest='dst_dir', default=None,
-        help="Directory to save output (default: current dir)")
+                        help="Directory to save output (default: current dir)")
     parser.add_argument('--overwrite', action='store_true',
-        help="Overwrite existing files in the save directory")
+                        help="Overwrite existing files in the save directory")
     parser.add_argument('-p', '--project', dest='project_dir', default='.',
-        help="Directory of the project to operate on (default: current dir)")
+                        help="Directory of the project to operate on (default: current dir)")
     parser.add_argument('extra_args', nargs=argparse.REMAINDER, default=None,
-        help="Additional arguments for transformation (pass '-- -h' for help)")
+                        help="Additional arguments for transformation (pass '-- -h' for help)")
     parser.set_defaults(command=transform_command)
 
     return parser
+
 
 def transform_command(args):
     project = load_project(args.project_dir)
@@ -594,10 +602,10 @@ def transform_command(args):
     if dst_dir:
         if not args.overwrite and osp.isdir(dst_dir) and os.listdir(dst_dir):
             raise CliException("Directory '%s' already exists "
-                "(pass --overwrite to force creation)" % dst_dir)
+                               "(pass --overwrite to force creation)" % dst_dir)
     else:
         dst_dir = generate_next_dir_name('%s-%s' % \
-            (project.config.project_name, make_file_name(args.transform)))
+                                         (project.config.project_name, make_file_name(args.transform)))
     dst_dir = osp.abspath(dst_dir)
 
     try:
@@ -623,20 +631,22 @@ def transform_command(args):
 
     return 0
 
+
 def build_info_parser(parser_ctor=argparse.ArgumentParser):
     parser = parser_ctor(help="Get project info",
-        description="""
+                         description="""
             Outputs project info.
         """,
-        formatter_class=MultilineFormatter)
+                         formatter_class=MultilineFormatter)
 
     parser.add_argument('--all', action='store_true',
-        help="Print all information")
+                        help="Print all information")
     parser.add_argument('-p', '--project', dest='project_dir', default='.',
-        help="Directory of the project to operate on (default: current dir)")
+                        help="Directory of the project to operate on (default: current dir)")
     parser.set_defaults(command=info_command)
 
     return parser
+
 
 def info_command(args):
     project = load_project(args.project_dir)

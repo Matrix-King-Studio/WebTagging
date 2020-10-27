@@ -1,10 +1,3 @@
-
-# Copyright (C) 2019 Intel Corporation
-#
-# SPDX-License-Identifier: MIT
-
-# pylint: disable=exec-used
-
 import cv2
 import numpy as np
 import os
@@ -41,6 +34,7 @@ class InterpreterScript:
     def process_outputs(inputs, outputs):
         return []
 
+
 class OpenVinoLauncher(Launcher):
     _DEFAULT_IE_PLUGINS_PATH = "/opt/intel/openvino_2019.1.144/deployment_tools/inference_engine/lib/intel64"
     _IE_PLUGINS_PATH = os.getenv("IE_PLUGINS_PATH", _DEFAULT_IE_PLUGINS_PATH)
@@ -53,25 +47,25 @@ class OpenVinoLauncher(Launcher):
             # shell features like pipes.
             subprocess.check_output(
                 'lscpu | grep -o "{}" | head -1'.format(instruction),
-                shell=True).decode('utf-8') # nosec
+                shell=True).decode('utf-8')  # nosec
         )
 
     @staticmethod
     def make_plugin(device='cpu', plugins_path=_IE_PLUGINS_PATH):
         if plugins_path is None or not osp.isdir(plugins_path):
             raise Exception('Inference engine plugins directory "%s" not found' % \
-                (plugins_path))
+                            (plugins_path))
 
         plugin = IEPlugin(device='CPU', plugin_dirs=[plugins_path])
         if (OpenVinoLauncher._check_instruction_set('avx2')):
             plugin.add_cpu_extension(os.path.join(plugins_path,
-                'libcpu_extension_avx2.so'))
+                                                  'libcpu_extension_avx2.so'))
         elif (OpenVinoLauncher._check_instruction_set('sse4')):
             plugin.add_cpu_extension(os.path.join(plugins_path,
-                'libcpu_extension_sse4.so'))
+                                                  'libcpu_extension_sse4.so'))
         elif platform.system() == 'Darwin':
             plugin.add_cpu_extension(os.path.join(plugins_path,
-                'libcpu_extension.dylib'))
+                                                  'libcpu_extension.dylib'))
         else:
             raise Exception('Inference engine requires support of avx2 or sse4')
 
@@ -82,27 +76,27 @@ class OpenVinoLauncher(Launcher):
         return IENetwork.from_ir(model=model, weights=weights)
 
     def __init__(self, description, weights, interpretation_script,
-            plugins_path=None, model_dir=None, **kwargs):
+                 plugins_path=None, model_dir=None, **kwargs):
         if model_dir is None:
             model_dir = ''
         if not osp.isfile(description):
             description = osp.join(model_dir, description)
         if not osp.isfile(description):
             raise Exception('Failed to open model description file "%s"' % \
-                (description))
+                            (description))
 
         if not osp.isfile(weights):
             weights = osp.join(model_dir, weights)
         if not osp.isfile(weights):
             raise Exception('Failed to open model weights file "%s"' % \
-                (weights))
+                            (weights))
 
         if not osp.isfile(interpretation_script):
             interpretation_script = \
                 osp.join(model_dir, interpretation_script)
         if not osp.isfile(interpretation_script):
             raise Exception('Failed to open model interpretation script file "%s"' % \
-                (interpretation_script))
+                            (interpretation_script))
 
         self._interpreter_script = InterpreterScript(interpretation_script)
 
@@ -123,7 +117,7 @@ class OpenVinoLauncher(Launcher):
         not_supported_layers = [l for l in network.layers.keys() if l not in supported_layers]
         if len(not_supported_layers) != 0:
             raise Exception('Following layers are not supported by the plugin'
-                ' for the specified device {}:\n {}'. format( \
+                            ' for the specified device {}:\n {}'.format( \
                 plugin.device, ", ".join(not_supported_layers)))
 
         iter_inputs = iter(network.inputs)
@@ -147,7 +141,7 @@ class OpenVinoLauncher(Launcher):
     def infer(self, inputs):
         assert len(inputs.shape) == 4, \
             "Expected an input image in (N, H, W, C) format, got %s" % \
-                (inputs.shape)
+            (inputs.shape)
         assert inputs.shape[3] == 3, \
             "Expected BGR input"
 
@@ -157,13 +151,13 @@ class OpenVinoLauncher(Launcher):
             for inp, resized_input in zip(inputs, resized_inputs):
                 cv2.resize(inp, (w, h), resized_input)
             inputs = resized_inputs
-        inputs = inputs.transpose((0, 3, 1, 2)) # NHWC to NCHW
+        inputs = inputs.transpose((0, 3, 1, 2))  # NHWC to NCHW
         inputs = {self._input_blob_name: inputs}
         if self._require_image_info:
             info = np.zeros([1, 3])
             info[0, 0] = h
             info[0, 1] = w
-            info[0, 2] = 1.0 # scale
+            info[0, 2] = 1.0  # scale
             inputs['image_info'] = info
 
         results = self._net.infer(inputs)

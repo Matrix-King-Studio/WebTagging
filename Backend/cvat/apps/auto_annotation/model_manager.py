@@ -1,7 +1,3 @@
-# Copyright (C) 2018-2020 Intel Corporation
-#
-# SPDX-License-Identifier: MIT
-
 import django_rq
 import numpy as np
 import os
@@ -259,5 +255,4 @@ def run_inference_thread(tid, model_file, weights_file, labels_mapping, attribut
         except Exception as ex:
             slogger.glob.exception("exception was occurred during auto annotation of the task {}: {}".format(tid, str(ex)), exc_info=True)
             raise ex
-
         raise e

@@ -1,12 +1,10 @@
-#!/usr/bin/env python3
-#
-# SPDX-License-Identifier: MIT
 import logging
 import requests
 import sys
 from http.client import HTTPConnection
 from core.core import CLI, CVAT_API_V1
 from core.definition import parser
+
 log = logging.getLogger(__name__)
 
 

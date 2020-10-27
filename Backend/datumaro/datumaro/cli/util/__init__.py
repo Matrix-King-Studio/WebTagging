@@ -1,16 +1,13 @@
-
-# Copyright (C) 2019 Intel Corporation
-#
-# SPDX-License-Identifier: MIT
-
 import argparse
 import textwrap
 
 
 class CliException(Exception): pass
 
+
 def add_subparser(subparsers, name, builder):
     return builder(lambda **kwargs: subparsers.add_parser(name, **kwargs))
+
 
 class MultilineFormatter(argparse.HelpFormatter):
     """
@@ -33,9 +30,10 @@ class MultilineFormatter(argparse.HelpFormatter):
         multiline_text = ''
         for paragraph in paragraphs:
             formatted_paragraph = textwrap.fill(paragraph, width,
-                initial_indent=indent, subsequent_indent=indent) + '\n'
+                                                initial_indent=indent, subsequent_indent=indent) + '\n'
             multiline_text += formatted_paragraph
         return multiline_text
+
 
 def make_file_name(s):
     # adapted from

@@ -1,25 +1,22 @@
-
-# Copyright (C) 2019 Intel Corporation
-#
-# SPDX-License-Identifier: MIT
-
 from collections import OrderedDict
 import numpy as np
 import os.path as osp
 import re
 
 from datumaro.components.extractor import (SourceExtractor, DatasetItem,
-    AnnotationType, Bbox, Mask, LabelCategories
-)
+                                           AnnotationType, Bbox, Mask, LabelCategories
+                                           )
 from datumaro.util.image import Image, decode_image, lazy_image
 from datumaro.util.tf_util import import_tf as _import_tf
 
 from .format import DetectionApiPath
+
 tf = _import_tf()
 
 
 def clamp(value, _min, _max):
     return max(min(_max, value), _min)
+
 
 class TfDetectionApiExtractor(SourceExtractor):
     def __init__(self, path):
@@ -63,7 +60,7 @@ class TfDetectionApiExtractor(SourceExtractor):
         id_pattern = r'(?:id\s*:\s*(?P<id>\d+))'
         name_pattern = r'(?:name\s*:\s*[\'\"](?P<name>.*?)[\'\"])'
         entry_pattern = r'(\{(?:[\s\n]*(?:%(id)s|%(name)s)[\s\n]*){2}\})+' % \
-            {'id': id_pattern, 'name': name_pattern}
+                        {'id': id_pattern, 'name': name_pattern}
         matches = re.finditer(entry_pattern, text)
 
         labelmap = {}
@@ -97,13 +94,13 @@ class TfDetectionApiExtractor(SourceExtractor):
 
         dataset_labels = OrderedDict()
         labelmap_path = osp.join(osp.dirname(filepath),
-            DetectionApiPath.LABELMAP_FILE)
+                                 DetectionApiPath.LABELMAP_FILE)
         if osp.exists(labelmap_path):
             with open(labelmap_path, 'r', encoding='utf-8') as f:
                 labelmap_text = f.read()
-            dataset_labels.update({ label: id - 1
-                for label, id in cls._parse_labelmap(labelmap_text).items()
-            })
+            dataset_labels.update({label: id - 1
+                                   for label, id in cls._parse_labelmap(labelmap_text).items()
+                                   })
 
         dataset_items = []
 
@@ -151,7 +148,7 @@ class TfDetectionApiExtractor(SourceExtractor):
 
             annotations = []
             for shape_id, shape in enumerate(
-                    np.dstack((labels, xmins, ymins, xmaxs, ymaxs))[0]):
+                np.dstack((labels, xmins, ymins, xmaxs, ymaxs))[0]):
                 label = shape[0].decode('utf-8')
 
                 mask = None
@@ -162,16 +159,16 @@ class TfDetectionApiExtractor(SourceExtractor):
                     if isinstance(mask, bytes):
                         mask = lazy_image(mask, decode_image)
                     annotations.append(Mask(image=mask,
-                        label=dataset_labels.get(label)
-                    ))
+                                            label=dataset_labels.get(label)
+                                            ))
                 else:
                     x = clamp(shape[1] * frame_width, 0, frame_width)
                     y = clamp(shape[2] * frame_height, 0, frame_height)
                     w = clamp(shape[3] * frame_width, 0, frame_width) - x
                     h = clamp(shape[4] * frame_height, 0, frame_height) - y
                     annotations.append(Bbox(x, y, w, h,
-                        label=dataset_labels.get(label)
-                    ))
+                                            label=dataset_labels.get(label)
+                                            ))
 
             image_size = None
             if frame_height and frame_width:
@@ -188,6 +185,6 @@ class TfDetectionApiExtractor(SourceExtractor):
                 image = Image(**image_params, size=image_size)
 
             dataset_items.append(DatasetItem(id=item_id, subset=subset,
-                image=image, annotations=annotations))
+                                             image=image, annotations=annotations))
 
         return dataset_items, dataset_labels

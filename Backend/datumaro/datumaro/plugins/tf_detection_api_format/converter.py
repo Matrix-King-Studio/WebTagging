@@ -1,8 +1,3 @@
-
-# Copyright (C) 2019 Intel Corporation
-#
-# SPDX-License-Identifier: MIT
-
 import codecs
 from collections import OrderedDict
 import logging as log
@@ -11,48 +6,56 @@ import os.path as osp
 import string
 
 from datumaro.components.extractor import (AnnotationType, DEFAULT_SUBSET_NAME,
-    LabelCategories
-)
+                                           LabelCategories
+                                           )
 from datumaro.components.converter import Converter
 from datumaro.components.cli_plugin import CliPlugin
 from datumaro.util.image import encode_image
 from datumaro.util.mask_tools import merge_masks
 from datumaro.util.annotation_tools import (compute_bbox,
-    find_group_leader, find_instances)
+                                            find_group_leader, find_instances)
 from datumaro.util.tf_util import import_tf as _import_tf
 
 from .format import DetectionApiPath
-tf = _import_tf()
 
+tf = _import_tf()
 
 # filter out non-ASCII characters, otherwise training will crash
 _printable = set(string.printable)
+
+
 def _make_printable(s):
     return ''.join(filter(lambda x: x in _printable, s))
+
 
 def int64_feature(value):
     return tf.train.Feature(int64_list=tf.train.Int64List(value=[value]))
 
+
 def int64_list_feature(value):
     return tf.train.Feature(int64_list=tf.train.Int64List(value=value))
+
 
 def bytes_feature(value):
     return tf.train.Feature(bytes_list=tf.train.BytesList(value=[value]))
 
+
 def bytes_list_feature(value):
     return tf.train.Feature(bytes_list=tf.train.BytesList(value=value))
 
+
 def float_list_feature(value):
     return tf.train.Feature(float_list=tf.train.FloatList(value=value))
+
 
 class TfDetectionApiConverter(Converter, CliPlugin):
     @classmethod
     def build_cmdline_parser(cls, **kwargs):
         parser = super().build_cmdline_parser(**kwargs)
         parser.add_argument('--save-images', action='store_true',
-            help="Save images (default: %(default)s)")
+                            help="Save images (default: %(default)s)")
         parser.add_argument('--save-masks', action='store_true',
-            help="Include instance masks (default: %(default)s)")
+                            help="Include instance masks (default: %(default)s)")
         return parser
 
     def __init__(self, save_images=False, save_masks=False):
@@ -65,18 +68,18 @@ class TfDetectionApiConverter(Converter, CliPlugin):
         os.makedirs(save_dir, exist_ok=True)
 
         label_categories = extractor.categories().get(AnnotationType.label,
-            LabelCategories())
+                                                      LabelCategories())
         get_label = lambda label_id: label_categories.items[label_id].name \
             if label_id is not None else ''
         label_ids = OrderedDict((label.name, 1 + idx)
-            for idx, label in enumerate(label_categories.items))
+                                for idx, label in enumerate(label_categories.items))
         map_label_id = lambda label_id: label_ids.get(get_label(label_id), 0)
         self._get_label = get_label
         self._get_label_id = map_label_id
 
         subsets = extractor.subsets()
         if len(subsets) == 0:
-            subsets = [ None ]
+            subsets = [None]
 
         for subset_name in subsets:
             if subset_name:
@@ -104,7 +107,7 @@ class TfDetectionApiConverter(Converter, CliPlugin):
     @staticmethod
     def _find_instances(annotations):
         return find_instances(a for a in annotations
-            if a.type in { AnnotationType.bbox, AnnotationType.mask })
+                              if a.type in {AnnotationType.bbox, AnnotationType.mask})
 
     def _find_instance_parts(self, group, img_width, img_height):
         boxes = [a for a in group if a.type == AnnotationType.bbox]
@@ -121,13 +124,13 @@ class TfDetectionApiConverter(Converter, CliPlugin):
         return [leader, mask, bbox]
 
     def _export_instances(self, instances, width, height):
-        xmins = [] # List of normalized left x coordinates of bounding boxes (1 per box)
-        xmaxs = [] # List of normalized right x coordinates of bounding boxes (1 per box)
-        ymins = [] # List of normalized top y coordinates of bounding boxes (1 per box)
-        ymaxs = [] # List of normalized bottom y coordinates of bounding boxes (1 per box)
-        classes_text = [] # List of class names of bounding boxes (1 per box)
-        classes = [] # List of class ids of bounding boxes (1 per box)
-        masks = [] # List of PNG-encoded instance masks (1 per box)
+        xmins = []  # List of normalized left x coordinates of bounding boxes (1 per box)
+        xmaxs = []  # List of normalized right x coordinates of bounding boxes (1 per box)
+        ymins = []  # List of normalized top y coordinates of bounding boxes (1 per box)
+        ymaxs = []  # List of normalized bottom y coordinates of bounding boxes (1 per box)
+        classes_text = []  # List of class names of bounding boxes (1 per box)
+        classes = []  # List of class ids of bounding boxes (1 per box)
+        masks = []  # List of PNG-encoded instance masks (1 per box)
 
         for leader, mask, box in instances:
             label = _make_printable(self._get_label(leader.label))
@@ -174,7 +177,7 @@ class TfDetectionApiConverter(Converter, CliPlugin):
 
         if not item.has_image:
             raise Exception("Failed to export dataset item '%s': "
-                "item has no image info" % item.id)
+                            "item has no image info" % item.id)
         height, width = item.image.size
 
         features.update({

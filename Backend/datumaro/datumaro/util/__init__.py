@@ -1,14 +1,10 @@
-
-# Copyright (C) 2019 Intel Corporation
-#
-# SPDX-License-Identifier: MIT
-
 import os
 import os.path as osp
 
 
 def find(iterable, pred=lambda x: True, default=None):
     return next((x for x in iterable if pred(x)), default)
+
 
 def dir_items(path, ext, truncate_ext=False):
     items = []
@@ -19,6 +15,7 @@ def dir_items(path, ext, truncate_ext=False):
                 f = f[:ext_pos]
             items.append(f)
     return items
+
 
 def split_path(path):
     path = osp.normpath(path)
@@ -36,6 +33,7 @@ def split_path(path):
 
     return parts
 
+
 def cast(value, type_conv, default=None):
     if value is None:
         return default
@@ -43,6 +41,7 @@ def cast(value, type_conv, default=None):
         return type_conv(value)
     except Exception:
         return default
+
 
 def to_snake_case(s):
     if not s:

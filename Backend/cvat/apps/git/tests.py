@@ -1,7 +1,3 @@
-# Copyright (C) 2018 Intel Corporation
-#
-# SPDX-License-Identifier: MIT
-
 from itertools import product
 
 from django.test import TestCase
@@ -37,7 +33,7 @@ class GitUrlTest(TestCase):
         # http samples
         protocols = ['', 'http://', 'https://']
         for protocol, host, port, repo_group, repo, git in product(
-                protocols, hosts, ports, repo_groups, repo_repos, git_suffixes):
+            protocols, hosts, ports, repo_groups, repo_repos, git_suffixes):
             url = '{protocol}{host}{port}/{repo_group}/{repo}{git}'.format(
                 protocol=protocol, host=host, port=port,
                 repo_group=repo_group, repo=repo, git=git
@@ -48,7 +44,7 @@ class GitUrlTest(TestCase):
         # git samples
         users = ['user', 'u123_.']
         for user, host, port, repo_group, repo, git in product(
-                users, hosts, ports, repo_groups, repo_repos, git_suffixes):
+            users, hosts, ports, repo_groups, repo_repos, git_suffixes):
             url = '{user}@{host}{port}:{repo_group}/{repo}{git}'.format(
                 user=user, host=host, port=port,
                 repo_group=repo_group, repo=repo, git=git

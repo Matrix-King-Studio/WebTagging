@@ -1,8 +1,3 @@
-
-# Copyright (C) 2019 Intel Corporation
-#
-# SPDX-License-Identifier: MIT
-
 from collections import Counter
 from enum import Enum
 import numpy as np
@@ -12,23 +7,24 @@ import os.path as osp
 _formats = ['simple']
 
 import warnings
+
 with warnings.catch_warnings():
     warnings.simplefilter("ignore")
     import tensorboardX as tb
+
     _formats.append('tensorboard')
 
 from datumaro.components.extractor import AnnotationType
 from datumaro.util.image import save_image
 
-
 Format = Enum('Formats', _formats)
+
 
 class DiffVisualizer:
     Format = Format
     DEFAULT_FORMAT = Format.simple
 
     _UNMATCHED_LABEL = -1
-
 
     def __init__(self, comparator, save_dir, output_format=DEFAULT_FORMAT):
         self.comparator = comparator
@@ -56,7 +52,7 @@ class DiffVisualizer:
 
         if len(extractor_a) != len(extractor_b):
             print("Datasets have different lengths: %s vs %s" % \
-                (len(extractor_a), len(extractor_b)))
+                  (len(extractor_a), len(extractor_b)))
 
         self.categories = {}
 
@@ -86,7 +82,7 @@ class DiffVisualizer:
         for i, (item_a, item_b) in enumerate(zip(extractor_a, extractor_b)):
             if item_a.id != item_b.id or not item_a.id or not item_b.id:
                 print("Dataset items #%s '%s' '%s' do not match" % \
-                    (i + 1, item_a.id, item_b.id))
+                      (i + 1, item_a.id, item_b.id))
                 continue
 
             label_diff = self.comparator.compare_item_labels(item_a, item_b)
@@ -100,10 +96,10 @@ class DiffVisualizer:
 
         if len(self.label_confusion_matrix) != 0:
             self.save_conf_matrix(self.label_confusion_matrix,
-                'labels_confusion.png')
+                                  'labels_confusion.png')
         if len(self.bbox_confusion_matrix) != 0:
             self.save_conf_matrix(self.bbox_confusion_matrix,
-                'bbox_confusion.png')
+                                  'bbox_confusion.png')
 
         if self.output_format is Format.tensorboard:
             self.file_writer.flush()
@@ -135,8 +131,8 @@ class DiffVisualizer:
 
     @classmethod
     def draw_text_with_background(cls, frame, text, origin,
-            font=None, scale=1.0,
-            color=(0, 0, 0), thickness=1, bgcolor=(1, 1, 1)):
+                                  font=None, scale=1.0,
+                                  color=(0, 0, 0), thickness=1, bgcolor=(1, 1, 1)):
         import cv2
 
         if not font:
@@ -144,12 +140,12 @@ class DiffVisualizer:
 
         text_size, baseline = cv2.getTextSize(text, font, scale, thickness)
         cv2.rectangle(frame,
-            tuple((origin + (0, baseline)).astype(int)),
-            tuple((origin + (text_size[0], -text_size[1])).astype(int)),
-            bgcolor, cv2.FILLED)
+                      tuple((origin + (0, baseline)).astype(int)),
+                      tuple((origin + (text_size[0], -text_size[1])).astype(int)),
+                      bgcolor, cv2.FILLED)
         cv2.putText(frame, text,
-            tuple(origin.astype(int)),
-            font, scale, color, thickness)
+                    tuple(origin.astype(int)),
+                    font, scale, color, thickness)
         return text_size, baseline
 
     def draw_detection_roi(self, frame, x, y, w, h, label, conf, color):
@@ -163,8 +159,8 @@ class DiffVisualizer:
         text_size = cv2.getTextSize(text, font, text_scale, 1)
         line_height = np.array([0, text_size[0][1]])
         self.draw_text_with_background(frame, text,
-            np.array([x, y]) - line_height * 0.5,
-            font, scale=text_scale, color=[255 - c for c in color])
+                                       np.array([x, y]) - line_height * 0.5,
+                                       font, scale=text_scale, color=[255 - c for c in color])
 
     def get_label(self, label_id):
         cat = self.categories.get(AnnotationType.label)
@@ -175,8 +171,8 @@ class DiffVisualizer:
     def draw_bbox(self, img, shape, color):
         x, y, w, h = shape.get_bbox()
         self.draw_detection_roi(img, int(x), int(y), int(w), int(h),
-            self.get_label(shape.label), shape.attributes.get('score', 1),
-            color)
+                                self.get_label(shape.label), shape.attributes.get('score', 1),
+                                color)
 
     def get_label_diff_file(self):
         if self.label_diff_writer is None:
@@ -199,10 +195,10 @@ class DiffVisualizer:
                 tag = item_a.id
                 for a_label in a_unmatched:
                     self.file_writer.add_text(tag,
-                        '>%s\n' % self.get_label(a_label))
+                                              '>%s\n' % self.get_label(a_label))
                 for b_label in b_unmatched:
                     self.file_writer.add_text(tag,
-                        '<%s\n' % self.get_label(b_label))
+                                              '<%s\n' % self.get_label(b_label))
 
     def save_item_bbox_diff(self, item_a, item_b, diff):
         _, mispred, a_unmatched, b_unmatched = diff
@@ -228,8 +224,8 @@ class DiffVisualizer:
                 self.save_as_tensorboard(img, path)
 
     def save_as_tensorboard(self, img, name):
-        img = img[:, :, ::-1] # to RGB
-        img = np.transpose(img, (2, 0, 1)) # to (C, H, W)
+        img = img[:, :, ::-1]  # to RGB
+        img = np.transpose(img, (2, 0, 1))  # to (C, H, W)
         img = img.astype(dtype=np.uint8)
         self.file_writer.add_image(name, img)
 
@@ -239,12 +235,12 @@ class DiffVisualizer:
         classes = None
         label_categories = self.categories.get(AnnotationType.label)
         if label_categories is not None:
-            classes = { id: c.name for id, c in enumerate(label_categories.items) }
+            classes = {id: c.name for id, c in enumerate(label_categories.items)}
         if classes is None:
-            classes = { c: 'label_%s' % c for c, _ in conf_matrix }
+            classes = {c: 'label_%s' % c for c, _ in conf_matrix}
         classes[self._UNMATCHED_LABEL] = 'unmatched'
 
-        class_idx = { id: i for i, id in enumerate(classes.keys()) }
+        class_idx = {id: i for i, id in enumerate(classes.keys())}
         matrix = np.zeros((len(classes), len(classes)), dtype=int)
         for idx_pair in conf_matrix:
             index = (class_idx[idx_pair[0]], class_idx[idx_pair[1]])
@@ -258,14 +254,14 @@ class DiffVisualizer:
             cellText=matrix,
             colLabels=labels,
             rowLabels=labels,
-            loc ='center')
+            loc='center')
         table.auto_set_font_size(False)
         table.set_fontsize(8)
         table.scale(3, 3)
         # Removing ticks and spines enables you to get the figure only with table
         plt.tick_params(axis='x', which='both', bottom=False, top=False, labelbottom=False)
         plt.tick_params(axis='y', which='both', right=False, left=False, labelleft=False)
-        for pos in ['right','top','bottom','left']:
+        for pos in ['right', 'top', 'bottom', 'left']:
             plt.gca().spines[pos].set_visible(False)
 
         for idx_pair in conf_matrix:
@@ -278,4 +274,4 @@ class DiffVisualizer:
                     table._cells[(i + 1, j)].set_facecolor('#00FF00')
 
         plt.savefig(osp.join(self.save_dir, filename),
-            bbox_inches='tight', pad_inches=0.05)
+                    bbox_inches='tight', pad_inches=0.05)

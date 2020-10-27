@@ -1,8 +1,3 @@
-
-# Copyright (C) 2018-2020 Intel Corporation
-#
-# SPDX-License-Identifier: MIT
-
 from django.http import HttpResponse, JsonResponse, HttpResponseBadRequest
 from rest_framework.decorators import api_view
 from rules.contrib.views import permission_required, objectgetter
@@ -73,7 +68,8 @@ def run_inference_engine_annotation(image_list, labels_mapping, treshold):
             image = image.crop((0, 0, 600, 600))
             image_np = load_image_into_numpy(image)
             image_np = np.transpose(image_np, (2, 0, 1))
-            prediction = executable_network.infer(inputs={input_blob_name: image_np[np.newaxis, ...]})[output_blob_name][0][0]
+            prediction = \
+            executable_network.infer(inputs={input_blob_name: image_np[np.newaxis, ...]})[output_blob_name][0][0]
             for obj in prediction:
                 obj_class = int(obj[1])
                 obj_value = obj[2]
@@ -114,7 +110,7 @@ def run_tensorflow_annotation(frame_provider, labels_mapping, treshold):
 
         try:
             config = tf.ConfigProto()
-            config.gpu_options.allow_growth=True
+            config.gpu_options.allow_growth = True
             sess = tf.Session(graph=detection_graph, config=config)
             frames = frame_provider.get_frames(frame_provider.Quality.ORIGINAL)
             for image_num, (image, _) in enumerate(frames):
@@ -139,7 +135,8 @@ def run_tensorflow_annotation(frame_provider, labels_mapping, treshold):
                 scores = detection_graph.get_tensor_by_name('detection_scores:0')
                 classes = detection_graph.get_tensor_by_name('detection_classes:0')
                 num_detections = detection_graph.get_tensor_by_name('num_detections:0')
-                (boxes, scores, classes, num_detections) = sess.run([boxes, scores, classes, num_detections], feed_dict={image_tensor: image_np_expanded})
+                (boxes, scores, classes, num_detections) = sess.run([boxes, scores, classes, num_detections],
+                                                                    feed_dict={image_tensor: image_np_expanded})
 
                 for i in range(len(classes[0])):
                     if classes[0][i] in labels_mapping.keys():
@@ -153,6 +150,7 @@ def run_tensorflow_annotation(frame_provider, labels_mapping, treshold):
             sess.close()
             del sess
     return result
+
 
 def convert_to_cvat_format(data):
     result = {
@@ -178,6 +176,7 @@ def convert_to_cvat_format(data):
 
     return result
 
+
 def create_thread(tid, labels_mapping, user):
     try:
         TRESHOLD = 0.5
@@ -201,7 +200,7 @@ def create_thread(tid, labels_mapping, user):
 
         # Modify data format and save
         result = convert_to_cvat_format(result)
-        serializer = LabeledDataSerializer(data = result)
+        serializer = LabeledDataSerializer(data=result)
         if serializer.is_valid(raise_exception=True):
             put_task_data(tid, result)
         slogger.glob.info('tf annotation for task {} done'.format(tid))
@@ -209,8 +208,10 @@ def create_thread(tid, labels_mapping, user):
         try:
             slogger.task[tid].exception('exception was occured during tf annotation of the task', exc_info=True)
         except:
-            slogger.glob.exception('exception was occured during tf annotation of the task {}'.format(tid), exc_info=True)
+            slogger.glob.exception('exception was occured during tf annotation of the task {}'.format(tid),
+                                   exc_info=True)
         raise ex
+
 
 @api_view(['POST'])
 @login_required
@@ -235,7 +236,7 @@ def get_meta_info(request):
 
 @login_required
 @permission_required(perm=['engine.task.change'],
-    fn=objectgetter(TaskModel, 'tid'), raise_exception=True)
+                     fn=objectgetter(TaskModel, 'tid'), raise_exception=True)
 def create(request, tid):
     slogger.glob.info('tf annotation create request for task {}'.format(tid))
     try:
@@ -246,7 +247,7 @@ def create(request, tid):
             raise Exception("The process is already running")
 
         db_labels = db_task.label_set.prefetch_related('attributespec_set').all()
-        db_labels = {db_label.id:db_label.name for db_label in db_labels}
+        db_labels = {db_label.id: db_label.name for db_label in db_labels}
 
         tf_annotation_labels = {
             "person": 1, "bicycle": 2, "car": 3, "motorcycle": 4, "airplane": 5,
@@ -265,7 +266,7 @@ def create(request, tid):
             "microwave": 78, "oven": 79, "toaster": 80, "sink": 81, "refrigerator": 83,
             "book": 84, "clock": 85, "vase": 86, "scissors": 87, "teddy_bear": 88, "hair_drier": 89,
             "toothbrush": 90
-            }
+        }
 
         labels_mapping = {}
         for key, labels in db_labels.items():
@@ -277,9 +278,9 @@ def create(request, tid):
 
         # Run tf annotation job
         queue.enqueue_call(func=create_thread,
-            args=(tid, labels_mapping, request.user),
-            job_id='tf_annotation.create/{}'.format(tid),
-            timeout=604800)     # 7 days
+                           args=(tid, labels_mapping, request.user),
+                           job_id='tf_annotation.create/{}'.format(tid),
+                           timeout=604800)  # 7 days
 
         slogger.task[tid].info('tensorflow annotation job enqueued with labels {}'.format(labels_mapping))
 
@@ -292,9 +293,10 @@ def create(request, tid):
 
     return HttpResponse()
 
+
 @login_required
 @permission_required(perm=['engine.task.access'],
-    fn=objectgetter(TaskModel, 'tid'), raise_exception=True)
+                     fn=objectgetter(TaskModel, 'tid'), raise_exception=True)
 def check(request, tid):
     try:
         queue = django_rq.get_queue('low')
@@ -325,7 +327,7 @@ def check(request, tid):
 
 @login_required
 @permission_required(perm=['engine.task.change'],
-    fn=objectgetter(TaskModel, 'tid'), raise_exception=True)
+                     fn=objectgetter(TaskModel, 'tid'), raise_exception=True)
 def cancel(request, tid):
     try:
         queue = django_rq.get_queue('low')

@@ -1,8 +1,3 @@
-
-# Copyright (C) 2020 Intel Corporation
-#
-# SPDX-License-Identifier: MIT
-
 from enum import Enum
 from itertools import groupby
 import json
@@ -14,8 +9,8 @@ import pycocotools.mask as mask_utils
 
 from datumaro.components.converter import Converter
 from datumaro.components.extractor import (DEFAULT_SUBSET_NAME,
-    AnnotationType, Points
-)
+                                           AnnotationType, Points
+                                           )
 from datumaro.components.cli_plugin import CliPlugin
 from datumaro.util import find, cast
 from datumaro.util.image import save_image
@@ -24,8 +19,8 @@ import datumaro.util.annotation_tools as anno_tools
 
 from .format import CocoTask, CocoPath
 
-
 SegmentationMode = Enum('SegmentationMode', ['guess', 'polygons', 'mask'])
+
 
 class _TaskConverter:
     def __init__(self, context):
@@ -38,7 +33,7 @@ class _TaskConverter:
             'categories': [],
             'images': [],
             'annotations': []
-            }
+        }
 
         data['licenses'].append({
             'name': '',
@@ -110,6 +105,7 @@ class _TaskConverter:
             self._min_ann_id = max(ann_id, self._min_ann_id)
         return ann_id
 
+
 class _ImageInfoConverter(_TaskConverter):
     def is_empty(self):
         return len(self._data['images']) == 0
@@ -119,6 +115,7 @@ class _ImageInfoConverter(_TaskConverter):
 
     def save_annotations(self, item):
         pass
+
 
 class _CaptionsConverter(_TaskConverter):
     def save_categories(self, dataset):
@@ -132,7 +129,7 @@ class _CaptionsConverter(_TaskConverter):
             elem = {
                 'id': self._get_ann_id(ann),
                 'image_id': self._get_image_id(item),
-                'category_id': 0, # NOTE: workaround for a bug in cocoapi
+                'category_id': 0,  # NOTE: workaround for a bug in cocoapi
                 'caption': ann.caption,
             }
             if 'score' in ann.attributes:
@@ -140,9 +137,10 @@ class _CaptionsConverter(_TaskConverter):
                     elem['score'] = float(ann.attributes['score'])
                 except Exception as e:
                     log.warning("Item '%s', ann #%s: failed to convert "
-                        "attribute 'score': %e" % (item.id, ann_idx, e))
+                                "attribute 'score': %e" % (item.id, ann_idx, e))
 
             self.annotations.append(elem)
+
 
 class _InstancesConverter(_TaskConverter):
     def save_categories(self, dataset):
@@ -176,7 +174,7 @@ class _InstancesConverter(_TaskConverter):
 
         for inst_idx, inst in enumerate(instances):
             new_segments = [s for si_id, s in zip(segment_map, segments)
-                if si_id == inst_idx]
+                            if si_id == inst_idx]
 
             if not new_segments:
                 inst[1] = []
@@ -204,14 +202,14 @@ class _InstancesConverter(_TaskConverter):
 
         if self._context._segmentation_mode == SegmentationMode.guess:
             use_masks = True == leader.attributes.get('is_crowd',
-                find(masks, lambda x: x.label == leader.label) is not None)
+                                                      find(masks, lambda x: x.label == leader.label) is not None)
         elif self._context._segmentation_mode == SegmentationMode.polygons:
             use_masks = False
         elif self._context._segmentation_mode == SegmentationMode.mask:
             use_masks = True
         else:
             raise NotImplementedError("Unexpected segmentation mode '%s'" % \
-                self._context._segmentation_mode)
+                                      self._context._segmentation_mode)
 
         if use_masks:
             if polygons:
@@ -236,9 +234,9 @@ class _InstancesConverter(_TaskConverter):
     @staticmethod
     def find_instance_anns(annotations):
         return [a for a in annotations
-            if a.type in { AnnotationType.bbox,
-                AnnotationType.polygon, AnnotationType.mask }
-        ]
+                if a.type in {AnnotationType.bbox,
+                              AnnotationType.polygon, AnnotationType.mask}
+                ]
 
     @classmethod
     def find_instances(cls, annotations):
@@ -251,7 +249,7 @@ class _InstancesConverter(_TaskConverter):
 
         if not item.has_image:
             log.warn("Item '%s': skipping writing instances "
-                "since no image info available" % item.id)
+                     "since no image info available" % item.id)
             return
         h, w = item.image.size
         instances = [self.find_instance_parts(i, w, h) for i in instances]
@@ -311,9 +309,10 @@ class _InstancesConverter(_TaskConverter):
                 elem['score'] = float(ann.attributes['score'])
             except Exception as e:
                 log.warning("Item '%s': failed to convert attribute "
-                    "'score': %e" % (item.id, e))
+                            "'score': %e" % (item.id, e))
 
         return elem
+
 
 class _KeypointsConverter(_InstancesConverter):
     def save_categories(self, dataset):
@@ -343,7 +342,7 @@ class _KeypointsConverter(_InstancesConverter):
 
     def save_annotations(self, item):
         point_annotations = [a for a in item.annotations
-            if a.type == AnnotationType.points]
+                             if a.type == AnnotationType.points]
         if not point_annotations:
             return
 
@@ -375,12 +374,12 @@ class _KeypointsConverter(_InstancesConverter):
         points = ann.points
         visibility = ann.visibility
         for index in range(0, len(points), 2):
-            kp = points[index : index + 2]
+            kp = points[index: index + 2]
             state = visibility[index // 2].value
             keypoints.extend([*kp, state])
 
         num_annotated = len([v for v in visibility \
-            if v != Points.Visibility.absent])
+                             if v != Points.Visibility.absent])
 
         return {
             'keypoints': keypoints,
@@ -398,6 +397,7 @@ class _KeypointsConverter(_InstancesConverter):
         elem.update(self.convert_points_object(points_ann))
 
         return elem
+
 
 class _LabelsConverter(_TaskConverter):
     def save_categories(self, dataset):
@@ -427,9 +427,10 @@ class _LabelsConverter(_TaskConverter):
                     elem['score'] = float(ann.attributes['score'])
                 except Exception as e:
                     log.warning("Item '%s': failed to convert attribute "
-                        "'score': %e" % (item.id, e))
+                                "'score': %e" % (item.id, e))
 
             self.annotations.append(elem)
+
 
 class _Converter:
     _TASK_CONVERTER = {
@@ -441,8 +442,8 @@ class _Converter:
     }
 
     def __init__(self, extractor, save_dir,
-            tasks=None, save_images=False, segmentation_mode=None,
-            crop_covered=False):
+                 tasks=None, save_images=False, segmentation_mode=None,
+                 crop_covered=False):
         assert tasks is None or isinstance(tasks, (CocoTask, list, str))
         if tasks is None:
             tasks = list(self._TASK_CONVERTER)
@@ -464,8 +465,8 @@ class _Converter:
         self._save_images = save_images
 
         assert segmentation_mode is None or \
-            isinstance(segmentation_mode, str) or \
-            segmentation_mode in SegmentationMode
+               isinstance(segmentation_mode, str) or \
+               segmentation_mode in SegmentationMode
         if segmentation_mode is None:
             segmentation_mode = SegmentationMode.guess
         if isinstance(segmentation_mode, str):
@@ -521,7 +522,7 @@ class _Converter:
 
         subsets = self._extractor.subsets()
         if len(subsets) == 0:
-            subsets = [ None ]
+            subsets = [None]
 
         for subset_name in subsets:
             if subset_name:
@@ -548,7 +549,8 @@ class _Converter:
 
             for task, task_conv in task_converters.items():
                 task_conv.write(osp.join(self._ann_dir,
-                    '%s_%s.json' % (task.name, subset_name)))
+                                         '%s_%s.json' % (task.name, subset_name)))
+
 
 class CocoConverter(Converter, CliPlugin):
     @staticmethod
@@ -559,11 +561,11 @@ class CocoConverter(Converter, CliPlugin):
     def build_cmdline_parser(cls, **kwargs):
         parser = super().build_cmdline_parser(**kwargs)
         parser.add_argument('--save-images', action='store_true',
-            help="Save images (default: %(default)s)")
+                            help="Save images (default: %(default)s)")
         parser.add_argument('--segmentation-mode',
-            choices=[m.name for m in SegmentationMode],
-            default=SegmentationMode.guess.name,
-            help="""
+                            choices=[m.name for m in SegmentationMode],
+                            default=SegmentationMode.guess.name,
+                            help="""
                 Save mode for instance segmentation:|n
                 - '{sm.guess.name}': guess the mode for each instance,|n
                 |s|suse 'is_crowd' attribute as hint|n
@@ -574,17 +576,17 @@ class CocoConverter(Converter, CliPlugin):
                 Default: %(default)s.
                 """.format(sm=SegmentationMode))
         parser.add_argument('--crop-covered', action='store_true',
-            help="Crop covered segments so that background objects' "
-                "segmentation was more accurate (default: %(default)s)")
+                            help="Crop covered segments so that background objects' "
+                                 "segmentation was more accurate (default: %(default)s)")
         parser.add_argument('--tasks', type=cls._split_tasks_string,
-            default=None,
-            help="COCO task filter, comma-separated list of {%s} "
-                "(default: all)" % ', '.join([t.name for t in CocoTask]))
+                            default=None,
+                            help="COCO task filter, comma-separated list of {%s} "
+                                 "(default: all)" % ', '.join([t.name for t in CocoTask]))
         return parser
 
     def __init__(self,
-            tasks=None, save_images=False, segmentation_mode=None,
-            crop_covered=False):
+                 tasks=None, save_images=False, segmentation_mode=None,
+                 crop_covered=False):
         super().__init__()
 
         self._options = {
@@ -598,25 +600,30 @@ class CocoConverter(Converter, CliPlugin):
         converter = _Converter(extractor, save_dir, **self._options)
         converter.convert()
 
+
 class CocoInstancesConverter(CocoConverter):
     def __init__(self, **kwargs):
         kwargs['tasks'] = CocoTask.instances
         super().__init__(**kwargs)
+
 
 class CocoImageInfoConverter(CocoConverter):
     def __init__(self, **kwargs):
         kwargs['tasks'] = CocoTask.image_info
         super().__init__(**kwargs)
 
+
 class CocoPersonKeypointsConverter(CocoConverter):
     def __init__(self, **kwargs):
         kwargs['tasks'] = CocoTask.person_keypoints
         super().__init__(**kwargs)
 
+
 class CocoCaptionsConverter(CocoConverter):
     def __init__(self, **kwargs):
         kwargs['tasks'] = CocoTask.captions
         super().__init__(**kwargs)
+
 
 class CocoLabelsConverter(CocoConverter):
     def __init__(self, **kwargs):

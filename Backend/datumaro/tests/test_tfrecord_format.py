@@ -3,8 +3,8 @@ import numpy as np
 from unittest import TestCase
 
 from datumaro.components.extractor import (Extractor, DatasetItem,
-    AnnotationType, Bbox, Mask, LabelCategories
-)
+                                           AnnotationType, Bbox, Mask, LabelCategories
+                                           )
 from datumaro.plugins.tf_detection_api_format.importer import TfDetectionApiImporter
 from datumaro.plugins.tf_detection_api_format.extractor import TfDetectionApiExtractor
 from datumaro.plugins.tf_detection_api_format.converter import TfDetectionApiConverter
@@ -14,7 +14,7 @@ from datumaro.util.test_utils import TestDir, compare_datasets
 
 class TfrecordConverterTest(TestCase):
     def _test_save_and_load(self, source_dataset, converter, test_dir,
-            target_dataset=None, importer_args=None):
+                            target_dataset=None, importer_args=None):
         converter(source_dataset, test_dir)
 
         if importer_args is None:
@@ -32,24 +32,24 @@ class TfrecordConverterTest(TestCase):
             def __iter__(self):
                 return iter([
                     DatasetItem(id=1, subset='train',
-                        image=np.ones((16, 16, 3)),
-                        annotations=[
-                            Bbox(0, 4, 4, 8, label=2),
-                            Bbox(0, 4, 4, 4, label=3),
-                            Bbox(2, 4, 4, 4),
-                        ]
-                    ),
+                                image=np.ones((16, 16, 3)),
+                                annotations=[
+                                    Bbox(0, 4, 4, 8, label=2),
+                                    Bbox(0, 4, 4, 4, label=3),
+                                    Bbox(2, 4, 4, 4),
+                                ]
+                                ),
 
                     DatasetItem(id=2, subset='val',
-                        image=np.ones((8, 8, 3)),
-                        annotations=[
-                            Bbox(1, 2, 4, 2, label=3),
-                        ]
-                    ),
+                                image=np.ones((8, 8, 3)),
+                                annotations=[
+                                    Bbox(1, 2, 4, 2, label=3),
+                                ]
+                                ),
 
                     DatasetItem(id=3, subset='test',
-                        image=np.ones((5, 4, 3)) * 3,
-                    ),
+                                image=np.ones((5, 4, 3)) * 3,
+                                ),
                 ])
 
             def categories(self):
@@ -70,15 +70,15 @@ class TfrecordConverterTest(TestCase):
             def __iter__(self):
                 return iter([
                     DatasetItem(id=1, subset='train', image=np.ones((4, 5, 3)),
-                        annotations=[
-                            Mask(image=np.array([
-                                [1, 0, 0, 1],
-                                [0, 1, 1, 0],
-                                [0, 1, 1, 0],
-                                [1, 0, 0, 1],
-                            ]), label=1),
-                        ]
-                    ),
+                                annotations=[
+                                    Mask(image=np.array([
+                                        [1, 0, 0, 1],
+                                        [0, 1, 1, 0],
+                                        [0, 1, 1, 0],
+                                        [1, 0, 0, 1],
+                                    ]), label=1),
+                                ]
+                                ),
                 ])
 
             def categories(self):
@@ -99,23 +99,23 @@ class TfrecordConverterTest(TestCase):
             def __iter__(self):
                 return iter([
                     DatasetItem(id=1,
-                        image=np.ones((16, 16, 3)),
-                        annotations=[
-                            Bbox(2, 1, 4, 4, label=2),
-                            Bbox(4, 2, 8, 4, label=3),
-                        ]
-                    ),
+                                image=np.ones((16, 16, 3)),
+                                annotations=[
+                                    Bbox(2, 1, 4, 4, label=2),
+                                    Bbox(4, 2, 8, 4, label=3),
+                                ]
+                                ),
 
                     DatasetItem(id=2,
-                        image=np.ones((8, 8, 3)) * 2,
-                        annotations=[
-                            Bbox(4, 4, 4, 4, label=3),
-                        ]
-                    ),
+                                image=np.ones((8, 8, 3)) * 2,
+                                annotations=[
+                                    Bbox(4, 4, 4, 4, label=3),
+                                ]
+                                ),
 
                     DatasetItem(id=3,
-                        image=np.ones((8, 4, 3)) * 3,
-                    ),
+                                image=np.ones((8, 4, 3)) * 3,
+                                ),
                 ])
 
             def categories(self):
@@ -139,11 +139,11 @@ class TfrecordConverterTest(TestCase):
                 ])
 
             def categories(self):
-                return { AnnotationType.label: LabelCategories() }
+                return {AnnotationType.label: LabelCategories()}
 
         with TestDir() as test_dir:
             self._test_save_and_load(TestExtractor(),
-                TfDetectionApiConverter(), test_dir)
+                                     TfDetectionApiConverter(), test_dir)
 
     def test_labelmap_parsing(self):
         text = """
@@ -171,17 +171,18 @@ class TfrecordConverterTest(TestCase):
 
         self.assertEqual(expected, parsed)
 
+
 class TfrecordImporterTest(TestCase):
     def test_can_detect(self):
         class TestExtractor(Extractor):
             def __iter__(self):
                 return iter([
                     DatasetItem(id=1, subset='train',
-                        image=np.ones((16, 16, 3)),
-                        annotations=[
-                            Bbox(0, 4, 4, 8, label=2),
-                        ]
-                    ),
+                                image=np.ones((16, 16, 3)),
+                                annotations=[
+                                    Bbox(0, 4, 4, 8, label=2),
+                                ]
+                                ),
                 ])
 
             def categories(self):

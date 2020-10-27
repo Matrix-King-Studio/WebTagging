@@ -4,9 +4,9 @@ import numpy as np
 from unittest import TestCase
 
 from datumaro.components.extractor import (Extractor, DatasetItem,
-    Mask, Polygon, PolyLine, Points, Bbox, Label,
-    LabelCategories, MaskCategories, AnnotationType
-)
+                                           Mask, Polygon, PolyLine, Points, Bbox, Label,
+                                           LabelCategories, MaskCategories, AnnotationType
+                                           )
 import datumaro.util.mask_tools as mask_tools
 import datumaro.plugins.transforms as transforms
 from datumaro.util.test_utils import compare_datasets
@@ -38,17 +38,17 @@ class TransformsTest(TestCase):
             def __iter__(self):
                 items = [
                     DatasetItem(id=1, image=np.zeros((5, 10, 3)),
-                        annotations=[
-                            Mask(np.array([
-                                    [0, 1, 1, 1, 0, 1, 1, 1, 1, 0],
-                                    [0, 0, 1, 1, 0, 1, 1, 1, 0, 0],
-                                    [0, 0, 0, 1, 0, 1, 1, 0, 0, 0],
-                                    [0, 0, 0, 0, 0, 1, 0, 0, 0, 0],
-                                    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                                ]),
-                            ),
-                        ]
-                    ),
+                                annotations=[
+                                    Mask(np.array([
+                                        [0, 1, 1, 1, 0, 1, 1, 1, 1, 0],
+                                        [0, 0, 1, 1, 0, 1, 1, 1, 0, 0],
+                                        [0, 0, 0, 1, 0, 1, 1, 0, 0, 0],
+                                        [0, 0, 0, 0, 0, 1, 0, 0, 0, 0],
+                                        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                                    ]),
+                                    ),
+                                ]
+                                ),
                 ]
                 return iter(items)
 
@@ -56,11 +56,11 @@ class TransformsTest(TestCase):
             def __iter__(self):
                 return iter([
                     DatasetItem(id=1, image=np.zeros((5, 10, 3)),
-                        annotations=[
-                            Polygon([3.0, 2.5, 1.0, 0.0, 3.5, 0.0, 3.0, 2.5]),
-                            Polygon([5.0, 3.5, 4.5, 0.0, 8.0, 0.0, 5.0, 3.5]),
-                        ]
-                    ),
+                                annotations=[
+                                    Polygon([3.0, 2.5, 1.0, 0.0, 3.5, 0.0, 3.0, 2.5]),
+                                    Polygon([5.0, 3.5, 4.5, 0.0, 8.0, 0.0, 5.0, 3.5]),
+                                ]
+                                ),
                 ])
 
         actual = transforms.MasksToPolygons(SrcExtractor())
@@ -71,21 +71,21 @@ class TransformsTest(TestCase):
             def __iter__(self):
                 items = [
                     DatasetItem(id=1, image=np.zeros((5, 10, 3)),
-                        annotations=[
-                            Mask(np.array([
-                                    [0, 0, 0],
-                                    [0, 1, 0],
-                                    [0, 0, 0],
-                                ]),
-                            ),
-                        ]
-                    ),
+                                annotations=[
+                                    Mask(np.array([
+                                        [0, 0, 0],
+                                        [0, 1, 0],
+                                        [0, 0, 0],
+                                    ]),
+                                    ),
+                                ]
+                                ),
                 ]
                 return iter(items)
 
         class DstExtractor(Extractor):
             def __iter__(self):
-                return iter([ DatasetItem(id=1, image=np.zeros((5, 10, 3))), ])
+                return iter([DatasetItem(id=1, image=np.zeros((5, 10, 3))), ])
 
         with self.assertLogs(level=log.DEBUG) as logs:
             actual = transforms.MasksToPolygons(SrcExtractor())
@@ -98,36 +98,36 @@ class TransformsTest(TestCase):
             def __iter__(self):
                 return iter([
                     DatasetItem(id=1, image=np.zeros((5, 10, 3)),
-                        annotations=[
-                            Polygon([0, 0, 4, 0, 4, 4]),
-                            Polygon([5, 0, 9, 0, 5, 5]),
-                        ]
-                    ),
+                                annotations=[
+                                    Polygon([0, 0, 4, 0, 4, 4]),
+                                    Polygon([5, 0, 9, 0, 5, 5]),
+                                ]
+                                ),
                 ])
 
         class DstExtractor(Extractor):
             def __iter__(self):
                 return iter([
                     DatasetItem(id=1, image=np.zeros((5, 10, 3)),
-                        annotations=[
-                            Mask(np.array([
-                                    [0, 0, 0, 0, 0, 1, 1, 1, 1, 0],
-                                    [0, 0, 0, 0, 0, 1, 1, 1, 0, 0],
-                                    [0, 0, 0, 0, 0, 1, 1, 0, 0, 0],
-                                    [0, 0, 0, 0, 0, 1, 0, 0, 0, 0],
-                                    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                                ]),
-                            ),
-                            Mask(np.array([
-                                    [0, 1, 1, 1, 0, 0, 0, 0, 0, 0],
-                                    [0, 0, 1, 1, 0, 0, 0, 0, 0, 0],
-                                    [0, 0, 0, 1, 0, 0, 0, 0, 0, 0],
-                                    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                                    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                                ]),
-                            ),
-                        ]
-                    ),
+                                annotations=[
+                                    Mask(np.array([
+                                        [0, 0, 0, 0, 0, 1, 1, 1, 1, 0],
+                                        [0, 0, 0, 0, 0, 1, 1, 1, 0, 0],
+                                        [0, 0, 0, 0, 0, 1, 1, 0, 0, 0],
+                                        [0, 0, 0, 0, 0, 1, 0, 0, 0, 0],
+                                        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                                    ]),
+                                    ),
+                                    Mask(np.array([
+                                        [0, 1, 1, 1, 0, 0, 0, 0, 0, 0],
+                                        [0, 0, 1, 1, 0, 0, 0, 0, 0, 0],
+                                        [0, 0, 0, 1, 0, 0, 0, 0, 0, 0],
+                                        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                                        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                                    ]),
+                                    ),
+                                ]
+                                ),
                 ])
 
         actual = transforms.PolygonsToMasks(SrcExtractor())
@@ -138,39 +138,39 @@ class TransformsTest(TestCase):
             def __iter__(self):
                 return iter([
                     DatasetItem(id=1, image=np.zeros((5, 5, 3)),
-                        annotations=[
-                            # The mask is partially covered by the polygon
-                            Mask(np.array([
-                                    [0, 0, 1, 1, 1],
-                                    [0, 0, 1, 1, 1],
-                                    [1, 1, 1, 1, 1],
-                                    [1, 1, 1, 0, 0],
-                                    [1, 1, 1, 0, 0]],
+                                annotations=[
+                                    # The mask is partially covered by the polygon
+                                    Mask(np.array([
+                                        [0, 0, 1, 1, 1],
+                                        [0, 0, 1, 1, 1],
+                                        [1, 1, 1, 1, 1],
+                                        [1, 1, 1, 0, 0],
+                                        [1, 1, 1, 0, 0]],
+                                    ),
+                                        z_order=0),
+                                    Polygon([1, 1, 4, 1, 4, 4, 1, 4],
+                                            z_order=1),
+                                ]
                                 ),
-                                z_order=0),
-                            Polygon([1, 1, 4, 1, 4, 4, 1, 4],
-                                z_order=1),
-                        ]
-                    ),
                 ])
 
         class DstExtractor(Extractor):
             def __iter__(self):
                 return iter([
                     DatasetItem(id=1, image=np.zeros((5, 5, 3)),
-                        annotations=[
-                            Mask(np.array([
-                                    [0, 0, 1, 1, 1],
-                                    [0, 0, 0, 0, 1],
-                                    [1, 0, 0, 0, 1],
-                                    [1, 0, 0, 0, 0],
-                                    [1, 1, 1, 0, 0]],
+                                annotations=[
+                                    Mask(np.array([
+                                        [0, 0, 1, 1, 1],
+                                        [0, 0, 0, 0, 1],
+                                        [1, 0, 0, 0, 1],
+                                        [1, 0, 0, 0, 0],
+                                        [1, 1, 1, 0, 0]],
+                                    ),
+                                        z_order=0),
+                                    Polygon([1, 1, 4, 1, 4, 4, 1, 4],
+                                            z_order=1),
+                                ]
                                 ),
-                                z_order=0),
-                            Polygon([1, 1, 4, 1, 4, 4, 1, 4],
-                                z_order=1),
-                        ]
-                    ),
                 ])
 
         actual = transforms.CropCoveredSegments(SrcExtractor())
@@ -181,50 +181,50 @@ class TransformsTest(TestCase):
             def __iter__(self):
                 return iter([
                     DatasetItem(id=1, image=np.zeros((5, 5, 3)),
-                        annotations=[
-                            Mask(np.array([
-                                    [0, 0, 1, 1, 1],
-                                    [0, 0, 0, 0, 1],
-                                    [1, 0, 0, 0, 1],
-                                    [1, 0, 0, 0, 0],
-                                    [1, 1, 1, 0, 0]],
+                                annotations=[
+                                    Mask(np.array([
+                                        [0, 0, 1, 1, 1],
+                                        [0, 0, 0, 0, 1],
+                                        [1, 0, 0, 0, 1],
+                                        [1, 0, 0, 0, 0],
+                                        [1, 1, 1, 0, 0]],
+                                    ),
+                                        z_order=0, group=1),
+                                    Polygon([1, 1, 4, 1, 4, 4, 1, 4],
+                                            z_order=1, group=1),
+                                    Polygon([0, 0, 0, 2, 2, 2, 2, 0],
+                                            z_order=1),
+                                ]
                                 ),
-                                z_order=0, group=1),
-                            Polygon([1, 1, 4, 1, 4, 4, 1, 4],
-                                z_order=1, group=1),
-                            Polygon([0, 0, 0, 2, 2, 2, 2, 0],
-                                z_order=1),
-                        ]
-                    ),
                 ])
 
         class DstExtractor(Extractor):
             def __iter__(self):
                 return iter([
                     DatasetItem(id=1, image=np.zeros((5, 5, 3)),
-                        annotations=[
-                            Mask(np.array([
-                                    [0, 0, 1, 1, 1],
-                                    [0, 1, 1, 1, 1],
-                                    [1, 1, 1, 1, 1],
-                                    [1, 1, 1, 1, 0],
-                                    [1, 1, 1, 0, 0]],
+                                annotations=[
+                                    Mask(np.array([
+                                        [0, 0, 1, 1, 1],
+                                        [0, 1, 1, 1, 1],
+                                        [1, 1, 1, 1, 1],
+                                        [1, 1, 1, 1, 0],
+                                        [1, 1, 1, 0, 0]],
+                                    ),
+                                        z_order=0, group=1),
+                                    Mask(np.array([
+                                        [1, 1, 0, 0, 0],
+                                        [1, 1, 0, 0, 0],
+                                        [0, 0, 0, 0, 0],
+                                        [0, 0, 0, 0, 0],
+                                        [0, 0, 0, 0, 0]],
+                                    ),
+                                        z_order=1),
+                                ]
                                 ),
-                                z_order=0, group=1),
-                            Mask(np.array([
-                                    [1, 1, 0, 0, 0],
-                                    [1, 1, 0, 0, 0],
-                                    [0, 0, 0, 0, 0],
-                                    [0, 0, 0, 0, 0],
-                                    [0, 0, 0, 0, 0]],
-                                ),
-                                z_order=1),
-                        ]
-                    ),
                 ])
 
         actual = transforms.MergeInstanceSegments(SrcExtractor(),
-            include_polygons=True)
+                                                  include_polygons=True)
         compare_datasets(self, DstExtractor(), actual)
 
     def test_map_subsets(self):
@@ -245,7 +245,7 @@ class TransformsTest(TestCase):
                 ])
 
         actual = transforms.MapSubsets(SrcExtractor(),
-            { 'a': '', 'b': 'a' })
+                                       {'a': '', 'b': 'a'})
         compare_datasets(self, DstExtractor(), actual)
 
     def test_shapes_to_boxes(self):
@@ -253,32 +253,32 @@ class TransformsTest(TestCase):
             def __iter__(self):
                 return iter([
                     DatasetItem(id=1, image=np.zeros((5, 5, 3)),
-                        annotations=[
-                            Mask(np.array([
-                                    [0, 0, 1, 1, 1],
-                                    [0, 0, 0, 0, 1],
-                                    [1, 0, 0, 0, 1],
-                                    [1, 0, 0, 0, 0],
-                                    [1, 1, 1, 0, 0]],
-                                ), id=1),
-                            Polygon([1, 1, 4, 1, 4, 4, 1, 4], id=2),
-                            PolyLine([1, 1, 2, 1, 2, 2, 1, 2], id=3),
-                            Points([2, 2, 4, 2, 4, 4, 2, 4], id=4),
-                        ]
-                    ),
+                                annotations=[
+                                    Mask(np.array([
+                                        [0, 0, 1, 1, 1],
+                                        [0, 0, 0, 0, 1],
+                                        [1, 0, 0, 0, 1],
+                                        [1, 0, 0, 0, 0],
+                                        [1, 1, 1, 0, 0]],
+                                    ), id=1),
+                                    Polygon([1, 1, 4, 1, 4, 4, 1, 4], id=2),
+                                    PolyLine([1, 1, 2, 1, 2, 2, 1, 2], id=3),
+                                    Points([2, 2, 4, 2, 4, 4, 2, 4], id=4),
+                                ]
+                                ),
                 ])
 
         class DstExtractor(Extractor):
             def __iter__(self):
                 return iter([
                     DatasetItem(id=1, image=np.zeros((5, 5, 3)),
-                        annotations=[
-                            Bbox(0, 0, 4, 4, id=1),
-                            Bbox(1, 1, 3, 3, id=2),
-                            Bbox(1, 1, 1, 1, id=3),
-                            Bbox(2, 2, 2, 2, id=4),
-                        ]
-                    ),
+                                annotations=[
+                                    Bbox(0, 0, 4, 4, id=1),
+                                    Bbox(1, 1, 3, 3, id=2),
+                                    Bbox(1, 1, 1, 1, id=3),
+                                    Bbox(2, 2, 2, 2, id=4),
+                                ]
+                                ),
                 ])
 
         actual = transforms.ShapesToBoxes(SrcExtractor())
@@ -307,45 +307,45 @@ class TransformsTest(TestCase):
             def __iter__(self):
                 return iter([
                     DatasetItem(id=1, image=np.zeros((5, 5, 3)),
-                        annotations=[
-                            Bbox(0, 0, 3, 3, z_order=1),
-                            Bbox(0, 0, 3, 1, z_order=2),
-                            Bbox(0, 2, 3, 1, z_order=3),
-                        ]
-                    ),
+                                annotations=[
+                                    Bbox(0, 0, 3, 3, z_order=1),
+                                    Bbox(0, 0, 3, 1, z_order=2),
+                                    Bbox(0, 2, 3, 1, z_order=3),
+                                ]
+                                ),
                 ])
 
         class DstExtractor(Extractor):
             def __iter__(self):
                 return iter([
                     DatasetItem(id=1, image=np.zeros((5, 5, 3)),
-                        annotations=[
-                            Mask(np.array([
-                                    [1, 1, 1, 0, 0],
-                                    [1, 1, 1, 0, 0],
-                                    [1, 1, 1, 0, 0],
-                                    [0, 0, 0, 0, 0],
-                                    [0, 0, 0, 0, 0]],
+                                annotations=[
+                                    Mask(np.array([
+                                        [1, 1, 1, 0, 0],
+                                        [1, 1, 1, 0, 0],
+                                        [1, 1, 1, 0, 0],
+                                        [0, 0, 0, 0, 0],
+                                        [0, 0, 0, 0, 0]],
+                                    ),
+                                        z_order=1),
+                                    Mask(np.array([
+                                        [1, 1, 1, 0, 0],
+                                        [0, 0, 0, 0, 0],
+                                        [0, 0, 0, 0, 0],
+                                        [0, 0, 0, 0, 0],
+                                        [0, 0, 0, 0, 0]],
+                                    ),
+                                        z_order=2),
+                                    Mask(np.array([
+                                        [0, 0, 0, 0, 0],
+                                        [0, 0, 0, 0, 0],
+                                        [1, 1, 1, 0, 0],
+                                        [0, 0, 0, 0, 0],
+                                        [0, 0, 0, 0, 0]],
+                                    ),
+                                        z_order=3),
+                                ]
                                 ),
-                                z_order=1),
-                            Mask(np.array([
-                                    [1, 1, 1, 0, 0],
-                                    [0, 0, 0, 0, 0],
-                                    [0, 0, 0, 0, 0],
-                                    [0, 0, 0, 0, 0],
-                                    [0, 0, 0, 0, 0]],
-                                ),
-                                z_order=2),
-                            Mask(np.array([
-                                    [0, 0, 0, 0, 0],
-                                    [0, 0, 0, 0, 0],
-                                    [1, 1, 1, 0, 0],
-                                    [0, 0, 0, 0, 0],
-                                    [0, 0, 0, 0, 0]],
-                                ),
-                                z_order=3),
-                        ]
-                    ),
                 ])
 
         actual = transforms.BoxesToMasks(SrcExtractor())
@@ -445,7 +445,7 @@ class TransformsTest(TestCase):
 
                 mask_cat = MaskCategories(colormap={
                     k: v for k, v in mask_tools.generate_colormap(5).items()
-                    if k in { 0, 1, 3, 4 }
+                    if k in {0, 1, 3, 4}
                 })
 
                 return {
@@ -464,22 +464,22 @@ class TransformsTest(TestCase):
     def test_remap_labels_delete_unspecified(self):
         class SrcExtractor(Extractor):
             def __iter__(self):
-                return iter([ DatasetItem(id=1, annotations=[ Label(0) ]) ])
+                return iter([DatasetItem(id=1, annotations=[Label(0)])])
 
             def categories(self):
                 label_cat = LabelCategories()
                 label_cat.add('label0')
 
-                return { AnnotationType.label: label_cat }
+                return {AnnotationType.label: label_cat}
 
         class DstExtractor(Extractor):
             def __iter__(self):
-                return iter([ DatasetItem(id=1, annotations=[]) ])
+                return iter([DatasetItem(id=1, annotations=[])])
 
             def categories(self):
-                return { AnnotationType.label: LabelCategories() }
+                return {AnnotationType.label: LabelCategories()}
 
         actual = transforms.RemapLabels(SrcExtractor(),
-            mapping={}, default='delete')
+                                        mapping={}, default='delete')
 
         compare_datasets(self, DstExtractor(), actual)

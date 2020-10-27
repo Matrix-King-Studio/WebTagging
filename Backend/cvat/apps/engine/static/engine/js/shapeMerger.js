@@ -1,9 +1,3 @@
-/*
- * Copyright (C) 2018-2020 Intel Corporation
- *
- * SPDX-License-Identifier: MIT
- */
-
 /* exported ShapeMergerModel ShapeMergerController ShapeMergerView*/
 
 /* global

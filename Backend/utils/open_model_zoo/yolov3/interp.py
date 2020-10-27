@@ -36,9 +36,8 @@ class Parser:
             return 0
         return area_of_overlap / area_of_union
 
-
     def sort_objects(self):
-        self.objects = sorted(self.objects, key=lambda obj : obj['confidence'], reverse=True)
+        self.objects = sorted(self.objects, key=lambda obj: obj['confidence'], reverse=True)
 
         for i in range(len(self.objects)):
             if self.objects[i]['confidence'] == 0:
@@ -94,7 +93,7 @@ class Parser:
 
                 for j in range(classes):
                     class_index = self.entry_index(params['side'], coords, classes, n * side_square + i,
-                                              coords + 1 + j)
+                                                   coords + 1 + j)
                     confidence = scale * predictions[class_index]
                     if confidence < self.PROB_THRESHOLD:
                         continue
@@ -105,8 +104,8 @@ class Parser:
                                                         w=w,
                                                         class_id=j,
                                                         confidence=confidence,
-                                                        h_scale=(orig_im_h/416),
-                                                        w_scale=(orig_im_w/416)))
+                                                        h_scale=(orig_im_h / 416),
+                                                        w_scale=(orig_im_w / 416)))
 
 
 for detection in detections:
@@ -118,10 +117,10 @@ for detection in detections:
     original_shape = (height, width)
 
     # https://github.com/opencv/open_model_zoo/blob/master/demos/python_demos/object_detection_demo_yolov3_async/object_detection_demo_yolov3_async.py#L72
-    anchors = [10,13,16,30,33,23,30,61,62,45,59,119,116,90,156,198,373,326]
-    conv_6 = {'side': 13, 'mask': [6,7,8]}
-    conv_14 = {'side': 26, 'mask': [3,4,5]}
-    conv_22 = {'side': 52, 'mask': [0,1,2]}
+    anchors = [10, 13, 16, 30, 33, 23, 30, 61, 62, 45, 59, 119, 116, 90, 156, 198, 373, 326]
+    conv_6 = {'side': 13, 'mask': [6, 7, 8]}
+    conv_14 = {'side': 26, 'mask': [3, 4, 5]}
+    conv_22 = {'side': 52, 'mask': [0, 1, 2]}
 
     yolo_params = {'detector/yolo-v3/Conv_6/BiasAdd/YoloRegion': conv_6,
                    'detector/yolo-v3/Conv_14/BiasAdd/YoloRegion': conv_14,
@@ -152,9 +151,9 @@ for detection in detections:
             ymax = obj['ymax']
 
             # Enforcing extra checks for bounding box coordinates
-            xmin = max(0,xmin)
-            ymin = max(0,ymin)
-            xmax = min(xmax,width)
-            ymax = min(ymax,height)
+            xmin = max(0, xmin)
+            ymin = max(0, ymin)
+            xmax = min(xmax, width)
+            ymax = min(ymax, height)
 
             results.add_box(xmin, ymin, xmax, ymax, label, frame_number)
