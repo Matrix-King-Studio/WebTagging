@@ -8,7 +8,7 @@
       <div class="line"></div>
       <div :class="['guide', 'data', step===2 ? 'guide-active' : '']">
         <span>2</span>
-        <span class="text">上传数据集</span>
+        <span class="text">选择数据集</span>
       </div>
       <div class="line"></div>
       <div :class="['guide', 'template', step===3 ? 'guide-active' : '']">

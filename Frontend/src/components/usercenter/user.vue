@@ -6,12 +6,39 @@
           <li><i class="el-icon-user">&nbsp;用户名：</i>{{userInfo.username}}</li>
           <li><i class="el-icon-message">&nbsp;邮箱：</i>{{userInfo.email}}</li>
           <li><i class="el-icon-date">&nbsp;注册日期：</i>{{userInfo.date_joined|timefilters}}</li>
-<!--          <li><i class="el-icon-time">&nbsp;上次登录：</i>{{userInfo.last_login|timefilters}}</li>-->
+          <!--<li><i class="el-icon-time">&nbsp;上次登录：</i>{{userInfo.last_login|timefilters}}</li>-->
         </ul>
     </div>
 
     <div class="logout"  @click="logout">
       <span>退出登录</span>
+    </div>
+
+    <!--修改密码-->
+    <div>
+      <!-- 修改密码的按钮 -->
+      <el-button id="BtnChangePwd" type="text" @click="dialogFormVisible = true" >修改密码</el-button>
+      <!-- 填写修改密码信息的表单 -->
+      <el-dialog title="修改密码" :visible.sync="dialogFormVisible" :close-on-click-modal="false">
+        <!--三个表单内容-->
+        <el-form :model="changePwdForm" status-icon :rules="rules" ref="changePwdForm" label-width="100px" class="demo-changePwdForm">
+          <el-form-item label="原密码" prop="old_password">
+            <el-input type="password" v-model="changePwdForm.old_password" autocomplete="off" placeholder="请输入原密码" show-password></el-input>
+          </el-form-item>
+          <el-form-item label="新密码" prop="new_password1">
+            <el-input type="password" v-model="changePwdForm.new_password1" autocomplete="off" placeholder="请输入新密码" show-password></el-input>
+          </el-form-item>
+          <el-form-item label="确认密码" prop="new_password2">
+            <el-input type="password" v-model="changePwdForm.new_password2" autocomplete="off" placeholder="请再次输入新密码" show-password></el-input>
+          </el-form-item>
+          <!--取消和确定按钮-->
+          <el-form-item>
+            <el-button @click="dialogFormVisible = false,resetForm('changePwdForm')">取 消</el-button>
+            <el-button type="primary" @click="dialogFormVisible = false,submitForm('changePwdForm')">确 定</el-button>
+          </el-form-item>
+        </el-form>
+      </el-dialog>
+
     </div>
 
   </div>
@@ -20,8 +47,58 @@
 <script>
 export default {
   data(){
+    //原密码不为空检测
+    let validateOldPass = (rule, value, callback) => {
+      if (!value) {
+        return callback(new Error('原密码不能为空'));
+      }else{
+        callback();
+      }
+    };
+    //新密码与确认密码检测
+    let validateNewPass1 = (rule, value, callback) => {
+      if (value === '') {
+        callback(new Error('请输入密码'));
+      } else {
+        if (this.changePwdForm.new_password2 !== '') {
+          this.$refs.changePwdForm.validateField('new_password2');
+        }
+        callback();
+      }
+    };
+    //新密码与确认密码检测
+    let validateNewPass2 = (rule, value, callback) => {
+      if (value === '') {
+        callback(new Error('请再次输入密码'));
+      } else if (value !== this.changePwdForm.new_password1) {
+        callback(new Error('两次输入密码不一致!'));
+      } else {
+        callback();
+      }
+    };
     return{
-      userInfo:{}
+      //用户信息
+      userInfo:{},
+      //dialog的激活状态
+      dialogFormVisible: false,
+      //修改密码的表单信息
+      changePwdForm: {
+        old_password: '',
+        new_password1: '',
+        new_password2: '',
+      },
+      //验证规则
+      rules: {
+        old_password: [
+          { validator: validateOldPass, trigger: 'blur' }
+        ],
+        new_password1: [
+          { validator: validateNewPass1, trigger: 'blur' }
+        ],
+        new_password2: [
+          { validator: validateNewPass2, trigger: 'blur' }
+        ]
+      }
     }
   },
   methods: {
@@ -43,7 +120,60 @@ export default {
         })
         this.$router.push('/login')
       })
+    },
+    //修改密码表单提交
+    submitForm(formName) {
+      console.log(this.changePwdForm)
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          // alert('提交成功');
+          this.$http.post('v1/auth/password/change', {old_password: this.changePwdForm.old_password,
+            new_password1: this.changePwdForm.new_password1,new_password2: this.changePwdForm.new_password2}).then(e => {
+            console.log(e)
+            this.$message({
+              message: '修改密码失败! ' + e.data.error,
+              type: "error"
+            })
+            // if (e.data.key) { // 登录成功(有key值)(e.data.key)
+            //   console.log(e.data.key)
+            //   window.sessionStorage.setItem('token', e.data.key)
+            //   this.showSucLoginBtn('登录成功')
+            //   let t = this
+            //   setTimeout(function () {
+            //     t.$router.push('/home')
+            //   }, 800)
+            // } else { // 登录失败
+            //   let errinfo;
+            //   if (!this.loginForm.username || !this.loginForm.password) {
+            //     errinfo = '请填写用户名或密码'
+            //   } else {
+            //     errinfo = '用户名或密码错误'
+            //   }
+            //   this.showErrLoginBtn(errinfo)
+            //   this.text1 = '登录'
+            // }
+          }).catch((e)=>{
+            console.log(e);
+            this.$message({
+              message: e,
+              type: "error"
+            })
+          })
+        } else {
+            console.log('修改密码提交失败');
+            this.$message({
+              message: "修改密码提交失败！请按照提示规则填写！",
+              type: "error"
+            })
+            return false;
+        }
+      });
+    },
+    //重置表单
+    resetForm(formName) {
+      this.$refs[formName].resetFields();
     }
+
   },
   created() {
     this.getUserInfo()
@@ -110,6 +240,22 @@ export default {
   .logout:hover{
     background-color: #89ee90;
   }
+
+#BtnChangePwd{
+  height: 40px;
+  width: 100px;
+  margin-top: 50px;
+  border-radius: 5px;
+  background-color: #90eec2;
+  text-align: center;
+  size: landscape;
+  color: #000000;
+  font-size: medium;
+  cursor: pointer;
+}
+#BtnChangePwd:hover{
+   background-color: #89ee90;
+ }
 
 
 </style>
