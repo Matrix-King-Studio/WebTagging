@@ -31,12 +31,12 @@
           <el-form-item label="确认密码" prop="new_password2">
             <el-input type="password" v-model="changePwdForm.new_password2" autocomplete="off" placeholder="请再次输入新密码" show-password></el-input>
           </el-form-item>
+          <!--取消和确定按钮-->
+          <el-form-item>
+            <el-button @click="dialogFormVisible = false,resetForm('changePwdForm')">取 消</el-button>
+            <el-button type="primary" @click="dialogFormVisible = false,submitForm('changePwdForm')">确 定</el-button>
+          </el-form-item>
         </el-form>
-        <!--取消和确定按钮-->
-        <div slot="footer" class="dialog-footer">
-          <el-button @click="dialogFormVisible = false,resetForm('changePwdForm')">取 消</el-button>
-          <el-button type="primary" @click="dialogFormVisible = false,submitForm()">确 定</el-button>
-        </div>
       </el-dialog>
 
     </div>
@@ -122,30 +122,52 @@ export default {
       })
     },
     //修改密码表单提交
-    submitForm() {
+    submitForm(formName) {
       console.log(this.changePwdForm)
-      this.$http.post('v1/auth/password/change', {old_password: this.changePwdForm.old_password,
-        new_password1: this.changePwdForm.new_password1,new_password2: this.changePwdForm.new_password2}).then(e => {
-        console.log(e)
-        // if (e.data.key) { // 登录成功(有key值)(e.data.key)
-        //   console.log(e.data.key)
-        //   window.sessionStorage.setItem('token', e.data.key)
-        //   this.showSucLoginBtn('登录成功')
-        //   let t = this
-        //   setTimeout(function () {
-        //     t.$router.push('/home')
-        //   }, 800)
-        // } else { // 登录失败
-        //   let errinfo;
-        //   if (!this.loginForm.username || !this.loginForm.password) {
-        //     errinfo = '请填写用户名或密码'
-        //   } else {
-        //     errinfo = '用户名或密码错误'
-        //   }
-        //   this.showErrLoginBtn(errinfo)
-        //   this.text1 = '登录'
-        // }
-      })
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          // alert('提交成功');
+          this.$http.post('v1/auth/password/change', {old_password: this.changePwdForm.old_password,
+            new_password1: this.changePwdForm.new_password1,new_password2: this.changePwdForm.new_password2}).then(e => {
+            console.log(e)
+            this.$message({
+              message: '修改密码失败! ' + e.data.error,
+              type: "error"
+            })
+            // if (e.data.key) { // 登录成功(有key值)(e.data.key)
+            //   console.log(e.data.key)
+            //   window.sessionStorage.setItem('token', e.data.key)
+            //   this.showSucLoginBtn('登录成功')
+            //   let t = this
+            //   setTimeout(function () {
+            //     t.$router.push('/home')
+            //   }, 800)
+            // } else { // 登录失败
+            //   let errinfo;
+            //   if (!this.loginForm.username || !this.loginForm.password) {
+            //     errinfo = '请填写用户名或密码'
+            //   } else {
+            //     errinfo = '用户名或密码错误'
+            //   }
+            //   this.showErrLoginBtn(errinfo)
+            //   this.text1 = '登录'
+            // }
+          }).catch((e)=>{
+            console.log(e);
+            this.$message({
+              message: e,
+              type: "error"
+            })
+          })
+        } else {
+            console.log('修改密码提交失败');
+            this.$message({
+              message: "修改密码提交失败！请按照提示规则填写！",
+              type: "error"
+            })
+            return false;
+        }
+      });
     },
     //重置表单
     resetForm(formName) {
@@ -228,6 +250,7 @@ export default {
   text-align: center;
   size: landscape;
   color: #000000;
+  font-size: medium;
   cursor: pointer;
 }
 #BtnChangePwd:hover{
