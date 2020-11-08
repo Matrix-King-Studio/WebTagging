@@ -1,27 +1,42 @@
 <template>
-  <div class="upload-box">
-    <input type="file" ref="getfile" class="choose" @change="getFile($event)" multiple="multiple">
-    <div class="to-choose" ref="dropBox" @click="toGetFile" @drop="dropFile">
-      <span>拖拽或点击上传</span>
-      <span class="note">支持图片或者zip压缩包</span>
-      <div class="choose-progress"></div>
-    </div>
-    <div class="chosen-files">
-      <div class="header">
-        <span class="name">文件名</span>
-        <span class="type">文件类型</span>
-        <span class="size">文件大小</span>
-      </div>
-      <div class="file-info" v-for="(item, index) in fileList" :key="item.name">
-        <span class="file-name">{{ item.name }}</span>
-        <span class="file-type">{{ item.type | typeFormat }}</span>
-        <span class="file-size">{{ item.size | sizeFormat }}</span>
-        <div class="delete" @click="deleteData(index)">
-          <i class="el-icon-delete"></i>
+  <el-tabs type="border-card" :stretch=true>
+    <el-tab-pane label="上传数据集">
+      <div class="upload-box">
+        <input type="file" ref="getfile" class="choose" @change="getFile($event)" multiple="multiple">
+        <div class="to-choose" ref="dropBox" @click="toGetFile" @drop="dropFile">
+          <span>拖拽或点击上传</span>
+          <span class="note">支持图片或者zip压缩包</span>
+          <div class="choose-progress"></div>
+        </div>
+        <div class="chosen-files">
+          <div class="header">
+            <span class="name">文件名</span>
+            <span class="type">文件类型</span>
+            <span class="size">文件大小</span>
+          </div>
+          <div class="file-info" v-for="(item, index) in fileList" :key="item.name">
+            <span class="file-name">{{ item.name }}</span>
+            <span class="file-type">{{ item.type | typeFormat }}</span>
+            <span class="file-size">{{ item.size | sizeFormat }}</span>
+            <div class="delete" @click="deleteData(index)">
+              <i class="el-icon-delete"></i>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
-  </div>
+    </el-tab-pane>
+    <el-tab-pane label="使用已经存在的数据集">
+      <el-tree
+        :props="props"
+        :load="loadNode"
+        lazy
+        show-checkbox
+        :highlight-current="true"
+        @node-click="handleNodeClick"
+        @check-change="handleCheckChange">
+      </el-tree>
+    </el-tab-pane>
+  </el-tabs>
 </template>
 <script>
 export default {
@@ -50,7 +65,16 @@ export default {
   data () {
     return{
       fileList: [
-      ]
+      ],
+      //树形控件用到的
+      url: 'v1/server/share?directory=/',
+      //treeData映射到elementUI的树形结构里的参数，name映射为label,children映射为children
+      //isLeaf是否叶子节点，true是叶子节点，不显示下拉框；false非叶子节点，显示下拉框
+      props: {
+        label: 'name',
+        children: 'children',
+        isLeaf: 'leaf'
+      },
     }
   },
   created() {
@@ -93,9 +117,164 @@ export default {
     },
     //删除文件列表中的数据
     deleteData:function(index){
-      this.$delete(this.fileList, index)
+      this.$delete(this.fileList, index);
       this.$store.commit('saveFileList', this.fileList)
-    }
+    },
+
+    //树形控件用到的方法
+    handleCheckChange(data, checked, indeterminate) {
+      console.log(data, checked, indeterminate);
+      console.log(JSON.stringify(this.treeData));
+    },
+    //节点被点击触发的方法
+    handleNodeClick() {
+        // console.log(data);
+    },
+    // //树形结构url拼接
+    // urlAdd(s1,s2){
+    //   return s1+s2+'/'
+    // },
+    // //初始化树形结构内容
+    // initTreeData(){
+    //   //先获得最外层内容
+    //   this.$http.get(this.url).then((res)=>{
+    //       console.log(res.data);
+    //       for(let i = 0; i<res.data.length;i++){
+    //         let obj = {
+    //           name: res.data[i].name,
+    //           type: res.data[i].type,
+    //           children: []
+    //         };
+    //         this.treeData.push(obj);
+    //       }
+    //   });
+    //   //进行深层内容获取
+    //   setTimeout(()=>{
+    //       this.getTreeData(this.url,this.treeData)
+    //   },400)
+    // },
+    // //树形结构通过url获取内容
+    // getTreeData(v_url,v_data){
+    //   // console.log(v_data[0].type);
+    //   for (let i = 0; i < v_data.length; i++) {
+    //     // console.log(v_data[i])
+    //     if (v_data[i].type === 'DIR') {
+    //       let tUrl = this.urlAdd(v_url,v_data[i].name);
+    //       console.log(tUrl); //输出当前url
+    //       this.addData(tUrl,v_data[i].children);
+    //       setTimeout(()=>{
+    //           this.getTreeData(tUrl,v_data[i].children)
+    //       },400)
+    //     }
+    //   }
+    // },
+    // //树形结构添加数据
+    // addData(v_url,v_data){
+    //   this.$http.get(v_url).then((res)=>{
+    //     for(let i = 0; i<res.data.length;i++){
+    //       let obj = {
+    //           name: res.data[i].name,
+    //           type: res.data[i].type,
+    //           children: []
+    //       };
+    //       v_data.push(obj);
+    //     }
+    //   })
+    // },
+
+    //节点懒加载方法
+    loadNode(node, resolve) {
+      if (node.level === 0) {
+        this.$http.get(this.url).then((res)=>{
+          let treeNode = [];
+          if (res.data.length === 0){
+              node.data.disabled=true;
+              console.log(node.data.name + "文件夹内没有文件，无法选中");
+          }
+          else {
+            for (let i = 0; i < res.data.length; i++) {
+              let obj;
+              if (res.data[i].type === 'DIR') {
+                obj = {
+                    name: res.data[i].name,
+                    type: res.data[i].type,
+                    nextUrl: this.url + res.data[i].name + '/',
+                    leaf: false,
+                    children: []
+                };
+              } else {
+                obj = {
+                    name: res.data[i].name,
+                    type: res.data[i].type,
+                    nextUrl: this.url + res.data[i].name + '/',
+                    leaf: true,
+                    children: []
+                };
+              }
+              treeNode.push(obj);
+            }
+          }
+          return resolve(treeNode);
+        }).catch((res)=>{
+            console.log(this.url + '获取数据失败');
+            resolve([]);
+        });
+      }
+
+      if (node.data){
+        let hasChild;
+        if (node.data.type === 'DIR') {
+            hasChild = true;
+        } else{
+            hasChild = false;
+        }
+        let tUrl = node.data.nextUrl;
+        setTimeout(() => {
+          if (hasChild) {
+            this.$http.get(tUrl).then((res)=>{
+              let treeNode = [];
+              if (res.data.length === 0){
+                node.data.disabled=true;
+                console.log(node.data.name + "文件夹内没有文件，无法选中");
+              }
+              else {
+                for(let i = 0; i<res.data.length;i++) {
+                  let obj;
+                  if (res.data[i].type === 'DIR'){
+                    obj = {
+                      name: res.data[i].name,
+                      type: res.data[i].type,
+                      nextUrl: tUrl + res.data[i].name + '/',
+                      leaf: false,
+                      children: []
+                    };
+                  }else {
+                    obj = {
+                      name: res.data[i].name,
+                      type: res.data[i].type,
+                      nextUrl: tUrl + res.data[i].name + '/',
+                      leaf: true,
+                      children: []
+                    };
+                  }
+
+                  treeNode.push(obj);
+                }
+              }
+              return resolve(treeNode);
+            }).catch((res)=>{
+              console.log(tUrl + '获取数据失败');
+              resolve([]);
+            });
+          } else {
+              console.log(node.data.name + "不是文件夹，没有子文件")
+              resolve([]);
+          }
+        }, 400);
+      } else{
+        console.log('node.data不存在')
+      }
+    },
   },
 }
 </script>
@@ -110,7 +289,7 @@ export default {
   .to-choose{
     position: absolute;
     left: 0;
-    width: 400px;
+    width: 380px;
     height: 100%;
     border: 2px dashed #aceedb;
     box-sizing: border-box;
