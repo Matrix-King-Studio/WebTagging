@@ -1,10 +1,3 @@
-
-# Copyright (C) 2019 Intel Corporation
-#
-# SPDX-License-Identifier: MIT
-
-# pylint: disable=no-self-use
-
 import json
 import numpy as np
 import os
@@ -211,6 +204,7 @@ class _SubsetWriter:
             })
         return converted
 
+
 class _Converter:
     def __init__(self, extractor, save_dir, save_images=False):
         self._extractor = extractor
@@ -230,9 +224,9 @@ class _Converter:
 
         subsets = self._extractor.subsets()
         if len(subsets) == 0:
-            subsets = [ None ]
+            subsets = [None]
         subsets = [n if n else DEFAULT_SUBSET_NAME for n in subsets]
-        subsets = { name: _SubsetWriter(name, self) for name in subsets }
+        subsets = {name: _SubsetWriter(name, self) for name in subsets}
 
         for subset, writer in subsets.items():
             writer.write_categories(self._extractor.categories())
@@ -263,12 +257,13 @@ class _Converter:
         save_image(image_path, image)
         return filename
 
+
 class DatumaroConverter(Converter, CliPlugin):
     @classmethod
     def build_cmdline_parser(cls, **kwargs):
         parser = super().build_cmdline_parser(**kwargs)
         parser.add_argument('--save-images', action='store_true',
-            help="Save images (default: %(default)s)")
+                            help="Save images (default: %(default)s)")
         return parser
 
     def __init__(self, save_images=False):
@@ -288,7 +283,7 @@ class DatumaroProjectConverter(Converter):
     def build_cmdline_parser(cls, **kwargs):
         parser = super().build_cmdline_parser(**kwargs)
         parser.add_argument('--save-images', action='store_true',
-            help="Save images (default: %(default)s)")
+                            help="Save images (default: %(default)s)")
         return parser
 
     def __init__(self, config=None, save_images=False):
@@ -302,6 +297,6 @@ class DatumaroProjectConverter(Converter):
         project = Project.generate(save_dir, config=self._config)
 
         converter = project.env.make_converter('datumaro',
-            save_images=self._save_images)
+                                               save_images=self._save_images)
         converter(extractor, save_dir=osp.join(
             project.config.project_dir, project.config.dataset_dir))

@@ -1,8 +1,3 @@
-
-# Copyright (C) 2019 Intel Corporation
-#
-# SPDX-License-Identifier: MIT
-
 import os
 
 from datumaro.components.project import Project
@@ -10,6 +5,7 @@ from datumaro.components.project import Project
 
 def load_project(project_dir):
     return Project.load(project_dir)
+
 
 def generate_next_dir_name(dirname, basedir='.', sep='.'):
     """
@@ -24,6 +20,7 @@ def generate_next_dir_name(dirname, basedir='.', sep='.'):
             return int(s)
         except Exception:
             return 0
+
     sep_count = dirname.count(sep) + 2
 
     files = [e for e in os.listdir(basedir) if e.startswith(dirname)]

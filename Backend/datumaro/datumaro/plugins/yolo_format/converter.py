@@ -1,8 +1,3 @@
-
-# Copyright (C) 2019 Intel Corporation
-#
-# SPDX-License-Identifier: MIT
-
 from collections import OrderedDict
 import logging as log
 import os
@@ -26,6 +21,7 @@ def _make_yolo_bbox(img_size, box):
     h = (box[3] - box[1]) / img_size[1]
     return x, y, w, h
 
+
 class YoloConverter(Converter, CliPlugin):
     # https://github.com/AlexeyAB/darknet#how-to-train-to-detect-your-custom-objects
 
@@ -33,7 +29,7 @@ class YoloConverter(Converter, CliPlugin):
     def build_cmdline_parser(cls, **kwargs):
         parser = super().build_cmdline_parser(**kwargs)
         parser.add_argument('--save-images', action='store_true',
-            help="Save images (default: %(default)s)")
+                            help="Save images (default: %(default)s)")
         return parser
 
     def __init__(self, save_images=False):
@@ -45,14 +41,14 @@ class YoloConverter(Converter, CliPlugin):
 
         label_categories = extractor.categories()[AnnotationType.label]
         label_ids = {label.name: idx
-            for idx, label in enumerate(label_categories.items)}
+                     for idx, label in enumerate(label_categories.items)}
         with open(osp.join(save_dir, 'obj.names'), 'w') as f:
             f.writelines('%s\n' % l[0]
-                for l in sorted(label_ids.items(), key=lambda x: x[1]))
+                         for l in sorted(label_ids.items(), key=lambda x: x[1]))
 
         subsets = extractor.subsets()
         if len(subsets) == 0:
-            subsets = [ None ]
+            subsets = [None]
 
         subset_lists = OrderedDict()
 
@@ -64,9 +60,9 @@ class YoloConverter(Converter, CliPlugin):
                 subset = extractor
             else:
                 log.warn("Skipping subset export '%s'. "
-                    "If specified, the only valid names are %s" % \
-                    (subset_name, ', '.join(
-                        "'%s'" % s for s in YoloPath.SUBSET_NAMES)))
+                         "If specified, the only valid names are %s" % \
+                         (subset_name, ', '.join(
+                             "'%s'" % s for s in YoloPath.SUBSET_NAMES)))
                 continue
 
             subset_dir = osp.join(save_dir, 'obj_%s_data' % subset_name)
@@ -77,7 +73,7 @@ class YoloConverter(Converter, CliPlugin):
             for item in subset:
                 if not item.has_image:
                     raise Exception("Failed to export item '%s': "
-                        "item has no image info" % item.id)
+                                    "item has no image info" % item.id)
                 height, width = item.image.size
 
                 image_name = item.image.filename
@@ -88,11 +84,11 @@ class YoloConverter(Converter, CliPlugin):
                             item_name = item.id
                         image_name = item_name + '.jpg'
                         save_image(osp.join(subset_dir, image_name),
-                            item.image.data)
+                                   item.image.data)
                     else:
                         log.warning("Item '%s' has no image" % item.id)
                 image_paths[item.id] = osp.join('data',
-                    osp.basename(subset_dir), image_name)
+                                                osp.basename(subset_dir), image_name)
 
                 yolo_annotation = ''
                 for bbox in item.annotations:
@@ -119,7 +115,7 @@ class YoloConverter(Converter, CliPlugin):
 
             for subset_name, subset_list_name in subset_lists.items():
                 f.write('%s = %s\n' % (subset_name,
-                    osp.join('data', subset_list_name)))
+                                       osp.join('data', subset_list_name)))
 
             f.write('names = %s\n' % osp.join('data', 'obj.names'))
             f.write('backup = backup/\n')

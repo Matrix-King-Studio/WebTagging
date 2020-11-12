@@ -1,8 +1,3 @@
-
-# Copyright (C) 2019 Intel Corporation
-#
-# SPDX-License-Identifier: MIT
-
 import numpy as np
 
 from datumaro.components.extractor import Transform
@@ -21,6 +16,8 @@ class Launcher:
 
     def get_categories(self):
         return None
+
+
 # pylint: enable=no-self-use
 
 class InferenceWrapper(Transform):

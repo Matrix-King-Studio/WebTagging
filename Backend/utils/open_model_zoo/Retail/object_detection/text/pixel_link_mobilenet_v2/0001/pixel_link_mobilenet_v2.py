@@ -9,8 +9,8 @@ class PixelLinkDecoder():
             self._get_neighbours = self._get_neighbours_4
         else:
             self._get_neighbours = self._get_neighbours_8
-        self.pixel_conf_threshold = 0.8 
-        self.link_conf_threshold = 0.8 
+        self.pixel_conf_threshold = 0.8
+        self.link_conf_threshold = 0.8
 
     def decode(self, height, width, detections: dict):
         self.image_height = height

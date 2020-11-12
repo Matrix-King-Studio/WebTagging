@@ -1,7 +1,3 @@
-# Copyright (C) 2020 Intel Corporation
-#
-# SPDX-License-Identifier: MIT
-
 from cvat.apps.dataset_manager.annotation import TrackManager
 
 from unittest import TestCase

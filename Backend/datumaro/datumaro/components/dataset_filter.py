@@ -1,14 +1,9 @@
-
-# Copyright (C) 2019 Intel Corporation
-#
-# SPDX-License-Identifier: MIT
-
 import logging as log
-from lxml import etree as ET # NOTE: lxml has proper XPath implementation
+from lxml import etree as ET  # NOTE: lxml has proper XPath implementation
 from datumaro.components.extractor import (Transform,
-    Annotation, AnnotationType,
-    Label, Mask, Points, Polygon, PolyLine, Bbox, Caption,
-)
+                                           Annotation, AnnotationType,
+                                           Label, Mask, Points, Polygon, PolyLine, Bbox, Caption,
+                                           )
 
 
 class DatasetItemEncoder:
@@ -208,6 +203,7 @@ class DatasetItemEncoder:
     def to_string(encoded_item):
         return ET.tostring(encoded_item, encoding='unicode', pretty_print=True)
 
+
 def XPathDatasetFilter(extractor, xpath=None):
     if xpath is None:
         return extractor
@@ -219,6 +215,7 @@ def XPathDatasetFilter(extractor, xpath=None):
     f = lambda item: bool(xpath(
         DatasetItemEncoder.encode(item, extractor.categories())))
     return extractor.select(f)
+
 
 class XPathAnnotationsFilter(Transform):
     def __init__(self, extractor, xpath=None, remove_empty=False):

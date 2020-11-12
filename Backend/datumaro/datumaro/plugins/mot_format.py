@@ -1,12 +1,3 @@
-
-# Copyright (C) 2020 Intel Corporation
-#
-# SPDX-License-Identifier: MIT
-
-# The Multiple Object Tracking Benchmark challenge format support
-# Format description: https://arxiv.org/pdf/1906.04567.pdf
-# Another description: https://motchallenge.net/instructions
-
 from collections import OrderedDict
 import csv
 from enum import Enum
@@ -15,14 +6,13 @@ import os
 import os.path as osp
 
 from datumaro.components.extractor import (SourceExtractor,
-    DatasetItem, AnnotationType, Bbox, LabelCategories
-)
+                                           DatasetItem, AnnotationType, Bbox, LabelCategories
+                                           )
 from datumaro.components.extractor import Importer
 from datumaro.components.converter import Converter
 from datumaro.components.cli_plugin import CliPlugin
 from datumaro.util import cast
 from datumaro.util.image import Image, save_image
-
 
 MotLabel = Enum('MotLabel', [
     ('pedestrian', 1),
@@ -38,6 +28,7 @@ MotLabel = Enum('MotLabel', [
     ('occluder full', 11),
     ('reflection', 12),
 ])
+
 
 class MotPath:
     IMAGE_DIR = 'img1'
@@ -55,7 +46,7 @@ class MotPath:
         'y',
         'w',
         'h',
-        'confidence', # or 'not ignored' flag for GT anns
+        'confidence',  # or 'not ignored' flag for GT anns
         'class_id',
         'visibility'
     ]
@@ -127,7 +118,7 @@ class MotSeqExtractor(SourceExtractor):
         for label in labels:
             label_cat.add(label)
 
-        return { AnnotationType.label: label_cat }
+        return {AnnotationType.label: label_cat}
 
     def _load_items(self, path):
         labels_count = len(self._categories[AnnotationType.label].items)
@@ -140,7 +131,7 @@ class MotSeqExtractor(SourceExtractor):
                     subset=self._subset,
                     image=Image(
                         path=osp.join(self._image_dir,
-                            '%06d%s' % (frame_id, self._seq_info['imext'])),
+                                      '%06d%s' % (frame_id, self._seq_info['imext'])),
                         size=(self._seq_info['imheight'], self._seq_info['imwidth'])
                     )
                 )
@@ -193,7 +184,7 @@ class MotSeqExtractor(SourceExtractor):
                     attributes['score'] = float(confidence)
 
                 annotations.append(Bbox(x, y, w, h, label=label_id,
-                    attributes=attributes))
+                                        attributes=attributes))
 
                 items[frame_id] = item
         return items
@@ -207,13 +198,14 @@ class MotSeqExtractor(SourceExtractor):
                 if len(entry) == 2:
                     fields[entry[0]] = entry[1]
         cls._check_seq_info(fields)
-        for k in { 'framerate', 'seqlength', 'imwidth', 'imheight' }:
+        for k in {'framerate', 'seqlength', 'imwidth', 'imheight'}:
             fields[k] = int(fields[k])
         return fields
 
     @staticmethod
     def _check_seq_info(seq_info):
         assert set(seq_info) == {'name', 'imdir', 'framerate', 'seqlength', 'imwidth', 'imheight', 'imext'}, seq_info
+
 
 class MotSeqImporter(Importer):
     _EXTRACTOR_NAME = 'mot_seq'
@@ -223,7 +215,7 @@ class MotSeqImporter(Importer):
         return len(cls.find_subsets(path)) != 0
 
     def __call__(self, path, **extra_params):
-        from datumaro.components.project import Project # cyclic import
+        from datumaro.components.project import Project  # cyclic import
         project = Project()
 
         subsets = self.find_subsets(path)
@@ -253,12 +245,13 @@ class MotSeqImporter(Importer):
                 subsets.append(p)
         return subsets
 
+
 class MotSeqGtConverter(Converter, CliPlugin):
     @classmethod
     def build_cmdline_parser(cls, **kwargs):
         parser = super().__init__(**kwargs)
         parser.add_argument('--save-images', action='store_true',
-            help="Save images (default: %(default)s)")
+                            help="Save images (default: %(default)s)")
         return parser
 
     def __init__(self, save_images=False):
@@ -302,10 +295,10 @@ class MotSeqGtConverter(Converter, CliPlugin):
                         'class_id': 1 + cast(anno.label, int, -2),
                         'visibility': float(
                             anno.attributes.get('visibility',
-                                1 - float(
-                                    anno.attributes.get('occluded', False)
-                                )
-                            )
+                                                1 - float(
+                                                    anno.attributes.get('occluded', False)
+                                                )
+                                                )
                         )
                     })
 
@@ -318,8 +311,8 @@ class MotSeqGtConverter(Converter, CliPlugin):
         labels_file = osp.join(anno_dir, MotPath.LABELS_FILE)
         with open(labels_file, 'w', encoding='utf-8') as f:
             f.write('\n'.join(l.name
-                for l in extractor.categories()[AnnotationType.label].items)
-            )
+                              for l in extractor.categories()[AnnotationType.label].items)
+                    )
 
     def _save_image(self, item, index):
         if item.image.filename:
@@ -329,4 +322,4 @@ class MotSeqGtConverter(Converter, CliPlugin):
         frame_id = cast(frame_id, int, index)
         image_filename = '%06d%s' % (frame_id, MotPath.IMAGE_EXT)
         save_image(osp.join(self._images_dir, image_filename),
-            item.image.data)
+                   item.image.data)

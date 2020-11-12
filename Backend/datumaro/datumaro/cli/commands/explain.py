@@ -1,8 +1,3 @@
-
-# Copyright (C) 2019 Intel Corporation
-#
-# SPDX-License-Identifier: MIT
-
 import argparse
 import logging as log
 import os
@@ -10,7 +5,7 @@ import os.path as osp
 
 from datumaro.components.project import Project
 from datumaro.util.command_targets import (TargetKinds, target_selector,
-    ProjectTarget, SourceTarget, ImageTarget, is_project_path)
+                                           ProjectTarget, SourceTarget, ImageTarget, is_project_path)
 from datumaro.util.image import load_image, save_image
 from ..util import MultilineFormatter
 from ..util.project import load_project
@@ -18,55 +13,56 @@ from ..util.project import load_project
 
 def build_parser(parser_ctor=argparse.ArgumentParser):
     parser = parser_ctor(help="Run Explainable AI algorithm",
-        description="Runs an explainable AI algorithm for a model.")
+                         description="Runs an explainable AI algorithm for a model.")
 
     parser.add_argument('-m', '--model', required=True,
-        help="Model to use for inference")
+                        help="Model to use for inference")
     parser.add_argument('-t', '--target', default=None,
-        help="Inference target - image, source, project "
-             "(default: current dir)")
+                        help="Inference target - image, source, project "
+                             "(default: current dir)")
     parser.add_argument('-o', '--output-dir', dest='save_dir', default=None,
-        help="Directory to save output (default: display only)")
+                        help="Directory to save output (default: display only)")
 
     method_sp = parser.add_subparsers(dest='algorithm')
 
     rise_parser = method_sp.add_parser('rise',
-        description="""
+                                       description="""
         RISE: Randomized Input Sampling for
         Explanation of Black-box Models algorithm|n
         |n
         See explanations at: https://arxiv.org/pdf/1806.07421.pdf
         """,
-        formatter_class=MultilineFormatter)
+                                       formatter_class=MultilineFormatter)
     rise_parser.add_argument('-s', '--max-samples', default=None, type=int,
-        help="Number of algorithm iterations (default: mask size ^ 2)")
+                             help="Number of algorithm iterations (default: mask size ^ 2)")
     rise_parser.add_argument('--mw', '--mask-width',
-        dest='mask_width', default=7, type=int,
-        help="Mask width (default: %(default)s)")
+                             dest='mask_width', default=7, type=int,
+                             help="Mask width (default: %(default)s)")
     rise_parser.add_argument('--mh', '--mask-height',
-        dest='mask_height', default=7, type=int,
-        help="Mask height (default: %(default)s)")
+                             dest='mask_height', default=7, type=int,
+                             help="Mask height (default: %(default)s)")
     rise_parser.add_argument('--prob', default=0.5, type=float,
-        help="Mask pixel inclusion probability (default: %(default)s)")
+                             help="Mask pixel inclusion probability (default: %(default)s)")
     rise_parser.add_argument('--iou', '--iou-thresh',
-        dest='iou_thresh', default=0.9, type=float,
-        help="IoU match threshold for detections (default: %(default)s)")
+                             dest='iou_thresh', default=0.9, type=float,
+                             help="IoU match threshold for detections (default: %(default)s)")
     rise_parser.add_argument('--nms', '--nms-iou-thresh',
-        dest='nms_iou_thresh', default=0.0, type=float,
-        help="IoU match threshold in Non-maxima suppression (default: no NMS)")
+                             dest='nms_iou_thresh', default=0.0, type=float,
+                             help="IoU match threshold in Non-maxima suppression (default: no NMS)")
     rise_parser.add_argument('--conf', '--det-conf-thresh',
-        dest='det_conf_thresh', default=0.0, type=float,
-        help="Confidence threshold for detections (default: include all)")
+                             dest='det_conf_thresh', default=0.0, type=float,
+                             help="Confidence threshold for detections (default: include all)")
     rise_parser.add_argument('-b', '--batch-size', default=1, type=int,
-        help="Inference batch size (default: %(default)s)")
+                             help="Inference batch size (default: %(default)s)")
     rise_parser.add_argument('--progressive', action='store_true',
-        help="Visualize results during computations")
+                             help="Visualize results during computations")
 
     parser.add_argument('-p', '--project', dest='project_dir', default='.',
-        help="Directory of the project to operate on (default: current dir)")
+                        help="Directory of the project to operate on (default: current dir)")
     parser.set_defaults(command=explain_command)
 
     return parser
+
 
 def explain_command(args):
     project_path = args.project_dir
@@ -83,7 +79,6 @@ def explain_command(args):
         if is_project_path(args.target[1]):
             args.project_dir = osp.dirname(osp.abspath(args.target[1]))
 
-
     import cv2
     from matplotlib import cm
 
@@ -96,14 +91,14 @@ def explain_command(args):
 
     from datumaro.components.algorithms.rise import RISE
     rise = RISE(model,
-        max_samples=args.max_samples,
-        mask_width=args.mask_width,
-        mask_height=args.mask_height,
-        prob=args.prob,
-        iou_thresh=args.iou_thresh,
-        nms_thresh=args.nms_iou_thresh,
-        det_conf_thresh=args.det_conf_thresh,
-        batch_size=args.batch_size)
+                max_samples=args.max_samples,
+                mask_width=args.mask_width,
+                mask_height=args.mask_height,
+                prob=args.prob,
+                iou_thresh=args.iou_thresh,
+                nms_thresh=args.nms_iou_thresh,
+                det_conf_thresh=args.det_conf_thresh,
+                batch_size=args.batch_size)
 
     if args.target[0] == TargetKinds.image:
         image_path = args.target[1]
@@ -135,7 +130,7 @@ def explain_command(args):
 
             for j, heatmap in enumerate(heatmaps):
                 save_path = osp.join(args.save_dir,
-                    file_name + '-heatmap-%s.png' % j)
+                                     file_name + '-heatmap-%s.png' % j)
                 save_image(save_path, heatmap * 255.0)
         else:
             for j, heatmap in enumerate(heatmaps):
@@ -143,7 +138,7 @@ def explain_command(args):
                 cv2.imshow(file_name + '-heatmap-%s' % j, disp)
             cv2.waitKey(0)
     elif args.target[0] == TargetKinds.source or \
-         args.target[0] == TargetKinds.project:
+        args.target[0] == TargetKinds.project:
         if args.target[0] == TargetKinds.source:
             source_name = args.target[1]
             dataset = project.make_source_project(source_name).make_dataset()
@@ -176,7 +171,7 @@ def explain_command(args):
 
                 for j, heatmap in enumerate(heatmaps):
                     save_path = osp.join(args.save_dir,
-                        file_name + '-heatmap-%s.png' % j)
+                                         file_name + '-heatmap-%s.png' % j)
                     save_image(save_path, heatmap * 255.0)
 
             if args.progressive:

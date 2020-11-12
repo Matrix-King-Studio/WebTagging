@@ -2,7 +2,6 @@ import numpy as np
 import cv2
 from skimage.measure import approximate_polygon, find_contours
 
-
 MASK_THRESHOLD = .5
 PROBABILITY_THRESHOLD = 0.2
 
@@ -22,7 +21,7 @@ def segm_postprocess(box: list, raw_cls_mask, im_h, im_w, threshold):
     xmin = int(round(xmin))
     ymax = ymin + height
     xmax = xmin + width
-    result[xmin:xmax, ymin:ymax] = (resized_mask>threshold).astype(np.uint8) * 255
+    result[xmin:xmax, ymin:ymax] = (resized_mask > threshold).astype(np.uint8) * 255
 
     return result
 
@@ -57,7 +56,6 @@ for detection in detections:
             contour = np.flip(contour, axis=1)
             contour = approximate_polygon(contour, tolerance=2.5)
             segmentation = contour.tolist()
-
 
             # NOTE: if you want to see the boxes, uncomment next line
             # results.add_box(x, y, right, bottom, label, frame_number)

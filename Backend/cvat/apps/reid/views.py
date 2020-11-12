@@ -1,7 +1,3 @@
-# Copyright (C) 2018 Intel Corporation
-#
-# SPDX-License-Identifier: MIT
-
 from django.http import HttpResponse, HttpResponseBadRequest, JsonResponse
 from cvat.apps.authentication.decorators import login_required
 from rules.contrib.views import permission_required, objectgetter
@@ -23,7 +19,7 @@ def _create_thread(jid, data):
 
 @login_required
 @permission_required(perm=["engine.job.change"],
-    fn=objectgetter(Job, 'jid'), raise_exception=True)
+                     fn=objectgetter(Job, 'jid'), raise_exception=True)
 def start(request, jid):
     try:
         data = json.loads(request.body.decode('utf-8'))
@@ -44,7 +40,7 @@ def start(request, jid):
 
 @login_required
 @permission_required(perm=["engine.job.change"],
-    fn=objectgetter(Job, 'jid'), raise_exception=True)
+                     fn=objectgetter(Job, 'jid'), raise_exception=True)
 def check(request, jid):
     try:
         queue = django_rq.get_queue("low")
@@ -79,7 +75,7 @@ def check(request, jid):
 
 @login_required
 @permission_required(perm=["engine.job.change"],
-    fn=objectgetter(Job, 'jid'), raise_exception=True)
+                     fn=objectgetter(Job, 'jid'), raise_exception=True)
 def cancel(request, jid):
     try:
         queue = django_rq.get_queue("low")
@@ -94,6 +90,7 @@ def cancel(request, jid):
         return HttpResponseBadRequest(str(e))
 
     return HttpResponse()
+
 
 def enabled(request):
     return HttpResponse()

@@ -1,22 +1,18 @@
-
-# Copyright (C) 2019 Intel Corporation
-#
-# SPDX-License-Identifier: MIT
-
-# pylint: disable=unused-import
-
 from io import BytesIO
 import numpy as np
 import os.path as osp
 
 from enum import Enum
+
 _IMAGE_BACKENDS = Enum('_IMAGE_BACKENDS', ['cv2', 'PIL'])
 _IMAGE_BACKEND = None
 try:
     import cv2
+
     _IMAGE_BACKEND = _IMAGE_BACKENDS.cv2
 except ImportError:
     import PIL
+
     _IMAGE_BACKEND = _IMAGE_BACKENDS.PIL
 
 from datumaro.util.image_cache import ImageCache as _ImageCache
@@ -36,7 +32,7 @@ def load_image(path):
         image = Image.open(path)
         image = np.asarray(image, dtype=np.float32)
         if len(image.shape) == 3 and image.shape[2] in {3, 4}:
-            image[:, :, :3] = image[:, :, 2::-1] # RGB to BGR
+            image[:, :, :3] = image[:, :, 2::-1]  # RGB to BGR
     else:
         raise NotImplementedError()
 
@@ -44,6 +40,7 @@ def load_image(path):
     if len(image.shape) == 3:
         assert image.shape[2] in {3, 4}
     return image
+
 
 def save_image(path, image, **kwargs):
     if not kwargs:
@@ -72,11 +69,12 @@ def save_image(path, image, **kwargs):
 
         image = image.astype(np.uint8)
         if len(image.shape) == 3 and image.shape[2] in {3, 4}:
-            image[:, :, :3] = image[:, :, 2::-1] # BGR to RGB
+            image[:, :, :3] = image[:, :, 2::-1]  # BGR to RGB
         image = Image.fromarray(image)
         image.save(path, **params)
     else:
         raise NotImplementedError()
+
 
 def encode_image(image, ext, **kwargs):
     if not kwargs:
@@ -113,13 +111,14 @@ def encode_image(image, ext, **kwargs):
 
         image = image.astype(np.uint8)
         if len(image.shape) == 3 and image.shape[2] in {3, 4}:
-            image[:, :, :3] = image[:, :, 2::-1] # BGR to RGB
+            image[:, :, :3] = image[:, :, 2::-1]  # BGR to RGB
         image = Image.fromarray(image)
         with BytesIO() as buffer:
             image.save(buffer, format=ext, **params)
             return buffer.getvalue()
     else:
         raise NotImplementedError()
+
 
 def decode_image(image_bytes):
     if _IMAGE_BACKEND == _IMAGE_BACKENDS.cv2:
@@ -132,7 +131,7 @@ def decode_image(image_bytes):
         image = Image.open(BytesIO(image_bytes))
         image = np.asarray(image, dtype=np.float32)
         if len(image.shape) == 3 and image.shape[2] in {3, 4}:
-            image[:, :, :3] = image[:, :, 2::-1] # RGB to BGR
+            image[:, :, :3] = image[:, :, 2::-1]  # RGB to BGR
     else:
         raise NotImplementedError()
 
@@ -158,7 +157,7 @@ class lazy_image:
 
     def __call__(self):
         image = None
-        image_id = hash(self) # path is not necessary hashable or a file path
+        image_id = hash(self)  # path is not necessary hashable or a file path
 
         cache = self._get_cache(self.cache)
         if cache is not None:
@@ -181,14 +180,15 @@ class lazy_image:
     def __hash__(self):
         return hash((id(self), self.path, self.loader))
 
+
 class Image:
     def __init__(self, data=None, path=None, loader=None, cache=None,
-            size=None):
+                 size=None):
         assert size is None or len(size) == 2
         if size is not None:
             assert len(size) == 2 and 0 < size[0] and 0 < size[1], size
             size = tuple(size)
-        self._size = size # (H, W)
+        self._size = size  # (H, W)
 
         assert path is None or isinstance(path, str)
         if path is None:
@@ -237,4 +237,4 @@ class Image:
             (np.array_equal(self.size, other.size)) and \
             (self.has_data == other.has_data) and \
             (self.has_data and np.array_equal(self.data, other.data) or \
-                not self.has_data)
+             not self.has_data)

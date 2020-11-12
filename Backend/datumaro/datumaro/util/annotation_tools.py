@@ -1,8 +1,3 @@
-
-# Copyright (C) 2020 Intel Corporation
-#
-# SPDX-License-Identifier: MIT
-
 from itertools import groupby
 
 
@@ -17,8 +12,10 @@ def find_instances(instance_anns):
 
     return ann_groups
 
+
 def find_group_leader(group):
     return max(group, key=lambda x: x.get_area())
+
 
 def compute_bbox(annotations):
     boxes = [ann.get_bbox() for ann in annotations]

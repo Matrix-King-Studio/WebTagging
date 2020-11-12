@@ -10,10 +10,6 @@ from rest_framework.authentication import TokenAuthentication as _TokenAuthentic
 from django.contrib.auth import login
 
 
-# Even with token authorization it is very important to have a valid session id
-# in cookies because in some cases we cannot use token authorization (e.g. when
-# we redirect to the server in UI using just URL). To overkill that we override
-# the class to call `login` method which restores the session id in cookies.
 class TokenAuthentication(_TokenAuthentication):
     def authenticate(self, request):
         auth = super().authenticate(request)
@@ -49,7 +45,6 @@ class SignatureAuthentication(authentication.BaseAuthentication):
     """
     Authentication backend for signed URLs.
     """
-
     def authenticate(self, request):
         """
         Returns authenticated user if URL signature is valid.
@@ -80,8 +75,7 @@ has_observer_role = rules.is_group_member(str(AUTH_ROLE.OBSERVER))
 
 @rules.predicate
 def is_project_owner(db_user, db_project):
-    # If owner is None (null) the task can be accessed/changed/deleted
-    # only by admin. At the moment each task has an owner.
+    # If owner is None (null) the task can be accessed/changed/deleted only by admin. At the moment each task has an owner.
     return db_project is not None and db_project.owner == db_user
 
 
@@ -98,8 +92,7 @@ def is_project_annotator(db_user, db_project):
 
 @rules.predicate
 def is_task_owner(db_user, db_task):
-    # If owner is None (null) the task can be accessed/changed/deleted
-    # only by admin. At the moment each task has an owner.
+    # If owner is None (null) the task can be accessed/changed/deleted only by admin. At the moment each task has an owner.
     return db_task.owner == db_user or is_project_owner(db_user, db_task.project)
 
 

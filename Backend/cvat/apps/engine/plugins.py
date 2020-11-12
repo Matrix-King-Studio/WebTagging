@@ -3,7 +3,7 @@ from functools import update_wrapper
 __plugins = {}
 
 
-def add_plugin(name, function, order, exc_ok = False):
+def add_plugin(name, function, order, exc_ok=False):
     if order not in ["before", "after"]:
         raise Exception("Order may be 'before' or 'after' only. Got {}.".format(order))
 

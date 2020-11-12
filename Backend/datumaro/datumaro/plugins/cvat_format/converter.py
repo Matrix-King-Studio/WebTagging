@@ -1,8 +1,3 @@
-
-# Copyright (C) 2019 Intel Corporation
-#
-# SPDX-License-Identifier: MIT
-
 from collections import OrderedDict
 import logging as log
 import os
@@ -22,6 +17,7 @@ def pairwise(iterable):
     a = iter(iterable)
     return zip(a, a)
 
+
 class XmlAnnotationWriter:
     VERSION = '1.1'
 
@@ -29,7 +25,7 @@ class XmlAnnotationWriter:
         self.xmlgen = XMLGenerator(f, 'utf-8')
         self._level = 0
 
-    def _indent(self, newline = True):
+    def _indent(self, newline=True):
         if newline:
             self.xmlgen.ignorableWhitespace('\n')
         self.xmlgen.ignorableWhitespace('  ' * self._level)
@@ -147,6 +143,7 @@ class XmlAnnotationWriter:
         self._close_element('annotations')
         self.xmlgen.endDocument()
 
+
 class _SubsetWriter:
     def __init__(self, file, name, extractor, context):
         self._writer = XmlAnnotationWriter(file)
@@ -200,7 +197,7 @@ class _SubsetWriter:
 
         for ann in item.annotations:
             if ann.type in {AnnotationType.points, AnnotationType.polyline,
-                    AnnotationType.polygon, AnnotationType.bbox}:
+                            AnnotationType.polygon, AnnotationType.bbox}:
                 self._write_shape(ann)
             elif ann.type == AnnotationType.label:
                 self._write_tag(ann)
@@ -328,6 +325,7 @@ class _SubsetWriter:
 
         self._writer.close_tag()
 
+
 class _Converter:
     def __init__(self, extractor, save_dir, save_images=False):
         self._extractor = extractor
@@ -347,7 +345,7 @@ class _Converter:
 
         subsets = self._extractor.subsets()
         if len(subsets) == 0:
-            subsets = [ None ]
+            subsets = [None]
 
         for subset_name in subsets:
             if subset_name:
@@ -360,12 +358,13 @@ class _Converter:
                 writer = _SubsetWriter(f, subset_name, subset, self)
                 writer.write()
 
+
 class CvatConverter(Converter, CliPlugin):
     @classmethod
     def build_cmdline_parser(cls, **kwargs):
         parser = super().build_cmdline_parser(**kwargs)
         parser.add_argument('--save-images', action='store_true',
-            help="Save images (default: %(default)s)")
+                            help="Save images (default: %(default)s)")
         return parser
 
     def __init__(self, save_images=False):

@@ -1,8 +1,3 @@
-# Copyright (C) 2020 Intel Corporation
-#
-# SPDX-License-Identifier: MIT
-
-
 from rest_framework.test import APITestCase, APIClient
 from rest_framework import status
 from django.conf import settings
@@ -49,7 +44,6 @@ class UserAgreementsTest(APITestCase):
         response = self.client.post('/api/v1/auth/register', data=data, format="json")
         return response
 
-
     def test_user_agreements(self):
         self._get_user_agreements()
 
@@ -62,7 +56,7 @@ class UserAgreementsTest(APITestCase):
             'email': 'user1@example.com',
             'password1': 'FnvL4YdF24NAmnQ8',
             'password2': 'FnvL4YdF24NAmnQ8',
-            'confirmations':[],
+            'confirmations': [],
         }
         for agreement in agreements:
             if agreement['required']:
@@ -81,7 +75,7 @@ class UserAgreementsTest(APITestCase):
             'email': 'user2@example.com',
             'password1': 'FnvL4YdF24NAmnQ8',
             'password2': 'FnvL4YdF24NAmnQ8',
-            'confirmations':[],
+            'confirmations': [],
         }
 
         response = self._register_user(data)
@@ -96,7 +90,7 @@ class UserAgreementsTest(APITestCase):
             'email': 'user3@example.com',
             'password1': 'FnvL4YdF24NAmnQ8',
             'password2': 'FnvL4YdF24NAmnQ8',
-            'confirmations':[],
+            'confirmations': [],
         }
 
         for agreement in agreements:

@@ -7,6 +7,7 @@ from django.db import migrations
 from django.conf import settings
 from cvat.apps.engine.media_extractors import get_mime
 
+
 def parse_attribute(value):
     match = re.match(r'^([~@])(\w+)=(\w+):(.+)?$', value)
     if match:
@@ -15,13 +16,14 @@ def parse_attribute(value):
         name = match.group(3)
         if match.group(4):
             values = list(csv.reader(StringIO(match.group(4)),
-                quotechar="'"))[0]
+                                     quotechar="'"))[0]
         else:
             values = []
 
-        return {'prefix':prefix, 'type':input_type, 'name':name, 'values':values}
+        return {'prefix': prefix, 'type': input_type, 'name': name, 'values': values}
     else:
         return None
+
 
 def split_text_attribute(apps, schema_editor):
     AttributeSpec = apps.get_model('engine', 'AttributeSpec')
@@ -34,6 +36,7 @@ def split_text_attribute(apps, schema_editor):
             attribute.default_value = spec['values'][0] if spec['values'] else ''
             attribute.values = '\n'.join(spec['values'])
             attribute.save()
+
 
 def join_text_attribute(apps, schema_editor):
     AttributeSpec = apps.get_model('engine', 'AttributeSpec')
@@ -49,11 +52,14 @@ def join_text_attribute(apps, schema_editor):
         attribute.text += ",".join(attribute.values.split('\n'))
         attribute.save()
 
+
 def _get_task_dirname(task_obj):
     return os.path.join(settings.DATA_ROOT, str(task_obj.id))
 
+
 def _get_upload_dirname(task_obj):
     return os.path.join(_get_task_dirname(task_obj), ".upload")
+
 
 def _get_frame_path(task_obj, frame):
     return os.path.join(
@@ -63,6 +69,7 @@ def _get_frame_path(task_obj, frame):
         str(int(frame) // 100),
         str(frame) + '.jpg',
     )
+
 
 def fill_task_meta_data_forward(apps, schema_editor):
     db_alias = schema_editor.connection.alias
@@ -122,6 +129,7 @@ def fill_task_meta_data_forward(apps, schema_editor):
                 db_images.append(db_image)
             image_model.objects.using(db_alias).bulk_create(db_images)
 
+
 def fill_task_meta_data_backward(apps, schema_editor):
     task_model = apps.get_model('engine', 'Task')
     video_model = apps.get_model('engine', "Video")
@@ -142,8 +150,8 @@ def fill_task_meta_data_backward(apps, schema_editor):
             images.delete()
         db_task.save()
 
-class Migration(migrations.Migration):
 
+class Migration(migrations.Migration):
     dependencies = [
         ('engine', '0015_db_redesign_20190217'),
     ]

@@ -1,4 +1,3 @@
-# SPDX-License-Identifier: MIT
 import argparse
 import getpass
 import json
@@ -25,7 +24,6 @@ def parse_label_arg(s):
 
 
 class ResourceType(Enum):
-
     LOCAL = 0
     SHARE = 1
     REMOTE = 2

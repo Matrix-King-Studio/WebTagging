@@ -33,19 +33,22 @@ def _get_kwargs():
     parser.add_argument('--image-files', nargs='*', help='Paths to image files you want to test')
 
     parser.add_argument('--show-images', action='store_true', help='Show the results of the annotation in a window')
-    parser.add_argument('--show-image-delay', default=0, type=int, help='Displays the images for a set duration in milliseconds, default is until a key is pressed')
+    parser.add_argument('--show-image-delay', default=0, type=int,
+                        help='Displays the images for a set duration in milliseconds, default is until a key is pressed')
     parser.add_argument('--serialize', default=False, action='store_true', help='Try to serialize the result')
     parser.add_argument('--show-labels', action='store_true', help='Show the labels on the window')
 
     return vars(parser.parse_args())
+
 
 def _init_django(settings):
     import django
     os.environ['DJANGO_SETTINGS_MODULE'] = settings
     django.setup()
 
+
 def random_color():
-    rgbl=[255,0,0]
+    rgbl = [255, 0, 0]
     random.shuffle(rgbl)
     return tuple(rgbl)
 
@@ -53,8 +56,9 @@ def random_color():
 def pairwise(iterable):
     result = []
     for i in range(0, len(iterable) - 1, 2):
-        result.append((iterable[i], iterable[i+1]))
+        result.append((iterable[i], iterable[i + 1]))
     return np.array(result, dtype=np.int32)
+
 
 def find_min_y(array):
     min_ = sys.maxsize
@@ -65,6 +69,7 @@ def find_min_y(array):
             index = i
 
     return array[index]
+
 
 def _get_docker_files(model_name: str, task_id: int):
     _init_django('cvat.settings.development')
@@ -175,7 +180,7 @@ def main():
         image_data = [cv2.imread(f) for f in image_files]
     else:
         test_image = np.ones((1024, 1980, 3), np.uint8) * 255
-        image_data = [test_image,]
+        image_data = [test_image, ]
     attribute_spec = {}
 
     results = run_inference_engine_annotation(image_data,
@@ -185,7 +190,6 @@ def main():
                                               attribute_spec,
                                               py_file,
                                               restricted=restricted)
-
 
     logging.warning('Inference didn\'t have any errors.')
     show_images = kwargs.get('show_images', False)
@@ -219,7 +223,8 @@ def main():
                     cv2.rectangle(data, (points[0], points[1]), (points[2], points[3]), color, 3)
 
                     if show_labels:
-                        cv2.putText(data, label_str, (points[0], points[1] - 7), cv2.FONT_HERSHEY_COMPLEX, 0.6, color, 1)
+                        cv2.putText(data, label_str, (points[0], points[1] - 7), cv2.FONT_HERSHEY_COMPLEX, 0.6, color,
+                                    1)
 
                 elif detection['type'] in ('polygon', 'polyline'):
                     # polylines is picky about datatypes
@@ -228,7 +233,8 @@ def main():
 
                     if show_labels:
                         min_point = find_min_y(points)
-                        cv2.putText(data, label_str, (min_point[0], min_point[1] - 7), cv2.FONT_HERSHEY_COMPLEX, 0.6, color, 1)
+                        cv2.putText(data, label_str, (min_point[0], min_point[1] - 7), cv2.FONT_HERSHEY_COMPLEX, 0.6,
+                                    color, 1)
 
             cv2.imshow(str(index), data)
             cv2.waitKey(show_image_delay)
@@ -258,6 +264,7 @@ def main():
         if not serializer.is_valid():
             logging.critical('Data unable to be serialized correctly!')
             serializer.is_valid(raise_exception=True)
+
 
 if __name__ == '__main__':
     main()

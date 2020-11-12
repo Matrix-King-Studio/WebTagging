@@ -1,7 +1,3 @@
-# Copyright (C) 2018 Intel Corporation
-#
-# SPDX-License-Identifier: MIT
-
 from cvat.settings.base import JS_3RDPARTY
 
 default_app_config = 'cvat.apps.reid.apps.ReidConfig'

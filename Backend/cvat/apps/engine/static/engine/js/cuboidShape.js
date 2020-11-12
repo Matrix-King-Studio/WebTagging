@@ -1,11 +1,6 @@
 /* eslint-disable func-names */
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable curly */
-/*
- * Copyright (C) 2018 Intel Corporation
- *
- * SPDX-License-Identifier: MIT
- */
 
 /* exported CuboidModel, CuboidView */
 

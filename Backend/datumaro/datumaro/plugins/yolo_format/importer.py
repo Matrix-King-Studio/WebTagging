@@ -1,8 +1,3 @@
-
-# Copyright (C) 2019 Intel Corporation
-#
-# SPDX-License-Identifier: MIT
-
 from glob import glob
 import logging as log
 import os.path as osp
@@ -16,7 +11,7 @@ class YoloImporter(Importer):
         return len(cls.find_configs(path)) != 0
 
     def __call__(self, path, **extra_params):
-        from datumaro.components.project import Project # cyclic import
+        from datumaro.components.project import Project  # cyclic import
         project = Project()
 
         config_paths = self.find_configs(path)

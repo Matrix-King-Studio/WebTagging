@@ -1,17 +1,11 @@
-
-# Copyright (C) 2019 Intel Corporation
-#
-# SPDX-License-Identifier: MIT
-
 from collections import OrderedDict
 from enum import Enum
 from itertools import chain
 import numpy as np
 
 from datumaro.components.extractor import (AnnotationType,
-    LabelCategories, MaskCategories
-)
-
+                                           LabelCategories, MaskCategories
+                                           )
 
 VocTask = Enum('VocTask', [
     'classification',
@@ -74,6 +68,7 @@ VocAction = Enum('VocAction', [
     'walking',
 ])
 
+
 def generate_colormap(length=256):
     def get_bit(number, index):
         return (number >> index) & 1
@@ -90,9 +85,11 @@ def generate_colormap(length=256):
         (id, tuple(color)) for id, color in enumerate(colormap)
     )
 
+
 VocColormap = {id: color for id, color in generate_colormap(256).items()
-    if id in [l.value for l in VocLabel]}
+               if id in [l.value for l in VocLabel]}
 VocInstColormap = generate_colormap(256)
+
 
 class VocPath:
     IMAGES_DIR = 'JPEGImages'
@@ -120,6 +117,7 @@ def make_voc_label_map():
     label_map[VocLabel.person.name][1] = [p.name for p in VocBodyPart]
     label_map[VocLabel.person.name][2] = [a.name for a in VocAction]
     return label_map
+
 
 def parse_label_map(path):
     if not path:
@@ -159,6 +157,7 @@ def parse_label_map(path):
             label_map[name] = [color, parts, actions]
     return label_map
 
+
 def write_label_map(path, label_map):
     with open(path, 'w') as f:
         f.write('# label:color_rgb:parts:actions\n')
@@ -173,6 +172,7 @@ def write_label_map(path, label_map):
 
             f.write('%s\n' % ':'.join([label_name, color_rgb, parts, actions]))
 
+
 # pylint: disable=pointless-statement
 def make_voc_categories(label_map=None):
     if label_map is None:
@@ -186,7 +186,7 @@ def make_voc_categories(label_map=None):
     for label, desc in label_map.items():
         label_categories.add(label, attributes=desc[2])
     for part in OrderedDict((k, None) for k in chain(
-            *(desc[1] for desc in label_map.values()))):
+        *(desc[1] for desc in label_map.values()))):
         label_categories.add(part)
     categories[AnnotationType.label] = label_categories
 
@@ -195,10 +195,10 @@ def make_voc_categories(label_map=None):
         colormap = generate_colormap(len(label_map))
     else:
         label_id = lambda label: label_categories.find(label)[0]
-        colormap = { label_id(name): desc[0]
-            for name, desc in label_map.items() }
+        colormap = {label_id(name): desc[0]
+                    for name, desc in label_map.items()}
     mask_categories = MaskCategories(colormap)
-    mask_categories.inverse_colormap # force init
+    mask_categories.inverse_colormap  # force init
     categories[AnnotationType.mask] = mask_categories
 
     return categories

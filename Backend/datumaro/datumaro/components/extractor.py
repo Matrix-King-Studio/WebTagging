@@ -1,8 +1,3 @@
-
-# Copyright (C) 2019 Intel Corporation
-#
-# SPDX-License-Identifier: MIT
-
 from collections import namedtuple
 from enum import Enum
 import numpy as np
@@ -10,15 +5,16 @@ import numpy as np
 from datumaro.util.image import Image
 
 AnnotationType = Enum('AnnotationType',
-    [
-        'label',
-        'mask',
-        'points',
-        'polygon',
-        'polyline',
-        'bbox',
-        'caption',
-    ])
+                      [
+                          'label',
+                          'mask',
+                          'points',
+                          'polygon',
+                          'polyline',
+                          'bbox',
+                          'caption',
+                      ])
+
 
 class Annotation:
     # pylint: disable=redefined-builtin
@@ -41,6 +37,7 @@ class Annotation:
         else:
             group = int(group)
         self.group = group
+
     # pylint: enable=redefined-builtin
 
     def __eq__(self, other):
@@ -51,6 +48,7 @@ class Annotation:
             (self.type == other.type) and \
             (self.attributes == other.attributes) and \
             (self.group == other.group)
+
 
 class Categories:
     def __init__(self, attributes=None):
@@ -68,6 +66,7 @@ class Categories:
             return False
         return \
             (self.attributes == other.attributes)
+
 
 class LabelCategories(Categories):
     Category = namedtuple('Category', ['name', 'parent', 'attributes'])
@@ -118,16 +117,18 @@ class LabelCategories(Categories):
         return \
             (self.items == other.items)
 
+
 class Label(Annotation):
     # pylint: disable=redefined-builtin
     def __init__(self, label=None,
-            id=None, attributes=None, group=None):
+                 id=None, attributes=None, group=None):
         super().__init__(id=id, type=AnnotationType.label,
-            attributes=attributes, group=group)
+                         attributes=attributes, group=group)
 
         if label is not None:
             label = int(label)
         self.label = label
+
     # pylint: enable=redefined-builtin
 
     def __eq__(self, other):
@@ -135,6 +136,7 @@ class Label(Annotation):
             return False
         return \
             (self.label == other.label)
+
 
 class MaskCategories(Categories):
     def __init__(self, colormap=None, inverse_colormap=None, attributes=None):
@@ -166,12 +168,13 @@ class MaskCategories(Categories):
                 return False
         return True
 
+
 class Mask(Annotation):
     # pylint: disable=redefined-builtin
     def __init__(self, image=None, label=None, z_order=None,
-            id=None, attributes=None, group=None):
+                 id=None, attributes=None, group=None):
         super().__init__(type=AnnotationType.mask,
-            id=id, attributes=attributes, group=group)
+                         id=id, attributes=attributes, group=group)
 
         self._image = image
 
@@ -184,6 +187,7 @@ class Mask(Annotation):
         else:
             z_order = int(z_order)
         self._z_order = z_order
+
     # pylint: enable=redefined-builtin
 
     @property
@@ -226,17 +230,19 @@ class Mask(Annotation):
             (self.label == other.label) and \
             (self.z_order == other.z_order) and \
             (self.image is not None and other.image is not None and \
-                np.array_equal(self.image, other.image))
+             np.array_equal(self.image, other.image))
+
 
 class RleMask(Mask):
     # pylint: disable=redefined-builtin
     def __init__(self, rle=None, label=None, z_order=None,
-            id=None, attributes=None, group=None):
+                 id=None, attributes=None, group=None):
         lazy_decode = self._lazy_decode(rle)
         super().__init__(image=lazy_decode, label=label, z_order=z_order,
-            id=id, attributes=attributes, group=group)
+                         id=id, attributes=attributes, group=group)
 
         self._rle = rle
+
     # pylint: enable=redefined-builtin
 
     @staticmethod
@@ -261,10 +267,11 @@ class RleMask(Mask):
             return super().__eq__(other)
         return self._rle == other._rle
 
+
 class CompiledMask:
     @staticmethod
     def from_instance_masks(instance_masks,
-            instance_ids=None, instance_labels=None):
+                            instance_ids=None, instance_labels=None):
         from datumaro.util.mask_tools import merge_masks
 
         if instance_ids is not None:
@@ -282,7 +289,7 @@ class CompiledMask:
             key=lambda m: m[0].z_order)
 
         instance_mask = [m.as_instance_mask(id if id is not None else 1 + idx)
-            for idx, (m, id, _) in enumerate(instance_masks)]
+                         for idx, (m, id, _) in enumerate(instance_masks)]
         instance_mask = merge_masks(instance_mask)
 
         cls_mask = [m.as_class_mask(c) for m, _, c in instance_masks]
@@ -317,8 +324,8 @@ class CompiledMask:
             + self.instance_mask.astype(np.uint32)
         keys = np.unique(m)
         instance_labels = {k & ((1 << class_shift) - 1): k >> class_shift
-            for k in keys if k & ((1 << class_shift) - 1) != 0
-        }
+                           for k in keys if k & ((1 << class_shift) - 1) != 0
+                           }
         return instance_labels
 
     def extract(self, instance_id):
@@ -326,6 +333,7 @@ class CompiledMask:
 
     def lazy_extract(self, instance_id):
         return lambda: self.extract(instance_id)
+
 
 def compute_iou(bbox_a, bbox_b):
     aX, aY, aW, aH = bbox_a
@@ -345,12 +353,13 @@ def compute_iou(bbox_a, bbox_b):
 
     return intersection / max(1.0, union)
 
+
 class _Shape(Annotation):
     # pylint: disable=redefined-builtin
     def __init__(self, type, points=None, label=None, z_order=None,
-            id=None, attributes=None, group=None):
+                 id=None, attributes=None, group=None):
         super().__init__(id=id, type=type,
-            attributes=attributes, group=group)
+                         attributes=attributes, group=group)
         self._points = points
 
         if label is not None:
@@ -362,6 +371,7 @@ class _Shape(Annotation):
         else:
             z_order = int(z_order)
         self._z_order = z_order
+
     # pylint: enable=redefined-builtin
 
     @property
@@ -400,13 +410,15 @@ class _Shape(Annotation):
             (self.z_order == other.z_order) and \
             (self.label == other.label)
 
+
 class PolyLine(_Shape):
     # pylint: disable=redefined-builtin
     def __init__(self, points=None, label=None, z_order=None,
-            id=None, attributes=None, group=None):
+                 id=None, attributes=None, group=None):
         super().__init__(type=AnnotationType.polyline,
-            points=points, label=label, z_order=z_order,
-            id=id, attributes=attributes, group=group)
+                         points=points, label=label, z_order=z_order,
+                         id=id, attributes=attributes, group=group)
+
     # pylint: enable=redefined-builtin
 
     def as_polygon(self):
@@ -415,17 +427,19 @@ class PolyLine(_Shape):
     def get_area(self):
         return 0
 
+
 class Polygon(_Shape):
     # pylint: disable=redefined-builtin
     def __init__(self, points=None, label=None,
-            z_order=None, id=None, attributes=None, group=None):
+                 z_order=None, id=None, attributes=None, group=None):
         if points is not None:
             # keep the message on the single line to produce
             # informative output
             assert len(points) % 2 == 0 and 3 <= len(points) // 2, "Wrong polygon points: %s" % points
         super().__init__(type=AnnotationType.polygon,
-            points=points, label=label, z_order=z_order,
-            id=id, attributes=attributes, group=group)
+                         points=points, label=label, z_order=z_order,
+                         id=id, attributes=attributes, group=group)
+
     # pylint: enable=redefined-builtin
 
     def get_area(self):
@@ -436,13 +450,15 @@ class Polygon(_Shape):
         area = mask_utils.area(rle)[0]
         return area
 
+
 class Bbox(_Shape):
     # pylint: disable=redefined-builtin
     def __init__(self, x=0, y=0, w=0, h=0, label=None, z_order=None,
-            id=None, attributes=None, group=None):
+                 id=None, attributes=None, group=None):
         super().__init__(type=AnnotationType.bbox,
-            points=[x, y, x + w, y + h], label=label, z_order=z_order,
-            id=id, attributes=attributes, group=group)
+                         points=[x, y, x + w, y + h], label=label, z_order=z_order,
+                         id=id, attributes=attributes, group=group)
+
     # pylint: enable=redefined-builtin
 
     @property
@@ -479,6 +495,7 @@ class Bbox(_Shape):
     def iou(self, other):
         return compute_iou(self.get_bbox(), other.get_bbox())
 
+
 class PointsCategories(Categories):
     Category = namedtuple('Category', ['labels', 'joints'])
 
@@ -503,6 +520,7 @@ class PointsCategories(Categories):
         return \
             (self.items == other.items)
 
+
 class Points(_Shape):
     Visibility = Enum('Visibility', [
         ('absent', 0),
@@ -512,7 +530,7 @@ class Points(_Shape):
 
     # pylint: disable=redefined-builtin
     def __init__(self, points=None, visibility=None, label=None, z_order=None,
-            id=None, attributes=None, group=None):
+                 id=None, attributes=None, group=None):
         if points is not None:
             assert len(points) % 2 == 0
 
@@ -527,10 +545,11 @@ class Points(_Shape):
                     visibility.append(self.Visibility.visible)
 
         super().__init__(type=AnnotationType.points,
-            points=points, label=label, z_order=z_order,
-            id=id, attributes=attributes, group=group)
+                         points=points, label=label, z_order=z_order,
+                         id=id, attributes=attributes, group=group)
 
         self.visibility = visibility
+
     # pylint: enable=redefined-builtin
 
     def get_area(self):
@@ -538,9 +557,9 @@ class Points(_Shape):
 
     def get_bbox(self):
         xs = [p for p, v in zip(self.points[0::2], self.visibility)
-            if v != __class__.Visibility.absent]
+              if v != __class__.Visibility.absent]
         ys = [p for p, v in zip(self.points[1::2], self.visibility)
-            if v != __class__.Visibility.absent]
+              if v != __class__.Visibility.absent]
         x0 = min(xs, default=0)
         x1 = max(xs, default=0)
         y0 = min(ys, default=0)
@@ -553,18 +572,20 @@ class Points(_Shape):
         return \
             (self.visibility == other.visibility)
 
+
 class Caption(Annotation):
     # pylint: disable=redefined-builtin
     def __init__(self, caption=None,
-            id=None, attributes=None, group=None):
+                 id=None, attributes=None, group=None):
         super().__init__(id=id, type=AnnotationType.caption,
-            attributes=attributes, group=group)
+                         attributes=attributes, group=group)
 
         if caption is None:
             caption = ''
         else:
             caption = str(caption)
         self.caption = caption
+
     # pylint: enable=redefined-builtin
 
     def __eq__(self, other):
@@ -573,10 +594,11 @@ class Caption(Annotation):
         return \
             (self.caption == other.caption)
 
+
 class DatasetItem:
     # pylint: disable=redefined-builtin
     def __init__(self, id=None, annotations=None,
-            subset=None, path=None, image=None):
+                 subset=None, path=None, image=None):
         assert id is not None
         self._id = str(id)
 
@@ -604,6 +626,7 @@ class DatasetItem:
             image = Image(path=image)
         assert image is None or isinstance(image, Image)
         self._image = image
+
     # pylint: enable=redefined-builtin
 
     @property
@@ -647,6 +670,7 @@ class DatasetItem:
                 kwargs[k] = getattr(item, k)
         return DatasetItem(**kwargs)
 
+
 class IExtractor:
     def __iter__(self):
         raise NotImplementedError()
@@ -666,6 +690,7 @@ class IExtractor:
     def select(self, pred):
         raise NotImplementedError()
 
+
 class _DatasetFilter:
     def __init__(self, iterable, predicate):
         self.iterable = iterable
@@ -673,6 +698,7 @@ class _DatasetFilter:
 
     def __iter__(self):
         return filter(self.predicate, self.iterable)
+
 
 class _ExtractorBase(IExtractor):
     def __init__(self, length=None, subsets=None):
@@ -710,6 +736,7 @@ class _ExtractorBase(IExtractor):
     def transform(self, method, *args, **kwargs):
         return method(self, *args, **kwargs)
 
+
 class DatasetIteratorWrapper(_ExtractorBase):
     def __init__(self, iterable, categories, subsets=None):
         super().__init__(length=None, subsets=subsets)
@@ -726,6 +753,7 @@ class DatasetIteratorWrapper(_ExtractorBase):
         return DatasetIteratorWrapper(
             _DatasetFilter(self, pred), self.categories(), self.subsets())
 
+
 class Extractor(_ExtractorBase):
     def __init__(self, length=None):
         super().__init__(length=None)
@@ -736,6 +764,7 @@ class Extractor(_ExtractorBase):
     def select(self, pred):
         return DatasetIteratorWrapper(
             _DatasetFilter(self, pred), self.categories(), self.subsets())
+
 
 DEFAULT_SUBSET_NAME = 'default'
 
@@ -756,6 +785,7 @@ class SourceExtractor(Extractor):
             return None
         return self
 
+
 class Importer:
     @classmethod
     def detect(cls, path):
@@ -763,6 +793,7 @@ class Importer:
 
     def __call__(self, path, **extra_params):
         raise NotImplementedError()
+
 
 class Transform(Extractor):
     @staticmethod

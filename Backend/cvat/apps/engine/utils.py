@@ -6,6 +6,7 @@ import traceback
 
 Import = namedtuple("Import", ["module", "name", "alias"])
 
+
 def parse_imports(source_code: str):
     root = ast.parse(source_code)
 
@@ -19,6 +20,7 @@ def parse_imports(source_code: str):
 
         for n in node.names:
             yield Import(module, n.name, n.asname)
+
 
 def import_modules(source_code: str):
     results = {}
@@ -37,8 +39,10 @@ def import_modules(source_code: str):
 
     return results
 
+
 class InterpreterError(Exception):
     pass
+
 
 def execute_python_code(source_code, global_vars=None, local_vars=None):
     try:

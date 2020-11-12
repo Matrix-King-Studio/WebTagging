@@ -1,8 +1,3 @@
-
-# Copyright (C) 2019 Intel Corporation
-#
-# SPDX-License-Identifier: MIT
-
 class Converter:
     def __init__(self, cmdline_args=None):
         pass

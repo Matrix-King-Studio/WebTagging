@@ -3,24 +3,20 @@
     <div class="task-info">
       <div class="basic-info-box">
         <div class="task-name">
-          <span>项目名</span>
+          <span>项目名：{{ taskInformation.results[0].name }}</span>
         </div>
         <div class="basic-info">
           <div class="info">
-            <div>图像质量</div>
-            <span>80</span>
+            <div>图像质量：{{ taskInformation.results[0].image_quality }}</div>
           </div>
           <div class="info">
-            <div>图片数量</div>
-            <span>num</span>
+            <div>图片数量：{{ taskInformation.results[0].size }}</div>
           </div>
           <div class="info">
-            <div>overlap-size</div>
-            <span>0</span>
+            <div>创建时间：{{ taskInformation.results[0].created_date }}</div>
           </div>
           <div class="info">
-            <div>z-order</div>
-            <span>0</span>
+            <div>更新时间：{{ taskInformation.results[0].updated_date }}</div>
           </div>
         </div>
         <div class="func-box">
@@ -140,6 +136,7 @@ export default {
         {name: 'COCO', format: 'COCO%201.0'},
         {name: 'YOLO', format: 'YOLO%201.1'},
       ],
+      taskInformation: {},
       /* Alex End */
 
       jobsInfo: [],
@@ -191,7 +188,8 @@ export default {
     deleteTask() {
       console.log('delete');
     },
-    //拿task数据用于job配置
+
+    // 获取 task 数据，用于 job 配置
     getTaskInfo() {
       this.$http.get('v1/tasks', {
         params: {
@@ -199,12 +197,13 @@ export default {
           id: this.$route.params.index
         }
       }).then((e) => {
-        console.log(e);
+        this.taskInformation = e.data
+        console.log(this.taskInformation);
         this.jobsInfo = e.data.results[0].segments
         for (let i = 0; i < this.jobsInfo.length; i++) {
           this.jobsInfo[i]["index"] = i
         }
-        console.log(this.jobsInfo);
+        // console.log(this.jobsInfo);
       })
     },
     //拿所有人员的数据用于分配任务
@@ -261,7 +260,7 @@ export default {
 
     .basic-info-box {
       height: 100%;
-      width: 240px;
+      width: 300px;
       float: left;
       position: relative;
 
@@ -284,8 +283,8 @@ export default {
         padding-left: 16px;
 
         .info {
-          width: 110px;
-          height: 60px;
+          width: 300px;
+          height: 30px;
           float: left;
 
           div {
@@ -339,8 +338,8 @@ export default {
 
     .update-info-box {
       height: 100%;
-      width: 560px;
-      float: left;
+      width: 500px;
+      float: right;
       //background-color: green;
     }
   }

@@ -1,16 +1,11 @@
-
-# Copyright (C) 2019 Intel Corporation
-#
-# SPDX-License-Identifier: MIT
-
 from collections import OrderedDict
 import os.path as osp
 from defusedxml import ElementTree
 
 from datumaro.components.extractor import (SourceExtractor, DatasetItem,
-    AnnotationType, Points, Polygon, PolyLine, Bbox, Label,
-    LabelCategories
-)
+                                           AnnotationType, Points, Polygon, PolyLine, Bbox, Label,
+                                           LabelCategories
+                                           )
 from datumaro.util.image import Image
 
 from .format import CvatPath
@@ -173,6 +168,7 @@ class CvatExtractor(SourceExtractor):
         # Recursive descent parser
         el = None
         states = ['annotations']
+
         def accepted(expected_state, tag, next_state=None):
             state = states[-1]
             if state == expected_state and el is not None and el.tag == tag:
@@ -181,6 +177,7 @@ class CvatExtractor(SourceExtractor):
                 states.append(next_state)
                 return True
             return False
+
         def consumed(expected_state, tag):
             state = states[-1]
             if state == expected_state and el is not None and el.tag == tag:
@@ -190,33 +187,45 @@ class CvatExtractor(SourceExtractor):
 
         for ev, el in context:
             if ev == 'start':
-                if accepted('annotations', 'meta'): pass
-                elif accepted('meta', 'task'): pass
-                elif accepted('task', 'z_order'): pass
+                if accepted('annotations', 'meta'):
+                    pass
+                elif accepted('meta', 'task'):
+                    pass
+                elif accepted('task', 'z_order'):
+                    pass
                 elif accepted('task', 'original_size'):
                     frame_size = [None, None]
-                elif accepted('original_size', 'height', next_state='frame_height'): pass
-                elif accepted('original_size', 'width', next_state='frame_width'): pass
-                elif accepted('task', 'labels'): pass
+                elif accepted('original_size', 'height', next_state='frame_height'):
+                    pass
+                elif accepted('original_size', 'width', next_state='frame_width'):
+                    pass
+                elif accepted('task', 'labels'):
+                    pass
                 elif accepted('labels', 'label'):
-                    label = { 'name': None, 'attributes': set() }
-                elif accepted('label', 'name', next_state='label_name'): pass
-                elif accepted('label', 'attributes'): pass
-                elif accepted('attributes', 'attribute'): pass
-                elif accepted('attribute', 'name', next_state='attr_name'): pass
+                    label = {'name': None, 'attributes': set()}
+                elif accepted('label', 'name', next_state='label_name'):
+                    pass
+                elif accepted('label', 'attributes'):
+                    pass
+                elif accepted('attributes', 'attribute'):
+                    pass
+                elif accepted('attribute', 'name', next_state='attr_name'):
+                    pass
                 elif accepted('annotations', 'image') or \
-                     accepted('annotations', 'track') or \
-                     accepted('annotations', 'tag'):
+                    accepted('annotations', 'track') or \
+                    accepted('annotations', 'tag'):
                     break
                 else:
                     pass
             elif ev == 'end':
                 if consumed('meta', 'meta'):
                     break
-                elif consumed('task', 'task'): pass
+                elif consumed('task', 'task'):
+                    pass
                 elif consumed('z_order', 'z_order'):
                     has_z_order = (el.text == 'True')
-                elif consumed('original_size', 'original_size'): pass
+                elif consumed('original_size', 'original_size'):
+                    pass
                 elif consumed('frame_height', 'height'):
                     frame_size[0] = int(el.text)
                 elif consumed('frame_width', 'width'):
@@ -225,12 +234,15 @@ class CvatExtractor(SourceExtractor):
                     label['name'] = el.text
                 elif consumed('attr_name', 'name'):
                     label['attributes'].add(el.text)
-                elif consumed('attribute', 'attribute'): pass
-                elif consumed('attributes', 'attributes'): pass
+                elif consumed('attribute', 'attribute'):
+                    pass
+                elif consumed('attributes', 'attributes'):
+                    pass
                 elif consumed('label', 'label'):
                     labels[label['name']] = label['attributes']
                     label = None
-                elif consumed('labels', 'labels'): pass
+                elif consumed('labels', 'labels'):
+                    pass
                 else:
                     pass
 
@@ -273,21 +285,21 @@ class CvatExtractor(SourceExtractor):
 
         if ann_type == 'polyline':
             return PolyLine(points, label=label_id, z_order=z_order,
-                id=ann_id, attributes=attributes, group=group)
+                            id=ann_id, attributes=attributes, group=group)
 
         elif ann_type == 'polygon':
             return Polygon(points, label=label_id, z_order=z_order,
-                id=ann_id, attributes=attributes, group=group)
+                           id=ann_id, attributes=attributes, group=group)
 
         elif ann_type == 'points':
             return Points(points, label=label_id, z_order=z_order,
-                id=ann_id, attributes=attributes, group=group)
+                          id=ann_id, attributes=attributes, group=group)
 
         elif ann_type == 'box':
             x, y = points[0], points[1]
             w, h = points[2] - x, points[3] - y
             return Bbox(x, y, w, h, label=label_id, z_order=z_order,
-                id=ann_id, attributes=attributes, group=group)
+                        id=ann_id, attributes=attributes, group=group)
 
         else:
             raise NotImplementedError("Unknown annotation type '%s'" % ann_type)
@@ -317,14 +329,14 @@ class CvatExtractor(SourceExtractor):
                 image = Image(path=filename, size=image_size)
 
             parsed[frame_id] = DatasetItem(id=frame_id, subset=self._subset,
-                image=image, annotations=item_desc.get('annotations'))
+                                           image=image, annotations=item_desc.get('annotations'))
         return parsed
 
     def _find_image(self, file_name):
         search_paths = []
         if self._images_dir:
-            search_paths += [ osp.join(self._images_dir, file_name) ]
-        search_paths += [ osp.join(osp.dirname(self._path), file_name) ]
+            search_paths += [osp.join(self._images_dir, file_name)]
+        search_paths += [osp.join(osp.dirname(self._path), file_name)]
         for image_path in search_paths:
             if osp.isfile(image_path):
                 return image_path

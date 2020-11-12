@@ -1,8 +1,3 @@
-
-# Copyright (C) 2018 Intel Corporation
-#
-# SPDX-License-Identifier: MIT
-
 from django.conf import settings
 from . import AUTH_ROLE
 
@@ -12,6 +7,7 @@ AUTH_LDAP_GROUPS = {
     AUTH_ROLE.USER: settings.AUTH_LDAP_USER_GROUPS,
     AUTH_ROLE.OBSERVER: settings.AUTH_LDAP_OBSERVER_GROUPS
 }
+
 
 def create_user(sender, user=None, ldap_user=None, **kwargs):
     from django.contrib.auth.models import Group
@@ -25,9 +21,5 @@ def create_user(sender, user=None, ldap_user=None, **kwargs):
                 if role == AUTH_ROLE.ADMIN:
                     user.is_staff = user.is_superuser = True
 
-    # It is important to save the user before adding groups. Please read
-    # https://django-auth-ldap.readthedocs.io/en/latest/users.html#populating-users
-    # The user instance will be saved automatically after the signal handler
-    # is run.
     user.save()
     user.groups.set(user_groups)
