@@ -33,15 +33,15 @@
       </div>
 
       <!--右边的用来选择标签的框的box-->
-      <div class="label-obj-box">
+      <div class="label-obj-box" >
         <!--右边的用来选择标签的框，每一项-->
         <div
           v-for="item in shapes.rectangles"
           :key="item.index"
           :id="'style_'+(item.index)"
           class="label-obj"
-          @mouseenter="showRecObj(item.index)"
-          @mouseleave="hideRecObj(item.index)"
+          @mouseenter="showRecObj(item.index),showLabObj(item.index)"
+          @mouseleave="hideRecObj(item.index),hideLabObj(item.index)"
         >
           <!--右边的用来选择标签的框，上半部分，显示序号和标签下拉选择-->
           <div class="label-info">
@@ -51,6 +51,7 @@
                 v-model="shapes.rectangles[item.index-1].label_id"
                 placeholder="请选择"
                 size="mini"
+                @change="saveTagsToStore"
               >
                 <el-option
                   v-for="i in options"
@@ -186,7 +187,7 @@ export default {
 
       //图片相关
       isGotImg: false,
-      imagesData: [],
+      imagesData: '',
       imagesSize: 0,
       imageIndex: 0,
       imageInfo: {},
@@ -218,7 +219,7 @@ export default {
     this.getJobInfo()
   },
   mounted() {
-    this.getImages()
+    this.initCanvas()
     //停止改变窗口大小后0.3秒重新绘制图片
     window.onresize = () => {
       if (this.isResizing) {
@@ -260,18 +261,21 @@ export default {
     /** 不能直接用 url 中的 id 去拿图片，如果暴力改变 url 需要回到 home 要用路由守卫*/
     getImages() {
       //请求图片数据
-      console.log("0.开始请求数据");
+      console.log("1.开始请求第" + (this.imageIndex+1) + "张图片的数据数据")
       this.$http.get('v1/tasks/' + this.$route.params.index + '/data', {
         params: {
           type: 'chunk',
-          //数字0是加载图片，2是禁止加载
-          number: 0,
+          number: this.imageIndex,
           quality: 'compressed'
         },
         // 请求数据的格式
         responseType: 'arraybuffer',
+        headers: {
+        //   'Authorization': 'Token 52195b9480418fb20992f411e188bb945c983359',
+        //   'Cache-Control': 'no-cache'
+        }
       }).then(e => {
-        console.log("1.图片获取完成")
+        console.log("2.图片获取完成")
         // 使用JSZip解压数据
         const zip = new JSZip()
         if (e.data) {
@@ -280,17 +284,16 @@ export default {
             for (let key in imgData.files) {
               let base = imgData.file(zip.files[key].name).async('base64')
               base.then(res => {
-                this.imagesData.push(res)
+                this.imagesData = res
               })
             }
-            console.log("2.图片解压完成")
+            console.log("3.图片解压完成")
             this.isGotImg = true
+          }).then(()=>{
+            this.drawImages()
           })
         }
-      }).then(() => {
-            this.initCanvas()
-          }
-      ).catch(err => {
+      }).catch(err => {
         console.log(err);
       })
     },
@@ -304,9 +307,9 @@ export default {
       this.myCanvas.width = document.body.clientWidth - 46
       this.myCanvas.height = document.body.clientHeight - 35
 
-      console.log("3.画布初始化完成")
-      //绘制图片
-      this.drawImages()
+      console.log("0.画布初始化完成")
+      //获取图片
+      this.getImages()
       //设置鼠标样式
       document.getElementById('myCanvas').style.cursor = 'default'
     },
@@ -323,11 +326,12 @@ export default {
       //将解压出的文件以base64格式放到图片对象中
       let img = new Image()
 
-      console.log("4.图片对象初始化完成");
+      console.log("4.图片DOM对象初始化完成");
       //清除画布
       this.ctx.clearRect(0, 0, this.myCanvas.width, this.myCanvas.height)
       setTimeout(() => {
-        img.src = "data:image/png;base64," + this.imagesData[this.imageIndex]
+        // img.src = "data:image/png;base64," + this.imagesData[this.imageIndex]
+        img.src = "data:image/png;base64," + this.imagesData
         console.log("5.base64数据嵌入完成");
       }, 100)
 
@@ -353,74 +357,45 @@ export default {
         // console.log('图片缩放后的尺寸' + this.imageInfo.width, this.imageInfo.height);
         this.imageScale = img.width / this.imageInfo.width
         console.log("6.图片尺寸数据处理完成，图片缩放比例：" + this.imageScale);
-        //将图片绘制到canvas上
+        //将图片绘制到canvas上，这里的drawImage是canvas里的函数
         this.ctx.drawImage(img, this.imageInfo.left, this.imageInfo.top, this.imageInfo.width, this.imageInfo.height)
         console.log("7.图片绘制完成");
 
-        //加载完成后删除
+        //加载完成后删除正在加载
         if (this.isFirst) {
           this.$refs.tipsBox.parentNode.removeChild(this.$refs.tipsBox)
           this.isFirst = false
         }
-      }, 200)
+      }, 300)
     },
-
     //切换图片
     changeImg(mod) {
-      if (mod === 'start') {
+      if (mod === 'start') {//第一张
+        //如果不是第一张就加载
         if (this.imageIndex !== 0) {
           this.imageIndex = 0
-          this.drawImages()
+          this.getImages()
           this.removeRec('all')
           this.reDrawTags(1, this.imageIndex)
         }
-      } else if (mod === 'back') {
+      } else if (mod === 'back') {//上一张
         if (this.imageIndex !== 0) {
           this.imageIndex -= 1
-          this.drawImages()
+          this.getImages()
           this.removeRec('all')
           this.reDrawTags(1, this.imageIndex)
         }
-      } else if (mod === 'next') {
+      } else if (mod === 'next') {//下一张
         if (this.imageIndex !== (this.imagesSize - 1)) {
           this.imageIndex += 1
-          this.drawImages()
+          this.getImages()
           this.removeRec('all')
           this.reDrawTags(1, this.imageIndex)
         }
-        /* Alex Start */
-        this.$http.get('v1/tasks/' + this.$route.params.index + '/data', {
-          params: {
-            type: 'chunk',
-            //数字0是加载图片，2是禁止加载
-            number: this.imageIndex,
-            quality: 'compressed'
-          },
-          // 请求数据的格式
-          responseType: 'arraybuffer',
-        }).then(e => {
-          console.log("1.图片获取完成")
-          // 使用 JSZip 解压数据
-          const zip = new JSZip()
-          if (e.data) {
-            zip.loadAsync(e.data).then((imgData) => {
-              // 获取图片base64格式信息
-              for (let key in imgData.files) {
-                let base = imgData.file(zip.files[key].name).async('base64')
-                base.then(res => {
-                  this.imagesData.push(res)
-                })
-              }
-              console.log("2.图片解压完成")
-              this.isGotImg = true
-            })
-          }
-        })
-        /* Alex End */
-      } else if (mod === 'end') {
+      } else if (mod === 'end') {//最后一张
         if (this.imageIndex !== (this.imagesSize - 1)) {
           this.imageIndex = this.imagesSize - 1
-          this.drawImages()
+          this.getImages()
           this.removeRec('all')
           this.reDrawTags(1, this.imageIndex)
         }
@@ -666,7 +641,7 @@ export default {
         this.removeRec('all')
       }
       //清洗出这张图片的标注信息
-      console.log(TagsInfo);
+      console.log('获取此图片的标注信息',TagsInfo);
       for (let item in TagsInfo) {
         if (TagsInfo[item].frame === imgIndex) {
 
@@ -675,6 +650,16 @@ export default {
           //创建矩形框
           let rec = document.createElement('div')
           rec.className += 'rec-obj'
+          //id用来标记是第几个div
+          rec.id = this.rectangleIndex
+          //添加鼠标移入，右侧对应标签栏高亮事件
+          rec.onmouseenter = (e) => {
+              this.showLabObj(e.target.id)
+          }
+          //添加鼠标移出，右侧对应标签栏高亮事件
+          rec.onmouseleave = (e) => {
+              this.hideLabObj(e.target.id)
+          }
 
           setTimeout(() => {
             // console.log(parseInt(TagsInfo[item].points[0]) / this.imageScale);
@@ -721,19 +706,16 @@ export default {
     showRecObj(index) {
       this.shapes.rectangles[index - 1].el.style.backgroundColor = 'rgba(255,255,255,0.4)'
     },
-    //鼠标放到矩形框高亮右侧信息栏
-    showLabObj(index){
-      console.log("鼠标移入第" + index + "个标记框");
-      let styleid = "style_"+index;
-      let object = document.getElementById(styleid);
-      object.style.background = 'rgb(255,241,142)'
-    },
     hideRecObj(index){
       this.shapes.rectangles[index-1].el.style.backgroundColor = 'transparent'
     },
-    //鼠标移出颜色消失
+    //鼠标放到矩形框高亮右侧信息栏
+    showLabObj(index){
+      let styleid = "style_"+index;
+      let object = document.getElementById(styleid);
+      object.style.background = '#fcffe1'
+    },
     hideLabObj(index){
-      console.log("鼠标移入第" + index + "个标记框");
       let styleid = "style_"+index;
       let object = document.getElementById(styleid);
       object.style.background = 'rgb(255,255,255)'
@@ -882,9 +864,6 @@ export default {
     border-radius: 12px;
     overflow: auto;
     background-color: #fafbfc;
-    .label-obj:hover{
-      background:rgb(255,241,142)
-    }
     .label-obj{
       height: 80px;
       width: 100%;
@@ -956,7 +935,7 @@ export default {
     }
 
     .img-btn:hover {
-      background-color: #bbe6d6;
+      background-color: #bbe6d6 !important;;
     }
 
     .this {
