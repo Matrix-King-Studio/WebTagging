@@ -20,276 +20,24 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e2fd5767-3d4d-4226-8c86-65e39b2024b3" name="Default Changelist" comment="完成标注数据的存储">
-      <change beforePath="$PROJECT_DIR$/../.idea/WebTagging.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.idea/deployment.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.idea/inspectionProfiles/profiles_settings.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.idea/misc.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.idea/modules.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.idea/vcs.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.idea/workspace.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/WebTagging.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/WebTagging.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/authentication/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/authentication/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/authentication/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/authentication/admin.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/authentication/apps.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/authentication/apps.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/authentication/auth.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/authentication/auth.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/authentication/auth_ldap.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/authentication/auth_ldap.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/authentication/decorators.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/authentication/decorators.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/authentication/migrations/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/authentication/migrations/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/authentication/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/authentication/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/authentication/serializers.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/authentication/serializers.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/authentication/signature.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/authentication/signature.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/authentication/templates/403.html" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/authentication/templates/403.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/authentication/templates/auth_base.html" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/authentication/templates/auth_base.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/authentication/templates/login.html" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/authentication/templates/login.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/authentication/templates/register.html" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/authentication/templates/register.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/authentication/templates/user_profile.html" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/authentication/templates/user_profile.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/authentication/tests.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/authentication/tests.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cvat/apps/authentication/api_urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/authentication/api_urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cvat/apps/authentication/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/authentication/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/auto_annotation/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/auto_annotation/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/auto_annotation/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/auto_annotation/admin.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/auto_annotation/apps.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/auto_annotation/apps.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/auto_annotation/image_loader.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/auto_annotation/image_loader.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/auto_annotation/inference.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/auto_annotation/inference.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/auto_annotation/inference_engine.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/auto_annotation/inference_engine.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/auto_annotation/migrations/0001_initial.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/auto_annotation/migrations/0001_initial.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/auto_annotation/migrations/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/auto_annotation/migrations/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/auto_annotation/model_loader.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/auto_annotation/model_loader.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/auto_annotation/model_manager.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/auto_annotation/model_manager.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/auto_annotation/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/auto_annotation/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/auto_annotation/permissions.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/auto_annotation/permissions.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/auto_annotation/tests.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/auto_annotation/tests.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/auto_annotation/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/auto_annotation/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cvat/apps/auto_annotation/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/auto_annotation/README.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cvat/apps/auto_annotation/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/auto_annotation/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/auto_segmentation/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/auto_segmentation/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/auto_segmentation/admin.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/auto_segmentation/apps.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/auto_segmentation/apps.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/auto_segmentation/migrations/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/auto_segmentation/migrations/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/auto_segmentation/models.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/auto_segmentation/tests.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/auto_segmentation/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/auto_segmentation/urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/auto_segmentation/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/auto_segmentation/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/dataset_manager/bindings.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/dataset_manager/bindings.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/dataset_manager/formats/cvat.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/dataset_manager/formats/cvat.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/dataset_manager/formats/datumaro/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/dataset_manager/formats/datumaro/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/dataset_manager/formats/datumaro/export_templates/plugins/cvat_rest_api_task_images.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/dataset_manager/formats/datumaro/export_templates/plugins/cvat_rest_api_task_images.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/dataset_manager/formats/labelme.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/dataset_manager/formats/labelme.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/dataset_manager/formats/mask.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/dataset_manager/formats/mask.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/dataset_manager/formats/mot.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/dataset_manager/formats/mot.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/dataset_manager/formats/pascal_voc.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/dataset_manager/formats/pascal_voc.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/dataset_manager/formats/registry.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/dataset_manager/formats/registry.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/dataset_manager/formats/tfrecord.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/dataset_manager/formats/tfrecord.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/dataset_manager/formats/yolo.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/dataset_manager/formats/yolo.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/dataset_manager/serializers.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/dataset_manager/serializers.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/dataset_manager/tests/_test_formats.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/dataset_manager/tests/_test_formats.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/dataset_manager/tests/test_annotation.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/dataset_manager/tests/test_annotation.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/dextr_segmentation/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/dextr_segmentation/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/dextr_segmentation/apps.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/dextr_segmentation/apps.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/dextr_segmentation/dextr.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/dextr_segmentation/dextr.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/dextr_segmentation/docker-compose.dextr.yml" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/dextr_segmentation/docker-compose.dextr.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/dextr_segmentation/static/dextr_segmentation/js/enginePlugin.js" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/dextr_segmentation/static/dextr_segmentation/js/enginePlugin.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/dextr_segmentation/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/dextr_segmentation/urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/dextr_segmentation/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/dextr_segmentation/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/engine/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/engine/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/engine/migrations/0001_release_v0_1_0.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/engine/migrations/0001_release_v0_1_0.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/engine/migrations/0002_labeledpoints_labeledpointsattributeval_labeledpolygon_labeledpolygonattributeval_labeledpolyline_la.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/engine/migrations/0002_labeledpoints_labeledpointsattributeval_labeledpolygon_labeledpolygonattributeval_labeledpolyline_la.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/engine/migrations/0003_objectpath_shapes.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/engine/migrations/0003_objectpath_shapes.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/engine/migrations/0004_task_z_order.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/engine/migrations/0004_task_z_order.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/engine/migrations/0005_auto_20180609_1512.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/engine/migrations/0005_auto_20180609_1512.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/engine/migrations/0006_auto_20180629_1501.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/engine/migrations/0006_auto_20180629_1501.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/engine/migrations/0007_task_flipped.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/engine/migrations/0007_task_flipped.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/engine/migrations/0008_auto_20180917_1424.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/engine/migrations/0008_auto_20180917_1424.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/engine/migrations/0009_auto_20180917_1424.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/engine/migrations/0009_auto_20180917_1424.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/engine/migrations/0010_auto_20181011_1517.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/engine/migrations/0010_auto_20181011_1517.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/engine/migrations/0011_add_task_source_and_safecharfield.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/engine/migrations/0011_add_task_source_and_safecharfield.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/engine/migrations/0012_auto_20181025_1618.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/engine/migrations/0012_auto_20181025_1618.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/engine/migrations/0013_auth_no_default_permissions.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/engine/migrations/0013_auth_no_default_permissions.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/engine/migrations/0014_job_max_shape_id.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/engine/migrations/0014_job_max_shape_id.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/engine/migrations/0015_db_redesign_20190217.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/engine/migrations/0015_db_redesign_20190217.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/engine/migrations/0016_attribute_spec_20190217.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/engine/migrations/0016_attribute_spec_20190217.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/engine/migrations/0017_db_redesign_20190221.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/engine/migrations/0017_db_redesign_20190221.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/engine/migrations/0018_jobcommit.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/engine/migrations/0018_jobcommit.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/engine/migrations/0019_frame_selection.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/engine/migrations/0019_frame_selection.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/engine/migrations/0020_remove_task_flipped.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/engine/migrations/0020_remove_task_flipped.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/engine/migrations/0021_auto_20190826_1827.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/engine/migrations/0021_auto_20190826_1827.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/engine/migrations/0022_auto_20191004_0817.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/engine/migrations/0022_auto_20191004_0817.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/engine/migrations/0023_auto_20200113_1323.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/engine/migrations/0023_auto_20200113_1323.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/engine/migrations/0024_auto_20191023_1025.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/engine/migrations/0024_auto_20191023_1025.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/engine/migrations/0025_auto_20200324_1222.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/engine/migrations/0025_auto_20200324_1222.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/engine/migrations/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/engine/migrations/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/engine/plugins.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/engine/plugins.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/engine/static/engine/base.css" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/engine/static/engine/base.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/engine/static/engine/js/annotationParser.js" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/engine/static/engine/js/annotationParser.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/engine/static/engine/js/annotationSaver.js" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/engine/static/engine/js/annotationSaver.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/engine/static/engine/js/annotationUI.js" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/engine/static/engine/js/annotationUI.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/engine/static/engine/js/attributeAnnotationMode.js" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/engine/static/engine/js/attributeAnnotationMode.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/engine/static/engine/js/base.js" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/engine/static/engine/js/base.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/engine/static/engine/js/bootstrap.js" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/engine/static/engine/js/bootstrap.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/engine/static/engine/js/borderSticker.js" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/engine/static/engine/js/borderSticker.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/engine/static/engine/js/checkPlatform.js" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/engine/static/engine/js/checkPlatform.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/engine/static/engine/js/coordinateTranslator.js" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/engine/static/engine/js/coordinateTranslator.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/engine/static/engine/js/cuboidShape.js" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/engine/static/engine/js/cuboidShape.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/engine/static/engine/js/history.js" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/engine/static/engine/js/history.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/engine/static/engine/js/labelsInfo.js" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/engine/static/engine/js/labelsInfo.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/engine/static/engine/js/listener.js" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/engine/static/engine/js/listener.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/engine/static/engine/js/logger.js" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/engine/static/engine/js/logger.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/engine/static/engine/js/player.js" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/engine/static/engine/js/player.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/engine/static/engine/js/polyshapeEditor.js" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/engine/static/engine/js/polyshapeEditor.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/engine/static/engine/js/qunitTests.js" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/engine/static/engine/js/qunitTests.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/engine/static/engine/js/server.js" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/engine/static/engine/js/server.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/engine/static/engine/js/shapeBuffer.js" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/engine/static/engine/js/shapeBuffer.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/engine/static/engine/js/shapeCollection.js" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/engine/static/engine/js/shapeCollection.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/engine/static/engine/js/shapeCreator.js" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/engine/static/engine/js/shapeCreator.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/engine/static/engine/js/shapeFilter.js" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/engine/static/engine/js/shapeFilter.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/engine/static/engine/js/shapeGrouper.js" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/engine/static/engine/js/shapeGrouper.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/engine/static/engine/js/shapeMerger.js" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/engine/static/engine/js/shapeMerger.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/engine/static/engine/js/shapeSplitter.js" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/engine/static/engine/js/shapeSplitter.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/engine/static/engine/js/shapes.js" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/engine/static/engine/js/shapes.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/engine/static/engine/js/userConfig.js" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/engine/static/engine/js/userConfig.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/engine/static/engine/js/utils.js" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/engine/static/engine/js/utils.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/engine/static/engine/stylesheet.css" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/engine/static/engine/stylesheet.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/engine/task.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/engine/task.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/engine/templates/engine/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/engine/templates/engine/base.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cvat/apps/engine/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/engine/admin.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cvat/apps/engine/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/engine/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cvat/apps/engine/serializers.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/engine/serializers.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cvat/apps/engine/tests/_test_rest_api.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/engine/tests/_test_rest_api.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/engine/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/engine/urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/engine/utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/engine/utils.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/git/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/git/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/git/admin.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/git/apps.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/git/apps.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/git/git.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/git/git.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/git/management/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/git/management/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/git/management/commands/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/git/management/commands/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/git/management/commands/update_git_states.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/git/management/commands/update_git_states.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/git/migrations/0001_initial.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/git/migrations/0001_initial.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/git/migrations/0002_auto_20190123_1305.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/git/migrations/0002_auto_20190123_1305.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/git/migrations/0003_gitdata_lfs.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/git/migrations/0003_gitdata_lfs.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/git/migrations/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/git/migrations/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/git/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/git/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/git/tests.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/git/tests.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/git/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/git/urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/git/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/git/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/log_viewer/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/log_viewer/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/profiler.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/profiler.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/reid/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/reid/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/reid/apps.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/reid/apps.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/reid/reid.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/reid/reid.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/reid/static/reid/js/enginePlugin.js" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/reid/static/reid/js/enginePlugin.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/reid/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/reid/urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/reid/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/reid/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/restrictions/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/restrictions/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/restrictions/apps.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/restrictions/apps.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/restrictions/migrations/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/restrictions/migrations/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/restrictions/serializers.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/restrictions/serializers.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/restrictions/tests.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/restrictions/tests.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/tf_annotation/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/tf_annotation/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/tf_annotation/admin.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/tf_annotation/apps.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/tf_annotation/apps.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/tf_annotation/migrations/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/tf_annotation/migrations/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/tf_annotation/models.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/tf_annotation/tests.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/tf_annotation/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/tf_annotation/urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/tf_annotation/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/tf_annotation/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/settings/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/settings/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/settings/development.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/settings/development.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/settings/production.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/settings/production.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/settings/staging.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/settings/staging.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/settings/testing.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/settings/testing.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/utils/version.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/utils/version.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/wsgi.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/wsgi.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datumaro/datum.py" beforeDir="false" afterPath="$PROJECT_DIR$/datumaro/datum.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datumaro/datumaro/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/datumaro/datumaro/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datumaro/datumaro/__main__.py" beforeDir="false" afterPath="$PROJECT_DIR$/datumaro/datumaro/__main__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datumaro/datumaro/cli/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/datumaro/datumaro/cli/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datumaro/datumaro/cli/__main__.py" beforeDir="false" afterPath="$PROJECT_DIR$/datumaro/datumaro/cli/__main__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datumaro/datumaro/cli/commands/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/datumaro/datumaro/cli/commands/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datumaro/datumaro/cli/commands/add.py" beforeDir="false" afterPath="$PROJECT_DIR$/datumaro/datumaro/cli/commands/add.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datumaro/datumaro/cli/commands/create.py" beforeDir="false" afterPath="$PROJECT_DIR$/datumaro/datumaro/cli/commands/create.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datumaro/datumaro/cli/commands/explain.py" beforeDir="false" afterPath="$PROJECT_DIR$/datumaro/datumaro/cli/commands/explain.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datumaro/datumaro/cli/commands/export.py" beforeDir="false" afterPath="$PROJECT_DIR$/datumaro/datumaro/cli/commands/export.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datumaro/datumaro/cli/commands/remove.py" beforeDir="false" afterPath="$PROJECT_DIR$/datumaro/datumaro/cli/commands/remove.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datumaro/datumaro/cli/contexts/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/datumaro/datumaro/cli/contexts/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datumaro/datumaro/cli/contexts/item/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/datumaro/datumaro/cli/contexts/item/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datumaro/datumaro/cli/contexts/model/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/datumaro/datumaro/cli/contexts/model/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datumaro/datumaro/cli/contexts/project/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/datumaro/datumaro/cli/contexts/project/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datumaro/datumaro/cli/contexts/project/diff.py" beforeDir="false" afterPath="$PROJECT_DIR$/datumaro/datumaro/cli/contexts/project/diff.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datumaro/datumaro/cli/contexts/source/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/datumaro/datumaro/cli/contexts/source/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datumaro/datumaro/cli/util/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/datumaro/datumaro/cli/util/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datumaro/datumaro/cli/util/project.py" beforeDir="false" afterPath="$PROJECT_DIR$/datumaro/datumaro/cli/util/project.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datumaro/datumaro/components/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/datumaro/datumaro/components/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datumaro/datumaro/components/algorithms/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/datumaro/datumaro/components/algorithms/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datumaro/datumaro/components/algorithms/rise.py" beforeDir="false" afterPath="$PROJECT_DIR$/datumaro/datumaro/components/algorithms/rise.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datumaro/datumaro/components/cli_plugin.py" beforeDir="false" afterPath="$PROJECT_DIR$/datumaro/datumaro/components/cli_plugin.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datumaro/datumaro/components/comparator.py" beforeDir="false" afterPath="$PROJECT_DIR$/datumaro/datumaro/components/comparator.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datumaro/datumaro/components/config.py" beforeDir="false" afterPath="$PROJECT_DIR$/datumaro/datumaro/components/config.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datumaro/datumaro/components/config_model.py" beforeDir="false" afterPath="$PROJECT_DIR$/datumaro/datumaro/components/config_model.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datumaro/datumaro/components/converter.py" beforeDir="false" afterPath="$PROJECT_DIR$/datumaro/datumaro/components/converter.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datumaro/datumaro/components/dataset_filter.py" beforeDir="false" afterPath="$PROJECT_DIR$/datumaro/datumaro/components/dataset_filter.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datumaro/datumaro/components/extractor.py" beforeDir="false" afterPath="$PROJECT_DIR$/datumaro/datumaro/components/extractor.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datumaro/datumaro/components/launcher.py" beforeDir="false" afterPath="$PROJECT_DIR$/datumaro/datumaro/components/launcher.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datumaro/datumaro/components/project.py" beforeDir="false" afterPath="$PROJECT_DIR$/datumaro/datumaro/components/project.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datumaro/datumaro/plugins/coco_format/converter.py" beforeDir="false" afterPath="$PROJECT_DIR$/datumaro/datumaro/plugins/coco_format/converter.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datumaro/datumaro/plugins/coco_format/extractor.py" beforeDir="false" afterPath="$PROJECT_DIR$/datumaro/datumaro/plugins/coco_format/extractor.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datumaro/datumaro/plugins/coco_format/format.py" beforeDir="false" afterPath="$PROJECT_DIR$/datumaro/datumaro/plugins/coco_format/format.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datumaro/datumaro/plugins/coco_format/importer.py" beforeDir="false" afterPath="$PROJECT_DIR$/datumaro/datumaro/plugins/coco_format/importer.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datumaro/datumaro/plugins/cvat_format/converter.py" beforeDir="false" afterPath="$PROJECT_DIR$/datumaro/datumaro/plugins/cvat_format/converter.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datumaro/datumaro/plugins/cvat_format/extractor.py" beforeDir="false" afterPath="$PROJECT_DIR$/datumaro/datumaro/plugins/cvat_format/extractor.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datumaro/datumaro/plugins/cvat_format/format.py" beforeDir="false" afterPath="$PROJECT_DIR$/datumaro/datumaro/plugins/cvat_format/format.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datumaro/datumaro/plugins/cvat_format/importer.py" beforeDir="false" afterPath="$PROJECT_DIR$/datumaro/datumaro/plugins/cvat_format/importer.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datumaro/datumaro/plugins/datumaro_format/converter.py" beforeDir="false" afterPath="$PROJECT_DIR$/datumaro/datumaro/plugins/datumaro_format/converter.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datumaro/datumaro/plugins/datumaro_format/extractor.py" beforeDir="false" afterPath="$PROJECT_DIR$/datumaro/datumaro/plugins/datumaro_format/extractor.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datumaro/datumaro/plugins/datumaro_format/format.py" beforeDir="false" afterPath="$PROJECT_DIR$/datumaro/datumaro/plugins/datumaro_format/format.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datumaro/datumaro/plugins/datumaro_format/importer.py" beforeDir="false" afterPath="$PROJECT_DIR$/datumaro/datumaro/plugins/datumaro_format/importer.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datumaro/datumaro/plugins/image_dir.py" beforeDir="false" afterPath="$PROJECT_DIR$/datumaro/datumaro/plugins/image_dir.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datumaro/datumaro/plugins/labelme_format.py" beforeDir="false" afterPath="$PROJECT_DIR$/datumaro/datumaro/plugins/labelme_format.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datumaro/datumaro/plugins/mot_format.py" beforeDir="false" afterPath="$PROJECT_DIR$/datumaro/datumaro/plugins/mot_format.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datumaro/datumaro/plugins/openvino_launcher.py" beforeDir="false" afterPath="$PROJECT_DIR$/datumaro/datumaro/plugins/openvino_launcher.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datumaro/datumaro/plugins/tf_detection_api_format/converter.py" beforeDir="false" afterPath="$PROJECT_DIR$/datumaro/datumaro/plugins/tf_detection_api_format/converter.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datumaro/datumaro/plugins/tf_detection_api_format/extractor.py" beforeDir="false" afterPath="$PROJECT_DIR$/datumaro/datumaro/plugins/tf_detection_api_format/extractor.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datumaro/datumaro/plugins/tf_detection_api_format/format.py" beforeDir="false" afterPath="$PROJECT_DIR$/datumaro/datumaro/plugins/tf_detection_api_format/format.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datumaro/datumaro/plugins/tf_detection_api_format/importer.py" beforeDir="false" afterPath="$PROJECT_DIR$/datumaro/datumaro/plugins/tf_detection_api_format/importer.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datumaro/datumaro/plugins/transforms.py" beforeDir="false" afterPath="$PROJECT_DIR$/datumaro/datumaro/plugins/transforms.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datumaro/datumaro/plugins/voc_format/converter.py" beforeDir="false" afterPath="$PROJECT_DIR$/datumaro/datumaro/plugins/voc_format/converter.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datumaro/datumaro/plugins/voc_format/extractor.py" beforeDir="false" afterPath="$PROJECT_DIR$/datumaro/datumaro/plugins/voc_format/extractor.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datumaro/datumaro/plugins/voc_format/format.py" beforeDir="false" afterPath="$PROJECT_DIR$/datumaro/datumaro/plugins/voc_format/format.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datumaro/datumaro/plugins/voc_format/importer.py" beforeDir="false" afterPath="$PROJECT_DIR$/datumaro/datumaro/plugins/voc_format/importer.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datumaro/datumaro/plugins/yolo_format/converter.py" beforeDir="false" afterPath="$PROJECT_DIR$/datumaro/datumaro/plugins/yolo_format/converter.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datumaro/datumaro/plugins/yolo_format/extractor.py" beforeDir="false" afterPath="$PROJECT_DIR$/datumaro/datumaro/plugins/yolo_format/extractor.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datumaro/datumaro/plugins/yolo_format/format.py" beforeDir="false" afterPath="$PROJECT_DIR$/datumaro/datumaro/plugins/yolo_format/format.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datumaro/datumaro/plugins/yolo_format/importer.py" beforeDir="false" afterPath="$PROJECT_DIR$/datumaro/datumaro/plugins/yolo_format/importer.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datumaro/datumaro/util/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/datumaro/datumaro/util/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datumaro/datumaro/util/annotation_tools.py" beforeDir="false" afterPath="$PROJECT_DIR$/datumaro/datumaro/util/annotation_tools.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datumaro/datumaro/util/command_targets.py" beforeDir="false" afterPath="$PROJECT_DIR$/datumaro/datumaro/util/command_targets.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datumaro/datumaro/util/image.py" beforeDir="false" afterPath="$PROJECT_DIR$/datumaro/datumaro/util/image.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datumaro/datumaro/util/image_cache.py" beforeDir="false" afterPath="$PROJECT_DIR$/datumaro/datumaro/util/image_cache.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datumaro/datumaro/util/log_utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/datumaro/datumaro/util/log_utils.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datumaro/datumaro/util/mask_tools.py" beforeDir="false" afterPath="$PROJECT_DIR$/datumaro/datumaro/util/mask_tools.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datumaro/datumaro/util/test_utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/datumaro/datumaro/util/test_utils.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datumaro/datumaro/util/tf_util.py" beforeDir="false" afterPath="$PROJECT_DIR$/datumaro/datumaro/util/tf_util.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datumaro/datumaro/version.py" beforeDir="false" afterPath="$PROJECT_DIR$/datumaro/datumaro/version.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datumaro/setup.py" beforeDir="false" afterPath="$PROJECT_DIR$/datumaro/setup.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datumaro/tests/test_RISE.py" beforeDir="false" afterPath="$PROJECT_DIR$/datumaro/tests/test_RISE.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datumaro/tests/test_coco_format.py" beforeDir="false" afterPath="$PROJECT_DIR$/datumaro/tests/test_coco_format.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datumaro/tests/test_command_targets.py" beforeDir="false" afterPath="$PROJECT_DIR$/datumaro/tests/test_command_targets.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datumaro/tests/test_cvat_format.py" beforeDir="false" afterPath="$PROJECT_DIR$/datumaro/tests/test_cvat_format.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datumaro/tests/test_datumaro_format.py" beforeDir="false" afterPath="$PROJECT_DIR$/datumaro/tests/test_datumaro_format.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datumaro/tests/test_diff.py" beforeDir="false" afterPath="$PROJECT_DIR$/datumaro/tests/test_diff.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datumaro/tests/test_image.py" beforeDir="false" afterPath="$PROJECT_DIR$/datumaro/tests/test_image.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datumaro/tests/test_images.py" beforeDir="false" afterPath="$PROJECT_DIR$/datumaro/tests/test_images.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datumaro/tests/test_labelme_format.py" beforeDir="false" afterPath="$PROJECT_DIR$/datumaro/tests/test_labelme_format.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datumaro/tests/test_masks.py" beforeDir="false" afterPath="$PROJECT_DIR$/datumaro/tests/test_masks.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datumaro/tests/test_mot_format.py" beforeDir="false" afterPath="$PROJECT_DIR$/datumaro/tests/test_mot_format.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datumaro/tests/test_project.py" beforeDir="false" afterPath="$PROJECT_DIR$/datumaro/tests/test_project.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datumaro/tests/test_tfrecord_format.py" beforeDir="false" afterPath="$PROJECT_DIR$/datumaro/tests/test_tfrecord_format.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datumaro/tests/test_transforms.py" beforeDir="false" afterPath="$PROJECT_DIR$/datumaro/tests/test_transforms.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datumaro/tests/test_voc_format.py" beforeDir="false" afterPath="$PROJECT_DIR$/datumaro/tests/test_voc_format.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datumaro/tests/test_yolo_format.py" beforeDir="false" afterPath="$PROJECT_DIR$/datumaro/tests/test_yolo_format.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/utils/auto_annotation/run_model.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils/auto_annotation/run_model.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/utils/cli/cli.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils/cli/cli.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/utils/cli/core/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils/cli/core/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/utils/cli/core/core.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils/cli/core/core.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/utils/cli/core/definition.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils/cli/core/definition.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/utils/cli/tests/_test_cli.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils/cli/tests/_test_cli.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cvat/apps/engine/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/engine/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cvat/requirements/development.txt" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/requirements/development.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cvat/settings/base.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/settings/base.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cvat/simpleworker.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/simpleworker.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Frontend/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/../Frontend/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Frontend/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/../Frontend/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Frontend/src/components/newproject/module.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../Frontend/src/components/newproject/module.vue" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -322,7 +70,7 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
-  <component name="JupyterTrust" id="d4d26fc0-03fc-48fe-b9d4-6bc4d88191a2" />
+  <component name="JupyterTrust" id="9abe9d29-baca-44a5-b6ed-c3f2b250183f" />
   <component name="ProjectId" id="1fRD1kzyRs1b1KXUxtrvvcU8lH1" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <ConfirmationsSetting value="2" id="Add" />
@@ -352,7 +100,7 @@
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
     <property name="node.js.selected.package.standard" value="" />
     <property name="nodejs_package_manager_path" value="npm" />
-    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
+    <property name="settings.editor.selected.configurable" value="com.jetbrains.django.DjangoModulesConfigurable" />
     <property name="ts.external.directory.path" value="D:\Jetbrains\apps\PyCharm-P\ch-0\201.7846.77\plugins\JavaScriptLanguage\jsLanguageServicesImpl\external" />
   </component>
   <component name="RecentsManager">
@@ -389,21 +137,21 @@
       <method v="2" />
     </configuration>
     <configuration name="WebTagging" type="Python.DjangoServer" factoryName="Django server">
-      <module name="cvat" />
+      <module name="WebTagging" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs>
         <env name="PYTHONUNBUFFERED" value="1" />
         <env name="DJANGO_SETTINGS_MODULE" value="cvat.settings.development" />
       </envs>
-      <option name="SDK_HOME" value="D:\MiniConda\python.exe" />
+      <option name="SDK_HOME" value="$USER_HOME$/anaconda3/bin/python3.7" />
       <option name="WORKING_DIRECTORY" value="" />
       <option name="IS_MODULE_SDK" value="false" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="launchJavascriptDebuger" value="false" />
       <option name="port" value="8000" />
-      <option name="host" value="" />
+      <option name="host" value="localhost" />
       <option name="additionalOptions" value="" />
       <option name="browserUrl" value="" />
       <option name="runTestServer" value="false" />
@@ -525,7 +273,26 @@
       <workItem from="1603415117163" duration="816000" />
       <workItem from="1603417020300" duration="758000" />
       <workItem from="1603462141363" duration="548000" />
+      <workItem from="1603515171248" duration="2242000" />
+      <workItem from="1603593282041" duration="3037000" />
+      <workItem from="1603678223934" duration="5612000" />
+      <workItem from="1603765564509" duration="5402000" />
+      <workItem from="1604306714830" duration="723000" />
+      <workItem from="1604312536263" duration="408000" />
+      <workItem from="1604366533221" duration="929000" />
       <workItem from="1603786602787" duration="3519000" />
+      <workItem from="1604448623697" duration="5291000" />
+      <workItem from="1604583046810" duration="563000" />
+      <workItem from="1604620210481" duration="2777000" />
+      <workItem from="1604710989412" duration="2954000" />
+      <workItem from="1604798294476" duration="1014000" />
+      <workItem from="1604880732970" duration="1228000" />
+      <workItem from="1605070793278" duration="1643000" />
+      <workItem from="1605170875791" duration="1614000" />
+      <workItem from="1605425250953" duration="4767000" />
+      <workItem from="1605449364706" duration="495000" />
+      <workItem from="1605488237947" duration="2171000" />
+      <workItem from="1605571753541" duration="1781000" />
     </task>
     <task id="LOCAL-00001" summary="初始化CVAT">
       <created>1596186022091</created>
@@ -806,12 +573,12 @@
     <option name="LAST_COMMIT_MESSAGE" value="完成标注数据的存储" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="404" y="96" key="#Deployment" timestamp="1600432897224">
+    <state x="404" y="96" key="#Deployment" timestamp="1604483790441">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
     <state x="361" y="71" key="#Deployment/0.0.1536.824/1920.0.1440.860@0.0.1536.824" timestamp="1597900221901" />
     <state x="323" y="73" key="#Deployment/0.0.1536.824@0.0.1536.824" timestamp="1599456422972" />
-    <state x="404" y="96" key="#Deployment/0.0.1920.1080@0.0.1920.1080" timestamp="1600432897224" />
+    <state x="404" y="96" key="#Deployment/0.0.1920.1080@0.0.1920.1080" timestamp="1604483790441" />
     <state x="630" y="303" key="#ESLint" timestamp="1598323626843">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
@@ -846,32 +613,36 @@
     <state x="533" y="177" key="FileChooserDialogImpl/0.0.1536.824/1920.0.1440.860@0.0.1536.824" timestamp="1597900135020" />
     <state x="2420" y="185" key="FileChooserDialogImpl/0.0.1536.824/1920.0.1440.860@1920.0.1440.860" timestamp="1596785526190" />
     <state x="533" y="177" key="FileChooserDialogImpl/0.0.1536.824@0.0.1536.824" timestamp="1599455943337" />
-    <state width="1493" height="178" key="GridCell.Tab.0.bottom" timestamp="1596600762535">
-      <screen x="0" y="0" width="1536" height="824" />
+    <state width="1878" height="305" key="GridCell.Tab.0.bottom" timestamp="1604481589926">
+      <screen x="0" y="0" width="1920" height="1080" />
     </state>
     <state width="1493" height="178" key="GridCell.Tab.0.bottom/0.0.1536.824/1920.0.1440.860@0.0.1536.824" timestamp="1596600762535" />
     <state width="1493" height="178" key="GridCell.Tab.0.bottom/0.0.1536.824/1920.0.1440.860@1920.0.1440.860" timestamp="1596451835241" />
-    <state width="1493" height="178" key="GridCell.Tab.0.center" timestamp="1596600762535">
-      <screen x="0" y="0" width="1536" height="824" />
+    <state width="1878" height="305" key="GridCell.Tab.0.bottom/0.0.1920.1080@0.0.1920.1080" timestamp="1604481589926" />
+    <state width="1878" height="305" key="GridCell.Tab.0.center" timestamp="1604481589925">
+      <screen x="0" y="0" width="1920" height="1080" />
     </state>
     <state width="1493" height="178" key="GridCell.Tab.0.center/0.0.1536.824/1920.0.1440.860@0.0.1536.824" timestamp="1596600762535" />
     <state width="1493" height="178" key="GridCell.Tab.0.center/0.0.1536.824/1920.0.1440.860@1920.0.1440.860" timestamp="1596451835240" />
-    <state width="1493" height="178" key="GridCell.Tab.0.left" timestamp="1596600762534">
-      <screen x="0" y="0" width="1536" height="824" />
+    <state width="1878" height="305" key="GridCell.Tab.0.center/0.0.1920.1080@0.0.1920.1080" timestamp="1604481589925" />
+    <state width="1878" height="305" key="GridCell.Tab.0.left" timestamp="1604481589924">
+      <screen x="0" y="0" width="1920" height="1080" />
     </state>
     <state width="1493" height="178" key="GridCell.Tab.0.left/0.0.1536.824/1920.0.1440.860@0.0.1536.824" timestamp="1596600762534" />
     <state width="1493" height="178" key="GridCell.Tab.0.left/0.0.1536.824/1920.0.1440.860@1920.0.1440.860" timestamp="1596451835239" />
-    <state width="1493" height="178" key="GridCell.Tab.0.right" timestamp="1596600762535">
-      <screen x="0" y="0" width="1536" height="824" />
+    <state width="1878" height="305" key="GridCell.Tab.0.left/0.0.1920.1080@0.0.1920.1080" timestamp="1604481589924" />
+    <state width="1878" height="305" key="GridCell.Tab.0.right" timestamp="1604481589926">
+      <screen x="0" y="0" width="1920" height="1080" />
     </state>
     <state width="1493" height="178" key="GridCell.Tab.0.right/0.0.1536.824/1920.0.1440.860@0.0.1536.824" timestamp="1596600762535" />
     <state width="1493" height="178" key="GridCell.Tab.0.right/0.0.1536.824/1920.0.1440.860@1920.0.1440.860" timestamp="1596451835240" />
-    <state x="889" y="140" key="SettingsEditor" timestamp="1601871261315">
+    <state width="1878" height="305" key="GridCell.Tab.0.right/0.0.1920.1080@0.0.1920.1080" timestamp="1604481589926" />
+    <state x="439" y="116" key="SettingsEditor" timestamp="1604396308770">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
     <state x="315" y="73" key="SettingsEditor/0.0.1536.824/1920.0.1440.860@0.0.1536.824" timestamp="1598327908018" />
     <state x="315" y="73" key="SettingsEditor/0.0.1536.824@0.0.1536.824" timestamp="1599455957806" />
-    <state x="889" y="140" key="SettingsEditor/0.0.1920.1080@0.0.1920.1080" timestamp="1601871261315" />
+    <state x="439" y="116" key="SettingsEditor/0.0.1920.1080@0.0.1920.1080" timestamp="1604396308770" />
     <state x="-1469" y="183" key="Vcs.Push.Dialog.v2" timestamp="1599984672983">
       <screen x="-1920" y="0" width="1920" height="1040" />
     </state>
@@ -882,10 +653,11 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="264" y="1" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser/0.0.1536.824/1920.0.1440.860@0.0.1536.824" timestamp="1597286850927" />
-    <state x="563" y="325" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1597662300051">
-      <screen x="0" y="0" width="1536" height="824" />
+    <state x="704" y="426" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1603680255300">
+      <screen x="0" y="0" width="1920" height="1080" />
     </state>
     <state x="563" y="325" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1536.824/1920.0.1440.860@0.0.1536.824" timestamp="1597662300050" />
+    <state x="704" y="426" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1920.1080@0.0.1920.1080" timestamp="1603680255300" />
     <state x="1920" y="4" width="1101" height="610" maximized="true" key="dock-window-1" timestamp="1598089464603">
       <screen x="1920" y="0" width="1440" height="860" />
     </state>
@@ -919,21 +691,17 @@
       <screen x="1920" y="0" width="1440" height="860" />
     </state>
     <state x="1920" y="59" width="1185" height="508" maximized="true" key="dock-window-8/0.0.1536.824/1920.0.1440.860@0.0.1536.824" timestamp="1597928079653" />
-    <state x="809" y="187" width="571" height="538" key="ftp.server.browser" timestamp="1600432895815">
+    <state x="737" y="250" width="571" height="538" key="ftp.server.browser" timestamp="1604483774257">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
     <state x="647" y="143" width="571" height="538" key="ftp.server.browser/0.0.1536.824/1920.0.1440.860@0.0.1536.824" timestamp="1597900220045" />
     <state x="647" y="143" key="ftp.server.browser/0.0.1536.824@0.0.1536.824" timestamp="1599456407182" />
-    <state x="809" y="187" key="ftp.server.browser/0.0.1920.1080@0.0.1920.1080" timestamp="1600432895815" />
-    <state x="636" y="303" key="publish.login" timestamp="1603787160129">
-      <screen x="0" y="0" width="1536" height="824" />
-    </state>
-    <state x="636" y="303" key="publish.login/0.0.1536.824@0.0.1536.824" timestamp="1603787160129" />
-    <state x="539" y="190" width="840" height="889" key="search.everywhere.popup" timestamp="1601700715131">
+    <state x="737" y="250" key="ftp.server.browser/0.0.1920.1080@0.0.1920.1080" timestamp="1604483774257" />
+    <state x="539" y="190" width="840" height="889" key="search.everywhere.popup" timestamp="1604817395775">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
     <state x="431" y="145" width="672" height="678" key="search.everywhere.popup/0.0.1536.824/1920.0.1440.860@0.0.1536.824" timestamp="1598419125943" />
     <state x="431" y="145" width="672" height="678" key="search.everywhere.popup/0.0.1536.824@0.0.1536.824" timestamp="1599447972215" />
-    <state x="539" y="190" width="840" height="889" key="search.everywhere.popup/0.0.1920.1080@0.0.1920.1080" timestamp="1601700715131" />
+    <state x="539" y="190" width="840" height="889" key="search.everywhere.popup/0.0.1920.1080@0.0.1920.1080" timestamp="1604817395775" />
   </component>
 </project>

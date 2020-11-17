@@ -289,15 +289,15 @@ CACHEOPS_DEGRADE_ON_FAILURE = True
 # Internationalization
 # https://docs.djangoproject.com/en/2.0/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'zh-hans'
 
-TIME_ZONE = os.getenv('TZ', 'Etc/UTC')
+TIME_ZONE = "Asia/Shanghai"
 
 USE_I18N = True
 
 USE_L10N = True
 
-USE_TZ = True
+USE_TZ = False
 
 CSRF_COOKIE_NAME = "csrftoken"
 

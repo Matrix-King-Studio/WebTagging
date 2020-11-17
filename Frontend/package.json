@@ -14,6 +14,7 @@
     "less": "^3.12.2",
     "less-loader": "^6.2.0",
     "vue": "^2.6.12",
+    "vue-json-viewer": "^2.2.15",
     "vue-router": "^3.4.7",
     "vuex": "^3.4.0"
   },

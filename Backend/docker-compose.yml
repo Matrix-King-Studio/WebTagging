@@ -39,22 +39,22 @@ services:
                 https_proxy:
                 no_proxy:
                 socks_proxy:
-                TF_ANNOTATION: "no"
-                AUTO_SEGMENTATION: "no"
-                USER: "alex"
+                TF_ANNOTATION: "yes"
+                AUTO_SEGMENTATION: "yes"
+                USER: "django"
                 DJANGO_CONFIGURATION: "production"
                 TZ: "Etc/UTC"
                 OPENVINO_TOOLKIT: "no"
         environment:
+            CVAT_SHARE_URL: 'Mounted from /mnt/share host directory'
             DJANGO_MODWSGI_EXTRA_ARGS: ""
             ALLOWED_HOSTS: '*'
-            CVAT_SHARE_URL: "Mounted from /mnt/share host directory"
         volumes:
+            - cvat_share:/home/django/share:ro
             - cvat_data:/home/django/data
             - cvat_keys:/home/django/keys
             - cvat_logs:/home/django/logs
             - cvat_models:/home/django/models
-            - cvat_share:/home/django/share:ro
 
     cvat_proxy:
         container_name: cvat_proxy

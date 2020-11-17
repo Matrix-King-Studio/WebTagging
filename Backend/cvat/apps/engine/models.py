@@ -50,10 +50,8 @@ class Data(models.Model):
     start_frame = models.PositiveIntegerField(default=0)
     stop_frame = models.PositiveIntegerField(default=0)
     frame_filter = models.CharField(max_length=256, default="", blank=True)
-    compressed_chunk_type = models.CharField(max_length=32, choices=DataChoice.choices(),
-                                             default=DataChoice.IMAGESET)
-    original_chunk_type = models.CharField(max_length=32, choices=DataChoice.choices(),
-                                           default=DataChoice.IMAGESET)
+    compressed_chunk_type = models.CharField(max_length=32, choices=DataChoice.choices(), default=DataChoice.IMAGESET)
+    original_chunk_type = models.CharField(max_length=32, choices=DataChoice.choices(), default=DataChoice.IMAGESET)
 
     class Meta:
         default_permissions = ()
@@ -82,7 +80,6 @@ class Data(models.Model):
             ext = 'zip'
         else:
             ext = 'list'
-
         return '{}.{}'.format(chunk_number, ext)
 
     def _get_compressed_chunk_name(self, chunk_number):
@@ -101,6 +98,9 @@ class Data(models.Model):
 
     def get_preview_path(self):
         return os.path.join(self.get_data_dirname(), 'preview.jpeg')
+
+    def __str__(self):
+        return self.get_data_dirname()
 
 
 class Video(models.Model):
@@ -142,16 +142,13 @@ class Project(models.Model):
 
 
 class Task(models.Model):
-    project = models.ForeignKey(Project, on_delete=models.CASCADE,
-                                null=True, blank=True, related_name="tasks",
-                                related_query_name="task")
+    project = models.ForeignKey(Project, on_delete=models.CASCADE, null=True, blank=True,
+                                related_name="tasks", related_query_name="task")
     name = SafeCharField(max_length=256)
     mode = models.CharField(max_length=32)
     describe = models.CharField(max_length=1024, blank=True, default="")
-    owner = models.ForeignKey(User, null=True, blank=True,
-                              on_delete=models.SET_NULL, related_name="owners")
-    assignee = models.ForeignKey(User, null=True, blank=True,
-                                 on_delete=models.SET_NULL, related_name="assignees")
+    owner = models.ForeignKey(User, null=True, blank=True, on_delete=models.SET_NULL, related_name="owners")
+    assignee = models.ForeignKey(User, null=True, blank=True, on_delete=models.SET_NULL, related_name="assignees")
     bug_tracker = models.CharField(max_length=2000, blank=True, default="")
     created_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now_add=True)
@@ -186,7 +183,7 @@ class Task(models.Model):
         return self.name
 
 
-# Redefined a couple of operation for FileSystemStorage to avoid renaming or other side effects.
+# 为文件系统存储重新定义了几个操作，以避免重命名或其他副作用。
 class MyFileSystemStorage(FileSystemStorage):
     def get_valid_name(self, name):
         return name
@@ -204,8 +201,7 @@ def upload_path_handler(instance, filename):
 # For client files which the user is uploaded
 class ClientFile(models.Model):
     data = models.ForeignKey(Data, on_delete=models.CASCADE, null=True, related_name='client_files')
-    file = models.FileField(upload_to=upload_path_handler,
-                            max_length=1024, storage=MyFileSystemStorage())
+    file = models.FileField(upload_to=upload_path_handler, max_length=1024, storage=MyFileSystemStorage())
 
     class Meta:
         default_permissions = ()

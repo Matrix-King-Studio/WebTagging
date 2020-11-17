@@ -352,8 +352,7 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ('url', 'id', 'username', 'first_name', 'last_name', 'email',
-                  'groups', 'is_staff', 'is_superuser', 'is_active', 'last_login',
-                  'date_joined')
+                  'groups', 'is_staff', 'is_superuser', 'is_active', 'last_login', 'date_joined')
         read_only_fields = ('last_login', 'date_joined')
         write_only_fields = ('password',)
         ordering = ['-id']
@@ -373,14 +372,7 @@ class ExceptionSerializer(serializers.Serializer):
     filename = serializers.URLField()
     line = serializers.IntegerField()
     column = serializers.IntegerField()
-    stack = serializers.CharField(max_length=8192,
-                                  style={'base_template': 'textarea.html'}, allow_blank=True)
-
-
-class AboutSerializer(serializers.Serializer):
-    name = serializers.CharField(max_length=128)
-    description = serializers.CharField(max_length=2048)
-    version = serializers.CharField(max_length=64)
+    stack = serializers.CharField(max_length=8192, style={'base_template': 'textarea.html'}, allow_blank=True)
 
 
 class FrameMetaSerializer(serializers.Serializer):

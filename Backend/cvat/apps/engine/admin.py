@@ -23,6 +23,7 @@ from .models import Job
 from .models import Label
 from .models import AttributeSpec
 
+
 admin.site.register(Data)
 admin.site.register(Video)
 admin.site.register(Image)
@@ -79,7 +80,7 @@ class LabelInline(admin.TabularInline):
 
 
 class LabelAdmin(admin.ModelAdmin):
-    # Don't show on admin index page
+    # 不显示在管理索引页上
     def has_module_permission(self, request):
         return False
 
@@ -89,7 +90,7 @@ class LabelAdmin(admin.ModelAdmin):
 
 
 class SegmentAdmin(admin.ModelAdmin):
-    # Don't show on admin index page
+    # 不显示在管理索引页上
     def has_module_permission(self, request):
         return False
 

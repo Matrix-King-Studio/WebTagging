@@ -34,7 +34,7 @@ from cvat.apps.dataset_manager.serializers import DatasetFormatsSerializer
 from cvat.apps.engine.frame_provider import FrameProvider
 from cvat.apps.engine.models import Job, Plugin, StatusChoice, Task
 from cvat.apps.engine.serializers import (
-    AboutSerializer, AnnotationFileSerializer, BasicUserSerializer,
+    AnnotationFileSerializer, BasicUserSerializer,
     DataMetaSerializer, DataSerializer, ExceptionSerializer,
     FileInfoSerializer, JobSerializer, LabeledDataSerializer,
     LogEventSerializer, PluginSerializer, ProjectSerializer,
@@ -86,31 +86,9 @@ def dispatch_request(request):
 class ServerViewSet(viewsets.ViewSet):
     serializer_class = None
 
-    # To get nice documentation about ServerViewSet actions it is necessary
-    # to implement the method. By default, ViewSet doesn't provide it.
+    # 要获得有关ServerViewSet操作的良好文档，必须实现该方法。默认情况下，ViewSet不提供它。
     def get_serializer(self, *args, **kwargs):
         pass
-
-    @staticmethod
-    @swagger_auto_schema(method='get', operation_summary='Method provides basic CVAT information',
-                         responses={'200': AboutSerializer})
-    @action(detail=False, methods=['GET'], serializer_class=AboutSerializer)
-    def about(request):
-        from cvat import __version__ as cvat_version
-        about = {
-            "name": "Computer Vision Annotation Tool",
-            "version": cvat_version,
-            "description": "CVAT is completely re-designed and re-implemented " +
-                           "version of Video Annotation Tool from Irvine, California " +
-                           "tool. It is free, online, interactive video and image annotation " +
-                           "tool for computer vision. It is being used by our team to " +
-                           "annotate million of objects with different properties. Many UI " +
-                           "and UX decisions are based on feedbacks from professional data " +
-                           "annotation team."
-        }
-        serializer = AboutSerializer(data=about)
-        if serializer.is_valid(raise_exception=True):
-            return Response(data=serializer.data)
 
     @staticmethod
     @swagger_auto_schema(method='post', request_body=ExceptionSerializer)
@@ -118,7 +96,6 @@ class ServerViewSet(viewsets.ViewSet):
     def exception(request):
         """
         Saves an exception from a client on the server
-
         Sends logs to the ELK if it is connected
         """
         serializer = ExceptionSerializer(data=request.data)
@@ -144,8 +121,7 @@ class ServerViewSet(viewsets.ViewSet):
     @action(detail=False, methods=['POST'], serializer_class=LogEventSerializer)
     def logs(request):
         """
-        Saves logs from a client on the server
-
+        将来自客户端的日志保存到服务器上
         Sends logs to the ELK if it is connected
         """
         serializer = LogEventSerializer(many=True, data=request.data)
@@ -168,9 +144,12 @@ class ServerViewSet(viewsets.ViewSet):
 
     @staticmethod
     @swagger_auto_schema(
-        method='get', operation_summary='Returns all files and folders that are on the server along specified path',
-        manual_parameters=[openapi.Parameter('directory', openapi.IN_QUERY, type=openapi.TYPE_STRING,
-                                             description='Directory to browse')],
+        method='get',
+        operation_summary='返回服务器上沿指定路径的所有文件和文件夹',
+        manual_parameters=[openapi.Parameter('directory',
+                                             openapi.IN_QUERY,
+                                             type=openapi.TYPE_STRING,
+                                             description='要浏览的目录')],
         responses={'200': FileInfoSerializer(many=True)}
     )
     @action(detail=False, methods=['GET'], serializer_class=FileInfoSerializer)
@@ -189,22 +168,18 @@ class ServerViewSet(viewsets.ViewSet):
                     entry_type = "REG"
                 elif entry.is_dir():
                     entry_type = "DIR"
-
                 if entry_type:
                     data.append({"name": entry.name, "type": entry_type})
 
             serializer = FileInfoSerializer(many=True, data=data)
-            if serializer.is_valid():
+            if serializer.is_valid(raise_exception=True):
                 return Response(serializer.data)
-            else:
-                print(serializer.errors)
-                return Response(serializer.errors, status=status.HTTP_200_OK)
         else:
-            return Response("{} is an invalid directory".format(param),
-                            status=status.HTTP_200_OK)
+            return Response("{} is an invalid directory".format(param), status=status.HTTP_400_BAD_REQUEST)
 
     @staticmethod
-    @swagger_auto_schema(method='get', operation_summary='Method provides the list of supported annotations formats',
+    @swagger_auto_schema(method='get',
+                         operation_summary='Method provides the list of supported annotations formats',
                          responses={'200': DatasetFormatsSerializer()})
     @action(detail=False, methods=['GET'], url_path='annotation/formats')
     def annotation_formats(request):
@@ -972,14 +947,11 @@ def _export_annotations(db_task, rq_id, request, format_name, action, callback, 
                 if action == "download" and osp.exists(file_path):
                     rq_job.delete()
 
-                    timestamp = datetime.strftime(last_task_update_time,
-                                                  "%Y_%m_%d_%H_%M_%S")
-                    filename = filename or \
-                               "task_{}-{}-{}{}".format(
-                                   db_task.name, timestamp,
-                                   format_name, osp.splitext(file_path)[1])
-                    return sendfile(request, file_path, attachment=True,
-                                    attachment_filename=filename.lower())
+                    timestamp = datetime.strftime(last_task_update_time, "%Y_%m_%d_%H_%M_%S")
+                    filename = filename or "task_{}-{}-{}{}".format(
+                        db_task.name, timestamp,
+                        format_name, osp.splitext(file_path)[1])
+                    return sendfile(request, file_path, attachment=True, attachment_filename=filename.lower())
                 else:
                     if osp.exists(file_path):
                         return Response(status=status.HTTP_201_CREATED)
