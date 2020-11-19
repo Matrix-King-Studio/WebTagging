@@ -339,8 +339,7 @@ class DjangoFilterInspector(CoreAPICompatInspector):
 @method_decorator(name='destroy',
                   decorator=swagger_auto_schema(operation_summary='方法删除特定任务、所有附加的作业、批注和数据'))
 @method_decorator(name='partial_update',
-                  decorator=swagger_auto_schema(
-                      operation_summary='方法对任务中选定的字段执行部分更新'))
+                  decorator=swagger_auto_schema(operation_summary='方法对任务中选定的字段执行部分更新'))
 class TaskViewSet(auth.TaskGetQuerySetMixin, viewsets.ModelViewSet):
     queryset = Task.objects.all().prefetch_related(
         "label_set__attributespec_set",
