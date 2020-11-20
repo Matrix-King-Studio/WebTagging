@@ -1,6 +1,9 @@
 <template>
-  <el-tabs type="border-card" :stretch=true>
-    <el-tab-pane label="上传数据集">
+  <el-tabs type="border-card" value="one" :before-leave="leaveTab" :stretch=true>
+    <el-tab-pane
+      label="上传数据集"
+      name="one"
+      :disabled="tabOneCannotSelect">
       <div class="upload-box">
         <input type="file" ref="getfile" class="choose" @change="getFile($event)" multiple="multiple">
         <div class="to-choose" ref="dropBox" @click="toGetFile" @drop="dropFile">
@@ -25,7 +28,10 @@
         </div>
       </div>
     </el-tab-pane>
-    <el-tab-pane label="使用已经存在的数据集">
+    <el-tab-pane
+      label="使用已经存在的数据集"
+      name="two"
+      :disabled="tabTwoCannotSelect">
       <el-tree
         :props="props"
         :load="loadNode"
@@ -66,6 +72,9 @@ export default {
     return{
       fileList: [
       ],
+      //控制选项卡是否能切换
+      tabOneCannotSelect: false,
+      tabTwoCannotSelect: false,
       //树形控件用到的
       url: 'v1/server/share?directory=/',
       //treeData映射到elementUI的树形结构里的参数，name映射为label,children映射为children
@@ -120,7 +129,23 @@ export default {
       this.$delete(this.fileList, index);
       this.$store.commit('saveFileList', this.fileList)
     },
-
+    //tab切换
+    leaveTab(activeName, oldActiveName){
+        if (this.fileList.length !== 0){
+            this.tabTwoCannotSelect = true;
+            let p = new Promise((resolve, reject) => {
+                this.$confirm('【上传数据集】与【使用已经存在的数据集】只能选择一个，如需切换请先清空数据！', '提示', {
+                    showConfirmButton: false,
+                    cancelButtonText: '我已了解',
+                    type: 'warning'
+                }).catch(err => {
+                    this.tabTwoCannotSelect = false;
+                    reject(err)
+                })
+            })
+            return p
+        }
+    },
     //树形控件用到的方法
     handleCheckChange(data, checked, indeterminate) {
       console.log(data, checked, indeterminate);

@@ -94,32 +94,19 @@
       </div>
       <div class="main-btn-box">
         <div class="images">
-          <div
-            class="img-btn to-start"
-            @click="changeImg('start')"
-          >
-            <i class="el-icon-d-arrow-left" />
-          </div>
-          <div
-            class="img-btn back"
-            @click="changeImg('back')"
-          >
-            <i class="el-icon-arrow-left" />
-          </div>
           <div class="img-btn this">
-            <span>{{ imageIndex + 1 }}</span>
-          </div>
-          <div
-            class="img-btn next"
-            @click="changeImg('next')"
-          >
-            <i class="el-icon-arrow-right" />
-          </div>
-          <div
-            class="img-btn to-end"
-            @click="changeImg('end')"
-          >
-            <i class="el-icon-d-arrow-right" />
+            <template>
+              <div class="block">
+                <el-slider
+                  v-model="imageIndexFrom1"
+                  show-input
+                  @change="changeImg"
+                  :min="1"
+                  :max="imagesSize"
+                >
+                </el-slider>
+              </div>
+            </template>
           </div>
         </div>
         <div class="main-func">
@@ -188,8 +175,10 @@ export default {
       //图片相关
       isGotImg: false,
       imagesData: '',
-      imagesSize: 0,
+      //imagesSize原来为0，这里我改成了1，最小值应该为1吧
+      imagesSize: 1,
       imageIndex: 0,
+      imageIndexFrom1: 1,
       imageInfo: {},
       imageScale: 1,//图片缩放比例 ：缩放后/缩放前
 
@@ -217,6 +206,11 @@ export default {
     this.getImagesInfo()
     //获取job信息
     this.getJobInfo()
+  },
+  computed:{
+    imageRealIndex(){
+        return this.imageIndex + 1;
+    }
   },
   mounted() {
     this.initCanvas()
@@ -369,37 +363,51 @@ export default {
       }, 300)
     },
     //切换图片
-    changeImg(mod) {
-      if (mod === 'start') {//第一张
-        //如果不是第一张就加载
-        if (this.imageIndex !== 0) {
-          this.imageIndex = 0
-          this.getImages()
-          this.removeRec('all')
-          this.reDrawTags(1, this.imageIndex)
-        }
-      } else if (mod === 'back') {//上一张
-        if (this.imageIndex !== 0) {
-          this.imageIndex -= 1
-          this.getImages()
-          this.removeRec('all')
-          this.reDrawTags(1, this.imageIndex)
-        }
-      } else if (mod === 'next') {//下一张
-        if (this.imageIndex !== (this.imagesSize - 1)) {
-          this.imageIndex += 1
-          this.getImages()
-          this.removeRec('all')
-          this.reDrawTags(1, this.imageIndex)
-        }
-      } else if (mod === 'end') {//最后一张
-        if (this.imageIndex !== (this.imagesSize - 1)) {
-          this.imageIndex = this.imagesSize - 1
-          this.getImages()
-          this.removeRec('all')
-          this.reDrawTags(1, this.imageIndex)
-        }
-      }
+    changeImg(index) {
+      let indexFrom0 = index-1;
+      // console.log(indexFrom0);
+      this.imageIndex = indexFrom0
+      this.getImages()
+      this.removeRec('all')
+      this.reDrawTags(1, this.imageIndex)
+
+      // if (indexFrom0 !== 0) {
+      //   this.imageIndex = indexFrom0
+      //   this.getImages()
+      //   this.removeRec('all')
+      //   this.reDrawTags(1, this.imageIndex)
+      // }
+
+      //   if (mod === 'start') {//第一张
+      //   //如果不是第一张就加载
+      //   if (this.imageIndex !== 0) {
+      //     this.imageIndex = 0
+      //     this.getImages()
+      //     this.removeRec('all')
+      //     this.reDrawTags(1, this.imageIndex)
+      //   }
+      // } else if (mod === 'back') {//上一张
+      //   if (this.imageIndex !== 0) {
+      //     this.imageIndex -= 1
+      //     this.getImages()
+      //     this.removeRec('all')
+      //     this.reDrawTags(1, this.imageIndex)
+      //   }
+      // } else if (mod === 'next') {//下一张
+      //   if (this.imageIndex !== (this.imagesSize - 1)) {
+      //     this.imageIndex += 1
+      //     this.getImages()
+      //     this.removeRec('all')
+      //     this.reDrawTags(1, this.imageIndex)
+      //   }
+      // } else if (mod === 'end') {//最后一张
+      //   if (this.imageIndex !== (this.imagesSize - 1)) {
+      //     this.imageIndex = this.imagesSize - 1
+      //     this.getImages()
+      //     this.removeRec('all')
+      //     this.reDrawTags(1, this.imageIndex)
+      //   }
+      // }
 
     },
     //切换工具
@@ -919,19 +927,23 @@ export default {
   .images {
     width: 290px;
     height: 40px;
-    margin: 5px;
+    margin: 5px 5px 5px 10px;
 
     .img-btn {
-      height: 30px;
-      width: 36px;
-      background-color: #def1ea;
-      margin: 5px 11px;
+      height: 38px;
+      width: 100%;
       float: left;
       border-radius: 5px;
       text-align: center;
       line-height: 30px;
       transition: all 0.2s;
       font-size: 18px;
+      input{
+        display: block;
+        outline: none;
+        border: none;
+        background-color: transparent;
+      }
     }
 
     .img-btn:hover {
