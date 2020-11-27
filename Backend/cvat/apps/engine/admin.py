@@ -1,9 +1,5 @@
 from django.contrib import admin
-from .models import Task
-from .models import Segment
-from .models import Job
-from .models import Label
-from .models import AttributeSpec
+from .models import Task, Segment, Job, Label, AttributeSpec
 
 
 class JobInline(admin.TabularInline):

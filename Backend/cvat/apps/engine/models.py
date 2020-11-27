@@ -198,7 +198,7 @@ def upload_path_handler(instance, filename):
     return os.path.join(instance.data.get_upload_dirname(), filename)
 
 
-# For client files which the user is uploaded
+# 对于用户上传的客户端文件
 class ClientFile(models.Model):
     data = models.ForeignKey(Data, on_delete=models.CASCADE, null=True, related_name='client_files')
     file = models.FileField(upload_to=upload_path_handler, max_length=1024, storage=MyFileSystemStorage())
@@ -208,7 +208,7 @@ class ClientFile(models.Model):
         unique_together = ("data", "file")
 
 
-# For server files on the mounted share
+# 对于挂载在服务器上的共享文件
 class ServerFile(models.Model):
     data = models.ForeignKey(Data, on_delete=models.CASCADE, null=True, related_name='server_files')
     file = models.CharField(max_length=1024)
@@ -299,10 +299,10 @@ class AttributeVal(models.Model):
 
 
 class ShapeType(str, Enum):
-    RECTANGLE = 'rectangle'  # (x0, y0, x1, y1)
-    POLYGON = 'polygon'  # (x0, y0, ..., xn, yn)
-    POLYLINE = 'polyline'  # (x0, y0, ..., xn, yn)
-    POINTS = 'points'  # (x0, y0, ..., xn, yn)
+    RECTANGLE = 'rectangle'     # (x0, y0, x1, y1)
+    POLYGON = 'polygon'         # (x0, y0, ..., xn, yn)
+    POLYLINE = 'polyline'       # (x0, y0, ..., xn, yn)
+    POINTS = 'points'           # (x0, y0, ..., xn, yn)
     CUBOID = 'cuboid'
 
     @classmethod

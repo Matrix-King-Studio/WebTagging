@@ -22,6 +22,9 @@
     <list default="true" id="e2fd5767-3d4d-4226-8c86-65e39b2024b3" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cvat/apps/engine/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/engine/admin.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cvat/apps/engine/media_extractors.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/engine/media_extractors.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cvat/apps/engine/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/engine/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cvat/apps/engine/serializers.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/engine/serializers.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cvat/apps/engine/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/engine/views.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -279,7 +282,13 @@
       <workItem from="1605488237947" duration="2171000" />
       <workItem from="1605571753541" duration="2826000" />
       <workItem from="1605661462238" duration="10053000" />
-      <workItem from="1605745874839" duration="3930000" />
+      <workItem from="1605745874839" duration="4585000" />
+      <workItem from="1605833395487" duration="1059000" />
+      <workItem from="1605924873414" duration="2179000" />
+      <workItem from="1606013632852" duration="404000" />
+      <workItem from="1606092038479" duration="3947000" />
+      <workItem from="1606390129744" duration="4324000" />
+      <workItem from="1606482502486" duration="677000" />
     </task>
     <task id="LOCAL-00001" summary="初始化CVAT">
       <created>1596186022091</created>
@@ -512,7 +521,14 @@
       <option name="project" value="LOCAL" />
       <updated>1605575221581</updated>
     </task>
-    <option name="localTasksCounter" value="34" />
+    <task id="LOCAL-00034" summary="2020-11-19">
+      <created>1605795595555</created>
+      <option name="number" value="00034" />
+      <option name="presentableId" value="LOCAL-00034" />
+      <option name="project" value="LOCAL" />
+      <updated>1605795595555</updated>
+    </task>
+    <option name="localTasksCounter" value="35" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -564,7 +580,8 @@
     <MESSAGE value="初步完成安装指南" />
     <MESSAGE value="分前后端" />
     <MESSAGE value="完成标注数据的存储" />
-    <option name="LAST_COMMIT_MESSAGE" value="完成标注数据的存储" />
+    <MESSAGE value="2020-11-19" />
+    <option name="LAST_COMMIT_MESSAGE" value="2020-11-19" />
   </component>
   <component name="WindowStateProjectService">
     <state x="404" y="96" key="#Deployment" timestamp="1604483790441">
@@ -590,10 +607,10 @@
     </state>
     <state x="480" y="169" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.1536.824/1920.0.1440.860@0.0.1536.824" timestamp="1597809267598" />
     <state x="480" y="169" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.1536.824@0.0.1536.824" timestamp="1603790796621" />
-    <state x="567" y="112" key="CommitChangelistDialog2" timestamp="1605575220404">
+    <state x="567" y="112" key="CommitChangelistDialog2" timestamp="1605795593823">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state x="567" y="112" key="CommitChangelistDialog2/0.0.1920.1080@0.0.1920.1080" timestamp="1605575220404" />
+    <state x="567" y="112" key="CommitChangelistDialog2/0.0.1920.1080@0.0.1920.1080" timestamp="1605795593823" />
     <state x="-1254" y="223" key="FileChooserDialogImpl" timestamp="1599910707412">
       <screen x="-1920" y="0" width="1920" height="1040" />
     </state>
@@ -622,22 +639,17 @@
     <state x="315" y="73" key="SettingsEditor/0.0.1536.824/1920.0.1440.860@0.0.1536.824" timestamp="1598327908018" />
     <state x="315" y="73" key="SettingsEditor/0.0.1536.824@0.0.1536.824" timestamp="1599455957806" />
     <state x="439" y="116" key="SettingsEditor/0.0.1920.1080@0.0.1920.1080" timestamp="1605793516405" />
-    <state x="451" y="190" key="Vcs.Push.Dialog.v2" timestamp="1605575225344">
+    <state x="451" y="190" key="Vcs.Push.Dialog.v2" timestamp="1605795599060">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
     <state x="-1469" y="183" key="Vcs.Push.Dialog.v2/0.0.1536.824/-1920.0.1920.1040@-1920.0.1920.1040" timestamp="1599984672983" />
     <state x="361" y="145" key="Vcs.Push.Dialog.v2/0.0.1536.824/1920.0.1440.860@0.0.1536.824" timestamp="1598419127725" />
     <state x="361" y="145" key="Vcs.Push.Dialog.v2/0.0.1536.824@0.0.1536.824" timestamp="1599456277691" />
-    <state x="451" y="190" key="Vcs.Push.Dialog.v2/0.0.1920.1080@0.0.1920.1080" timestamp="1605575225344" />
-    <state x="264" y="1" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser" timestamp="1597286850927">
-      <screen x="0" y="0" width="1536" height="824" />
-    </state>
-    <state x="264" y="1" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser/0.0.1536.824/1920.0.1440.860@0.0.1536.824" timestamp="1597286850927" />
-    <state x="704" y="426" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1603680255300">
+    <state x="451" y="190" key="Vcs.Push.Dialog.v2/0.0.1920.1080@0.0.1920.1080" timestamp="1605795599060" />
+    <state x="704" y="426" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1606390338250">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state x="563" y="325" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1536.824/1920.0.1440.860@0.0.1536.824" timestamp="1597662300050" />
-    <state x="704" y="426" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1920.1080@0.0.1920.1080" timestamp="1603680255300" />
+    <state x="704" y="426" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1920.1080@0.0.1920.1080" timestamp="1606390338250" />
     <state x="1920" y="4" width="1101" height="610" maximized="true" key="dock-window-1" timestamp="1598089464603">
       <screen x="1920" y="0" width="1440" height="860" />
     </state>

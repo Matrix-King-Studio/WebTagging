@@ -197,8 +197,7 @@ class DataSerializer(serializers.ModelSerializer):
 
     # pylint: disable=no-self-use
     def validate(self, data):
-        if 'start_frame' in data and 'stop_frame' in data \
-            and data['start_frame'] > data['stop_frame']:
+        if 'start_frame' in data and 'stop_frame' in data and data['start_frame'] > data['stop_frame']:
             raise serializers.ValidationError('Stop frame must be more or equal start frame')
         return data
 
