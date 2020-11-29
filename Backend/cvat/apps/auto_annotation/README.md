@@ -12,12 +12,11 @@
 
 ### Description
 
-The application will be enabled automatically if
-[OpenVINO&trade; component](../../../components/openvino)
-is installed. It allows to use custom models for auto annotation. Only models in
-OpenVINO&trade; toolkit format are supported. If you would like to annotate a
-task with a custom model please convert it to the intermediate representation
-(IR) format via the model optimizer tool. See [OpenVINO documentation](https://software.intel.com/en-us/articles/OpenVINO-InferEngine) for details.
+The application will be enabled automatically if [OpenVINO&trade; component](../../../components/openvino) is installed.
+It allows to use custom models for auto annotation.
+Only models in OpenVINO&trade; toolkit format are supported.
+If you would like to annotate a task with a custom model please convert it to the intermediate representation (IR) format via the model optimizer tool.
+See [OpenVINO documentation](https://software.intel.com/en-us/articles/OpenVINO-InferEngine) for details.
 
 ### Installation
 
@@ -99,7 +98,7 @@ the user interfaces provided by OpenCV.
 See the script and the documentation in the
 [auto_annotation directory](https://github.com/opencv/cvat/tree/develop/utils/auto_annotation).
 
-When using the Auto Annotation runner, it is often helpful to drop into a REPL prompt to interact with the variables 
+When using the Auto Annotation runner, it is often helpful to drop into a REPL prompt to interact with the variables
 directly. You can do this using the `interact` method from the `code` module.
 
 ```python
@@ -132,7 +131,7 @@ When using the `interact` method, make sure you are running using the _testing s
  before submitting to the server! If you don't remove it from the server, the code runners will hang during execution,
  and you'll have to restart the server to fix them.
 
-Another useful development method is visualizing the results using OpenCV. This will be discussed more in the 
+Another useful development method is visualizing the results using OpenCV. This will be discussed more in the
 [Semantic Segmentation](#segmentation) section.
 
 ### Examples
@@ -264,7 +263,7 @@ for frame_results in detections:
 		# Again, these indexes specific to this model
 		class_label = int(box[1])
 		box_class_probability = box[2]
-		
+
 		if box_class_probability > 0.2:
 			xmin = box[3] * frame_width
 			ymin = box[4] * frame_height
@@ -286,7 +285,7 @@ for frame_results in detections:
 			# Do this using the boolean `>` method
 			boolean_mask = (resized_mask > 0.5)
 
-			# Convert the boolean values to uint8 
+			# Convert the boolean values to uint8
 			uint8_mask = boolean_mask.astype(np.uint8) * 255
 
 			# Change the x and y coordinates into integers
@@ -315,7 +314,7 @@ for frame_results in detections:
 			results.add_polygon(polygon_mask, class_label, frame_number)
 ```
 
-Note that it is sometimes hard to see or understand what is happening in a script. 
+Note that it is sometimes hard to see or understand what is happening in a script.
 Use of the computer vision module can help you visualize what is happening.
 
 ```python
@@ -333,7 +332,7 @@ for frame_results in detections:
 	for box_index, box in enumerate(boxes):
 		class_label = int(box[1])
 		box_class_probability = box[2]
-		
+
 		if box_class_probability > 0.2:
 			xmin = box[3] * frame_width
 			ymin = box[4] * frame_height
@@ -358,7 +357,7 @@ for frame_results in detections:
 ```
 
 Note that you should _only_ use the above commands while running the [Auto Annotation Model Runner][3].
-Running on the server will likely require a server restart to fix. 
+Running on the server will likely require a server restart to fix.
 The method `cv2.destroyAllWindows()` or `cv2.destroyWindow('your-name-here')` might be required depending on your
  implementation.
 
