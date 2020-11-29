@@ -117,9 +117,20 @@ export default {
       //组织数据
       let data = new FormData()
       data.append("image_quality", this.$store.state.image_quality)
-      this.$store.state.allFileList.forEach((item, index) => {
-        data.append("client_files["+ index +"]", item)
-      })
+      //判断用户选择的数据集上传模式
+      if (this.$store.state.userChoiceModel === 1){
+        //用户拖拽上传到服务器
+        this.$store.state.allFileList.forEach((item, index) => {
+            data.append("client_files["+ index +"]", item)
+        })
+      }else if (this.$store.state.userChoiceModel === 2){
+        // 使用服务器已经存在的
+        this.$store.state.allFileList02.forEach((item, index) => {
+            console.log(item)
+            data.append("server_files["+ index +"]", item.storagePath)
+        })
+      }
+
       data.append("use_zip_chunks", false)
       //一张图片打成一个压缩包
       data.append("chunk_size", 1)

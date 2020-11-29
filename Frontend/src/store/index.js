@@ -5,6 +5,8 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
+    //选择的模式：1代表用户上传数据集，2代表用户使用已经存在的数据集
+    userChoiceModel: 1,
     //项目基本信息
     projectInfo: {
       "name": "",
@@ -15,7 +17,12 @@ export default new Vuex.Store({
       "z_order": false,
     },
     //所有图片数据
+    //用户拖拽上传的数据集
     allFileList: [],
+    //使用服务器上的数据集
+    allFileList02: [],
+    //树形结构被选中的节点的key，用来回退上一步的时候进行恢复
+    treeCheckedKeyList: [],
     //图片压缩质量
     image_quality: 70,
     //图片标注信息
@@ -32,6 +39,10 @@ export default new Vuex.Store({
     allUsers: []
   },
   mutations: {
+    //设置用户选择的上传模式
+    changeUserChoiceModel(state,num){
+      state.userChoiceModel = num;
+    },
     //新建项目时保存label信息
     /** label中的信息有变化，需要清洗*/
     addToStore(state, labData){
@@ -71,11 +82,20 @@ export default new Vuex.Store({
     //图片数据上传到服务器完成后清除
     cleanFileList(){
       this.state.allFileList = []
+      this.state.allFileList02 = []
       this.state.image_quality = 70
     },
-    //图片数据
+    //保存图片数据，用户拖拽上传时使用
     saveFileList(state, listData){
       state.allFileList = listData
+    },
+    //保存图片数据，使用服务器存在的数据集上传时使用
+    saveFileList02(state, listData){
+      state.allFileList02 = listData
+    },
+    //保存图片数据，使用服务器存在的数据集上传时使用
+    saveTreeCheckedKeyList(state, listData){
+      state.treeCheckedKeyList = listData
     },
     //标注时保存标注对象信息
     saveTagsInfo(state, shapes) {

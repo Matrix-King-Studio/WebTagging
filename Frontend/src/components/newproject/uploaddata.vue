@@ -1,5 +1,5 @@
 <template>
-  <el-tabs type="border-card" value="one" :before-leave="leaveTab" :stretch=true>
+  <el-tabs type="border-card" v-model="activeTab" :before-leave="leaveTab" @tab-click="modelChange" :stretch=true>
     <el-tab-pane
       label="上传数据集"
       name="one"
@@ -29,17 +29,20 @@
       </div>
     </el-tab-pane>
     <el-tab-pane
-      label="使用已经存在的数据集"
+      label="使用已经存在的数据集(不能同时选择文件夹和文件)"
       name="two"
       :disabled="tabTwoCannotSelect">
       <el-tree
+        ref="tree"
         :props="props"
         :load="loadNode"
+        node-key="treeId"
         lazy
         show-checkbox
+        :default-expanded-keys="checkedKeyList"
         :highlight-current="true"
         @node-click="handleNodeClick"
-        @check-change="handleCheckChange">
+        @check-change="getUserCheckedNodes">
       </el-tree>
     </el-tab-pane>
   </el-tabs>
@@ -70,8 +73,11 @@ export default {
   },
   data () {
     return{
-      fileList: [
-      ],
+      fileList: [], //存放拖拽上传的数据
+      fileList02: [], //存放选择已经存在的数据集上传的数据
+      checkedKeyList: [], //存放选择的节点的key，用于回退上一步时进行选中节点的复原
+      //控制激活的选项卡
+      activeTab: 'one',
       //控制选项卡是否能切换
       tabOneCannotSelect: false,
       tabTwoCannotSelect: false,
@@ -84,6 +90,8 @@ export default {
         children: 'children',
         isLeaf: 'leaf'
       },
+      //控制当前node-key
+      keyNum: 1,
     }
   },
   created() {
@@ -94,8 +102,13 @@ export default {
     document.addEventListener('dragover', function (e) {
       e.preventDefault()
     }, false)
+    //每次转到这个页面都要设置激活选项卡
+    this.displayByUserChoiceModel()
     //每次转到这个页面都从store中加载一次数据
     this.getFileData()
+    this.getFileData02()
+    this.getTreeCheckedKey()
+    this.setTreeCheckedByKey()
   },
   methods: {
     //用另一个点击去触发input:file按钮的点击效果
@@ -104,6 +117,7 @@ export default {
     },
     //获取文件信息
     /** 以后再解决上传文件重复的问题*/
+    //点击上传
     getFile(event){
       this.fileList.push(...event.target.files)
       console.log(this.fileList);
@@ -112,23 +126,49 @@ export default {
     //拖拽上传
     dropFile(e){
       e.preventDefault()
-
       let files = [];
       [].forEach.call(e.dataTransfer.files, function(file) {
         files.push(file)
       },false)
       this.fileList.push(...files)
+      console.log(this.fileList)
       this.$store.commit('saveFileList', this.fileList)
     },
     //获取store中的文件列表数据
     getFileData(){
       this.fileList = this.$store.state.allFileList
     },
+    //获取store中的文件列表数据
+    getFileData02(){
+      this.fileList02 = this.$store.state.allFileList02
+      console.log(this.fileList02);
+    },
+    //获取store中树形结构选中的节点key
+    getTreeCheckedKey(){
+      this.checkedKeyList = this.$store.state.treeCheckedKeyList
+      console.log(this.checkedKeyList);
+    },
+    //树形组件根据key设置当前选中的节点
+    setTreeCheckedByKey(){
+      //设置当前选中的节点
+      this.$nextTick(()=>{
+        this.$refs.tree.setCheckedKeys(this.checkedKeyList)
+      })
+    },
     //删除文件列表中的数据
     deleteData:function(index){
       this.$delete(this.fileList, index);
       this.$store.commit('saveFileList', this.fileList)
     },
+    //根据用户选择，展示页面
+    displayByUserChoiceModel(){
+      if (this.$store.state.userChoiceModel === 1){
+          this.activeTab = 'one'
+      }else if (this.$store.state.userChoiceModel === 2){
+          this.activeTab = 'two'
+      }
+    },
+    //使用已经存在的数据集的方法
     //tab切换
     leaveTab(activeName, oldActiveName){
         if (this.fileList.length !== 0){
@@ -145,66 +185,53 @@ export default {
             })
             return p
         }
+        if (this.fileList02.length !== 0){
+            this.tabOneCannotSelect = true;
+            let p = new Promise((resolve, reject) => {
+                this.$confirm('【上传数据集】与【使用已经存在的数据集】只能选择一个，如需切换请先清空数据！', '提示', {
+                    showConfirmButton: false,
+                    cancelButtonText: '我已了解',
+                    type: 'warning'
+                }).catch(err => {
+                    this.tabOneCannotSelect = false;
+                    reject(err)
+                })
+            })
+            return p
+        }
     },
+
+    modelChange(tab,event){
+      if (tab.active) { //如果选项卡被激活
+        if (tab.name === 'one'){//使用第一个选项卡时，让index里的userChoiceModel更改为1
+          this.$store.commit('changeUserChoiceModel',1)
+        }else if (tab.name === 'two'){//使用第一个选项卡时，让index里的userChoiceModel更改为2
+          this.$store.commit('changeUserChoiceModel',2)
+        }
+      }
+    },
+
     //树形控件用到的方法
-    handleCheckChange(data, checked, indeterminate) {
-      console.log(data, checked, indeterminate);
-      console.log(JSON.stringify(this.treeData));
+    //获取被选中的的节点的信息
+    getUserCheckedNodes(){
+      //获取当前所有被选中的节点的信息
+      this.fileList02 = this.$refs.tree.getCheckedNodes(); //这里的getCheckedNodes()是自带的方法
+      console.log(this.fileList02)
+      this.$store.commit('saveFileList02', this.fileList02)
+      //获取当前所有被选中的节点的node-key数组，就是treeId
+      this.checkedKeyList = this.$refs.tree.getCheckedKeys(); //getCheckedKeys()是自带的方法
+      console.log(this.checkedKeyList)
+      this.$store.commit('saveTreeCheckedKeyList', this.checkedKeyList)
     },
+
+
     //节点被点击触发的方法
     handleNodeClick() {
         // console.log(data);
     },
-    // //树形结构url拼接
-    // urlAdd(s1,s2){
-    //   return s1+s2+'/'
-    // },
-    // //初始化树形结构内容
-    // initTreeData(){
-    //   //先获得最外层内容
-    //   this.$http.get(this.url).then((res)=>{
-    //       console.log(res.data);
-    //       for(let i = 0; i<res.data.length;i++){
-    //         let obj = {
-    //           name: res.data[i].name,
-    //           type: res.data[i].type,
-    //           children: []
-    //         };
-    //         this.treeData.push(obj);
-    //       }
-    //   });
-    //   //进行深层内容获取
-    //   setTimeout(()=>{
-    //       this.getTreeData(this.url,this.treeData)
-    //   },400)
-    // },
-    // //树形结构通过url获取内容
-    // getTreeData(v_url,v_data){
-    //   // console.log(v_data[0].type);
-    //   for (let i = 0; i < v_data.length; i++) {
-    //     // console.log(v_data[i])
-    //     if (v_data[i].type === 'DIR') {
-    //       let tUrl = this.urlAdd(v_url,v_data[i].name);
-    //       console.log(tUrl); //输出当前url
-    //       this.addData(tUrl,v_data[i].children);
-    //       setTimeout(()=>{
-    //           this.getTreeData(tUrl,v_data[i].children)
-    //       },400)
-    //     }
-    //   }
-    // },
-    // //树形结构添加数据
-    // addData(v_url,v_data){
-    //   this.$http.get(v_url).then((res)=>{
-    //     for(let i = 0; i<res.data.length;i++){
-    //       let obj = {
-    //           name: res.data[i].name,
-    //           type: res.data[i].type,
-    //           children: []
-    //       };
-    //       v_data.push(obj);
-    //     }
-    //   })
+    // handleCheckChange(data, checked, indeterminate) {
+    //     console.log(data, checked, indeterminate);
+    //     console.log(JSON.stringify(this.treeData));
     // },
 
     //节点懒加载方法
@@ -221,20 +248,26 @@ export default {
               let obj;
               if (res.data[i].type === 'DIR') {
                 obj = {
+                    treeId: this.keyNum,
                     name: res.data[i].name,
                     type: res.data[i].type,
+                    storagePath: '/' + res.data[i].name + '/',
                     nextUrl: this.url + res.data[i].name + '/',
                     leaf: false,
                     children: []
                 };
+                this.keyNum++;
               } else {
                 obj = {
+                    treeId: this.keyNum,
                     name: res.data[i].name,
                     type: res.data[i].type,
+                    storagePath: '/' + res.data[i].name,
                     nextUrl: this.url + res.data[i].name + '/',
                     leaf: true,
                     children: []
                 };
+                this.keyNum++;
               }
               treeNode.push(obj);
             }
@@ -253,6 +286,7 @@ export default {
         } else{
             hasChild = false;
         }
+        let tPath = node.data.storagePath;
         let tUrl = node.data.nextUrl;
         setTimeout(() => {
           if (hasChild) {
@@ -260,29 +294,34 @@ export default {
               let treeNode = [];
               if (res.data.length === 0){
                 node.data.disabled=true;
-                console.log(node.data.name + "文件夹内没有文件，无法选中");
+                console.log(node.data.name + "文件夹为空，无法选中");
               }
               else {
                 for(let i = 0; i<res.data.length;i++) {
                   let obj;
                   if (res.data[i].type === 'DIR'){
                     obj = {
+                      treeId: this.keyNum,
                       name: res.data[i].name,
                       type: res.data[i].type,
+                      storagePath: tPath + res.data[i].name + '/',
                       nextUrl: tUrl + res.data[i].name + '/',
                       leaf: false,
                       children: []
                     };
+                    this.keyNum++;
                   }else {
                     obj = {
+                      treeId: this.keyNum,
                       name: res.data[i].name,
                       type: res.data[i].type,
+                      storagePath: tPath + res.data[i].name,
                       nextUrl: tUrl + res.data[i].name + '/',
                       leaf: true,
                       children: []
                     };
+                    this.keyNum++;
                   }
-
                   treeNode.push(obj);
                 }
               }
@@ -413,6 +452,5 @@ export default {
       background-color: rgba(0,0,0,0.1);
     }
   }
-
 }
 </style>
