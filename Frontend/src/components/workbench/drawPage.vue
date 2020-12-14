@@ -201,16 +201,16 @@ export default {
       stop_frame: 0,
     }
   },
+  computed:{
+    imageRealIndex(){
+        return this.imageIndex + 1;
+    }
+  },
   created() {
     //获取图片信息
     this.getImagesInfo()
     //获取job信息
     this.getJobInfo()
-  },
-  computed:{
-    imageRealIndex(){
-        return this.imageIndex + 1;
-    }
   },
   mounted() {
     this.initCanvas()
@@ -264,10 +264,6 @@ export default {
         },
         // 请求数据的格式
         responseType: 'arraybuffer',
-        headers: {
-        //   'Authorization': 'Token 52195b9480418fb20992f411e188bb945c983359',
-        //   'Cache-Control': 'no-cache'
-        }
       }).then(e => {
         console.log("2.图片获取完成")
         // 使用JSZip解压数据
@@ -319,53 +315,48 @@ export default {
     drawImages() {
       //将解压出的文件以base64格式放到图片对象中
       let img = new Image()
-
-      console.log("4.图片DOM对象初始化完成");
       //清除画布
       this.ctx.clearRect(0, 0, this.myCanvas.width, this.myCanvas.height)
       setTimeout(() => {
-        // img.src = "data:image/png;base64," + this.imagesData[this.imageIndex]
         img.src = "data:image/png;base64," + this.imagesData
-        console.log("5.base64数据嵌入完成");
+        console.log("4.base64数据嵌入完成");
+        img.onload = ()=>{
+          // console.log('图片原始尺寸' + img.width, img.height);
+          //图片比窗口长，则上下填充满
+          if (img.width / img.height < (this.myCanvas.width - 300) / this.myCanvas.height) {
+            this.imageInfo = {
+              left: (this.myCanvas.width - 300 - this.myCanvas.height * img.width / img.height) / 2 + 5,
+              top: 5,
+              width: this.myCanvas.height * img.width / img.height - 10,
+              height: this.myCanvas.height - 10
+            }
+          } else {//窗口比图片长，左右填满
+            this.imageInfo = {
+              left: 5,
+              top: (this.myCanvas.height - (this.myCanvas.width - 300) * img.height / img.width) / 2 + 5,
+              width: this.myCanvas.width - 310,
+              height: (this.myCanvas.width - 300) * img.height / img.width - 10
+            }
+          }
+
+          // console.log('图片缩放后的尺寸' + this.imageInfo.width, this.imageInfo.height);
+          this.imageScale = img.width / this.imageInfo.width
+          console.log("5.图片尺寸数据处理完成，图片缩放比例：" + this.imageScale);
+          //将图片绘制到canvas上，这里的drawImage是canvas里的函数
+          this.ctx.drawImage(img, this.imageInfo.left, this.imageInfo.top, this.imageInfo.width, this.imageInfo.height)
+          console.log("6.图片绘制完成");
+
+          //加载完成后删除正在加载
+          if (this.isFirst) {
+            this.$refs.tipsBox.parentNode.removeChild(this.$refs.tipsBox)
+            this.isFirst = false
+          }
+        }
       }, 100)
-
-      setTimeout(() => {
-        // console.log('图片原始尺寸' + img.width, img.height);
-        //图片比窗口长，则上下填充满
-        if (img.width / img.height < (this.myCanvas.width - 300) / this.myCanvas.height) {
-          this.imageInfo = {
-            left: (this.myCanvas.width - 300 - this.myCanvas.height * img.width / img.height) / 2 + 5,
-            top: 5,
-            width: this.myCanvas.height * img.width / img.height - 10,
-            height: this.myCanvas.height - 10
-          }
-        } else {//窗口比图片长，左右填满
-          this.imageInfo = {
-            left: 5,
-            top: (this.myCanvas.height - (this.myCanvas.width - 300) * img.height / img.width) / 2 + 5,
-            width: this.myCanvas.width - 310,
-            height: (this.myCanvas.width - 300) * img.height / img.width - 10
-          }
-        }
-
-        // console.log('图片缩放后的尺寸' + this.imageInfo.width, this.imageInfo.height);
-        this.imageScale = img.width / this.imageInfo.width
-        console.log("6.图片尺寸数据处理完成，图片缩放比例：" + this.imageScale);
-        //将图片绘制到canvas上，这里的drawImage是canvas里的函数
-        this.ctx.drawImage(img, this.imageInfo.left, this.imageInfo.top, this.imageInfo.width, this.imageInfo.height)
-        console.log("7.图片绘制完成");
-
-        //加载完成后删除正在加载
-        if (this.isFirst) {
-          this.$refs.tipsBox.parentNode.removeChild(this.$refs.tipsBox)
-          this.isFirst = false
-        }
-      }, 300)
     },
     //切换图片
     changeImg(index) {
       let indexFrom0 = index-1;
-      // console.log(indexFrom0);
       this.imageIndex = indexFrom0
       this.getImages()
       this.removeRec('all')
@@ -785,7 +776,6 @@ export default {
   top: 0;
   overflow: hidden;
 }
-
 .sidebar {
   position: absolute;
   z-index: 3;
@@ -830,7 +820,6 @@ export default {
     background-color: #b3d9cb;
   }
 }
-
 .object-bar {
   position: absolute;
   z-index: 3;
@@ -1006,7 +995,6 @@ export default {
     }
   }
 }
-
 .paint-box {
   margin: 35px 0 0 46px;
   box-sizing: border-box;
@@ -1045,7 +1033,6 @@ export default {
     font-size: 24px;
   }
 }
-
 /deep/ .rec-obj {
   position: absolute;
   width: 0;
@@ -1056,11 +1043,9 @@ export default {
   border: 1px solid #333333;
   transition: background-color 0.1s;
 }
-
 /deep/ .rec-obj-lock {
   background-color: transparent !important;
 }
-
 /deep/ .rec-obj:hover {
   border: 2px solid #555555;
   background-color: rgba(228, 254, 239, 0.3) !important;
