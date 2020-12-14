@@ -29,14 +29,19 @@
       </div>
     </el-tab-pane>
     <el-tab-pane
-      label="使用已经存在的数据集(不能同时选择文件夹和文件)"
+      label="使用已经存在的数据集"
       name="two"
       :disabled="tabTwoCannotSelect">
       <el-tree
+        v-loading="loading"
+        element-loading-text="拼命加载中，请稍后..."
+        element-loading-spinner="el-icon-loading"
+        element-loading-background="rgba(0, 0, 0, 0.8)"
         ref="tree"
         :props="props"
         :load="loadNode"
-        node-key="treeId"
+        node-key="storagePath"
+        default-expand-all
         lazy
         show-checkbox
         :default-expanded-keys="checkedKeyList"
@@ -90,8 +95,8 @@ export default {
         children: 'children',
         isLeaf: 'leaf'
       },
-      //控制当前node-key
-      keyNum: 1,
+      //控制树形控件加载时遮罩
+      loading: true,
     }
   },
   created() {
@@ -141,12 +146,10 @@ export default {
     //获取store中的文件列表数据
     getFileData02(){
       this.fileList02 = this.$store.state.allFileList02
-      console.log(this.fileList02);
     },
     //获取store中树形结构选中的节点key
     getTreeCheckedKey(){
       this.checkedKeyList = this.$store.state.treeCheckedKeyList
-      console.log(this.checkedKeyList);
     },
     //树形组件根据key设置当前选中的节点
     setTreeCheckedByKey(){
@@ -154,6 +157,8 @@ export default {
       this.$nextTick(()=>{
         this.$refs.tree.setCheckedKeys(this.checkedKeyList)
       })
+      //关闭遮罩
+      this.closeLoading()
     },
     //删除文件列表中的数据
     deleteData:function(index){
@@ -223,17 +228,17 @@ export default {
       console.log(this.checkedKeyList)
       this.$store.commit('saveTreeCheckedKeyList', this.checkedKeyList)
     },
-
-
-    //节点被点击触发的方法
-    handleNodeClick() {
-        // console.log(data);
+    //关闭树形组件遮罩
+    closeLoading(){
+      setTimeout(()=>{
+        this.loading = false
+        console.log("遮罩已关闭")
+      },3000) //3秒钟后遮罩关闭
     },
-    // handleCheckChange(data, checked, indeterminate) {
-    //     console.log(data, checked, indeterminate);
-    //     console.log(JSON.stringify(this.treeData));
-    // },
-
+    //节点被点击触发的方法
+    handleNodeClick(data, checked, indeterminate) {
+      console.log(data);
+    },
     //节点懒加载方法
     loadNode(node, resolve) {
       if (node.level === 0) {
@@ -248,7 +253,6 @@ export default {
               let obj;
               if (res.data[i].type === 'DIR') {
                 obj = {
-                    treeId: this.keyNum,
                     name: res.data[i].name,
                     type: res.data[i].type,
                     storagePath: '/' + res.data[i].name + '/',
@@ -256,10 +260,8 @@ export default {
                     leaf: false,
                     children: []
                 };
-                this.keyNum++;
               } else {
                 obj = {
-                    treeId: this.keyNum,
                     name: res.data[i].name,
                     type: res.data[i].type,
                     storagePath: '/' + res.data[i].name,
@@ -267,7 +269,6 @@ export default {
                     leaf: true,
                     children: []
                 };
-                this.keyNum++;
               }
               treeNode.push(obj);
             }
@@ -301,7 +302,6 @@ export default {
                   let obj;
                   if (res.data[i].type === 'DIR'){
                     obj = {
-                      treeId: this.keyNum,
                       name: res.data[i].name,
                       type: res.data[i].type,
                       storagePath: tPath + res.data[i].name + '/',
@@ -309,10 +309,8 @@ export default {
                       leaf: false,
                       children: []
                     };
-                    this.keyNum++;
                   }else {
                     obj = {
-                      treeId: this.keyNum,
                       name: res.data[i].name,
                       type: res.data[i].type,
                       storagePath: tPath + res.data[i].name,
@@ -320,7 +318,6 @@ export default {
                       leaf: true,
                       children: []
                     };
-                    this.keyNum++;
                   }
                   treeNode.push(obj);
                 }
