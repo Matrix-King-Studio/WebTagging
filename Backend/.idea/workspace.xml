@@ -1,43 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="8aff03a2-0667-4496-ac86-7694afcaba37" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/Backend.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../工作日志/2020-10-03.docx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../工作日志/2020-10-05.docx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../工作日志/2020-10-09.docx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../工作日志/2020-10-11.docx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../工作日志/2020-10-15.docx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../工作日志/2020-10-18.docx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../工作日志/2020-10-23.docx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../工作日志/2020-10-25.docx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../工作日志/2020-10-26.docx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../工作日志/2020-10-28.docx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../工作日志/2020-11-15.docx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../工作日志/2020-11-17.docx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../工作日志/2020-11-19.docx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../工作日志/2020-11-23.docx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../工作日志/2020-11-25.docx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../工作日志/2020-11-27.docx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../工作日志/2020-11-28.docx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../工作日志/2020-11-29.docx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../工作日志/刘兆峰-11月-工作日志.zip" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/WebTagging.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/deployment.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/deployment.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/other.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/sshConfigs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/sshConfigs.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/webServers.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/webServers.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/Dockerfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/engine/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/engine/admin.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/engine/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/engine/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/engine/templates/engine/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/engine/templates/engine/base.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/engine/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/engine/views.py" afterDir="false" />
-    </list>
+    <list default="true" id="8aff03a2-0667-4496-ac86-7694afcaba37" name="Default Changelist" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -68,6 +32,7 @@
       <option name="presentableId" value="Default" />
       <updated>1607865656290</updated>
       <workItem from="1607865658955" duration="7522000" />
+      <workItem from="1607946982452" duration="754000" />
     </task>
     <servers />
   </component>
@@ -81,5 +46,6 @@
         </entry>
       </map>
     </option>
+    <option name="oldMeFiltersMigrated" value="true" />
   </component>
 </project>
