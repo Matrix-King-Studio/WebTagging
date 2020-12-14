@@ -126,17 +126,15 @@ class Image(models.Model):
 
 class Project(models.Model):
     name = SafeCharField(max_length=256)
-    owner = models.ForeignKey(User, null=True, blank=True,
-                              on_delete=models.SET_NULL, related_name="+")
-    assignee = models.ForeignKey(User, null=True, blank=True,
-                                 on_delete=models.SET_NULL, related_name="+")
+    owner = models.ForeignKey(User, null=True, blank=True, on_delete=models.SET_NULL, related_name="+")
+    assignee = models.ForeignKey(User, null=True, blank=True, on_delete=models.SET_NULL, related_name="+")
     bug_tracker = models.CharField(max_length=2000, blank=True, default="")
     created_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now_add=True)
     status = models.CharField(max_length=32, choices=StatusChoice.choices(),
                               default=StatusChoice.ANNOTATION)
 
-    # Extend default permission model
+    # 扩展默认权限模型
     class Meta:
         default_permissions = ()
 
@@ -156,11 +154,10 @@ class Task(models.Model):
     # Zero means that there are no limits (default)
     segment_size = models.PositiveIntegerField(default=0)
     z_order = models.BooleanField(default=False)
-    status = models.CharField(max_length=32, choices=StatusChoice.choices(),
-                              default=StatusChoice.ANNOTATION)
+    status = models.CharField(max_length=32, choices=StatusChoice.choices(), default=StatusChoice.ANNOTATION)
     data = models.ForeignKey(Data, on_delete=models.CASCADE, null=True, related_name="tasks")
 
-    # Extend default permission model
+    # 扩展默认权限模型
     class Meta:
         default_permissions = ()
 
@@ -422,3 +419,15 @@ class PluginOption(models.Model):
     plugin = models.ForeignKey(Plugin, on_delete=models.CASCADE)
     name = SafeCharField(max_length=32)
     value = SafeCharField(max_length=1024)
+
+
+class Log(models.Model):
+    job = models.ForeignKey(Job, on_delete=models.CASCADE)
+    task = models.ForeignKey(Task, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    name = models.CharField(max_length=64)
+    time = models.DateTimeField(auto_now_add=True)
+    message = models.CharField(max_length=4096)
+    payload = models.CharField(max_length=4096)
+    is_active = models.BooleanField()

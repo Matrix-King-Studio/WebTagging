@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Task, Segment, Job, Label, AttributeSpec
+from .models import Task, Segment, Job, Label, AttributeSpec, Log
 
 
 class JobInline(admin.TabularInline):
@@ -72,3 +72,4 @@ class TaskAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Task, TaskAdmin)
+admin.site.register(Log)

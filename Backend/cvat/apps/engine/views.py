@@ -93,9 +93,7 @@ class ServerViewSet(viewsets.ViewSet):
     @swagger_auto_schema(method='post', request_body=ExceptionSerializer)
     @action(detail=False, methods=['POST'], serializer_class=ExceptionSerializer)
     def exception(request):
-        """
-        从服务器上的客户端保存异常，向ELK发送日志（如果它已连接）
-        """
+        """从服务器上的客户端保存异常，向ELK发送日志（如果它已连接）"""
         serializer = ExceptionSerializer(data=request.data)
         if serializer.is_valid(raise_exception=True):
             additional_info = {
@@ -118,20 +116,18 @@ class ServerViewSet(viewsets.ViewSet):
     @swagger_auto_schema(method='post', request_body=LogEventSerializer(many=True))
     @action(detail=False, methods=['POST'], serializer_class=LogEventSerializer)
     def logs(request):
-        """
-        将来自客户端的日志保存到服务器上，向ELK发送日志（如果它已连接）
-        """
+        """将来自客户端的日志保存到服务器上，向 ELK 发送日志（如果它已连接）"""
         serializer = LogEventSerializer(many=True, data=request.data)
         serializer.is_valid(raise_exception=True)
         user = {"username": request.user.username}
         for event in serializer.data:
             message = JSONRenderer().render({**event, **user}).decode('UTF-8')
-            jid = event.get("job_id")
-            tid = event.get("task_id")
-            if jid:
-                clogger.job[jid].info(message)
-            elif tid:
-                clogger.task[tid].info(message)
+            jobId = event.get("job_id")
+            taskId = event.get("task_id")
+            if jobId:
+                clogger.job[jobId].info(message)
+            elif taskId:
+                clogger.task[taskId].info(message)
             else:
                 clogger.glob.info(message)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
