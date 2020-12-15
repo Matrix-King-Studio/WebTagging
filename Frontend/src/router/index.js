@@ -32,6 +32,7 @@ const routes = [
         children: [
             {path: 'project', component: Project},
             {path: 'user', component: Usercenter},
+            {path: 'logAnalysis', component: LogAnalysis},
             {path: 'newproject', component: NewProject}
         ]
     },

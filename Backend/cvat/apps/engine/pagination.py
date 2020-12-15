@@ -9,10 +9,7 @@ class CustomPagination(PageNumberPagination):
         page_size = 0
         try:
             value = request.query_params[self.page_size_query_param]
-            if value == "all":
-                page_size = sys.maxsize
-            else:
-                page_size = int(value)
+            page_size = sys.maxsize if value == "all" else int(value)
         except (KeyError, ValueError):
             pass
 

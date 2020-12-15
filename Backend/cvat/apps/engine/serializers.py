@@ -7,6 +7,7 @@ from django.contrib.auth.models import User, Group
 
 from cvat.apps.engine import models
 from cvat.apps.engine.log import slogger
+from cvat.apps.engine.models import Job, Task, Log
 
 
 class AttributeSerializer(serializers.ModelSerializer):
@@ -32,8 +33,7 @@ class AttributeSerializer(serializers.ModelSerializer):
 
 
 class LabelSerializer(serializers.ModelSerializer):
-    attributes = AttributeSerializer(many=True, source='attributespec_set',
-                                     default=[])
+    attributes = AttributeSerializer(many=True, source='attributespec_set', default=[])
 
     class Meta:
         model = models.Label
@@ -53,8 +53,7 @@ class JobSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.Job
-        fields = ('url', 'id', 'assignee', 'status', 'start_frame',
-                  'stop_frame', 'task_id')
+        fields = ('url', 'id', 'assignee', 'status', 'start_frame', 'stop_frame', 'task_id')
 
 
 class SimpleJobSerializer(serializers.ModelSerializer):
@@ -319,8 +318,7 @@ class TaskSerializer(WriteOnceMixin, serializers.ModelSerializer):
 class ProjectSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Project
-        fields = ('url', 'id', 'name', 'owner', 'assignee', 'bug_tracker',
-                  'created_date', 'updated_date', 'status')
+        fields = ('url', 'id', 'name', 'owner', 'assignee', 'bug_tracker', 'created_date', 'updated_date', 'status')
         read_only_fields = ('created_date', 'updated_date', 'status')
         ordering = ['-id']
 
@@ -345,8 +343,7 @@ class BasicUserSerializer(serializers.ModelSerializer):
 
 
 class UserSerializer(serializers.ModelSerializer):
-    groups = serializers.SlugRelatedField(many=True,
-                                          slug_field='name', queryset=Group.objects.all())
+    groups = serializers.SlugRelatedField(many=True, slug_field='name', queryset=Group.objects.all())
 
     class Meta:
         model = User
@@ -436,8 +433,7 @@ class TrackedShapeSerializer(ShapeSerializer):
     id = serializers.IntegerField(default=None, allow_null=True)
     frame = serializers.IntegerField(min_value=0)
     outside = serializers.BooleanField()
-    attributes = AttributeValSerializer(many=True,
-                                        source="trackedshapeattributeval_set")
+    attributes = AttributeValSerializer(many=True, source="trackedshapeattributeval_set")
 
 
 class FileInfoSerializer(serializers.Serializer):
@@ -486,3 +482,18 @@ class LabeledDataSerializer(serializers.Serializer):
     tags = LabeledImageSerializer(many=True)
     shapes = LabeledShapeSerializer(many=True)
     tracks = LabeledTrackSerializer(many=True)
+
+
+class LogSerializer(serializers.ModelSerializer):
+    taskName = serializers.SerializerMethodField(required=False)
+    userName = serializers.SerializerMethodField(required=False)
+
+    def get_taskName(self, obj):
+        return Task.objects.all().filter(pk=obj.task.id).first().name
+
+    def get_userName(self, obj):
+        return User.objects.all().filter(pk=obj.user.id).first().username
+
+    class Meta:
+        model = Log
+        fields = ("job", "task", "user", "time", "message", "taskName", "userName")

@@ -19,7 +19,7 @@
 
           <!--日志分析-->
           <router-link
-            to="/home/project"
+            to="/home/logAnalysis"
             class="app-project tabs"
             tag="div"
             active-class="selected"

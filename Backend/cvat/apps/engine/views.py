@@ -32,13 +32,13 @@ from cvat.apps.authentication import auth
 from cvat.apps.authentication.decorators import login_required
 from cvat.apps.dataset_manager.serializers import DatasetFormatsSerializer
 from cvat.apps.engine.frame_provider import FrameProvider
-from cvat.apps.engine.models import Job, Plugin, StatusChoice, Task
+from cvat.apps.engine.models import Job, Plugin, StatusChoice, Task, Log
 from cvat.apps.engine.serializers import (
     AnnotationFileSerializer, BasicUserSerializer,
     DataMetaSerializer, DataSerializer, ExceptionSerializer,
     FileInfoSerializer, JobSerializer, LabeledDataSerializer,
     LogEventSerializer, PluginSerializer, ProjectSerializer,
-    RqStatusSerializer, TaskSerializer, UserSerializer)
+    RqStatusSerializer, TaskSerializer, UserSerializer, LogSerializer)
 from cvat.settings.base import CSS_3RDPARTY, JS_3RDPARTY
 
 from . import models, task
@@ -57,6 +57,7 @@ def wrap_swagger(view):
             format_alias = settings.REST_FRAMEWORK['URL_FORMAT_OVERRIDE']
             request.GET[format_alias] = request.GET['format']
         return view(request, format=scheme)
+
     return _map_format_to_schema
 
 
@@ -455,7 +456,6 @@ class TaskViewSet(auth.TaskGetQuerySetMixin, viewsets.ModelViewSet):
                         if data_quality == 'compressed' else FrameProvider.Quality.ORIGINAL
                     # 获取当前执行脚本的绝对路径
                     path = os.path.realpath(frame_provider.get_chunk(data_id, data_quality))
-                    print(path)
                     # 如果块是真实图像上的链接，请遵循符号链接，否则sendfile中的mimetype检测将无法正常工作。
                     return sendfile(request, path)
                 elif data_type == 'frame':
@@ -782,8 +782,7 @@ class UserViewSet(viewsets.GenericViewSet,
         if user.is_staff:
             return UserSerializer
         else:
-            is_self = int(self.kwargs.get("pk", 0)) == user.id or \
-                      self.action == "self"
+            is_self = int(self.kwargs.get("pk", 0)) == user.id or self.action == "self"
             if is_self and self.request.method in SAFE_METHODS:
                 return UserSerializer
             else:
@@ -793,7 +792,7 @@ class UserViewSet(viewsets.GenericViewSet,
         permissions = [IsAuthenticated]
         user = self.request.user
 
-        if not self.request.method in SAFE_METHODS:
+        if not (self.request.method in SAFE_METHODS):
             is_self = int(self.kwargs.get("pk", 0)) == user.id
             if not is_self:
                 permissions.append(auth.AdminRolePermission)
@@ -801,12 +800,9 @@ class UserViewSet(viewsets.GenericViewSet,
         return [perm() for perm in permissions]
 
     @swagger_auto_schema(method='get',
-                         operation_summary='Method returns an instance of a user who is currently authorized')
+                         operation_summary='方法返回当前已被授权的用户的实例')
     @action(detail=False, methods=['GET'])
     def self(self, request):
-        """
-        Method returns an instance of a user who is currently authorized
-        """
         serializer_class = self.get_serializer_class()
         serializer = serializer_class(request.user, context={"request": request})
         return Response(serializer.data)
@@ -952,3 +948,13 @@ def _export_annotations(db_task, rq_id, request, format_name, action, callback, 
                        meta={'request_time': timezone.localtime()},
                        result_ttl=ttl, failure_ttl=ttl)
     return Response(status=status.HTTP_202_ACCEPTED)
+
+
+class LogViewSet(viewsets.GenericViewSet,
+                 mixins.CreateModelMixin,
+                 mixins.ListModelMixin,
+                 mixins.RetrieveModelMixin,
+                 mixins.UpdateModelMixin):
+    queryset = Log.objects.all().order_by('time')
+    permission_classes = [IsAuthenticated]
+    serializer_class = LogSerializer
