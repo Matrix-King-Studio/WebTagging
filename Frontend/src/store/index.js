@@ -83,6 +83,8 @@ export default new Vuex.Store({
     cleanFileList(){
       this.state.allFileList = []
       this.state.allFileList02 = []
+      this.state.treeCheckedKeyList = []
+      this.state.userChoiceModel = 1
       this.state.image_quality = 70
     },
     //保存图片数据，用户拖拽上传时使用

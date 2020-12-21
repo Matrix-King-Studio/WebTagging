@@ -32,13 +32,13 @@ from cvat.apps.authentication import auth
 from cvat.apps.authentication.decorators import login_required
 from cvat.apps.dataset_manager.serializers import DatasetFormatsSerializer
 from cvat.apps.engine.frame_provider import FrameProvider
-from cvat.apps.engine.models import Job, Plugin, StatusChoice, Task
+from cvat.apps.engine.models import Job, Plugin, StatusChoice, Task, Log
 from cvat.apps.engine.serializers import (
     AnnotationFileSerializer, BasicUserSerializer,
     DataMetaSerializer, DataSerializer, ExceptionSerializer,
     FileInfoSerializer, JobSerializer, LabeledDataSerializer,
     LogEventSerializer, PluginSerializer, ProjectSerializer,
-    RqStatusSerializer, TaskSerializer, UserSerializer)
+    RqStatusSerializer, TaskSerializer, UserSerializer, LogSerializer)
 from cvat.settings.base import CSS_3RDPARTY, JS_3RDPARTY
 
 from . import models, task
@@ -57,6 +57,7 @@ def wrap_swagger(view):
             format_alias = settings.REST_FRAMEWORK['URL_FORMAT_OVERRIDE']
             request.GET[format_alias] = request.GET['format']
         return view(request, format=scheme)
+
     return _map_format_to_schema
 
 
@@ -93,9 +94,7 @@ class ServerViewSet(viewsets.ViewSet):
     @swagger_auto_schema(method='post', request_body=ExceptionSerializer)
     @action(detail=False, methods=['POST'], serializer_class=ExceptionSerializer)
     def exception(request):
-        """
-        从服务器上的客户端保存异常，向ELK发送日志（如果它已连接）
-        """
+        """从服务器上的客户端保存异常，向ELK发送日志（如果它已连接）"""
         serializer = ExceptionSerializer(data=request.data)
         if serializer.is_valid(raise_exception=True):
             additional_info = {
@@ -118,20 +117,18 @@ class ServerViewSet(viewsets.ViewSet):
     @swagger_auto_schema(method='post', request_body=LogEventSerializer(many=True))
     @action(detail=False, methods=['POST'], serializer_class=LogEventSerializer)
     def logs(request):
-        """
-        将来自客户端的日志保存到服务器上，向ELK发送日志（如果它已连接）
-        """
+        """将来自客户端的日志保存到服务器上，向 ELK 发送日志（如果它已连接）"""
         serializer = LogEventSerializer(many=True, data=request.data)
         serializer.is_valid(raise_exception=True)
         user = {"username": request.user.username}
         for event in serializer.data:
             message = JSONRenderer().render({**event, **user}).decode('UTF-8')
-            jid = event.get("job_id")
-            tid = event.get("task_id")
-            if jid:
-                clogger.job[jid].info(message)
-            elif tid:
-                clogger.task[tid].info(message)
+            jobId = event.get("job_id")
+            taskId = event.get("task_id")
+            if jobId:
+                clogger.job[jobId].info(message)
+            elif taskId:
+                clogger.task[taskId].info(message)
             else:
                 clogger.glob.info(message)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -459,7 +456,6 @@ class TaskViewSet(auth.TaskGetQuerySetMixin, viewsets.ModelViewSet):
                         if data_quality == 'compressed' else FrameProvider.Quality.ORIGINAL
                     # 获取当前执行脚本的绝对路径
                     path = os.path.realpath(frame_provider.get_chunk(data_id, data_quality))
-                    print(path)
                     # 如果块是真实图像上的链接，请遵循符号链接，否则sendfile中的mimetype检测将无法正常工作。
                     return sendfile(request, path)
                 elif data_type == 'frame':
@@ -570,15 +566,12 @@ class TaskViewSet(auth.TaskGetQuerySetMixin, viewsets.ModelViewSet):
             if action not in dm.task.PatchAction.values():
                 raise serializers.ValidationError("请为请求指定正确的“操作”")
             serializer = LabeledDataSerializer(data=request.data)
-            if serializer.is_valid():
+            if serializer.is_valid(raise_exception=True):
                 try:
                     data = dm.task.patch_task_data(pk, serializer.data, action)
                 except (AttributeError, IntegrityError) as e:
-                    return Response(data=str(e), status=status.HTTP_200_OK)
+                    return Response(data=str(e), status=status.HTTP_400_BAD_REQUEST)
                 return Response(data)
-            else:
-                print(serializer.errors)
-                return Response(serializer.errors, status=status.HTTP_200_OK)
 
     @swagger_auto_schema(method='get', operation_summary='创建任务时，该方法返回有关创建进程状态的信息')
     @action(detail=True, methods=['GET'], serializer_class=RqStatusSerializer)
@@ -586,11 +579,8 @@ class TaskViewSet(auth.TaskGetQuerySetMixin, viewsets.ModelViewSet):
         self.get_object()  # force to call check_object_permissions
         response = self._get_rq_response(queue="default", job_id="/api/{}/tasks/{}".format(request.version, pk))
         serializer = RqStatusSerializer(data=response)
-        if serializer.is_valid():
+        if serializer.is_valid(raise_exception=True):
             return Response(serializer.data)
-        else:
-            print(serializer.errors)
-            return Response(serializer.errors, status=status.HTTP_200_OK)
 
     @staticmethod
     def _get_rq_response(queue, job_id):
@@ -786,8 +776,7 @@ class UserViewSet(viewsets.GenericViewSet,
         if user.is_staff:
             return UserSerializer
         else:
-            is_self = int(self.kwargs.get("pk", 0)) == user.id or \
-                      self.action == "self"
+            is_self = int(self.kwargs.get("pk", 0)) == user.id or self.action == "self"
             if is_self and self.request.method in SAFE_METHODS:
                 return UserSerializer
             else:
@@ -797,7 +786,7 @@ class UserViewSet(viewsets.GenericViewSet,
         permissions = [IsAuthenticated]
         user = self.request.user
 
-        if not self.request.method in SAFE_METHODS:
+        if not (self.request.method in SAFE_METHODS):
             is_self = int(self.kwargs.get("pk", 0)) == user.id
             if not is_self:
                 permissions.append(auth.AdminRolePermission)
@@ -805,12 +794,9 @@ class UserViewSet(viewsets.GenericViewSet,
         return [perm() for perm in permissions]
 
     @swagger_auto_schema(method='get',
-                         operation_summary='Method returns an instance of a user who is currently authorized')
+                         operation_summary='方法返回当前已被授权的用户的实例')
     @action(detail=False, methods=['GET'])
     def self(self, request):
-        """
-        Method returns an instance of a user who is currently authorized
-        """
         serializer_class = self.get_serializer_class()
         serializer = serializer_class(request.user, context={"request": request})
         return Response(serializer.data)
@@ -956,3 +942,13 @@ def _export_annotations(db_task, rq_id, request, format_name, action, callback, 
                        meta={'request_time': timezone.localtime()},
                        result_ttl=ttl, failure_ttl=ttl)
     return Response(status=status.HTTP_202_ACCEPTED)
+
+
+class LogViewSet(viewsets.GenericViewSet,
+                 mixins.CreateModelMixin,
+                 mixins.ListModelMixin,
+                 mixins.RetrieveModelMixin,
+                 mixins.UpdateModelMixin):
+    queryset = Log.objects.all().order_by('time')
+    permission_classes = [IsAuthenticated]
+    serializer_class = LogSerializer
