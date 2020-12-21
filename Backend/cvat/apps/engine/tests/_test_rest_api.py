@@ -1,3 +1,30 @@
+import io
+import os
+import os.path as osp
+import random
+import shutil
+import tempfile
+import xml.etree.ElementTree as ET
+import zipfile
+from collections import defaultdict
+from enum import Enum
+from glob import glob
+from io import BytesIO
+from unittest import mock
+
+import av
+import numpy as np
+from django.conf import settings
+from django.contrib.auth.models import Group, User
+from PIL import Image
+from pycocotools import coco as coco_loader
+from rest_framework import status
+from rest_framework.test import APIClient, APITestCase
+
+from cvat.apps.engine.models import (AttributeType, Data, Job, Project,
+                                     Segment, StatusChoice, Task)
+
+
 # FIXME: Git application and package name clash in tests
 class _GitImportFix:
     import sys
@@ -49,35 +76,6 @@ def _setUpModule():
     sys.path.insert(0, __file__[:__file__.rfind('/engine/')])
 
 
-# def tearDownModule():
-# _GitImportFix.restore()
-
-import io
-import os
-import os.path as osp
-import random
-import shutil
-import tempfile
-import xml.etree.ElementTree as ET
-import zipfile
-from collections import defaultdict
-from enum import Enum
-from glob import glob
-from io import BytesIO
-from unittest import mock
-
-import av
-import numpy as np
-from django.conf import settings
-from django.contrib.auth.models import Group, User
-from PIL import Image
-from pycocotools import coco as coco_loader
-from rest_framework import status
-from rest_framework.test import APIClient, APITestCase
-
-from cvat.apps.engine.models import (AttributeType, Data, Job, Project,
-                                     Segment, StatusChoice, Task)
-
 _setUpModule()
 
 
@@ -87,8 +85,7 @@ def create_db_users(cls):
     (group_annotator, _) = Group.objects.get_or_create(name="annotator")
     (group_observer, _) = Group.objects.get_or_create(name="observer")
 
-    user_admin = User.objects.create_superuser(username="admin", email="",
-                                               password="admin")
+    user_admin = User.objects.create_superuser(username="admin", email="", password="admin")
     user_admin.groups.add(group_admin)
     user_owner = User.objects.create_user(username="user1", password="user1")
     user_owner.groups.add(group_user)
@@ -201,7 +198,6 @@ def create_dummy_db_tasks(obj, project=None):
     }
     db_task = create_db_task(data)
     tasks.append(db_task)
-
     return tasks
 
 
@@ -248,7 +244,6 @@ def create_dummy_db_projects(obj):
     db_project = Project.objects.create(**data)
     create_dummy_db_tasks(obj, db_project)
     projects.append(db_project)
-
     return projects
 
 
@@ -260,7 +255,6 @@ class ForceLogin:
     def __enter__(self):
         if self.user:
             self.client.force_login(self.user, backend='django.contrib.auth.backends.ModelBackend')
-
         return self
 
     def __exit__(self, exception_type, exception_value, traceback):

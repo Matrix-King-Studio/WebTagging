@@ -50,10 +50,8 @@ class Data(models.Model):
     start_frame = models.PositiveIntegerField(default=0)
     stop_frame = models.PositiveIntegerField(default=0)
     frame_filter = models.CharField(max_length=256, default="", blank=True)
-    compressed_chunk_type = models.CharField(max_length=32, choices=DataChoice.choices(),
-                                             default=DataChoice.IMAGESET)
-    original_chunk_type = models.CharField(max_length=32, choices=DataChoice.choices(),
-                                           default=DataChoice.IMAGESET)
+    compressed_chunk_type = models.CharField(max_length=32, choices=DataChoice.choices(), default=DataChoice.IMAGESET)
+    original_chunk_type = models.CharField(max_length=32, choices=DataChoice.choices(), default=DataChoice.IMAGESET)
 
     class Meta:
         default_permissions = ()
@@ -82,7 +80,6 @@ class Data(models.Model):
             ext = 'zip'
         else:
             ext = 'list'
-
         return '{}.{}'.format(chunk_number, ext)
 
     def _get_compressed_chunk_name(self, chunk_number):
@@ -101,6 +98,9 @@ class Data(models.Model):
 
     def get_preview_path(self):
         return os.path.join(self.get_data_dirname(), 'preview.jpeg')
+
+    def __str__(self):
+        return self.get_data_dirname()
 
 
 class Video(models.Model):
@@ -126,32 +126,27 @@ class Image(models.Model):
 
 class Project(models.Model):
     name = SafeCharField(max_length=256)
-    owner = models.ForeignKey(User, null=True, blank=True,
-                              on_delete=models.SET_NULL, related_name="+")
-    assignee = models.ForeignKey(User, null=True, blank=True,
-                                 on_delete=models.SET_NULL, related_name="+")
+    owner = models.ForeignKey(User, null=True, blank=True, on_delete=models.SET_NULL, related_name="+")
+    assignee = models.ForeignKey(User, null=True, blank=True, on_delete=models.SET_NULL, related_name="+")
     bug_tracker = models.CharField(max_length=2000, blank=True, default="")
     created_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now_add=True)
     status = models.CharField(max_length=32, choices=StatusChoice.choices(),
                               default=StatusChoice.ANNOTATION)
 
-    # Extend default permission model
+    # 扩展默认权限模型
     class Meta:
         default_permissions = ()
 
 
 class Task(models.Model):
-    project = models.ForeignKey(Project, on_delete=models.CASCADE,
-                                null=True, blank=True, related_name="tasks",
-                                related_query_name="task")
+    project = models.ForeignKey(Project, on_delete=models.CASCADE, null=True, blank=True,
+                                related_name="tasks", related_query_name="task")
     name = SafeCharField(max_length=256)
     mode = models.CharField(max_length=32)
     describe = models.CharField(max_length=1024, blank=True, default="")
-    owner = models.ForeignKey(User, null=True, blank=True,
-                              on_delete=models.SET_NULL, related_name="owners")
-    assignee = models.ForeignKey(User, null=True, blank=True,
-                                 on_delete=models.SET_NULL, related_name="assignees")
+    owner = models.ForeignKey(User, null=True, blank=True, on_delete=models.SET_NULL, related_name="owners")
+    assignee = models.ForeignKey(User, null=True, blank=True, on_delete=models.SET_NULL, related_name="assignees")
     bug_tracker = models.CharField(max_length=2000, blank=True, default="")
     created_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now_add=True)
@@ -159,11 +154,10 @@ class Task(models.Model):
     # Zero means that there are no limits (default)
     segment_size = models.PositiveIntegerField(default=0)
     z_order = models.BooleanField(default=False)
-    status = models.CharField(max_length=32, choices=StatusChoice.choices(),
-                              default=StatusChoice.ANNOTATION)
+    status = models.CharField(max_length=32, choices=StatusChoice.choices(), default=StatusChoice.ANNOTATION)
     data = models.ForeignKey(Data, on_delete=models.CASCADE, null=True, related_name="tasks")
 
-    # Extend default permission model
+    # 扩展默认权限模型
     class Meta:
         default_permissions = ()
 
@@ -186,7 +180,7 @@ class Task(models.Model):
         return self.name
 
 
-# Redefined a couple of operation for FileSystemStorage to avoid renaming or other side effects.
+# 为文件系统存储重新定义了几个操作，以避免重命名或其他副作用。
 class MyFileSystemStorage(FileSystemStorage):
     def get_valid_name(self, name):
         return name
@@ -201,18 +195,17 @@ def upload_path_handler(instance, filename):
     return os.path.join(instance.data.get_upload_dirname(), filename)
 
 
-# For client files which the user is uploaded
+# 对于用户上传的客户端文件
 class ClientFile(models.Model):
     data = models.ForeignKey(Data, on_delete=models.CASCADE, null=True, related_name='client_files')
-    file = models.FileField(upload_to=upload_path_handler,
-                            max_length=1024, storage=MyFileSystemStorage())
+    file = models.FileField(upload_to=upload_path_handler, max_length=1024, storage=MyFileSystemStorage())
 
     class Meta:
         default_permissions = ()
         unique_together = ("data", "file")
 
 
-# For server files on the mounted share
+# 对于挂载在服务器上的共享文件
 class ServerFile(models.Model):
     data = models.ForeignKey(Data, on_delete=models.CASCADE, null=True, related_name='server_files')
     file = models.CharField(max_length=1024)
@@ -303,10 +296,10 @@ class AttributeVal(models.Model):
 
 
 class ShapeType(str, Enum):
-    RECTANGLE = 'rectangle'  # (x0, y0, x1, y1)
-    POLYGON = 'polygon'  # (x0, y0, ..., xn, yn)
-    POLYLINE = 'polyline'  # (x0, y0, ..., xn, yn)
-    POINTS = 'points'  # (x0, y0, ..., xn, yn)
+    RECTANGLE = 'rectangle'     # (x0, y0, x1, y1)
+    POLYGON = 'polygon'         # (x0, y0, ..., xn, yn)
+    POLYLINE = 'polyline'       # (x0, y0, ..., xn, yn)
+    POINTS = 'points'           # (x0, y0, ..., xn, yn)
     CUBOID = 'cuboid'
 
     @classmethod
@@ -426,3 +419,12 @@ class PluginOption(models.Model):
     plugin = models.ForeignKey(Plugin, on_delete=models.CASCADE)
     name = SafeCharField(max_length=32)
     value = SafeCharField(max_length=1024)
+
+
+class Log(models.Model):
+    job = models.ForeignKey(Job, on_delete=models.CASCADE)
+    task = models.ForeignKey(Task, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    time = models.DateTimeField(auto_now_add=True)
+    message = models.CharField(max_length=4096)

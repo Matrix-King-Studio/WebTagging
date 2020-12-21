@@ -198,7 +198,13 @@ export default {
               this.changeMod(1)
             },1000)
           } else {
-            this.showErrLoginBtn(e.data.password1[0])
+            console.log(e.data);
+            for (let err in e.data) {
+              e.data[err].forEach(error => {
+                this.showErrLoginBtn(error)
+                console.log(error);
+              })
+            }
           }
         }).catch((e)=>{
           this.$message({

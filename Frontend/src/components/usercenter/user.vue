@@ -1,20 +1,15 @@
 <template>
   <div>
-    <div id="grzx"><span>个人中心</span></div>
-    <div id="userInformation">
-        <ul>
-          <li><i class="el-icon-user">&nbsp;用户名：</i>{{userInfo.username}}</li>
-          <li><i class="el-icon-message">&nbsp;邮箱：</i>{{userInfo.email}}</li>
-          <li><i class="el-icon-date">&nbsp;注册日期：</i>{{userInfo.date_joined|timefilters}}</li>
-          <!--<li><i class="el-icon-time">&nbsp;上次登录：</i>{{userInfo.last_login|timefilters}}</li>-->
-        </ul>
+    <div class="userInformation">
+      <ul>
+        <li><i class="el-icon-user">&nbsp;用户名：</i>{{ userInfo.username }}</li>
+        <li><i class="el-icon-message">&nbsp;邮箱：</i>{{ userInfo.email }}</li>
+        <li><i class="el-icon-date">&nbsp;注册日期：</i>{{ userInfo.date_joined|timefilters }}</li>
+      </ul>
     </div>
-
     <div class="logout"  @click="logout">
       <span>退出登录</span>
     </div>
-
-    <!--修改密码-->
     <div>
       <!-- 修改密码的按钮 -->
       <el-button id="BtnChangePwd" type="text" @click="dialogFormVisible = true" >修改密码</el-button>
@@ -38,14 +33,30 @@
           </el-form-item>
         </el-form>
       </el-dialog>
-
     </div>
-
   </div>
 </template>
 
 <script>
 export default {
+  filters: {
+    //UTC时间格式转换为北京时间
+    timefilters(val) {
+      if (val == null || val == "") {
+        return "加载中";
+      } else {
+        let d = new Date(val);   //val 为表格内取到的后台时间
+        let month =
+            d.getMonth() + 1 < 10 ? "0" + (d.getMonth() + 1) : d.getMonth() + 1;
+        let day = d.getDate() < 10 ? "0" + d.getDate() : d.getDate();
+        let hours = d.getHours() < 10 ? "0" + d.getHours() : d.getHours();
+        let min = d.getMinutes() < 10 ? "0" + d.getMinutes() : d.getMinutes();
+        let sec = d.getSeconds() < 10 ? "0" + d.getSeconds() : d.getSeconds();
+        let times=d.getFullYear() + '-' + month + '-' + day + ' ' + hours + ':' + min + ':' + sec;
+        return times;
+      }
+    }
+  },
   data(){
     //原密码不为空检测
     let validateOldPass = (rule, value, callback) => {
@@ -101,6 +112,9 @@ export default {
       }
     }
   },
+  created() {
+    this.getUserInfo()
+  },
   methods: {
     //获取用户信息
     getUserInfo(){
@@ -134,24 +148,6 @@ export default {
               message: '修改密码失败! ' + e.data.error,
               type: "error"
             })
-            // if (e.data.key) { // 登录成功(有key值)(e.data.key)
-            //   console.log(e.data.key)
-            //   window.sessionStorage.setItem('token', e.data.key)
-            //   this.showSucLoginBtn('登录成功')
-            //   let t = this
-            //   setTimeout(function () {
-            //     t.$router.push('/home')
-            //   }, 800)
-            // } else { // 登录失败
-            //   let errinfo;
-            //   if (!this.loginForm.username || !this.loginForm.password) {
-            //     errinfo = '请填写用户名或密码'
-            //   } else {
-            //     errinfo = '用户名或密码错误'
-            //   }
-            //   this.showErrLoginBtn(errinfo)
-            //   this.text1 = '登录'
-            // }
           }).catch((e)=>{
             console.log(e);
             this.$message({
@@ -173,58 +169,19 @@ export default {
     resetForm(formName) {
       this.$refs[formName].resetFields();
     }
-
   },
-  created() {
-    this.getUserInfo()
-  },
-  filters: {
-    //UTC时间格式转换为北京时间
-    timefilters(val) {
-      if (val == null || val == "") {
-        return "加载中";
-      } else {
-        let d = new Date(val);   //val 为表格内取到的后台时间
-        let month =
-                d.getMonth() + 1 < 10 ? "0" + (d.getMonth() + 1) : d.getMonth() + 1;
-        let day = d.getDate() < 10 ? "0" + d.getDate() : d.getDate();
-        let hours = d.getHours() < 10 ? "0" + d.getHours() : d.getHours();
-        let min = d.getMinutes() < 10 ? "0" + d.getMinutes() : d.getMinutes();
-        let sec = d.getSeconds() < 10 ? "0" + d.getSeconds() : d.getSeconds();
-        let times=d.getFullYear() + '-' + month + '-' + day + ' ' + hours + ':' + min + ':' + sec;
-        return times;
-      }
-    }
-  }
 }
 </script>
 
 <style lang="less" scoped>
-#grzx{
-  height: 40px;
-  margin-bottom: 10px;
-  background-color: #9a6e3a;
-  border-radius: 10px;
-  text-align: center;
-}
-#grzx span{
-  line-height:40px;
-}
-
-#userInformation{
+.userInformation{
   width: 400px;
-  /*height: 300px;*/
-  /*阴影*/
-  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
-  border-radius: 15px;
-  background-color: #a1f2ff;
-  border:1px solid #9a6e3a;
-}
-
-#userInformation li{
-  padding-top: 10px;
-  padding-bottom: 10px;
-  list-style:none;
+  border-radius: 8px;
+  background-color: #ffffff;
+  li{
+    padding: 10px;
+    list-style:none;
+  }
 }
 
 .logout {
@@ -232,13 +189,13 @@ export default {
   width: 100px;
   margin-top: 50px;
   border-radius: 5px;
-  background-color: #90eec2;
+  background-color: #e8fff0;
   text-align: center;
   line-height: 40px;
   cursor: pointer;
 }
   .logout:hover{
-    background-color: #89ee90;
+    background-color: #c0ffd9;
   }
 
 #BtnChangePwd{
@@ -246,7 +203,7 @@ export default {
   width: 100px;
   margin-top: 50px;
   border-radius: 5px;
-  background-color: #90eec2;
+  background-color: #e8fff0;
   text-align: center;
   size: landscape;
   color: #000000;
@@ -254,7 +211,7 @@ export default {
   cursor: pointer;
 }
 #BtnChangePwd:hover{
-   background-color: #89ee90;
+   background-color: #c0ffd9;
  }
 
 

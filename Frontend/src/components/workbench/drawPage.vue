@@ -1,5 +1,6 @@
 <template>
   <div class="main-box">
+    <!-- 左边的工具栏 -->
     <div class="sidebar">
       <el-tooltip
         :class="['item','tools',{'tool-active':flag === 'cursor'}]"
@@ -23,7 +24,9 @@
         </el-button>
       </el-tooltip>
     </div>
+    <!-- 右边的工具栏 -->
     <div ref="objBar" class="object-bar">
+      <!-- 展示/隐藏右边栏的按钮 -->
       <div
         ref="drawer"
         class="drawer"
@@ -31,7 +34,6 @@
       >
         <i :class="[{'el-icon-right':flag2},{'el-icon-back':!flag2}]" />
       </div>
-
       <!--右边的用来选择标签的框的box-->
       <div class="label-obj-box" >
         <!--右边的用来选择标签的框，每一项-->
@@ -92,21 +94,23 @@
           </div>
         </div>
       </div>
+      <!-- 所有的功能按钮 -->
       <div class="main-btn-box">
-        <div class="images">
-          <div class="img-btn this">
-            <template>
-              <div class="block">
-                <el-slider
-                  v-model="imageIndexFrom1"
-                  show-input
-                  @change="changeImg"
-                  :min="1"
-                  :max="imagesSize"
-                >
-                </el-slider>
-              </div>
-            </template>
+        <div class="switch-images">
+          <div class="back">
+            <span @click="changeImg(1)">-</span>
+          </div>
+          <div class="slider">
+            <el-slider
+              v-model="slideBarImageIndex"
+              @change="changeImg(3)"
+              :min="1"
+              :max="imagesSize"
+            >
+            </el-slider>
+          </div>
+          <div class="next">
+            <span @click="changeImg(2)">+</span>
           </div>
         </div>
         <div class="main-func">
@@ -123,6 +127,7 @@
         </div>
       </div>
     </div>
+    <!-- 进行标注的地方 -->
     <div ref="paintBox" class="paint-box">
       <canvas
         id="myCanvas"
@@ -177,7 +182,8 @@ export default {
       imagesData: '',
       //imagesSize原来为0，这里我改成了1，最小值应该为1吧
       imagesSize: 1,
-      imageIndex: 0,
+      imageIndex: 1,
+      slideBarImageIndex: 1,
       imageIndexFrom1: 1,
       imageInfo: {},
       imageScale: 1,//图片缩放比例 ：缩放后/缩放前
@@ -186,7 +192,7 @@ export default {
       shapes: {
         rectangles: [],
       },
-      rectangleIndex: 1,
+      // rectangleIndex: 1,
       recTop: 0,
       recLeft: 0,
 
@@ -199,6 +205,9 @@ export default {
       // 设置 job 的起始 frame 和终止 frame
       start_frame: 0,
       stop_frame: 0,
+
+      //是否正在切换图片
+      isChangingImage: false,
     }
   },
   created() {
@@ -206,11 +215,6 @@ export default {
     this.getImagesInfo()
     //获取job信息
     this.getJobInfo()
-  },
-  computed:{
-    imageRealIndex(){
-        return this.imageIndex + 1;
-    }
   },
   mounted() {
     this.initCanvas()
@@ -255,19 +259,15 @@ export default {
     /** 不能直接用 url 中的 id 去拿图片，如果暴力改变 url 需要回到 home 要用路由守卫*/
     getImages() {
       //请求图片数据
-      console.log("1.开始请求第" + (this.imageIndex+1) + "张图片的数据数据")
+      console.log("1.开始请求第" + (this.imageIndex) + "张图片的数据数据")
       this.$http.get('v1/tasks/' + this.$route.params.index + '/data', {
         params: {
           type: 'chunk',
-          number: this.imageIndex,
+          number: this.imageIndex - 1,
           quality: 'compressed'
         },
         // 请求数据的格式
         responseType: 'arraybuffer',
-        headers: {
-        //   'Authorization': 'Token 52195b9480418fb20992f411e188bb945c983359',
-        //   'Cache-Control': 'no-cache'
-        }
       }).then(e => {
         console.log("2.图片获取完成")
         // 使用JSZip解压数据
@@ -319,96 +319,81 @@ export default {
     drawImages() {
       //将解压出的文件以base64格式放到图片对象中
       let img = new Image()
-
-      console.log("4.图片DOM对象初始化完成");
       //清除画布
       this.ctx.clearRect(0, 0, this.myCanvas.width, this.myCanvas.height)
       setTimeout(() => {
-        // img.src = "data:image/png;base64," + this.imagesData[this.imageIndex]
         img.src = "data:image/png;base64," + this.imagesData
-        console.log("5.base64数据嵌入完成");
+        console.log("4.base64数据嵌入完成");
+        img.onload = ()=>{
+          // console.log('图片原始尺寸' + img.width, img.height);
+          //图片比窗口长，则上下填充满
+          if (img.width / img.height < (this.myCanvas.width - 300) / this.myCanvas.height) {
+            this.imageInfo = {
+              left: (this.myCanvas.width - 300 - this.myCanvas.height * img.width / img.height) / 2 + 5,
+              top: 5,
+              width: this.myCanvas.height * img.width / img.height - 10,
+              height: this.myCanvas.height - 10
+            }
+          } else {//窗口比图片长，左右填满
+            this.imageInfo = {
+              left: 5,
+              top: (this.myCanvas.height - (this.myCanvas.width - 300) * img.height / img.width) / 2 + 5,
+              width: this.myCanvas.width - 310,
+              height: (this.myCanvas.width - 300) * img.height / img.width - 10
+            }
+          }
+
+          // console.log('图片缩放后的尺寸' + this.imageInfo.width, this.imageInfo.height);
+          this.imageScale = img.width / this.imageInfo.width
+          console.log("5.图片尺寸数据处理完成，图片缩放比例：" + this.imageScale);
+          //将图片绘制到canvas上，这里的drawImage是canvas里的函数
+          this.ctx.drawImage(img, this.imageInfo.left, this.imageInfo.top, this.imageInfo.width, this.imageInfo.height)
+          console.log("6.图片绘制完成");
+
+          //加载完成后删除正在加载
+          if (this.isFirst) {
+            this.$refs.tipsBox.parentNode.removeChild(this.$refs.tipsBox)
+            this.isFirst = false
+          }
+          this.isChangingImage = false
+        }
       }, 100)
-
-      setTimeout(() => {
-        // console.log('图片原始尺寸' + img.width, img.height);
-        //图片比窗口长，则上下填充满
-        if (img.width / img.height < (this.myCanvas.width - 300) / this.myCanvas.height) {
-          this.imageInfo = {
-            left: (this.myCanvas.width - 300 - this.myCanvas.height * img.width / img.height) / 2 + 5,
-            top: 5,
-            width: this.myCanvas.height * img.width / img.height - 10,
-            height: this.myCanvas.height - 10
-          }
-        } else {//窗口比图片长，左右填满
-          this.imageInfo = {
-            left: 5,
-            top: (this.myCanvas.height - (this.myCanvas.width - 300) * img.height / img.width) / 2 + 5,
-            width: this.myCanvas.width - 310,
-            height: (this.myCanvas.width - 300) * img.height / img.width - 10
-          }
-        }
-
-        // console.log('图片缩放后的尺寸' + this.imageInfo.width, this.imageInfo.height);
-        this.imageScale = img.width / this.imageInfo.width
-        console.log("6.图片尺寸数据处理完成，图片缩放比例：" + this.imageScale);
-        //将图片绘制到canvas上，这里的drawImage是canvas里的函数
-        this.ctx.drawImage(img, this.imageInfo.left, this.imageInfo.top, this.imageInfo.width, this.imageInfo.height)
-        console.log("7.图片绘制完成");
-
-        //加载完成后删除正在加载
-        if (this.isFirst) {
-          this.$refs.tipsBox.parentNode.removeChild(this.$refs.tipsBox)
-          this.isFirst = false
-        }
-      }, 300)
     },
     //切换图片
-    changeImg(index) {
-      let indexFrom0 = index-1;
-      // console.log(indexFrom0);
-      this.imageIndex = indexFrom0
-      this.getImages()
-      this.removeRec('all')
-      this.reDrawTags(1, this.imageIndex)
-
-      // if (indexFrom0 !== 0) {
-      //   this.imageIndex = indexFrom0
-      //   this.getImages()
-      //   this.removeRec('all')
-      //   this.reDrawTags(1, this.imageIndex)
-      // }
-
-      //   if (mod === 'start') {//第一张
-      //   //如果不是第一张就加载
-      //   if (this.imageIndex !== 0) {
-      //     this.imageIndex = 0
-      //     this.getImages()
-      //     this.removeRec('all')
-      //     this.reDrawTags(1, this.imageIndex)
-      //   }
-      // } else if (mod === 'back') {//上一张
-      //   if (this.imageIndex !== 0) {
-      //     this.imageIndex -= 1
-      //     this.getImages()
-      //     this.removeRec('all')
-      //     this.reDrawTags(1, this.imageIndex)
-      //   }
-      // } else if (mod === 'next') {//下一张
-      //   if (this.imageIndex !== (this.imagesSize - 1)) {
-      //     this.imageIndex += 1
-      //     this.getImages()
-      //     this.removeRec('all')
-      //     this.reDrawTags(1, this.imageIndex)
-      //   }
-      // } else if (mod === 'end') {//最后一张
-      //   if (this.imageIndex !== (this.imagesSize - 1)) {
-      //     this.imageIndex = this.imagesSize - 1
-      //     this.getImages()
-      //     this.removeRec('all')
-      //     this.reDrawTags(1, this.imageIndex)
-      //   }
-      // }
-
+    //mod: 1.上一张  2. 下一张  3. 根据滑块改变
+    changeImg(mod) {
+      //如果图片加载完
+      if(!this.isChangingImage){
+        //这个变量在drawImages中变为false
+        this.isChangingImage = true
+        if(mod === 1){
+          //如果在第一张禁止后退
+          if(this.imageIndex === 1) {
+            this.isChangingImage = false
+            return
+          }
+          this.imageIndex -= 1
+          this.slideBarImageIndex -= 1
+        }
+        else if(mod === 2){
+          //如果在最后一张禁止后退
+          if(this.imageIndex === this.imagesSize) {
+            this.isChangingImage = false
+            return
+          }
+          this.imageIndex += 1
+          this.slideBarImageIndex += 1
+        }
+        else if(mod === 3){
+          this.imageIndex = this.slideBarImageIndex
+        }
+        this.getImages()
+        this.removeRec('all')
+        this.reDrawTags(1, this.imageIndex)
+      } else {
+        //如果该张图片没有加载完 让 sliderBar跳回去
+        this.slideBarImageIndex = this.imageIndex
+      }
     },
     //切换工具
     initDrawTools(attr) {
@@ -616,7 +601,6 @@ export default {
       });
     },
     //提交标注信息
-    /** 提交成功后的逻辑还需进一步改进 暂时改成不能再次进入*/
     submitTags() {
       let TagsInfo = this.$store.state.imageTags
       console.log(TagsInfo)
@@ -785,7 +769,6 @@ export default {
   top: 0;
   overflow: hidden;
 }
-
 .sidebar {
   position: absolute;
   z-index: 3;
@@ -830,7 +813,6 @@ export default {
     background-color: #b3d9cb;
   }
 }
-
 .object-bar {
   position: absolute;
   z-index: 3;
@@ -843,7 +825,6 @@ export default {
   background-color: #e4f5ef;
   box-shadow: -1px 0 6px 2px #c1d4cd;
   transition: all 0.4s ease;
-
   .drawer {
     position: absolute;
     top: 35px;
@@ -859,11 +840,9 @@ export default {
       text-align: center;
     }
   }
-
   .drawer:hover {
     background-color: rgba(0, 0, 0, 0.1);
   }
-
   .label-obj-box {
     width: 280px;
     height: 550px;
@@ -876,11 +855,9 @@ export default {
       height: 80px;
       width: 100%;
       border-bottom: 1px solid #cae7dc;
-
       .label-info {
         width: 100%;
         height: 30px;
-
         span {
           display: block;
           float: left;
@@ -923,39 +900,35 @@ export default {
       }
     }
   }
-
-  .images {
+  .switch-images {
     width: 290px;
     height: 40px;
-    margin: 5px 5px 5px 10px;
-
-    .img-btn {
-      height: 38px;
-      width: 100%;
-      float: left;
-      border-radius: 5px;
-      text-align: center;
-      line-height: 30px;
-      transition: all 0.2s;
-      font-size: 18px;
-      input{
+    margin: 5px;
+    display: flex;
+    .back, .next{
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      span{
         display: block;
-        outline: none;
-        border: none;
-        background-color: transparent;
+        width: 26px;
+        height: 26px;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: 0.3s;
+
+        font-size: 26px;
+        line-height: 22px;
+        text-align: center;
+      }
+      span:hover{
+        background-color: #bbe6d6;
       }
     }
-
-    .img-btn:hover {
-      background-color: #bbe6d6 !important;;
-    }
-
-    .this {
-      font-size: 14px;
-    }
-
-    .this:hover {
-      background-color: #def1ea;
+    .slider{
+      flex: 5;
+      padding: 0 5px;
     }
   }
 
@@ -980,12 +953,10 @@ export default {
       letter-spacing: 3px;
       font-size: 14px;
       transition: all 0.2s;
-
       i {
         font-size: 18px;
       }
     }
-
     .abandon {
       width: 46px;
       height: 26px;
@@ -995,18 +966,15 @@ export default {
       margin-top: 20px;
       border-radius: 2px;
     }
-
     .submit {
       width: 200px;
       letter-spacing: 2px;
     }
-
     .main-btn:hover {
       background-color: #bbe6d6;
     }
   }
 }
-
 .paint-box {
   margin: 35px 0 0 46px;
   box-sizing: border-box;
@@ -1045,7 +1013,6 @@ export default {
     font-size: 24px;
   }
 }
-
 /deep/ .rec-obj {
   position: absolute;
   width: 0;
@@ -1056,11 +1023,9 @@ export default {
   border: 1px solid #333333;
   transition: background-color 0.1s;
 }
-
 /deep/ .rec-obj-lock {
   background-color: transparent !important;
 }
-
 /deep/ .rec-obj:hover {
   border: 2px solid #555555;
   background-color: rgba(228, 254, 239, 0.3) !important;

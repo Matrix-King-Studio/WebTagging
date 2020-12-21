@@ -10,12 +10,11 @@ import av.datasets
 import numpy as np
 from pyunpack import Archive
 from PIL import Image, ImageFile
+from cvat.apps.engine.mime_types import mimetypes
 
 # fixes: "OSError:broken data stream" when executing line 72 while loading images downloaded from the web
 # see: https://stackoverflow.com/questions/42462431/oserror-broken-data-stream-when-reading-image-file
 ImageFile.LOAD_TRUNCATED_IMAGES = True
-
-from cvat.apps.engine.mime_types import mimetypes
 
 
 def get_mime(name):
@@ -73,12 +72,9 @@ class IMediaReader(ABC):
 class ImageListReader(IMediaReader):
     def __init__(self, source_path, step=1, start=0, stop=None):
         if not source_path:
-            raise Exception('No image found')
+            raise Exception("没有找到图片")
 
-        if stop is None:
-            stop = len(source_path)
-        else:
-            stop = min(len(source_path), stop + 1)
+        stop = len(source_path) if stop is None else min(len(source_path), stop + 1)
         step = max(step, 1)
         assert stop > start
 
@@ -150,7 +146,7 @@ class ArchiveReader(DirectoryReader):
 class PdfReader(DirectoryReader):
     def __init__(self, source_path, step=1, start=0, stop=None):
         if not source_path:
-            raise Exception('No PDF found')
+            raise Exception("没有找到PDF")
 
         from pdf2image import convert_from_path
         self._pdf_source = source_path[0]
@@ -290,8 +286,7 @@ class ZipChunkWriter(IChunkWriter):
                     zip_chunk.writestr(arcname, image.getvalue())
                 else:
                     zip_chunk.write(filename=image, arcname=arcname)
-        # return empty list because ZipChunkWriter write files as is
-        # and does not decode it to know img size.
+        # 返回空列表，因为ZipChunkWriter按原样写入文件，并且不解码以知道img大小。
         return []
 
 
@@ -304,7 +299,6 @@ class ZipCompressedChunkWriter(IChunkWriter):
                 image_sizes.append((w, h))
                 arcname = '{:06d}.jpeg'.format(idx)
                 zip_chunk.writestr(arcname, image_buf.getvalue())
-
         return image_sizes
 
 

@@ -2,8 +2,8 @@
 <project version="4">
   <component name="WebServers">
     <option name="servers">
-      <webServer id="ac087208-17cb-4e5f-97b6-113a5f29bd32" name="CVAT">
-        <fileTransfer accessType="SFTP" host="47.96.237.42" port="22" sshConfigId="589c0082-5ddc-4c11-b455-b1bf857384f6" sshConfig="root@47.96.237.42:22 password">
+      <webServer id="4dc04f43-771f-4eaf-9cd2-0e65500d4a37" name="CVAT">
+        <fileTransfer accessType="SFTP" host="47.96.237.42" port="22" sshConfigId="e29a84c1-580c-40bb-9d0a-71af785a4ead" sshConfig="root@47.96.237.42:22 password">
           <advancedOptions>
             <advancedOptions dataProtectionLevel="Private" passiveMode="true" shareSSLContext="true" />
           </advancedOptions>

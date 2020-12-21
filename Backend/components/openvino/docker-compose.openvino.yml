@@ -1,0 +1,8 @@
+version: "2.3"
+
+services:
+  cvat:
+    build:
+      context: .
+      args:
+        OPENVINO_TOOLKIT: "yes"

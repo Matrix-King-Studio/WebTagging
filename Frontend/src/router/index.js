@@ -6,6 +6,7 @@ const LoginPage = () => import(/* webpackChunkName: "loginPage" */ '../views/Log
 const Home = () => import(/* webpackChunkName: "home" */ '../views/Home.vue')
 const Project = () => import(/* webpackChunkName: "home" */ '../components/allproject/project.vue')
 const Usercenter = () => import(/* webpackChunkName: "home" */ '../components/usercenter/user.vue')
+const LogAnalysis = () => import('../components/logAnalysis/index.vue')
 const NewProject = () => import(/* webpackChunkName: "home" */ '../components/newproject/newproject.vue')
 // import Home from '../views/Home.vue'
 // import Project from '../components/allproject/project.vue'
@@ -22,40 +23,41 @@ Vue.use(VueRouter)
 
 //路由匹配规则
 const routes = [
-  { path: '/', redirect: 'login' },
-  { path: '/login', component: LoginPage },
-  {
-    path: '/home',
-    redirect: '/home/project',
-    component: Home,
-    children: [
-      { path: 'project', component: Project },
-      { path: 'user', component: Usercenter },
-      { path: 'newproject', component: NewProject }
-    ]
-  },
-  {
-    path: '/workbench',
-    component: WorkBench,
-    children: [
-      { path: 'task/:index', component: DrawPage },
-      { path: 'setting/:index', component: Setting }
-    ]
-  }
+    {path: '/', redirect: 'login'},
+    {path: '/login', component: LoginPage},
+    {
+        path: '/home',
+        redirect: '/home/project',
+        component: Home,
+        children: [
+            {path: 'project', component: Project},
+            {path: 'user', component: Usercenter},
+            {path: 'logAnalysis', component: LogAnalysis},
+            {path: 'newproject', component: NewProject}
+        ]
+    },
+    {
+        path: '/workbench',
+        component: WorkBench,
+        children: [
+            {path: 'task/:index', component: DrawPage},
+            {path: 'setting/:index', component: Setting}
+        ]
+    }
 ]
 
 //路由对象
 const router = new VueRouter({
-  routes
+    routes
 })
 
 //挂载路由导航守卫
 router.beforeEach((to, from, next) => {
-  //to: 将要访问的路径， from：从哪个路径跳转来， next： 放行路径, next('url'):强制跳转
-  if(to.path === '/login') return next()
-  const tokenStr = window.sessionStorage.getItem('token')
-  if(!tokenStr) return next('/login')
-  next()
+    //to: 将要访问的路径， from：从哪个路径跳转来， next： 放行路径, next('url'):强制跳转
+    if (to.path === '/login') return next()
+    const tokenStr = window.sessionStorage.getItem('token')
+    if (!tokenStr) return next('/login')
+    next()
 })
 
 export default router

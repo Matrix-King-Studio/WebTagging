@@ -1,9 +1,10 @@
 from django.urls import path, include
-from . import views
+from drf_yasg import openapi
+from drf_yasg.views import get_schema_view
 from rest_framework import routers
 from rest_framework import permissions
-from drf_yasg.views import get_schema_view
-from drf_yasg import openapi
+
+from . import views
 from cvat.apps.restrictions.views import RestrictionsViewSet
 
 schema_view = get_schema_view(
@@ -23,6 +24,7 @@ router = routers.DefaultRouter(trailing_slash=False)
 router.register('projects', views.ProjectViewSet)
 router.register('tasks', views.TaskViewSet)
 router.register('jobs', views.JobViewSet)
+router.register('logs', views.LogViewSet)
 router.register('users', views.UserViewSet)
 router.register('server', views.ServerViewSet, basename='server')
 router.register('plugins', views.PluginViewSet)

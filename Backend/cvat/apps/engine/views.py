@@ -27,18 +27,18 @@ from rest_framework.response import Response
 from sendfile import sendfile
 
 import cvat.apps.dataset_manager as dm
-import cvat.apps.dataset_manager.views  # pylint: disable=unused-import
+import cvat.apps.dataset_manager.views
 from cvat.apps.authentication import auth
 from cvat.apps.authentication.decorators import login_required
 from cvat.apps.dataset_manager.serializers import DatasetFormatsSerializer
 from cvat.apps.engine.frame_provider import FrameProvider
-from cvat.apps.engine.models import Job, Plugin, StatusChoice, Task
+from cvat.apps.engine.models import Job, Plugin, StatusChoice, Task, Log
 from cvat.apps.engine.serializers import (
-    AboutSerializer, AnnotationFileSerializer, BasicUserSerializer,
+    AnnotationFileSerializer, BasicUserSerializer,
     DataMetaSerializer, DataSerializer, ExceptionSerializer,
     FileInfoSerializer, JobSerializer, LabeledDataSerializer,
     LogEventSerializer, PluginSerializer, ProjectSerializer,
-    RqStatusSerializer, TaskSerializer, UserSerializer)
+    RqStatusSerializer, TaskSerializer, UserSerializer, LogSerializer)
 from cvat.settings.base import CSS_3RDPARTY, JS_3RDPARTY
 
 from . import models, task
@@ -56,7 +56,6 @@ def wrap_swagger(view):
             request.GET = request.GET.copy()
             format_alias = settings.REST_FRAMEWORK['URL_FORMAT_OVERRIDE']
             request.GET[format_alias] = request.GET['format']
-
         return view(request, format=scheme)
 
     return _map_format_to_schema
@@ -65,7 +64,8 @@ def wrap_swagger(view):
 # Server REST API
 @login_required
 def dispatch_request(request):
-    """An entry point to dispatch legacy requests"""
+    """分派遗留请求的入口点"""
+    print(request)
     if 'dashboard' in request.path or (request.path == '/' and 'id' not in request.GET):
         return RedirectView.as_view(
             url=settings.UI_URL,
@@ -86,41 +86,15 @@ def dispatch_request(request):
 class ServerViewSet(viewsets.ViewSet):
     serializer_class = None
 
-    # To get nice documentation about ServerViewSet actions it is necessary
-    # to implement the method. By default, ViewSet doesn't provide it.
+    # 要获得有关ServerViewSet操作的良好文档，必须实现该方法。默认情况下，ViewSet不提供它。
     def get_serializer(self, *args, **kwargs):
         pass
-
-    @staticmethod
-    @swagger_auto_schema(method='get', operation_summary='Method provides basic CVAT information',
-                         responses={'200': AboutSerializer})
-    @action(detail=False, methods=['GET'], serializer_class=AboutSerializer)
-    def about(request):
-        from cvat import __version__ as cvat_version
-        about = {
-            "name": "Computer Vision Annotation Tool",
-            "version": cvat_version,
-            "description": "CVAT is completely re-designed and re-implemented " +
-                           "version of Video Annotation Tool from Irvine, California " +
-                           "tool. It is free, online, interactive video and image annotation " +
-                           "tool for computer vision. It is being used by our team to " +
-                           "annotate million of objects with different properties. Many UI " +
-                           "and UX decisions are based on feedbacks from professional data " +
-                           "annotation team."
-        }
-        serializer = AboutSerializer(data=about)
-        if serializer.is_valid(raise_exception=True):
-            return Response(data=serializer.data)
 
     @staticmethod
     @swagger_auto_schema(method='post', request_body=ExceptionSerializer)
     @action(detail=False, methods=['POST'], serializer_class=ExceptionSerializer)
     def exception(request):
-        """
-        Saves an exception from a client on the server
-
-        Sends logs to the ELK if it is connected
-        """
+        """从服务器上的客户端保存异常，向ELK发送日志（如果它已连接）"""
         serializer = ExceptionSerializer(data=request.data)
         if serializer.is_valid(raise_exception=True):
             additional_info = {
@@ -143,34 +117,30 @@ class ServerViewSet(viewsets.ViewSet):
     @swagger_auto_schema(method='post', request_body=LogEventSerializer(many=True))
     @action(detail=False, methods=['POST'], serializer_class=LogEventSerializer)
     def logs(request):
-        """
-        Saves logs from a client on the server
-
-        Sends logs to the ELK if it is connected
-        """
+        """将来自客户端的日志保存到服务器上，向 ELK 发送日志（如果它已连接）"""
         serializer = LogEventSerializer(many=True, data=request.data)
-        if serializer.is_valid():
-            user = {"username": request.user.username}
-            for event in serializer.data:
-                message = JSONRenderer().render({**event, **user}).decode('UTF-8')
-                jid = event.get("job_id")
-                tid = event.get("task_id")
-                if jid:
-                    clogger.job[jid].info(message)
-                elif tid:
-                    clogger.task[tid].info(message)
-                else:
-                    clogger.glob.info(message)
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        else:
-            print(serializer.errors)
-            return Response(serializer.errors, status=status.HTTP_200_OK)
+        serializer.is_valid(raise_exception=True)
+        user = {"username": request.user.username}
+        for event in serializer.data:
+            message = JSONRenderer().render({**event, **user}).decode('UTF-8')
+            jobId = event.get("job_id")
+            taskId = event.get("task_id")
+            if jobId:
+                clogger.job[jobId].info(message)
+            elif taskId:
+                clogger.task[taskId].info(message)
+            else:
+                clogger.glob.info(message)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
 
     @staticmethod
     @swagger_auto_schema(
-        method='get', operation_summary='Returns all files and folders that are on the server along specified path',
-        manual_parameters=[openapi.Parameter('directory', openapi.IN_QUERY, type=openapi.TYPE_STRING,
-                                             description='Directory to browse')],
+        method='get',
+        operation_summary='返回服务器上沿指定路径的所有文件和文件夹',
+        manual_parameters=[openapi.Parameter('directory',
+                                             openapi.IN_QUERY,
+                                             type=openapi.TYPE_STRING,
+                                             description='要浏览的目录')],
         responses={'200': FileInfoSerializer(many=True)}
     )
     @action(detail=False, methods=['GET'], serializer_class=FileInfoSerializer)
@@ -189,22 +159,18 @@ class ServerViewSet(viewsets.ViewSet):
                     entry_type = "REG"
                 elif entry.is_dir():
                     entry_type = "DIR"
-
                 if entry_type:
                     data.append({"name": entry.name, "type": entry_type})
 
             serializer = FileInfoSerializer(many=True, data=data)
-            if serializer.is_valid():
+            if serializer.is_valid(raise_exception=True):
                 return Response(serializer.data)
-            else:
-                print(serializer.errors)
-                return Response(serializer.errors, status=status.HTTP_200_OK)
         else:
-            return Response("{} is an invalid directory".format(param),
-                            status=status.HTTP_200_OK)
+            return Response("{} is an invalid directory".format(param), status=status.HTTP_400_BAD_REQUEST)
 
     @staticmethod
-    @swagger_auto_schema(method='get', operation_summary='Method provides the list of supported annotations formats',
+    @swagger_auto_schema(method='get',
+                         operation_summary='方法提供支持的标注格式的列表',
                          responses={'200': DatasetFormatsSerializer()})
     @action(detail=False, methods=['GET'], url_path='annotation/formats')
     def annotation_formats(request):
@@ -287,12 +253,10 @@ class ProjectViewSet(auth.ProjectGetQuerySetMixin, viewsets.ModelViewSet):
 
         page = self.paginate_queryset(queryset)
         if page is not None:
-            serializer = self.get_serializer(page, many=True,
-                                             context={"request": request})
+            serializer = self.get_serializer(page, many=True, context={"request": request})
             return self.get_paginated_response(serializer.data)
 
-        serializer = self.get_serializer(queryset, many=True,
-                                         context={"request": request})
+        serializer = self.get_serializer(queryset, many=True, context={"request": request})
         return Response(serializer.data)
 
 
@@ -306,8 +270,7 @@ class TaskFilter(filters.FilterSet):
 
     class Meta:
         model = Task
-        fields = ("id", "project_id", "project", "name", "owner", "mode", "status",
-                  "assignee")
+        fields = ("id", "project_id", "project", "name", "owner", "mode", "status", "assignee")
 
 
 class DjangoFilterInspector(CoreAPICompatInspector):
@@ -364,8 +327,7 @@ class DjangoFilterInspector(CoreAPICompatInspector):
 @method_decorator(name='destroy',
                   decorator=swagger_auto_schema(operation_summary='方法删除特定任务、所有附加的作业、批注和数据'))
 @method_decorator(name='partial_update',
-                  decorator=swagger_auto_schema(
-                      operation_summary='方法对任务中选定的字段执行部分更新'))
+                  decorator=swagger_auto_schema(operation_summary='方法对任务中选定的字段执行部分更新'))
 class TaskViewSet(auth.TaskGetQuerySetMixin, viewsets.ModelViewSet):
     queryset = Task.objects.all().prefetch_related(
         "label_set__attributespec_set",
@@ -374,7 +336,7 @@ class TaskViewSet(auth.TaskGetQuerySetMixin, viewsets.ModelViewSet):
     serializer_class = TaskSerializer
     search_fields = ("name", "owner__username", "mode", "status")
     filterset_class = TaskFilter
-    ordering_fields = ("id", "name", "owner", "status", "assignee")
+    ordering_fields = ("id", "name", "owner", "status", "a`ssignee")
 
     def get_permissions(self):
         http_method = self.request.method
@@ -494,7 +456,6 @@ class TaskViewSet(auth.TaskGetQuerySetMixin, viewsets.ModelViewSet):
                         if data_quality == 'compressed' else FrameProvider.Quality.ORIGINAL
                     # 获取当前执行脚本的绝对路径
                     path = os.path.realpath(frame_provider.get_chunk(data_id, data_quality))
-                    print(path)
                     # 如果块是真实图像上的链接，请遵循符号链接，否则sendfile中的mimetype检测将无法正常工作。
                     return sendfile(request, path)
                 elif data_type == 'frame':
@@ -533,25 +494,19 @@ class TaskViewSet(auth.TaskGetQuerySetMixin, viewsets.ModelViewSet):
                                                description='用于在创建批注文件后开始下载进程',
                                                type=openapi.TYPE_STRING,
                                                required=False,
-                                               enum=['download'])
-                         ],
+                                               enum=['download'])],
                          responses={
                              '202': openapi.Response(description='已开始转储批注'),
                              '201': openapi.Response(description='注释文件已准备好下载'),
-                             '200': openapi.Response(description='已开始下载文件')
-                         }
-                         )
+                             '200': openapi.Response(description='已开始下载文件')})
     @swagger_auto_schema(method='put', operation_summary='方法允许上载任务批注',
                          manual_parameters=[
                              openapi.Parameter('format', openapi.IN_QUERY,
-                                               description="Input format name\nYou can get the list of supported formats at:\n/server/annotation/formats",
-                                               type=openapi.TYPE_STRING, required=False),
-                         ],
+                                               description="输入格式名称\n您可以在/server/annotation/formats获取支持格式的列表。",
+                                               type=openapi.TYPE_STRING, required=False)],
                          responses={
                              '202': openapi.Response(description='Uploading has been started'),
-                             '201': openapi.Response(description='Uploading has finished'),
-                         }
-                         )
+                             '201': openapi.Response(description='Uploading has finished')})
     @swagger_auto_schema(method='patch',
                          operation_summary='方法对特定任务中的批注执行部分更新',
                          manual_parameters=[
@@ -575,8 +530,7 @@ class TaskViewSet(auth.TaskGetQuerySetMixin, viewsets.ModelViewSet):
                                            action=request.query_params.get("action", "").lower(),
                                            callback=dm.views.export_task_annotations,
                                            format_name=format_name,
-                                           filename=request.query_params.get("filename", "").lower(),
-                                           )
+                                           filename=request.query_params.get("filename", "").lower())
             else:
                 data = dm.task.get_task_data(pk)
                 serializer = LabeledDataSerializer(data=data)
@@ -593,8 +547,7 @@ class TaskViewSet(auth.TaskGetQuerySetMixin, viewsets.ModelViewSet):
                     rq_id="{}@/api/v1/tasks/{}/annotations/upload".format(request.user, pk),
                     rq_func=dm.task.import_task_annotations,
                     pk=pk,
-                    format_name=format_name,
-                )
+                    format_name=format_name)
             else:
                 serializer = LabeledDataSerializer(data=request.data)
                 if serializer.is_valid():
@@ -613,28 +566,21 @@ class TaskViewSet(auth.TaskGetQuerySetMixin, viewsets.ModelViewSet):
             if action not in dm.task.PatchAction.values():
                 raise serializers.ValidationError("请为请求指定正确的“操作”")
             serializer = LabeledDataSerializer(data=request.data)
-            if serializer.is_valid():
+            if serializer.is_valid(raise_exception=True):
                 try:
                     data = dm.task.patch_task_data(pk, serializer.data, action)
                 except (AttributeError, IntegrityError) as e:
-                    return Response(data=str(e), status=status.HTTP_200_OK)
+                    return Response(data=str(e), status=status.HTTP_400_BAD_REQUEST)
                 return Response(data)
-            else:
-                print(serializer.errors)
-                return Response(serializer.errors, status=status.HTTP_200_OK)
 
-    @swagger_auto_schema(method='get',
-                         operation_summary='创建任务时，该方法返回有关创建进程状态的信息')
+    @swagger_auto_schema(method='get', operation_summary='创建任务时，该方法返回有关创建进程状态的信息')
     @action(detail=True, methods=['GET'], serializer_class=RqStatusSerializer)
     def status(self, request, pk):
         self.get_object()  # force to call check_object_permissions
         response = self._get_rq_response(queue="default", job_id="/api/{}/tasks/{}".format(request.version, pk))
         serializer = RqStatusSerializer(data=response)
-        if serializer.is_valid():
+        if serializer.is_valid(raise_exception=True):
             return Response(serializer.data)
-        else:
-            print(serializer.errors)
-            return Response(serializer.errors, status=status.HTTP_200_OK)
 
     @staticmethod
     def _get_rq_response(queue, job_id):
@@ -651,7 +597,6 @@ class TaskViewSet(auth.TaskGetQuerySetMixin, viewsets.ModelViewSet):
             response = {"state": "Started"}
             if 'status' in job.meta:
                 response['message'] = job.meta['status']
-
         return response
 
     @staticmethod
@@ -831,8 +776,7 @@ class UserViewSet(viewsets.GenericViewSet,
         if user.is_staff:
             return UserSerializer
         else:
-            is_self = int(self.kwargs.get("pk", 0)) == user.id or \
-                      self.action == "self"
+            is_self = int(self.kwargs.get("pk", 0)) == user.id or self.action == "self"
             if is_self and self.request.method in SAFE_METHODS:
                 return UserSerializer
             else:
@@ -842,7 +786,7 @@ class UserViewSet(viewsets.GenericViewSet,
         permissions = [IsAuthenticated]
         user = self.request.user
 
-        if not self.request.method in SAFE_METHODS:
+        if not (self.request.method in SAFE_METHODS):
             is_self = int(self.kwargs.get("pk", 0)) == user.id
             if not is_self:
                 permissions.append(auth.AdminRolePermission)
@@ -850,12 +794,9 @@ class UserViewSet(viewsets.GenericViewSet,
         return [perm() for perm in permissions]
 
     @swagger_auto_schema(method='get',
-                         operation_summary='Method returns an instance of a user who is currently authorized')
+                         operation_summary='方法返回当前已被授权的用户的实例')
     @action(detail=False, methods=['GET'])
     def self(self, request):
-        """
-        Method returns an instance of a user who is currently authorized
-        """
         serializer_class = self.get_serializer_class()
         serializer = serializer_class(request.user, context={"request": request})
         return Response(serializer.data)
@@ -972,14 +913,11 @@ def _export_annotations(db_task, rq_id, request, format_name, action, callback, 
                 if action == "download" and osp.exists(file_path):
                     rq_job.delete()
 
-                    timestamp = datetime.strftime(last_task_update_time,
-                                                  "%Y_%m_%d_%H_%M_%S")
-                    filename = filename or \
-                               "task_{}-{}-{}{}".format(
-                                   db_task.name, timestamp,
-                                   format_name, osp.splitext(file_path)[1])
-                    return sendfile(request, file_path, attachment=True,
-                                    attachment_filename=filename.lower())
+                    timestamp = datetime.strftime(last_task_update_time, "%Y_%m_%d_%H_%M_%S")
+                    filename = filename or "task_{}-{}-{}{}".format(
+                        db_task.name, timestamp,
+                        format_name, osp.splitext(file_path)[1])
+                    return sendfile(request, file_path, attachment=True, attachment_filename=filename.lower())
                 else:
                     if osp.exists(file_path):
                         return Response(status=status.HTTP_201_CREATED)
@@ -1004,3 +942,13 @@ def _export_annotations(db_task, rq_id, request, format_name, action, callback, 
                        meta={'request_time': timezone.localtime()},
                        result_ttl=ttl, failure_ttl=ttl)
     return Response(status=status.HTTP_202_ACCEPTED)
+
+
+class LogViewSet(viewsets.GenericViewSet,
+                 mixins.CreateModelMixin,
+                 mixins.ListModelMixin,
+                 mixins.RetrieveModelMixin,
+                 mixins.UpdateModelMixin):
+    queryset = Log.objects.all().order_by('time')
+    permission_classes = [IsAuthenticated]
+    serializer_class = LogSerializer
