@@ -1,0 +1,1190 @@
+Index: .idea/workspace.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"ChangeListManager\">\r\n    <list default=\"true\" id=\"8aff03a2-0667-4496-ac86-7694afcaba37\" name=\"Default Changelist\" comment=\"1. 获取日志列表的接口开发&#10;2. 创建日志的接口开发\">\r\n      <change afterPath=\"$PROJECT_DIR$/../Frontend/static/base.css\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/../Frontend/static/fonts/BarlowSemiCondensed-Bold.ttf\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/../Frontend/static/fonts/BarlowSemiCondensed-Regular.ttf\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/../Frontend/static/fonts/BarlowSemiCondensed-SemiBold.ttf\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/../Frontend/static/fonts/README.md\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/../Frontend/static/icons/README.md\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/../Frontend/static/icons/copy.png\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/../Frontend/static/icons/hidden-shape.png\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/../Frontend/static/icons/hidden-text.png\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/../Frontend/static/icons/initKeyFrame.png\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/../Frontend/static/icons/keyframe.png\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/../Frontend/static/icons/lock.png\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/../Frontend/static/icons/nextKeyFrame.png\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/../Frontend/static/icons/non-hidden.png\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/../Frontend/static/icons/non-keyframe.png\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/../Frontend/static/icons/non-occluded.png\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/../Frontend/static/icons/non-outside.png\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/../Frontend/static/icons/occluded.png\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/../Frontend/static/icons/outside.png\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/../Frontend/static/icons/prevKeyFrame.png\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/../Frontend/static/icons/propagate.png\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/../Frontend/static/icons/unlock.png\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/../Frontend/static/js/3rdparty.patch\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/../Frontend/static/js/3rdparty/Decoder.worker.js\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/../Frontend/static/js/3rdparty/avc.wasm\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/../Frontend/static/js/3rdparty/defiant.min.js\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/../Frontend/static/js/3rdparty/jquery-3.3.1.js\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/../Frontend/static/js/3rdparty/jquery.fullscreen.js\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/../Frontend/static/js/3rdparty/js.cookie.js\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/../Frontend/static/js/3rdparty/mousetrap.js\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/../Frontend/static/js/3rdparty/platform.js\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/../Frontend/static/js/3rdparty/svg.draggable.js\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/../Frontend/static/js/3rdparty/svg.draw.js\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/../Frontend/static/js/3rdparty/svg.js\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/../Frontend/static/js/3rdparty/svg.resize.min.js\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/../Frontend/static/js/3rdparty/svg.select.js\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/../Frontend/static/js/annotationParser.js\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/../Frontend/static/js/annotationSaver.js\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/../Frontend/static/js/annotationUI.js\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/../Frontend/static/js/attributeAnnotationMode.js\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/../Frontend/static/js/base.js\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/../Frontend/static/js/bootstrap.js\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/../Frontend/static/js/borderSticker.js\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/../Frontend/static/js/checkPlatform.js\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/../Frontend/static/js/coordinateTranslator.js\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/../Frontend/static/js/cuboidShape.js\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/../Frontend/static/js/cvat-core.min.js\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/../Frontend/static/js/cvat.js\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/../Frontend/static/js/download.worker.js\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/../Frontend/static/js/history.js\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/../Frontend/static/js/labelsInfo.js\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/../Frontend/static/js/listener.js\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/../Frontend/static/js/logger.js\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/../Frontend/static/js/player.js\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/../Frontend/static/js/polyshapeEditor.js\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/../Frontend/static/js/qunitTests.js\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/../Frontend/static/js/server.js\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/../Frontend/static/js/shapeBuffer.js\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/../Frontend/static/js/shapeCollection.js\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/../Frontend/static/js/shapeCreator.js\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/../Frontend/static/js/shapeFilter.js\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/../Frontend/static/js/shapeGrouper.js\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/../Frontend/static/js/shapeMerger.js\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/../Frontend/static/js/shapeSplitter.js\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/../Frontend/static/js/shapes.js\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/../Frontend/static/js/unzip_imgs.worker.js\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/../Frontend/static/js/userConfig.js\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/../Frontend/static/js/utils.js\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/../Frontend/static/stylesheet.css\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/workspace.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/workspace.xml\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/cvat/apps/engine/task.py\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/cvat/apps/engine/urls.py\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/cvat/apps/engine/urls.py\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/cvat/apps/engine/views.py\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/cvat/apps/engine/views.py\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/cvat_proxy/conf.d/cvat.conf.template\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/cvat_proxy/conf.d/cvat.conf.template\" afterDir=\"false\" />\r\n    </list>\r\n    <option name=\"SHOW_DIALOG\" value=\"false\" />\r\n    <option name=\"HIGHLIGHT_CONFLICTS\" value=\"true\" />\r\n    <option name=\"HIGHLIGHT_NON_ACTIVE_CHANGELIST\" value=\"false\" />\r\n    <option name=\"LAST_RESOLUTION\" value=\"IGNORE\" />\r\n  </component>\r\n  <component name=\"DjangoConsoleOptions\" custom-start-script=\"import sys; print('Python %s on %s' % (sys.version, sys.platform))&#10;import django; print('Django %s' % django.get_version())&#10;sys.path.extend([WORKING_DIR_AND_PYTHON_PATHS])&#10;if 'setup' in dir(django): django.setup()&#10;import django_manage_shell; django_manage_shell.run(PROJECT_ROOT)\">\r\n    <option name=\"myCustomStartScript\" value=\"import sys; print('Python %s on %s' % (sys.version, sys.platform))&#10;import django; print('Django %s' % django.get_version())&#10;sys.path.extend([WORKING_DIR_AND_PYTHON_PATHS])&#10;if 'setup' in dir(django): django.setup()&#10;import django_manage_shell; django_manage_shell.run(PROJECT_ROOT)\" />\r\n  </component>\r\n  <component name=\"FlaskConsoleOptions\" custom-start-script=\"import sys&#10;sys.path.extend([WORKING_DIR_AND_PYTHON_PATHS])&#10;from flask.cli import ScriptInfo&#10;locals().update(ScriptInfo(create_app=None).load_app().make_shell_context())&#10;print(&quot;Python %s on %s\\nApp: %s [%s]\\nInstance: %s&quot; % (sys.version, sys.platform, app.import_name, app.env, app.instance_path))\">\r\n    <envs>\r\n      <env key=\"FLASK_APP\" value=\"app\" />\r\n    </envs>\r\n    <option name=\"myCustomStartScript\" value=\"import sys&#10;sys.path.extend([WORKING_DIR_AND_PYTHON_PATHS])&#10;from flask.cli import ScriptInfo&#10;locals().update(ScriptInfo(create_app=None).load_app().make_shell_context())&#10;print(&quot;Python %s on %s\\nApp: %s [%s]\\nInstance: %s&quot; % (sys.version, sys.platform, app.import_name, app.env, app.instance_path))\" />\r\n    <option name=\"myEnvs\">\r\n      <map>\r\n        <entry key=\"FLASK_APP\" value=\"app\" />\r\n      </map>\r\n    </option>\r\n  </component>\r\n  <component name=\"Git.Settings\">\r\n    <option name=\"RECENT_GIT_ROOT_PATH\" value=\"$PROJECT_DIR$/..\" />\r\n  </component>\r\n  <component name=\"ProjectId\" id=\"1lbVBIKEKAN4XSeizYxQspMdmE1\" />\r\n  <component name=\"ProjectLevelVcsManager\" settingsEditedManually=\"true\">\r\n    <ConfirmationsSetting value=\"2\" id=\"Add\" />\r\n  </component>\r\n  <component name=\"ProjectViewState\">\r\n    <option name=\"hideEmptyMiddlePackages\" value=\"true\" />\r\n    <option name=\"showLibraryContents\" value=\"true\" />\r\n  </component>\r\n  <component name=\"PropertiesComponent\">\r\n    <property name=\"RunOnceActivity.OpenProjectViewOnStart\" value=\"true\" />\r\n    <property name=\"RunOnceActivity.ShowReadmeOnStart\" value=\"true\" />\r\n    <property name=\"SHARE_PROJECT_CONFIGURATION_FILES\" value=\"true\" />\r\n    <property name=\"WebServerToolWindowFactoryState\" value=\"true\" />\r\n    <property name=\"settings.editor.selected.configurable\" value=\"preferences.pluginManager\" />\r\n  </component>\r\n  <component name=\"RunManager\">\r\n    <configuration name=\"CVAT\" type=\"Python.DjangoServer\" factoryName=\"Django server\">\r\n      <module name=\"Backend\" />\r\n      <option name=\"INTERPRETER_OPTIONS\" value=\"\" />\r\n      <option name=\"PARENT_ENVS\" value=\"true\" />\r\n      <envs>\r\n        <env name=\"PYTHONUNBUFFERED\" value=\"1\" />\r\n      </envs>\r\n      <option name=\"SDK_HOME\" value=\"D:\\ProgramData\\Anaconda3\\python.exe\" />\r\n      <option name=\"WORKING_DIRECTORY\" value=\"\" />\r\n      <option name=\"IS_MODULE_SDK\" value=\"false\" />\r\n      <option name=\"ADD_CONTENT_ROOTS\" value=\"true\" />\r\n      <option name=\"ADD_SOURCE_ROOTS\" value=\"true\" />\r\n      <option name=\"launchJavascriptDebuger\" value=\"false\" />\r\n      <option name=\"port\" value=\"8000\" />\r\n      <option name=\"host\" value=\"\" />\r\n      <option name=\"additionalOptions\" value=\"\" />\r\n      <option name=\"browserUrl\" value=\"\" />\r\n      <option name=\"runTestServer\" value=\"false\" />\r\n      <option name=\"runNoReload\" value=\"false\" />\r\n      <option name=\"useCustomRunCommand\" value=\"false\" />\r\n      <option name=\"customRunCommand\" value=\"\" />\r\n      <method v=\"2\" />\r\n    </configuration>\r\n  </component>\r\n  <component name=\"SpellCheckerSettings\" RuntimeDictionaries=\"0\" Folders=\"0\" CustomDictionaries=\"0\" DefaultDictionary=\"application-level\" UseSingleDictionary=\"true\" transferred=\"true\" />\r\n  <component name=\"TaskManager\">\r\n    <task active=\"true\" id=\"Default\" summary=\"Default task\">\r\n      <changelist id=\"8aff03a2-0667-4496-ac86-7694afcaba37\" name=\"Default Changelist\" comment=\"\" />\r\n      <created>1607865656290</created>\r\n      <option name=\"number\" value=\"Default\" />\r\n      <option name=\"presentableId\" value=\"Default\" />\r\n      <updated>1607865656290</updated>\r\n      <workItem from=\"1607865658955\" duration=\"7522000\" />\r\n      <workItem from=\"1607946982452\" duration=\"4277000\" />\r\n      <workItem from=\"1608027860758\" duration=\"475000\" />\r\n      <workItem from=\"1608030750627\" duration=\"1833000\" />\r\n      <workItem from=\"1608032959962\" duration=\"10894000\" />\r\n      <workItem from=\"1608097306337\" duration=\"600000\" />\r\n      <workItem from=\"1608114540444\" duration=\"3851000\" />\r\n      <workItem from=\"1608119104316\" duration=\"2224000\" />\r\n      <workItem from=\"1608193984804\" duration=\"38000\" />\r\n      <workItem from=\"1608363432864\" duration=\"792000\" />\r\n    </task>\r\n    <task id=\"LOCAL-00001\" summary=\"1. 获取日志列表的接口开发&#10;2. 创建日志的接口开发\">\r\n      <created>1608043783547</created>\r\n      <option name=\"number\" value=\"00001\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00001\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1608043783547</updated>\r\n    </task>\r\n    <option name=\"localTasksCounter\" value=\"2\" />\r\n    <servers />\r\n  </component>\r\n  <component name=\"TypeScriptGeneratedFilesManager\">\r\n    <option name=\"version\" value=\"3\" />\r\n  </component>\r\n  <component name=\"Vcs.Log.Tabs.Properties\">\r\n    <option name=\"TAB_STATES\">\r\n      <map>\r\n        <entry key=\"MAIN\">\r\n          <value>\r\n            <State />\r\n          </value>\r\n        </entry>\r\n      </map>\r\n    </option>\r\n    <option name=\"oldMeFiltersMigrated\" value=\"true\" />\r\n  </component>\r\n  <component name=\"VcsManagerConfiguration\">\r\n    <MESSAGE value=\"1. 获取日志列表的接口开发&#10;2. 创建日志的接口开发\" />\r\n    <option name=\"LAST_COMMIT_MESSAGE\" value=\"1. 获取日志列表的接口开发&#10;2. 创建日志的接口开发\" />\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/workspace.xml b/.idea/workspace.xml
+--- a/.idea/workspace.xml	
++++ b/.idea/workspace.xml	
+@@ -2,80 +2,11 @@
+ <project version="4">
+   <component name="ChangeListManager">
+     <list default="true" id="8aff03a2-0667-4496-ac86-7694afcaba37" name="Default Changelist" comment="1. 获取日志列表的接口开发&#10;2. 创建日志的接口开发">
+-      <change afterPath="$PROJECT_DIR$/../Frontend/static/base.css" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/../Frontend/static/fonts/BarlowSemiCondensed-Bold.ttf" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/../Frontend/static/fonts/BarlowSemiCondensed-Regular.ttf" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/../Frontend/static/fonts/BarlowSemiCondensed-SemiBold.ttf" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/../Frontend/static/fonts/README.md" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/../Frontend/static/icons/README.md" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/../Frontend/static/icons/copy.png" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/../Frontend/static/icons/hidden-shape.png" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/../Frontend/static/icons/hidden-text.png" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/../Frontend/static/icons/initKeyFrame.png" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/../Frontend/static/icons/keyframe.png" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/../Frontend/static/icons/lock.png" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/../Frontend/static/icons/nextKeyFrame.png" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/../Frontend/static/icons/non-hidden.png" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/../Frontend/static/icons/non-keyframe.png" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/../Frontend/static/icons/non-occluded.png" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/../Frontend/static/icons/non-outside.png" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/../Frontend/static/icons/occluded.png" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/../Frontend/static/icons/outside.png" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/../Frontend/static/icons/prevKeyFrame.png" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/../Frontend/static/icons/propagate.png" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/../Frontend/static/icons/unlock.png" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/../Frontend/static/js/3rdparty.patch" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/../Frontend/static/js/3rdparty/Decoder.worker.js" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/../Frontend/static/js/3rdparty/avc.wasm" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/../Frontend/static/js/3rdparty/defiant.min.js" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/../Frontend/static/js/3rdparty/jquery-3.3.1.js" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/../Frontend/static/js/3rdparty/jquery.fullscreen.js" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/../Frontend/static/js/3rdparty/js.cookie.js" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/../Frontend/static/js/3rdparty/mousetrap.js" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/../Frontend/static/js/3rdparty/platform.js" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/../Frontend/static/js/3rdparty/svg.draggable.js" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/../Frontend/static/js/3rdparty/svg.draw.js" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/../Frontend/static/js/3rdparty/svg.js" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/../Frontend/static/js/3rdparty/svg.resize.min.js" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/../Frontend/static/js/3rdparty/svg.select.js" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/../Frontend/static/js/annotationParser.js" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/../Frontend/static/js/annotationSaver.js" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/../Frontend/static/js/annotationUI.js" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/../Frontend/static/js/attributeAnnotationMode.js" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/../Frontend/static/js/base.js" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/../Frontend/static/js/bootstrap.js" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/../Frontend/static/js/borderSticker.js" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/../Frontend/static/js/checkPlatform.js" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/../Frontend/static/js/coordinateTranslator.js" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/../Frontend/static/js/cuboidShape.js" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/../Frontend/static/js/cvat-core.min.js" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/../Frontend/static/js/cvat.js" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/../Frontend/static/js/download.worker.js" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/../Frontend/static/js/history.js" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/../Frontend/static/js/labelsInfo.js" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/../Frontend/static/js/listener.js" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/../Frontend/static/js/logger.js" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/../Frontend/static/js/player.js" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/../Frontend/static/js/polyshapeEditor.js" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/../Frontend/static/js/qunitTests.js" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/../Frontend/static/js/server.js" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/../Frontend/static/js/shapeBuffer.js" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/../Frontend/static/js/shapeCollection.js" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/../Frontend/static/js/shapeCreator.js" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/../Frontend/static/js/shapeFilter.js" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/../Frontend/static/js/shapeGrouper.js" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/../Frontend/static/js/shapeMerger.js" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/../Frontend/static/js/shapeSplitter.js" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/../Frontend/static/js/shapes.js" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/../Frontend/static/js/unzip_imgs.worker.js" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/../Frontend/static/js/userConfig.js" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/../Frontend/static/js/utils.js" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/../Frontend/static/stylesheet.css" afterDir="false" />
+       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/cvat/apps/engine/task.py" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/cvat/apps/engine/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/engine/urls.py" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/cvat/apps/engine/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/engine/views.py" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/cvat_proxy/conf.d/cvat.conf.template" beforeDir="false" afterPath="$PROJECT_DIR$/cvat_proxy/conf.d/cvat.conf.template" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/cvat/apps/engine/templates/engine/annotation.html" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/engine/templates/engine/annotation.html" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/../Frontend/src/components/workbench/drawPage.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../Frontend/src/components/workbench/drawPage.vue" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/../Frontend/static/js/3rdparty.patch" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/../Frontend/static/stylesheet.css" beforeDir="false" afterPath="$PROJECT_DIR$/../Frontend/static/stylesheet.css" afterDir="false" />
+     </list>
+     <option name="SHOW_DIALOG" value="false" />
+     <option name="HIGHLIGHT_CONFLICTS" value="true" />
+@@ -156,7 +87,7 @@
+       <workItem from="1608114540444" duration="3851000" />
+       <workItem from="1608119104316" duration="2224000" />
+       <workItem from="1608193984804" duration="38000" />
+-      <workItem from="1608363432864" duration="792000" />
++      <workItem from="1608363432864" duration="4359000" />
+     </task>
+     <task id="LOCAL-00001" summary="1. 获取日志列表的接口开发&#10;2. 创建日志的接口开发">
+       <created>1608043783547</created>
+Index: ../Frontend/src/components/workbench/drawPage.vue
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><template>\r\n  <div class=\"main-box\">\r\n    <div class=\"sidebar\">\r\n      <el-tooltip\r\n        :class=\"['item','tools',{'tool-active':flag === 'cursor'}]\"\r\n        effect=\"dark\"\r\n        content=\"鼠标\"\r\n        placement=\"right\"\r\n      >\r\n        <el-button @click=\"initDrawTools('cursor')\">\r\n          <span class=\"iconfont\">&#xe6c7;</span>\r\n        </el-button>\r\n      </el-tooltip>\r\n      <span class=\"line\" />\r\n      <el-tooltip\r\n        :class=\"['item','tools',{'tool-active':flag === 'rectangle'}]\"\r\n        effect=\"dark\"\r\n        content=\"矩形标记\"\r\n        placement=\"right\"\r\n      >\r\n        <el-button @click=\"initDrawTools('rectangle')\">\r\n          <span class=\"iconfont\">&#xe88e;</span>\r\n        </el-button>\r\n      </el-tooltip>\r\n    </div>\r\n    <div ref=\"objBar\" class=\"object-bar\">\r\n      <div\r\n        ref=\"drawer\"\r\n        class=\"drawer\"\r\n        @click=\"showBar()\"\r\n      >\r\n        <i :class=\"[{'el-icon-right':flag2},{'el-icon-back':!flag2}]\" />\r\n      </div>\r\n\r\n      <!--右边的用来选择标签的框的box-->\r\n      <div class=\"label-obj-box\" >\r\n        <!--右边的用来选择标签的框，每一项-->\r\n        <div\r\n          v-for=\"item in shapes.rectangles\"\r\n          :key=\"item.index\"\r\n          :id=\"'style_'+(item.index)\"\r\n          class=\"label-obj\"\r\n          @mouseenter=\"showRecObj(item.index),showLabObj(item.index)\"\r\n          @mouseleave=\"hideRecObj(item.index),hideLabObj(item.index)\"\r\n        >\r\n          <!--右边的用来选择标签的框，上半部分，显示序号和标签下拉选择-->\r\n          <div class=\"label-info\">\r\n            <span>{{ item.index }}</span>\r\n            <div class=\"change-label\">\r\n              <el-select\r\n                v-model=\"shapes.rectangles[item.index-1].label_id\"\r\n                placeholder=\"请选择\"\r\n                size=\"mini\"\r\n                @change=\"saveTagsToStore\"\r\n              >\r\n                <el-option\r\n                  v-for=\"i in options\"\r\n                  :key=\"i.value\"\r\n                  :label=\"i.label\"\r\n                  :value=\"i.value\"\r\n                />\r\n              </el-select>\r\n            </div>\r\n          </div>\r\n          <!--右边的用来选择标签的框，下半部分，显示一些按钮-->\r\n          <div class=\"label-func\">\r\n            <div\r\n              class=\"func lock\"\r\n              @click=\"lockRecObj(item.index)\"\r\n            >\r\n              <i :class=\"[{'el-icon-lock':shapes.rectangles[item.index-1].isLock},{'el-icon-unlock':!shapes.rectangles[item.index-1].isLock}]\" />\r\n            </div>\r\n            <div\r\n              class=\"func visible\"\r\n              @click=\"invisibleRecObj(item.index)\"\r\n            >\r\n              <span\r\n                v-show=\"!shapes.rectangles[item.index-1].isInvisible\"\r\n                class=\"iconfont\"\r\n              >&#xe9c1;</span>\r\n              <span\r\n                v-show=\"shapes.rectangles[item.index-1].isInvisible\"\r\n                class=\"iconfont\"\r\n              >&#xe6fe;</span>\r\n            </div>\r\n            <div\r\n              class=\"func delete\"\r\n              @click=\"deleteRecObj(item.index)\"\r\n            >\r\n              <i class=\"el-icon-delete\" />\r\n            </div>\r\n          </div>\r\n        </div>\r\n      </div>\r\n      <div class=\"main-btn-box\">\r\n        <div class=\"images\">\r\n          <div class=\"img-btn this\">\r\n            <template>\r\n              <div class=\"block\">\r\n                <el-slider\r\n                  v-model=\"imageIndexFrom1\"\r\n                  show-input\r\n                  @change=\"changeImg\"\r\n                  :min=\"1\"\r\n                  :max=\"imagesSize\"\r\n                >\r\n                </el-slider>\r\n              </div>\r\n            </template>\r\n          </div>\r\n        </div>\r\n        <div class=\"main-func\">\r\n          <div\r\n            class=\"main-btn submit\"\r\n            @click=\"isPrepare\"\r\n          >\r\n            <i class=\"el-icon-upload\" />\r\n            <span>提交所有</span>\r\n          </div>\r\n          <div class=\"main-btn abandon\">\r\n            <span>废弃</span>\r\n          </div>\r\n        </div>\r\n      </div>\r\n    </div>\r\n    <div ref=\"paintBox\" class=\"paint-box\">\r\n      <canvas\r\n        id=\"myCanvas\"\r\n        ref=\"myCanvas\"\r\n        width=\"500px\"\r\n        height=\"400px\"\r\n      />\r\n      <div\r\n        v-if=\"flag==='rectangle'\"\r\n        ref=\"vl\"\r\n        class=\"vertical-line\"\r\n      />\r\n      <div\r\n        v-if=\"flag==='rectangle'\"\r\n        ref=\"ll\"\r\n        class=\"level-line\"\r\n      ></div>\r\n      <!--用来放标记的矩形框-->\r\n      <div class=\"rec-box\" ref=\"recBox\"></div>\r\n      <div class=\"tips-box\" ref=\"tipsBox\">\r\n        <span>正在加载</span>\r\n      </div>\r\n    </div>\r\n  </div>\r\n</template>\r\n\r\n<script>\r\nimport JSZip from '@/assets/js/jszip'\r\n\r\nexport default {\r\n  data() {\r\n    return {\r\n      //哪一个工具\r\n      flag: 'cursor',\r\n      //项目栏是否展开\r\n      flag2: true,\r\n      //是否是第一次打开\r\n      isFirst: true,\r\n\r\n      //保存所有Tag选项\r\n      options: [],\r\n      // value: '',\r\n\r\n      //画布对象\r\n      myCanvas: {},\r\n      //画笔对象\r\n      ctx: {},\r\n      isDrawing: false,\r\n\r\n      //图片相关\r\n      isGotImg: false,\r\n      imagesData: '',\r\n      //imagesSize原来为0，这里我改成了1，最小值应该为1吧\r\n      imagesSize: 1,\r\n      imageIndex: 0,\r\n      imageIndexFrom1: 1,\r\n      imageInfo: {},\r\n      imageScale: 1,//图片缩放比例 ：缩放后/缩放前\r\n\r\n      //矩形对象\r\n      shapes: {\r\n        rectangles: [],\r\n      },\r\n      rectangleIndex: 1,\r\n      recTop: 0,\r\n      recLeft: 0,\r\n\r\n      //job信息\r\n      jobId: 0,\r\n\r\n      //控制页面改变大小时刷新的变量\r\n      isResizing: '',\r\n\r\n      // 设置 job 的起始 frame 和终止 frame\r\n      start_frame: 0,\r\n      stop_frame: 0,\r\n    }\r\n  },\r\n  computed:{\r\n    imageRealIndex(){\r\n        return this.imageIndex + 1;\r\n    }\r\n  },\r\n  created() {\r\n    //获取图片信息\r\n    this.getImagesInfo()\r\n    //获取job信息\r\n    this.getJobInfo()\r\n  },\r\n  mounted() {\r\n    this.initCanvas()\r\n    //停止改变窗口大小后0.3秒重新绘制图片\r\n    window.onresize = () => {\r\n      if (this.isResizing) {\r\n        clearTimeout(this.isResizing)\r\n      }\r\n      this.isResizing = setTimeout(() => {\r\n        this.resizeCanvas()\r\n      }, 300)\r\n    }\r\n  },\r\n  destroyed() {\r\n    //页面切换清除改变大小监听器\r\n    window.onresize = () => {\r\n    }\r\n  },\r\n  methods: {\r\n    //右侧信息栏\r\n    showBar() {\r\n      if (this.flag2) {\r\n        this.$refs.objBar.style.right = '-300px'\r\n        this.$refs.drawer.style.left = '-35px'\r\n        this.flag2 = false\r\n      } else {\r\n        this.$refs.objBar.style.right = '0px'\r\n        this.$refs.drawer.style.left = '0px'\r\n        this.flag2 = true\r\n      }\r\n    },\r\n    //获取images信息列表\r\n    getImagesInfo() {\r\n      this.$http.get('v1/tasks/' + this.$route.params.index + '/data/meta').then(e => {\r\n        console.log(e.data);\r\n        this.imagesSize = e.data.size\r\n        this.start_frame = e.data.start_frame\r\n        this.stop_frame = e.data.stop_frame\r\n      })\r\n    },\r\n    //获取图片压缩包并解压，将 base64 代码保存到 imagesData 里\r\n    /** 不能直接用 url 中的 id 去拿图片，如果暴力改变 url 需要回到 home 要用路由守卫*/\r\n    getImages() {\r\n      //请求图片数据\r\n      console.log(\"1.开始请求第\" + (this.imageIndex+1) + \"张图片的数据数据\")\r\n      this.$http.get('v1/tasks/' + this.$route.params.index + '/data', {\r\n        params: {\r\n          type: 'chunk',\r\n          number: this.imageIndex,\r\n          quality: 'compressed'\r\n        },\r\n        // 请求数据的格式\r\n        responseType: 'arraybuffer',\r\n      }).then(e => {\r\n        console.log(\"2.图片获取完成\")\r\n        // 使用JSZip解压数据\r\n        const zip = new JSZip()\r\n        if (e.data) {\r\n          zip.loadAsync(e.data).then((imgData) => {\r\n            // 获取图片base64格式信息\r\n            for (let key in imgData.files) {\r\n              let base = imgData.file(zip.files[key].name).async('base64')\r\n              base.then(res => {\r\n                this.imagesData = res\r\n              })\r\n            }\r\n            console.log(\"3.图片解压完成\")\r\n            this.isGotImg = true\r\n          }).then(()=>{\r\n            this.drawImages()\r\n          })\r\n        }\r\n      }).catch(err => {\r\n        console.log(err);\r\n      })\r\n    },\r\n    //初始化画布\r\n    initCanvas() {\r\n      //获取元素\r\n      this.myCanvas = this.$refs.myCanvas\r\n      //加载画笔工具\r\n      this.ctx = this.myCanvas.getContext('2d')\r\n      //根据屏幕设置canvas大小\r\n      this.myCanvas.width = document.body.clientWidth - 46\r\n      this.myCanvas.height = document.body.clientHeight - 35\r\n\r\n      console.log(\"0.画布初始化完成\")\r\n      //获取图片\r\n      this.getImages()\r\n      //设置鼠标样式\r\n      document.getElementById('myCanvas').style.cursor = 'default'\r\n    },\r\n    //改变画布大小\r\n    resizeCanvas() {\r\n      this.myCanvas.width = document.body.clientWidth - 46\r\n      this.myCanvas.height = document.body.clientHeight - 35\r\n      console.log('3.1重置画布大小完成')\r\n      this.drawImages()\r\n      this.reDrawTags(2, this.imageIndex)\r\n    },\r\n    //绘制图片\r\n    drawImages() {\r\n      //将解压出的文件以base64格式放到图片对象中\r\n      let img = new Image()\r\n      //清除画布\r\n      this.ctx.clearRect(0, 0, this.myCanvas.width, this.myCanvas.height)\r\n      setTimeout(() => {\r\n        img.src = \"data:image/png;base64,\" + this.imagesData\r\n        console.log(\"4.base64数据嵌入完成\");\r\n        img.onload = ()=>{\r\n          // console.log('图片原始尺寸' + img.width, img.height);\r\n          //图片比窗口长，则上下填充满\r\n          if (img.width / img.height < (this.myCanvas.width - 300) / this.myCanvas.height) {\r\n            this.imageInfo = {\r\n              left: (this.myCanvas.width - 300 - this.myCanvas.height * img.width / img.height) / 2 + 5,\r\n              top: 5,\r\n              width: this.myCanvas.height * img.width / img.height - 10,\r\n              height: this.myCanvas.height - 10\r\n            }\r\n          } else {//窗口比图片长，左右填满\r\n            this.imageInfo = {\r\n              left: 5,\r\n              top: (this.myCanvas.height - (this.myCanvas.width - 300) * img.height / img.width) / 2 + 5,\r\n              width: this.myCanvas.width - 310,\r\n              height: (this.myCanvas.width - 300) * img.height / img.width - 10\r\n            }\r\n          }\r\n\r\n          // console.log('图片缩放后的尺寸' + this.imageInfo.width, this.imageInfo.height);\r\n          this.imageScale = img.width / this.imageInfo.width\r\n          console.log(\"5.图片尺寸数据处理完成，图片缩放比例：\" + this.imageScale);\r\n          //将图片绘制到canvas上，这里的drawImage是canvas里的函数\r\n          this.ctx.drawImage(img, this.imageInfo.left, this.imageInfo.top, this.imageInfo.width, this.imageInfo.height)\r\n          console.log(\"6.图片绘制完成\");\r\n\r\n          //加载完成后删除正在加载\r\n          if (this.isFirst) {\r\n            this.$refs.tipsBox.parentNode.removeChild(this.$refs.tipsBox)\r\n            this.isFirst = false\r\n          }\r\n        }\r\n      }, 100)\r\n    },\r\n    //切换图片\r\n    changeImg(index) {\r\n      let indexFrom0 = index-1;\r\n      this.imageIndex = indexFrom0\r\n      this.getImages()\r\n      this.removeRec('all')\r\n      this.reDrawTags(1, this.imageIndex)\r\n\r\n      // if (indexFrom0 !== 0) {\r\n      //   this.imageIndex = indexFrom0\r\n      //   this.getImages()\r\n      //   this.removeRec('all')\r\n      //   this.reDrawTags(1, this.imageIndex)\r\n      // }\r\n\r\n      //   if (mod === 'start') {//第一张\r\n      //   //如果不是第一张就加载\r\n      //   if (this.imageIndex !== 0) {\r\n      //     this.imageIndex = 0\r\n      //     this.getImages()\r\n      //     this.removeRec('all')\r\n      //     this.reDrawTags(1, this.imageIndex)\r\n      //   }\r\n      // } else if (mod === 'back') {//上一张\r\n      //   if (this.imageIndex !== 0) {\r\n      //     this.imageIndex -= 1\r\n      //     this.getImages()\r\n      //     this.removeRec('all')\r\n      //     this.reDrawTags(1, this.imageIndex)\r\n      //   }\r\n      // } else if (mod === 'next') {//下一张\r\n      //   if (this.imageIndex !== (this.imagesSize - 1)) {\r\n      //     this.imageIndex += 1\r\n      //     this.getImages()\r\n      //     this.removeRec('all')\r\n      //     this.reDrawTags(1, this.imageIndex)\r\n      //   }\r\n      // } else if (mod === 'end') {//最后一张\r\n      //   if (this.imageIndex !== (this.imagesSize - 1)) {\r\n      //     this.imageIndex = this.imagesSize - 1\r\n      //     this.getImages()\r\n      //     this.removeRec('all')\r\n      //     this.reDrawTags(1, this.imageIndex)\r\n      //   }\r\n      // }\r\n\r\n    },\r\n    //切换工具\r\n    initDrawTools(attr) {\r\n      //处于相应的工具状态\r\n      this.flag = attr\r\n      //跟手基准线\r\n      //选择画笔\r\n      if (attr === 'rectangle') {\r\n        this.setToLine()\r\n        this.createRec()\r\n      } else if (attr === 'cursor') {\r\n        this.setToCursor()\r\n      }\r\n    },\r\n    //切换成鼠标的样式\r\n    setToCursor() {\r\n      //恢复鼠标样式\r\n      this.$refs.myCanvas.style.cursor = 'default'\r\n      document.getElementsByClassName('rec-obj').forEach((item) => {\r\n        item.style.cursor = 'default'\r\n      })\r\n      //移除跟随鼠标\r\n      document.body.removeEventListener('mousemove', this.followMouse, false)\r\n      //如果没有完成矩形的绘制\r\n      if (this.isDrawing) {\r\n        document.body.removeEventListener('mousemove', this.resizeRec, false)\r\n        this.isDrawing = !this.isDrawing\r\n      }\r\n      //移除click创建元素\r\n      document.body.removeEventListener('mousedown', this.createRec, true)\r\n    },\r\n    //切换成矩形标记的样式\r\n    setToLine() {\r\n      //隐藏鼠标\r\n      this.$refs.myCanvas.style.cursor = 'none'\r\n      document.getElementsByClassName('rec-obj').forEach((item) => {\r\n        item.style.cursor = 'none'\r\n      })\r\n      //跟随鼠标\r\n      document.body.addEventListener('mousemove', this.followMouse, false)\r\n      //创建矩形框\r\n      document.body.addEventListener('mousedown', this.createRec, true)\r\n    },\r\n    //跟随鼠标的基准线\r\n    followMouse(e) {\r\n      let mPos = this.getMousePos(e)\r\n      this.$refs.vl.style.left = mPos.left + 'px'\r\n      this.$refs.ll.style.top = mPos.top + 'px'\r\n    },\r\n    //获取鼠标位置\r\n    getMousePos(event) {\r\n      return {\r\n        top: event.clientY,\r\n        left: event.clientX\r\n      }\r\n    },\r\n    //画矩形\r\n    createRec(e) {\r\n      if (e) {\r\n        //获取点击的坐标\r\n        let mPos = this.getMousePos(e)\r\n        //获取图片相对页面的位置\r\n        let leftBorder = parseInt(this.imageInfo.left) + 46//加上了左侧工具栏的宽度 46px\r\n        let topBorder = parseInt(this.imageInfo.top) + 35//加上了顶部头的高度 35px\r\n        let rightBorder = leftBorder + parseInt(this.imageInfo.width)\r\n        let bottomBorder = topBorder + parseInt(this.imageInfo.height)\r\n        //如果在图片上点击\r\n        if (mPos.top >= topBorder && mPos.top <= bottomBorder && mPos.left >= leftBorder && mPos.left <= rightBorder) {\r\n          if (!this.isDrawing) {\r\n            //转换绘制状态\r\n            this.isDrawing = !this.isDrawing\r\n            //创建元素并设置元素的左上角位置\r\n            let rec = document.createElement('div')\r\n            rec.className += 'rec-obj'\r\n            //id用来标记是第几个div\r\n            rec.id = this.rectangleIndex\r\n            rec.style.top = mPos.top + 'px'\r\n            rec.style.left = mPos.left + 'px'\r\n            //添加鼠标移入，右侧对应标签栏高亮事件\r\n            rec.onmouseenter = (e) => {\r\n              this.showLabObj(e.target.id)\r\n            }\r\n            //添加鼠标移出，右侧对应标签栏高亮事件\r\n            rec.onmouseleave = (e) => {\r\n              this.hideLabObj(e.target.id)\r\n            }\r\n            this.recTop = mPos.top\r\n            this.recLeft = mPos.left\r\n            //向矩形框数组添加对象\r\n            let r = {\r\n              type: \"rectangle\",\r\n              occluded: false,\r\n              z_order: 0,\r\n              index: this.rectangleIndex,//矩形框序号\r\n              el: rec,//矩形框DOM元素\r\n              // id:5,\r\n              frame: this.imageIndex + 1,//第几张图片，从1开始\r\n              label_id: this.options[0].value,//一级标签默认选择第一个\r\n              group: 0,\r\n              isLock: false,\r\n              isInvisible: false,\r\n              attributes: [],\r\n              points: [],//记录矩形框位置\r\n            }\r\n            this.rectangleIndex++\r\n            this.shapes.rectangles.push(r)\r\n            //渲染到页面上\r\n            this.$refs.recBox.appendChild(rec)\r\n            //根据鼠标位置调整矩形框的大小\r\n            document.body.addEventListener('mousemove', this.resizeRec, false)\r\n          } else {\r\n            this.isDrawing = !this.isDrawing\r\n            document.body.removeEventListener('mousemove', this.resizeRec, false)\r\n            //记录矩形框左上，右下两个点的x1,y1,x2,y2坐标在 !原图! 上的坐标\r\n            this.shapes.rectangles[this.shapes.rectangles.length - 1].points = [\r\n              (parseInt(this.shapes.rectangles[this.shapes.rectangles.length - 1].el.style.left.replace('px', '')) - (parseInt(this.imageInfo.left) + 46)) * this.imageScale,\r\n              (parseInt(this.shapes.rectangles[this.shapes.rectangles.length - 1].el.style.top.replace('px', '')) - (parseInt(this.imageInfo.top) + 35)) * this.imageScale,\r\n              (parseInt(this.shapes.rectangles[this.shapes.rectangles.length - 1].el.style.width.replace('px', '')) + parseInt(this.shapes.rectangles[this.shapes.rectangles.length - 1].el.style.left.replace('px', '')) - (parseInt(this.imageInfo.left) + 46)) * this.imageScale,\r\n              (parseInt(this.shapes.rectangles[this.shapes.rectangles.length - 1].el.style.height.replace('px', '')) + parseInt(this.shapes.rectangles[this.shapes.rectangles.length - 1].el.style.top.replace('px', '')) - (parseInt(this.imageInfo.top) + 35)) * this.imageScale,\r\n            ]\r\n            console.log('矩形框两点数据', this.shapes.rectangles[this.shapes.rectangles.length - 1].points);\r\n            //画完自动保存\r\n            this.saveTagsToStore()\r\n            //完成一个标记,切换回鼠标模式\r\n            // this.initDrawTools('cursor')\r\n          }\r\n        }\r\n      }\r\n    },\r\n    //鼠标移动控制矩形框大小\r\n    resizeRec(e) {\r\n      let mPos = this.getMousePos(e)\r\n      if (mPos.left >= this.recLeft && mPos.top >= this.recTop) {\r\n        //鼠标在右下\r\n        this.drawRec(this.recTop, mPos.left + 1, mPos.top + 1, this.recLeft)\r\n      } else if (mPos.left >= this.recLeft && mPos.top <= this.recTop) {\r\n        //右上\r\n        this.drawRec(mPos.top, mPos.left + 1, this.recTop, this.recLeft)\r\n      } else if (mPos.left <= this.recLeft && mPos.top <= this.recTop) {\r\n        //左上\r\n        this.drawRec(mPos.top, this.recLeft, this.recTop, mPos.left)\r\n      } else if (mPos.left <= this.recLeft && mPos.top >= this.recTop) {\r\n        //左下\r\n        this.drawRec(this.recTop, this.recLeft, mPos.top + 1, mPos.left)\r\n      }\r\n    },\r\n    //绘制矩形框\r\n    drawRec(top, right, bottom, left) {\r\n      this.shapes.rectangles[this.shapes.rectangles.length - 1].el.style.left = left + 'px'\r\n      this.shapes.rectangles[this.shapes.rectangles.length - 1].el.style.top = top + 'px'\r\n      this.shapes.rectangles[this.shapes.rectangles.length - 1].el.style.width = right - left + 'px'\r\n      this.shapes.rectangles[this.shapes.rectangles.length - 1].el.style.height = bottom - top + 'px'\r\n    },\r\n    //删除元素\r\n    removeRec(mod) {\r\n      if (mod === 'all') {\r\n        this.$refs.recBox.innerHTML = ''\r\n        this.shapes.rectangles = []\r\n        this.rectangleIndex = 1\r\n      }\r\n    },\r\n    //获取job信息\r\n    getJobInfo() {\r\n      this.$http.get('v1/tasks?', {\r\n        params: {\r\n          id: this.$route.params.index,\r\n          page: 1,\r\n          page_size: 10\r\n        }\r\n      }).then((e) => {\r\n        this.jobId = e.data.results[0].segments[0].jobs[0].id\r\n        // console.log(e)\r\n        for (let item in e.data.results[0].labels) {\r\n          let label = {\r\n            value: e.data.results[0].labels[item].id,\r\n            label: e.data.results[0].labels[item].name\r\n          }\r\n          this.options.push(label)\r\n        }\r\n        console.log('标签列表', this.options);\r\n      })\r\n    },\r\n    //将标注信息存储到store中\r\n    saveTagsToStore() {\r\n      this.$store.commit('cleanTagsInfo', this.imageIndex)\r\n      this.$store.commit('saveTagsInfo', this.shapes)\r\n      this.$message({\r\n        message: '自动保存成功',\r\n        type: \"success\"\r\n      })\r\n    },\r\n    //提交前询问\r\n    isPrepare() {\r\n      this.$confirm('提交后无法修改, 是否继续?', '提示', {\r\n        confirmButtonText: '确定',\r\n        cancelButtonText: '取消',\r\n        type: 'warning'\r\n      }).then(() => {\r\n        this.submitTags()\r\n      }).catch(() => {\r\n        this.$message({\r\n          type: 'info',\r\n          message: '已取消提交'\r\n        });\r\n      });\r\n    },\r\n    //提交标注信息\r\n    /** 提交成功后的逻辑还需进一步改进 暂时改成不能再次进入*/\r\n    submitTags() {\r\n      let TagsInfo = this.$store.state.imageTags\r\n      console.log(TagsInfo)\r\n      this.$http.patch('v1/jobs/' + this.jobId + '/annotations?action=create', TagsInfo).then((e) => {\r\n        console.log(e)\r\n        this.$message({\r\n          message: \"提交成功\",\r\n          type: \"success\"\r\n        })\r\n        this.$router.push('/home')\r\n      }).catch((err) => {\r\n        console.log(err);\r\n      })\r\n    },\r\n    //切换图片接收信息重新绘制Tag\r\n    //或者窗口大小改变时重新绘制Tag\r\n    //mod:  1：切换图片  2：改变窗口大小\r\n    /**   切换图片后矩形框内的鼠标样式有问题\r\n     * 是否锁定的参数没有保存回传*/\r\n    reDrawTags(mod, index) {\r\n      //切换到了第几张图片\r\n      let imgIndex = index + 1\r\n      let TagsInfo = {}\r\n      let that = this\r\n      if (mod === 1) {\r\n        //从store获取所有的标注信息\r\n        TagsInfo = that.$store.state.imageTags.shapes\r\n      } else if (mod === 2) {\r\n        TagsInfo = that.shapes.rectangles\r\n        this.removeRec('all')\r\n      }\r\n      //清洗出这张图片的标注信息\r\n      console.log('获取此图片的标注信息',TagsInfo);\r\n      for (let item in TagsInfo) {\r\n        if (TagsInfo[item].frame === imgIndex) {\r\n\r\n          console.log('矩形框在页面上的位置', TagsInfo[item].points);\r\n\r\n          //创建矩形框\r\n          let rec = document.createElement('div')\r\n          rec.className += 'rec-obj'\r\n          //id用来标记是第几个div\r\n          rec.id = this.rectangleIndex\r\n          //添加鼠标移入，右侧对应标签栏高亮事件\r\n          rec.onmouseenter = (e) => {\r\n              this.showLabObj(e.target.id)\r\n          }\r\n          //添加鼠标移出，右侧对应标签栏高亮事件\r\n          rec.onmouseleave = (e) => {\r\n              this.hideLabObj(e.target.id)\r\n          }\r\n\r\n          setTimeout(() => {\r\n            // console.log(parseInt(TagsInfo[item].points[0]) / this.imageScale);\r\n            // console.log(parseInt(this.imageInfo.left));\r\n            // console.log(parseInt(TagsInfo[item].points[1]) / this.imageScale);\r\n            // console.log(parseInt(this.imageInfo.top));\r\n            rec.style.left = parseInt(TagsInfo[item].points[0]) / this.imageScale + parseInt(this.imageInfo.left) + 46 + 'px'\r\n            rec.style.top = parseInt(TagsInfo[item].points[1]) / this.imageScale + parseInt(this.imageInfo.top) + 35 + 'px'\r\n            rec.style.width = (parseInt(TagsInfo[item].points[2]) - parseInt(TagsInfo[item].points[0])) / this.imageScale + 'px'\r\n            rec.style.height = (parseInt(TagsInfo[item].points[3]) - parseInt(TagsInfo[item].points[1])) / this.imageScale + 'px'\r\n            rec.style.cursor = 'default'\r\n            this.$refs.recBox.appendChild(rec)\r\n          }, 300)\r\n\r\n          // console.log('标记的真实数据', TagsInfo[item])\r\n\r\n          //添加数据\r\n          this.shapes.rectangles.push({\r\n            type: TagsInfo[item].type,\r\n            occluded: TagsInfo[item].occluded,\r\n            z_order: TagsInfo[item].z_order,\r\n            index: this.rectangleIndex,\r\n            el: rec,\r\n            // id:5,\r\n            frame: TagsInfo[item].frame,\r\n            label_id: TagsInfo[item].label_id,\r\n            group: TagsInfo[item].group,\r\n            isLock: false,\r\n            isInvisible: false,\r\n            attributes: TagsInfo[item].attributes,\r\n            points: TagsInfo[item].points,\r\n          })\r\n          this.rectangleIndex++\r\n        }\r\n      }\r\n      //恢复鼠标样式\r\n      this.initDrawTools('cursor')\r\n      /** 鼠标样式无法更改*/\r\n      document.getElementsByClassName('rec-obj').forEach((item) => {\r\n        item.style.cursor = 'default'\r\n      })\r\n    },\r\n    //鼠标放到右侧信息栏高亮对应矩形框\r\n    showRecObj(index) {\r\n      this.shapes.rectangles[index - 1].el.style.backgroundColor = 'rgba(255,255,255,0.4)'\r\n    },\r\n    hideRecObj(index){\r\n      this.shapes.rectangles[index-1].el.style.backgroundColor = 'transparent'\r\n    },\r\n    //鼠标放到矩形框高亮右侧信息栏\r\n    showLabObj(index){\r\n      let styleid = \"style_\"+index;\r\n      let object = document.getElementById(styleid);\r\n      object.style.background = '#fcffe1'\r\n    },\r\n    hideLabObj(index){\r\n      let styleid = \"style_\"+index;\r\n      let object = document.getElementById(styleid);\r\n      object.style.background = 'rgb(255,255,255)'\r\n    },\r\n    //信息栏中的功能\r\n    //锁定\r\n    lockRecObj(index) {\r\n      this.shapes.rectangles[index - 1].isLock = !this.shapes.rectangles[index - 1].isLock\r\n      if (this.shapes.rectangles[index - 1].isLock) {\r\n        this.shapes.rectangles[index - 1].el.classList.add('rec-obj-lock')\r\n      } else {\r\n        this.shapes.rectangles[index - 1].el.classList.remove('rec-obj-lock')\r\n      }\r\n    },\r\n    //不可见\r\n    invisibleRecObj(index) {\r\n      if (this.shapes.rectangles[index - 1].isInvisible) {\r\n        this.shapes.rectangles[index - 1].el.style.display = 'block'\r\n      } else {\r\n        this.shapes.rectangles[index - 1].el.style.display = 'none'\r\n      }\r\n      this.shapes.rectangles[index - 1].isInvisible = !this.shapes.rectangles[index - 1].isInvisible\r\n    },\r\n    //删除\r\n    deleteRecObj(index) {\r\n\r\n      // console.log(this.shapes.rectangles[index-1].el);\r\n      //删除元素\r\n      this.shapes.rectangles[index - 1].el.parentNode.removeChild(this.shapes.rectangles[index - 1].el)\r\n      //\r\n      for (let i = index; i < this.shapes.rectangles.length; i++) {\r\n        // console.log(this.shapes.rectangles[i]);\r\n        this.shapes.rectangles[i].index -= 1\r\n      }\r\n      //删除数据\r\n      this.shapes.rectangles.splice(index - 1, 1)\r\n\r\n      // console.log(this.shapes.rectangles);\r\n\r\n      this.rectangleIndex--\r\n\r\n      this.$store.commit('cleanTagsInfo', this.imageIndex)\r\n      this.$store.commit('saveTagsInfo', this.shapes)\r\n\r\n      this.$message({\r\n        message: \"元素成功移除\",\r\n        type: \"success\"\r\n      })\r\n    }\r\n  }\r\n}\r\n</script>\r\n\r\n<style lang=\"less\" scoped>\r\n.main-box {\r\n  position: absolute;\r\n  height: 100%;\r\n  width: 100%;\r\n  top: 0;\r\n  overflow: hidden;\r\n}\r\n.sidebar {\r\n  position: absolute;\r\n  z-index: 3;\r\n  left: 0;\r\n  top: 0;\r\n  height: 100%;\r\n  width: 46px;\r\n  padding-top: 65px;\r\n  box-sizing: border-box;\r\n  background-color: #bbe6d6;\r\n\r\n  .tools {\r\n    height: 36px !important;\r\n    width: 36px !important;\r\n    padding: 0 !important;\r\n    border: 0 !important;\r\n    background-color: #bbe6d6;\r\n    margin: 5px;\r\n    line-height: 36px;\r\n    border-radius: 5px;\r\n    transition: background-color 0.2s;\r\n    text-align: center;\r\n\r\n    span {\r\n      font-size: 24px;\r\n      color: #222222 !important;\r\n    }\r\n  }\r\n\r\n  .tools:hover {\r\n    background-color: #99baae;\r\n  }\r\n\r\n  .tool-active {\r\n    background-color: #a6c7bb;\r\n  }\r\n\r\n  .line {\r\n    display: block;\r\n    width: 100%;\r\n    height: 1px;\r\n    background-color: #b3d9cb;\r\n  }\r\n}\r\n.object-bar {\r\n  position: absolute;\r\n  z-index: 3;\r\n  top: 0;\r\n  right: 0px;\r\n  width: 300px;\r\n  height: 100%;\r\n  padding-top: 65px;\r\n  box-sizing: border-box;\r\n  background-color: #e4f5ef;\r\n  box-shadow: -1px 0 6px 2px #c1d4cd;\r\n  transition: all 0.4s ease;\r\n\r\n  .drawer {\r\n    position: absolute;\r\n    top: 35px;\r\n    left: 0px;\r\n    width: 30px;\r\n    height: 30px;\r\n    background-color: rgba(0, 0, 0, 0);\r\n    transition: background-color 0.3s, left 0.4s ease;\r\n\r\n    i {\r\n      font-size: 30px;\r\n      line-height: 30px;\r\n      text-align: center;\r\n    }\r\n  }\r\n\r\n  .drawer:hover {\r\n    background-color: rgba(0, 0, 0, 0.1);\r\n  }\r\n\r\n  .label-obj-box {\r\n    width: 280px;\r\n    height: 550px;\r\n    margin: 20px auto;\r\n    border: 2px solid #b3d9cb;\r\n    border-radius: 12px;\r\n    overflow: auto;\r\n    background-color: #fafbfc;\r\n    .label-obj{\r\n      height: 80px;\r\n      width: 100%;\r\n      border-bottom: 1px solid #cae7dc;\r\n\r\n      .label-info {\r\n        width: 100%;\r\n        height: 30px;\r\n\r\n        span {\r\n          display: block;\r\n          float: left;\r\n          padding-left: 20px;\r\n          box-sizing: border-box;\r\n          font-size: 14px;\r\n          line-height: 30px;\r\n          width: 30%;\r\n          overflow: hidden;\r\n        }\r\n\r\n        .change-label {\r\n          float: right;\r\n          height: 100%;\r\n          width: 60%;\r\n          box-sizing: border-box;\r\n          margin-right: 20px;\r\n          padding: 2px;\r\n        }\r\n      }\r\n\r\n      .label-func {\r\n        width: 100%;\r\n        height: 50px;\r\n\r\n        .func {\r\n          width: 30px;\r\n          height: 30px;\r\n          margin: 10px 20px;\r\n          float: left;\r\n          border-radius: 6px;\r\n          transition: background-color 0.2s;\r\n          text-align: center;\r\n          line-height: 30px;\r\n        }\r\n\r\n        .func:hover {\r\n          background-color: #b9d4ca;\r\n        }\r\n      }\r\n    }\r\n  }\r\n\r\n  .images {\r\n    width: 290px;\r\n    height: 40px;\r\n    margin: 5px 5px 5px 10px;\r\n\r\n    .img-btn {\r\n      height: 38px;\r\n      width: 100%;\r\n      float: left;\r\n      border-radius: 5px;\r\n      text-align: center;\r\n      line-height: 30px;\r\n      transition: all 0.2s;\r\n      font-size: 18px;\r\n      input{\r\n        display: block;\r\n        outline: none;\r\n        border: none;\r\n        background-color: transparent;\r\n      }\r\n    }\r\n\r\n    .img-btn:hover {\r\n      background-color: #bbe6d6 !important;;\r\n    }\r\n\r\n    .this {\r\n      font-size: 14px;\r\n    }\r\n\r\n    .this:hover {\r\n      background-color: #def1ea;\r\n    }\r\n  }\r\n\r\n  .main-func {\r\n    position: absolute;\r\n    bottom: 0;\r\n    width: 290px;\r\n    height: 80px;\r\n    margin: 5px;\r\n    padding: 0 15px;\r\n    box-sizing: border-box;\r\n\r\n    .main-btn {\r\n      width: 90px;\r\n      height: 36px;\r\n      float: left;\r\n      margin: 10px 2px;\r\n      border-radius: 5px;\r\n      background-color: #d6efe6;\r\n      line-height: 36px;\r\n      text-align: center;\r\n      letter-spacing: 3px;\r\n      font-size: 14px;\r\n      transition: all 0.2s;\r\n\r\n      i {\r\n        font-size: 18px;\r\n      }\r\n    }\r\n\r\n    .abandon {\r\n      width: 46px;\r\n      height: 26px;\r\n      font-size: 10px;\r\n      line-height: 26px;\r\n      letter-spacing: 1px;\r\n      margin-top: 20px;\r\n      border-radius: 2px;\r\n    }\r\n\r\n    .submit {\r\n      width: 200px;\r\n      letter-spacing: 2px;\r\n    }\r\n\r\n    .main-btn:hover {\r\n      background-color: #bbe6d6;\r\n    }\r\n  }\r\n}\r\n.paint-box {\r\n  margin: 35px 0 0 46px;\r\n  box-sizing: border-box;\r\n  width: 100%;\r\n  height: 100%;\r\n  background-color: #eeeeee;\r\n  cursor: none;\r\n\r\n  .vertical-line {\r\n    position: absolute;\r\n    z-index: 2;\r\n    top: 0;\r\n    left: 0;\r\n    height: 100%;\r\n    width: 1px;\r\n    background-color: rgba(255, 0, 0, 0.4);\r\n  }\r\n\r\n  .level-line {\r\n    position: absolute;\r\n    z-index: 2;\r\n    top: 0;\r\n    left: 0;\r\n    height: 1px;\r\n    width: 100%;\r\n    background-color: rgba(255, 0, 0, 0.4);\r\n  }\r\n\r\n  .tips-box {\r\n    position: absolute;\r\n    top: 0;\r\n    height: 100%;\r\n    width: 100%;\r\n    text-align: left;\r\n    padding: 400px 0 0 360px;\r\n    font-size: 24px;\r\n  }\r\n}\r\n/deep/ .rec-obj {\r\n  position: absolute;\r\n  width: 0;\r\n  height: 0;\r\n  background-color: transparent;\r\n  cursor: none;\r\n  box-sizing: border-box;\r\n  border: 1px solid #333333;\r\n  transition: background-color 0.1s;\r\n}\r\n/deep/ .rec-obj-lock {\r\n  background-color: transparent !important;\r\n}\r\n/deep/ .rec-obj:hover {\r\n  border: 2px solid #555555;\r\n  background-color: rgba(228, 254, 239, 0.3) !important;\r\n}\r\n</style>\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/../Frontend/src/components/workbench/drawPage.vue b/../Frontend/src/components/workbench/drawPage.vue
+--- a/../Frontend/src/components/workbench/drawPage.vue	
++++ b/../Frontend/src/components/workbench/drawPage.vue	
+@@ -1,1053 +1,17 @@
+ <template>
+-  <div class="main-box">
+-    <div class="sidebar">
+-      <el-tooltip
+-        :class="['item','tools',{'tool-active':flag === 'cursor'}]"
+-        effect="dark"
+-        content="鼠标"
+-        placement="right"
+-      >
+-        <el-button @click="initDrawTools('cursor')">
+-          <span class="iconfont">&#xe6c7;</span>
+-        </el-button>
+-      </el-tooltip>
+-      <span class="line" />
+-      <el-tooltip
+-        :class="['item','tools',{'tool-active':flag === 'rectangle'}]"
+-        effect="dark"
+-        content="矩形标记"
+-        placement="right"
+-      >
+-        <el-button @click="initDrawTools('rectangle')">
+-          <span class="iconfont">&#xe88e;</span>
+-        </el-button>
+-      </el-tooltip>
+-    </div>
+-    <div ref="objBar" class="object-bar">
+-      <div
+-        ref="drawer"
+-        class="drawer"
+-        @click="showBar()"
+-      >
+-        <i :class="[{'el-icon-right':flag2},{'el-icon-back':!flag2}]" />
+-      </div>
+-
+-      <!--右边的用来选择标签的框的box-->
+-      <div class="label-obj-box" >
+-        <!--右边的用来选择标签的框，每一项-->
+-        <div
+-          v-for="item in shapes.rectangles"
+-          :key="item.index"
+-          :id="'style_'+(item.index)"
+-          class="label-obj"
+-          @mouseenter="showRecObj(item.index),showLabObj(item.index)"
+-          @mouseleave="hideRecObj(item.index),hideLabObj(item.index)"
+-        >
+-          <!--右边的用来选择标签的框，上半部分，显示序号和标签下拉选择-->
+-          <div class="label-info">
+-            <span>{{ item.index }}</span>
+-            <div class="change-label">
+-              <el-select
+-                v-model="shapes.rectangles[item.index-1].label_id"
+-                placeholder="请选择"
+-                size="mini"
+-                @change="saveTagsToStore"
+-              >
+-                <el-option
+-                  v-for="i in options"
+-                  :key="i.value"
+-                  :label="i.label"
+-                  :value="i.value"
+-                />
+-              </el-select>
+-            </div>
+-          </div>
+-          <!--右边的用来选择标签的框，下半部分，显示一些按钮-->
+-          <div class="label-func">
+-            <div
+-              class="func lock"
+-              @click="lockRecObj(item.index)"
+-            >
+-              <i :class="[{'el-icon-lock':shapes.rectangles[item.index-1].isLock},{'el-icon-unlock':!shapes.rectangles[item.index-1].isLock}]" />
+-            </div>
+-            <div
+-              class="func visible"
+-              @click="invisibleRecObj(item.index)"
+-            >
+-              <span
+-                v-show="!shapes.rectangles[item.index-1].isInvisible"
+-                class="iconfont"
+-              >&#xe9c1;</span>
+-              <span
+-                v-show="shapes.rectangles[item.index-1].isInvisible"
+-                class="iconfont"
+-              >&#xe6fe;</span>
+-            </div>
+-            <div
+-              class="func delete"
+-              @click="deleteRecObj(item.index)"
+-            >
+-              <i class="el-icon-delete" />
+-            </div>
+-          </div>
+-        </div>
+-      </div>
+-      <div class="main-btn-box">
+-        <div class="images">
+-          <div class="img-btn this">
+-            <template>
+-              <div class="block">
+-                <el-slider
+-                  v-model="imageIndexFrom1"
+-                  show-input
+-                  @change="changeImg"
+-                  :min="1"
+-                  :max="imagesSize"
+-                >
+-                </el-slider>
+-              </div>
+-            </template>
+-          </div>
+-        </div>
+-        <div class="main-func">
+-          <div
+-            class="main-btn submit"
+-            @click="isPrepare"
+-          >
+-            <i class="el-icon-upload" />
+-            <span>提交所有</span>
+-          </div>
+-          <div class="main-btn abandon">
+-            <span>废弃</span>
+-          </div>
+-        </div>
+-      </div>
+-    </div>
+-    <div ref="paintBox" class="paint-box">
+-      <canvas
+-        id="myCanvas"
+-        ref="myCanvas"
+-        width="500px"
+-        height="400px"
+-      />
+-      <div
+-        v-if="flag==='rectangle'"
+-        ref="vl"
+-        class="vertical-line"
+-      />
+-      <div
+-        v-if="flag==='rectangle'"
+-        ref="ll"
+-        class="level-line"
+-      ></div>
+-      <!--用来放标记的矩形框-->
+-      <div class="rec-box" ref="recBox"></div>
+-      <div class="tips-box" ref="tipsBox">
+-        <span>正在加载</span>
+-      </div>
+-    </div>
++  <div>
++biaozhu
+   </div>
+ </template>
+ 
+ <script>
+-import JSZip from '@/assets/js/jszip'
+-
+ export default {
+   data() {
+-    return {
+-      //哪一个工具
+-      flag: 'cursor',
+-      //项目栏是否展开
+-      flag2: true,
+-      //是否是第一次打开
+-      isFirst: true,
+-
+-      //保存所有Tag选项
+-      options: [],
+-      // value: '',
+-
+-      //画布对象
+-      myCanvas: {},
+-      //画笔对象
+-      ctx: {},
+-      isDrawing: false,
+-
+-      //图片相关
+-      isGotImg: false,
+-      imagesData: '',
+-      //imagesSize原来为0，这里我改成了1，最小值应该为1吧
+-      imagesSize: 1,
+-      imageIndex: 0,
+-      imageIndexFrom1: 1,
+-      imageInfo: {},
+-      imageScale: 1,//图片缩放比例 ：缩放后/缩放前
+-
+-      //矩形对象
+-      shapes: {
+-        rectangles: [],
+-      },
+-      rectangleIndex: 1,
+-      recTop: 0,
+-      recLeft: 0,
+-
+-      //job信息
+-      jobId: 0,
+-
+-      //控制页面改变大小时刷新的变量
+-      isResizing: '',
+-
+-      // 设置 job 的起始 frame 和终止 frame
+-      start_frame: 0,
+-      stop_frame: 0,
+-    }
++    return {}
+   },
+-  computed:{
+-    imageRealIndex(){
+-        return this.imageIndex + 1;
+-    }
+-  },
+-  created() {
+-    //获取图片信息
+-    this.getImagesInfo()
+-    //获取job信息
+-    this.getJobInfo()
+-  },
+-  mounted() {
+-    this.initCanvas()
+-    //停止改变窗口大小后0.3秒重新绘制图片
+-    window.onresize = () => {
+-      if (this.isResizing) {
+-        clearTimeout(this.isResizing)
+-      }
+-      this.isResizing = setTimeout(() => {
+-        this.resizeCanvas()
+-      }, 300)
+-    }
+-  },
+-  destroyed() {
+-    //页面切换清除改变大小监听器
+-    window.onresize = () => {
+-    }
+-  },
+-  methods: {
+-    //右侧信息栏
+-    showBar() {
+-      if (this.flag2) {
+-        this.$refs.objBar.style.right = '-300px'
+-        this.$refs.drawer.style.left = '-35px'
+-        this.flag2 = false
+-      } else {
+-        this.$refs.objBar.style.right = '0px'
+-        this.$refs.drawer.style.left = '0px'
+-        this.flag2 = true
+-      }
+-    },
+-    //获取images信息列表
+-    getImagesInfo() {
+-      this.$http.get('v1/tasks/' + this.$route.params.index + '/data/meta').then(e => {
+-        console.log(e.data);
+-        this.imagesSize = e.data.size
+-        this.start_frame = e.data.start_frame
+-        this.stop_frame = e.data.stop_frame
+-      })
+-    },
+-    //获取图片压缩包并解压，将 base64 代码保存到 imagesData 里
+-    /** 不能直接用 url 中的 id 去拿图片，如果暴力改变 url 需要回到 home 要用路由守卫*/
+-    getImages() {
+-      //请求图片数据
+-      console.log("1.开始请求第" + (this.imageIndex+1) + "张图片的数据数据")
+-      this.$http.get('v1/tasks/' + this.$route.params.index + '/data', {
+-        params: {
+-          type: 'chunk',
+-          number: this.imageIndex,
+-          quality: 'compressed'
+-        },
+-        // 请求数据的格式
+-        responseType: 'arraybuffer',
+-      }).then(e => {
+-        console.log("2.图片获取完成")
+-        // 使用JSZip解压数据
+-        const zip = new JSZip()
+-        if (e.data) {
+-          zip.loadAsync(e.data).then((imgData) => {
+-            // 获取图片base64格式信息
+-            for (let key in imgData.files) {
+-              let base = imgData.file(zip.files[key].name).async('base64')
+-              base.then(res => {
+-                this.imagesData = res
+-              })
+-            }
+-            console.log("3.图片解压完成")
+-            this.isGotImg = true
+-          }).then(()=>{
+-            this.drawImages()
+-          })
+-        }
+-      }).catch(err => {
+-        console.log(err);
+-      })
+-    },
+-    //初始化画布
+-    initCanvas() {
+-      //获取元素
+-      this.myCanvas = this.$refs.myCanvas
+-      //加载画笔工具
+-      this.ctx = this.myCanvas.getContext('2d')
+-      //根据屏幕设置canvas大小
+-      this.myCanvas.width = document.body.clientWidth - 46
+-      this.myCanvas.height = document.body.clientHeight - 35
+-
+-      console.log("0.画布初始化完成")
+-      //获取图片
+-      this.getImages()
+-      //设置鼠标样式
+-      document.getElementById('myCanvas').style.cursor = 'default'
+-    },
+-    //改变画布大小
+-    resizeCanvas() {
+-      this.myCanvas.width = document.body.clientWidth - 46
+-      this.myCanvas.height = document.body.clientHeight - 35
+-      console.log('3.1重置画布大小完成')
+-      this.drawImages()
+-      this.reDrawTags(2, this.imageIndex)
+-    },
+-    //绘制图片
+-    drawImages() {
+-      //将解压出的文件以base64格式放到图片对象中
+-      let img = new Image()
+-      //清除画布
+-      this.ctx.clearRect(0, 0, this.myCanvas.width, this.myCanvas.height)
+-      setTimeout(() => {
+-        img.src = "data:image/png;base64," + this.imagesData
+-        console.log("4.base64数据嵌入完成");
+-        img.onload = ()=>{
+-          // console.log('图片原始尺寸' + img.width, img.height);
+-          //图片比窗口长，则上下填充满
+-          if (img.width / img.height < (this.myCanvas.width - 300) / this.myCanvas.height) {
+-            this.imageInfo = {
+-              left: (this.myCanvas.width - 300 - this.myCanvas.height * img.width / img.height) / 2 + 5,
+-              top: 5,
+-              width: this.myCanvas.height * img.width / img.height - 10,
+-              height: this.myCanvas.height - 10
+-            }
+-          } else {//窗口比图片长，左右填满
+-            this.imageInfo = {
+-              left: 5,
+-              top: (this.myCanvas.height - (this.myCanvas.width - 300) * img.height / img.width) / 2 + 5,
+-              width: this.myCanvas.width - 310,
+-              height: (this.myCanvas.width - 300) * img.height / img.width - 10
+-            }
+-          }
+-
+-          // console.log('图片缩放后的尺寸' + this.imageInfo.width, this.imageInfo.height);
+-          this.imageScale = img.width / this.imageInfo.width
+-          console.log("5.图片尺寸数据处理完成，图片缩放比例：" + this.imageScale);
+-          //将图片绘制到canvas上，这里的drawImage是canvas里的函数
+-          this.ctx.drawImage(img, this.imageInfo.left, this.imageInfo.top, this.imageInfo.width, this.imageInfo.height)
+-          console.log("6.图片绘制完成");
+-
+-          //加载完成后删除正在加载
+-          if (this.isFirst) {
+-            this.$refs.tipsBox.parentNode.removeChild(this.$refs.tipsBox)
+-            this.isFirst = false
+-          }
+-        }
+-      }, 100)
+-    },
+-    //切换图片
+-    changeImg(index) {
+-      let indexFrom0 = index-1;
+-      this.imageIndex = indexFrom0
+-      this.getImages()
+-      this.removeRec('all')
+-      this.reDrawTags(1, this.imageIndex)
+-
+-      // if (indexFrom0 !== 0) {
+-      //   this.imageIndex = indexFrom0
+-      //   this.getImages()
+-      //   this.removeRec('all')
+-      //   this.reDrawTags(1, this.imageIndex)
+-      // }
+-
+-      //   if (mod === 'start') {//第一张
+-      //   //如果不是第一张就加载
+-      //   if (this.imageIndex !== 0) {
+-      //     this.imageIndex = 0
+-      //     this.getImages()
+-      //     this.removeRec('all')
+-      //     this.reDrawTags(1, this.imageIndex)
+-      //   }
+-      // } else if (mod === 'back') {//上一张
+-      //   if (this.imageIndex !== 0) {
+-      //     this.imageIndex -= 1
+-      //     this.getImages()
+-      //     this.removeRec('all')
+-      //     this.reDrawTags(1, this.imageIndex)
+-      //   }
+-      // } else if (mod === 'next') {//下一张
+-      //   if (this.imageIndex !== (this.imagesSize - 1)) {
+-      //     this.imageIndex += 1
+-      //     this.getImages()
+-      //     this.removeRec('all')
+-      //     this.reDrawTags(1, this.imageIndex)
+-      //   }
+-      // } else if (mod === 'end') {//最后一张
+-      //   if (this.imageIndex !== (this.imagesSize - 1)) {
+-      //     this.imageIndex = this.imagesSize - 1
+-      //     this.getImages()
+-      //     this.removeRec('all')
+-      //     this.reDrawTags(1, this.imageIndex)
+-      //   }
+-      // }
+-
+-    },
+-    //切换工具
+-    initDrawTools(attr) {
+-      //处于相应的工具状态
+-      this.flag = attr
+-      //跟手基准线
+-      //选择画笔
+-      if (attr === 'rectangle') {
+-        this.setToLine()
+-        this.createRec()
+-      } else if (attr === 'cursor') {
+-        this.setToCursor()
+-      }
+-    },
+-    //切换成鼠标的样式
+-    setToCursor() {
+-      //恢复鼠标样式
+-      this.$refs.myCanvas.style.cursor = 'default'
+-      document.getElementsByClassName('rec-obj').forEach((item) => {
+-        item.style.cursor = 'default'
+-      })
+-      //移除跟随鼠标
+-      document.body.removeEventListener('mousemove', this.followMouse, false)
+-      //如果没有完成矩形的绘制
+-      if (this.isDrawing) {
+-        document.body.removeEventListener('mousemove', this.resizeRec, false)
+-        this.isDrawing = !this.isDrawing
+-      }
+-      //移除click创建元素
+-      document.body.removeEventListener('mousedown', this.createRec, true)
+-    },
+-    //切换成矩形标记的样式
+-    setToLine() {
+-      //隐藏鼠标
+-      this.$refs.myCanvas.style.cursor = 'none'
+-      document.getElementsByClassName('rec-obj').forEach((item) => {
+-        item.style.cursor = 'none'
+-      })
+-      //跟随鼠标
+-      document.body.addEventListener('mousemove', this.followMouse, false)
+-      //创建矩形框
+-      document.body.addEventListener('mousedown', this.createRec, true)
+-    },
+-    //跟随鼠标的基准线
+-    followMouse(e) {
+-      let mPos = this.getMousePos(e)
+-      this.$refs.vl.style.left = mPos.left + 'px'
+-      this.$refs.ll.style.top = mPos.top + 'px'
+-    },
+-    //获取鼠标位置
+-    getMousePos(event) {
+-      return {
+-        top: event.clientY,
+-        left: event.clientX
+-      }
+-    },
+-    //画矩形
+-    createRec(e) {
+-      if (e) {
+-        //获取点击的坐标
+-        let mPos = this.getMousePos(e)
+-        //获取图片相对页面的位置
+-        let leftBorder = parseInt(this.imageInfo.left) + 46//加上了左侧工具栏的宽度 46px
+-        let topBorder = parseInt(this.imageInfo.top) + 35//加上了顶部头的高度 35px
+-        let rightBorder = leftBorder + parseInt(this.imageInfo.width)
+-        let bottomBorder = topBorder + parseInt(this.imageInfo.height)
+-        //如果在图片上点击
+-        if (mPos.top >= topBorder && mPos.top <= bottomBorder && mPos.left >= leftBorder && mPos.left <= rightBorder) {
+-          if (!this.isDrawing) {
+-            //转换绘制状态
+-            this.isDrawing = !this.isDrawing
+-            //创建元素并设置元素的左上角位置
+-            let rec = document.createElement('div')
+-            rec.className += 'rec-obj'
+-            //id用来标记是第几个div
+-            rec.id = this.rectangleIndex
+-            rec.style.top = mPos.top + 'px'
+-            rec.style.left = mPos.left + 'px'
+-            //添加鼠标移入，右侧对应标签栏高亮事件
+-            rec.onmouseenter = (e) => {
+-              this.showLabObj(e.target.id)
+-            }
+-            //添加鼠标移出，右侧对应标签栏高亮事件
+-            rec.onmouseleave = (e) => {
+-              this.hideLabObj(e.target.id)
+-            }
+-            this.recTop = mPos.top
+-            this.recLeft = mPos.left
+-            //向矩形框数组添加对象
+-            let r = {
+-              type: "rectangle",
+-              occluded: false,
+-              z_order: 0,
+-              index: this.rectangleIndex,//矩形框序号
+-              el: rec,//矩形框DOM元素
+-              // id:5,
+-              frame: this.imageIndex + 1,//第几张图片，从1开始
+-              label_id: this.options[0].value,//一级标签默认选择第一个
+-              group: 0,
+-              isLock: false,
+-              isInvisible: false,
+-              attributes: [],
+-              points: [],//记录矩形框位置
+-            }
+-            this.rectangleIndex++
+-            this.shapes.rectangles.push(r)
+-            //渲染到页面上
+-            this.$refs.recBox.appendChild(rec)
+-            //根据鼠标位置调整矩形框的大小
+-            document.body.addEventListener('mousemove', this.resizeRec, false)
+-          } else {
+-            this.isDrawing = !this.isDrawing
+-            document.body.removeEventListener('mousemove', this.resizeRec, false)
+-            //记录矩形框左上，右下两个点的x1,y1,x2,y2坐标在 !原图! 上的坐标
+-            this.shapes.rectangles[this.shapes.rectangles.length - 1].points = [
+-              (parseInt(this.shapes.rectangles[this.shapes.rectangles.length - 1].el.style.left.replace('px', '')) - (parseInt(this.imageInfo.left) + 46)) * this.imageScale,
+-              (parseInt(this.shapes.rectangles[this.shapes.rectangles.length - 1].el.style.top.replace('px', '')) - (parseInt(this.imageInfo.top) + 35)) * this.imageScale,
+-              (parseInt(this.shapes.rectangles[this.shapes.rectangles.length - 1].el.style.width.replace('px', '')) + parseInt(this.shapes.rectangles[this.shapes.rectangles.length - 1].el.style.left.replace('px', '')) - (parseInt(this.imageInfo.left) + 46)) * this.imageScale,
+-              (parseInt(this.shapes.rectangles[this.shapes.rectangles.length - 1].el.style.height.replace('px', '')) + parseInt(this.shapes.rectangles[this.shapes.rectangles.length - 1].el.style.top.replace('px', '')) - (parseInt(this.imageInfo.top) + 35)) * this.imageScale,
+-            ]
+-            console.log('矩形框两点数据', this.shapes.rectangles[this.shapes.rectangles.length - 1].points);
+-            //画完自动保存
+-            this.saveTagsToStore()
+-            //完成一个标记,切换回鼠标模式
+-            // this.initDrawTools('cursor')
+-          }
+-        }
+-      }
+-    },
+-    //鼠标移动控制矩形框大小
+-    resizeRec(e) {
+-      let mPos = this.getMousePos(e)
+-      if (mPos.left >= this.recLeft && mPos.top >= this.recTop) {
+-        //鼠标在右下
+-        this.drawRec(this.recTop, mPos.left + 1, mPos.top + 1, this.recLeft)
+-      } else if (mPos.left >= this.recLeft && mPos.top <= this.recTop) {
+-        //右上
+-        this.drawRec(mPos.top, mPos.left + 1, this.recTop, this.recLeft)
+-      } else if (mPos.left <= this.recLeft && mPos.top <= this.recTop) {
+-        //左上
+-        this.drawRec(mPos.top, this.recLeft, this.recTop, mPos.left)
+-      } else if (mPos.left <= this.recLeft && mPos.top >= this.recTop) {
+-        //左下
+-        this.drawRec(this.recTop, this.recLeft, mPos.top + 1, mPos.left)
+-      }
+-    },
+-    //绘制矩形框
+-    drawRec(top, right, bottom, left) {
+-      this.shapes.rectangles[this.shapes.rectangles.length - 1].el.style.left = left + 'px'
+-      this.shapes.rectangles[this.shapes.rectangles.length - 1].el.style.top = top + 'px'
+-      this.shapes.rectangles[this.shapes.rectangles.length - 1].el.style.width = right - left + 'px'
+-      this.shapes.rectangles[this.shapes.rectangles.length - 1].el.style.height = bottom - top + 'px'
+-    },
+-    //删除元素
+-    removeRec(mod) {
+-      if (mod === 'all') {
+-        this.$refs.recBox.innerHTML = ''
+-        this.shapes.rectangles = []
+-        this.rectangleIndex = 1
+-      }
+-    },
+-    //获取job信息
+-    getJobInfo() {
+-      this.$http.get('v1/tasks?', {
+-        params: {
+-          id: this.$route.params.index,
+-          page: 1,
+-          page_size: 10
+-        }
+-      }).then((e) => {
+-        this.jobId = e.data.results[0].segments[0].jobs[0].id
+-        // console.log(e)
+-        for (let item in e.data.results[0].labels) {
+-          let label = {
+-            value: e.data.results[0].labels[item].id,
+-            label: e.data.results[0].labels[item].name
+-          }
+-          this.options.push(label)
+-        }
+-        console.log('标签列表', this.options);
+-      })
+-    },
+-    //将标注信息存储到store中
+-    saveTagsToStore() {
+-      this.$store.commit('cleanTagsInfo', this.imageIndex)
+-      this.$store.commit('saveTagsInfo', this.shapes)
+-      this.$message({
+-        message: '自动保存成功',
+-        type: "success"
+-      })
+-    },
+-    //提交前询问
+-    isPrepare() {
+-      this.$confirm('提交后无法修改, 是否继续?', '提示', {
+-        confirmButtonText: '确定',
+-        cancelButtonText: '取消',
+-        type: 'warning'
+-      }).then(() => {
+-        this.submitTags()
+-      }).catch(() => {
+-        this.$message({
+-          type: 'info',
+-          message: '已取消提交'
+-        });
+-      });
+-    },
+-    //提交标注信息
+-    /** 提交成功后的逻辑还需进一步改进 暂时改成不能再次进入*/
+-    submitTags() {
+-      let TagsInfo = this.$store.state.imageTags
+-      console.log(TagsInfo)
+-      this.$http.patch('v1/jobs/' + this.jobId + '/annotations?action=create', TagsInfo).then((e) => {
+-        console.log(e)
+-        this.$message({
+-          message: "提交成功",
+-          type: "success"
+-        })
+-        this.$router.push('/home')
+-      }).catch((err) => {
+-        console.log(err);
+-      })
+-    },
+-    //切换图片接收信息重新绘制Tag
+-    //或者窗口大小改变时重新绘制Tag
+-    //mod:  1：切换图片  2：改变窗口大小
+-    /**   切换图片后矩形框内的鼠标样式有问题
+-     * 是否锁定的参数没有保存回传*/
+-    reDrawTags(mod, index) {
+-      //切换到了第几张图片
+-      let imgIndex = index + 1
+-      let TagsInfo = {}
+-      let that = this
+-      if (mod === 1) {
+-        //从store获取所有的标注信息
+-        TagsInfo = that.$store.state.imageTags.shapes
+-      } else if (mod === 2) {
+-        TagsInfo = that.shapes.rectangles
+-        this.removeRec('all')
+-      }
+-      //清洗出这张图片的标注信息
+-      console.log('获取此图片的标注信息',TagsInfo);
+-      for (let item in TagsInfo) {
+-        if (TagsInfo[item].frame === imgIndex) {
+-
+-          console.log('矩形框在页面上的位置', TagsInfo[item].points);
+-
+-          //创建矩形框
+-          let rec = document.createElement('div')
+-          rec.className += 'rec-obj'
+-          //id用来标记是第几个div
+-          rec.id = this.rectangleIndex
+-          //添加鼠标移入，右侧对应标签栏高亮事件
+-          rec.onmouseenter = (e) => {
+-              this.showLabObj(e.target.id)
+-          }
+-          //添加鼠标移出，右侧对应标签栏高亮事件
+-          rec.onmouseleave = (e) => {
+-              this.hideLabObj(e.target.id)
+-          }
+-
+-          setTimeout(() => {
+-            // console.log(parseInt(TagsInfo[item].points[0]) / this.imageScale);
+-            // console.log(parseInt(this.imageInfo.left));
+-            // console.log(parseInt(TagsInfo[item].points[1]) / this.imageScale);
+-            // console.log(parseInt(this.imageInfo.top));
+-            rec.style.left = parseInt(TagsInfo[item].points[0]) / this.imageScale + parseInt(this.imageInfo.left) + 46 + 'px'
+-            rec.style.top = parseInt(TagsInfo[item].points[1]) / this.imageScale + parseInt(this.imageInfo.top) + 35 + 'px'
+-            rec.style.width = (parseInt(TagsInfo[item].points[2]) - parseInt(TagsInfo[item].points[0])) / this.imageScale + 'px'
+-            rec.style.height = (parseInt(TagsInfo[item].points[3]) - parseInt(TagsInfo[item].points[1])) / this.imageScale + 'px'
+-            rec.style.cursor = 'default'
+-            this.$refs.recBox.appendChild(rec)
+-          }, 300)
+-
+-          // console.log('标记的真实数据', TagsInfo[item])
+-
+-          //添加数据
+-          this.shapes.rectangles.push({
+-            type: TagsInfo[item].type,
+-            occluded: TagsInfo[item].occluded,
+-            z_order: TagsInfo[item].z_order,
+-            index: this.rectangleIndex,
+-            el: rec,
+-            // id:5,
+-            frame: TagsInfo[item].frame,
+-            label_id: TagsInfo[item].label_id,
+-            group: TagsInfo[item].group,
+-            isLock: false,
+-            isInvisible: false,
+-            attributes: TagsInfo[item].attributes,
+-            points: TagsInfo[item].points,
+-          })
+-          this.rectangleIndex++
+-        }
+-      }
+-      //恢复鼠标样式
+-      this.initDrawTools('cursor')
+-      /** 鼠标样式无法更改*/
+-      document.getElementsByClassName('rec-obj').forEach((item) => {
+-        item.style.cursor = 'default'
+-      })
+-    },
+-    //鼠标放到右侧信息栏高亮对应矩形框
+-    showRecObj(index) {
+-      this.shapes.rectangles[index - 1].el.style.backgroundColor = 'rgba(255,255,255,0.4)'
+-    },
+-    hideRecObj(index){
+-      this.shapes.rectangles[index-1].el.style.backgroundColor = 'transparent'
+-    },
+-    //鼠标放到矩形框高亮右侧信息栏
+-    showLabObj(index){
+-      let styleid = "style_"+index;
+-      let object = document.getElementById(styleid);
+-      object.style.background = '#fcffe1'
+-    },
+-    hideLabObj(index){
+-      let styleid = "style_"+index;
+-      let object = document.getElementById(styleid);
+-      object.style.background = 'rgb(255,255,255)'
+-    },
+-    //信息栏中的功能
+-    //锁定
+-    lockRecObj(index) {
+-      this.shapes.rectangles[index - 1].isLock = !this.shapes.rectangles[index - 1].isLock
+-      if (this.shapes.rectangles[index - 1].isLock) {
+-        this.shapes.rectangles[index - 1].el.classList.add('rec-obj-lock')
+-      } else {
+-        this.shapes.rectangles[index - 1].el.classList.remove('rec-obj-lock')
+-      }
+-    },
+-    //不可见
+-    invisibleRecObj(index) {
+-      if (this.shapes.rectangles[index - 1].isInvisible) {
+-        this.shapes.rectangles[index - 1].el.style.display = 'block'
+-      } else {
+-        this.shapes.rectangles[index - 1].el.style.display = 'none'
+-      }
+-      this.shapes.rectangles[index - 1].isInvisible = !this.shapes.rectangles[index - 1].isInvisible
+-    },
+-    //删除
+-    deleteRecObj(index) {
+-
+-      // console.log(this.shapes.rectangles[index-1].el);
+-      //删除元素
+-      this.shapes.rectangles[index - 1].el.parentNode.removeChild(this.shapes.rectangles[index - 1].el)
+-      //
+-      for (let i = index; i < this.shapes.rectangles.length; i++) {
+-        // console.log(this.shapes.rectangles[i]);
+-        this.shapes.rectangles[i].index -= 1
+-      }
+-      //删除数据
+-      this.shapes.rectangles.splice(index - 1, 1)
+-
+-      // console.log(this.shapes.rectangles);
+-
+-      this.rectangleIndex--
+-
+-      this.$store.commit('cleanTagsInfo', this.imageIndex)
+-      this.$store.commit('saveTagsInfo', this.shapes)
+-
+-      this.$message({
+-        message: "元素成功移除",
+-        type: "success"
+-      })
+-    }
+-  }
+ }
+ </script>
+ 
+ <style lang="less" scoped>
+-.main-box {
+-  position: absolute;
+-  height: 100%;
+-  width: 100%;
+-  top: 0;
+-  overflow: hidden;
+-}
+-.sidebar {
+-  position: absolute;
+-  z-index: 3;
+-  left: 0;
+-  top: 0;
+-  height: 100%;
+-  width: 46px;
+-  padding-top: 65px;
+-  box-sizing: border-box;
+-  background-color: #bbe6d6;
+-
+-  .tools {
+-    height: 36px !important;
+-    width: 36px !important;
+-    padding: 0 !important;
+-    border: 0 !important;
+-    background-color: #bbe6d6;
+-    margin: 5px;
+-    line-height: 36px;
+-    border-radius: 5px;
+-    transition: background-color 0.2s;
+-    text-align: center;
+-
+-    span {
+-      font-size: 24px;
+-      color: #222222 !important;
+-    }
+-  }
+-
+-  .tools:hover {
+-    background-color: #99baae;
+-  }
+-
+-  .tool-active {
+-    background-color: #a6c7bb;
+-  }
+-
+-  .line {
+-    display: block;
+-    width: 100%;
+-    height: 1px;
+-    background-color: #b3d9cb;
+-  }
+-}
+-.object-bar {
+-  position: absolute;
+-  z-index: 3;
+-  top: 0;
+-  right: 0px;
+-  width: 300px;
+-  height: 100%;
+-  padding-top: 65px;
+-  box-sizing: border-box;
+-  background-color: #e4f5ef;
+-  box-shadow: -1px 0 6px 2px #c1d4cd;
+-  transition: all 0.4s ease;
+-
+-  .drawer {
+-    position: absolute;
+-    top: 35px;
+-    left: 0px;
+-    width: 30px;
+-    height: 30px;
+-    background-color: rgba(0, 0, 0, 0);
+-    transition: background-color 0.3s, left 0.4s ease;
+-
+-    i {
+-      font-size: 30px;
+-      line-height: 30px;
+-      text-align: center;
+-    }
+-  }
+-
+-  .drawer:hover {
+-    background-color: rgba(0, 0, 0, 0.1);
+-  }
+-
+-  .label-obj-box {
+-    width: 280px;
+-    height: 550px;
+-    margin: 20px auto;
+-    border: 2px solid #b3d9cb;
+-    border-radius: 12px;
+-    overflow: auto;
+-    background-color: #fafbfc;
+-    .label-obj{
+-      height: 80px;
+-      width: 100%;
+-      border-bottom: 1px solid #cae7dc;
+-
+-      .label-info {
+-        width: 100%;
+-        height: 30px;
+-
+-        span {
+-          display: block;
+-          float: left;
+-          padding-left: 20px;
+-          box-sizing: border-box;
+-          font-size: 14px;
+-          line-height: 30px;
+-          width: 30%;
+-          overflow: hidden;
+-        }
+-
+-        .change-label {
+-          float: right;
+-          height: 100%;
+-          width: 60%;
+-          box-sizing: border-box;
+-          margin-right: 20px;
+-          padding: 2px;
+-        }
+-      }
+-
+-      .label-func {
+-        width: 100%;
+-        height: 50px;
+-
+-        .func {
+-          width: 30px;
+-          height: 30px;
+-          margin: 10px 20px;
+-          float: left;
+-          border-radius: 6px;
+-          transition: background-color 0.2s;
+-          text-align: center;
+-          line-height: 30px;
+-        }
+-
+-        .func:hover {
+-          background-color: #b9d4ca;
+-        }
+-      }
+-    }
+-  }
+-
+-  .images {
+-    width: 290px;
+-    height: 40px;
+-    margin: 5px 5px 5px 10px;
+-
+-    .img-btn {
+-      height: 38px;
+-      width: 100%;
+-      float: left;
+-      border-radius: 5px;
+-      text-align: center;
+-      line-height: 30px;
+-      transition: all 0.2s;
+-      font-size: 18px;
+-      input{
+-        display: block;
+-        outline: none;
+-        border: none;
+-        background-color: transparent;
+-      }
+-    }
+-
+-    .img-btn:hover {
+-      background-color: #bbe6d6 !important;;
+-    }
+-
+-    .this {
+-      font-size: 14px;
+-    }
+-
+-    .this:hover {
+-      background-color: #def1ea;
+-    }
+-  }
+-
+-  .main-func {
+-    position: absolute;
+-    bottom: 0;
+-    width: 290px;
+-    height: 80px;
+-    margin: 5px;
+-    padding: 0 15px;
+-    box-sizing: border-box;
+-
+-    .main-btn {
+-      width: 90px;
+-      height: 36px;
+-      float: left;
+-      margin: 10px 2px;
+-      border-radius: 5px;
+-      background-color: #d6efe6;
+-      line-height: 36px;
+-      text-align: center;
+-      letter-spacing: 3px;
+-      font-size: 14px;
+-      transition: all 0.2s;
+-
+-      i {
+-        font-size: 18px;
+-      }
+-    }
+-
+-    .abandon {
+-      width: 46px;
+-      height: 26px;
+-      font-size: 10px;
+-      line-height: 26px;
+-      letter-spacing: 1px;
+-      margin-top: 20px;
+-      border-radius: 2px;
+-    }
+ 
+-    .submit {
+-      width: 200px;
+-      letter-spacing: 2px;
+-    }
+-
+-    .main-btn:hover {
+-      background-color: #bbe6d6;
+-    }
+-  }
+-}
+-.paint-box {
+-  margin: 35px 0 0 46px;
+-  box-sizing: border-box;
+-  width: 100%;
+-  height: 100%;
+-  background-color: #eeeeee;
+-  cursor: none;
+-
+-  .vertical-line {
+-    position: absolute;
+-    z-index: 2;
+-    top: 0;
+-    left: 0;
+-    height: 100%;
+-    width: 1px;
+-    background-color: rgba(255, 0, 0, 0.4);
+-  }
+-
+-  .level-line {
+-    position: absolute;
+-    z-index: 2;
+-    top: 0;
+-    left: 0;
+-    height: 1px;
+-    width: 100%;
+-    background-color: rgba(255, 0, 0, 0.4);
+-  }
+-
+-  .tips-box {
+-    position: absolute;
+-    top: 0;
+-    height: 100%;
+-    width: 100%;
+-    text-align: left;
+-    padding: 400px 0 0 360px;
+-    font-size: 24px;
+-  }
+-}
+-/deep/ .rec-obj {
+-  position: absolute;
+-  width: 0;
+-  height: 0;
+-  background-color: transparent;
+-  cursor: none;
+-  box-sizing: border-box;
+-  border: 1px solid #333333;
+-  transition: background-color 0.1s;
+-}
+-/deep/ .rec-obj-lock {
+-  background-color: transparent !important;
+-}
+-/deep/ .rec-obj:hover {
+-  border: 2px solid #555555;
+-  background-color: rgba(228, 254, 239, 0.3) !important;
+-}
+ </style>
+Index: cvat/apps/engine/templates/engine/annotation.html
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>{% extends 'engine/base.html' %}\r\n{% load static %}\r\n\r\n{% block head_css %}\r\n    {{ block.super }}\r\n    <link rel=\"stylesheet\" type=\"text/css\" href=\"{% static 'engine/stylesheet.css' %}\">\r\n    {% for css_file in css_3rdparty %}\r\n        <link rel=\"stylesheet\" type=\"text/css\" src=\"{% static css_file %}\">\r\n    {% endfor %}\r\n{% endblock %}\r\n\r\n\r\n{% block head_js_3rdparty %}\r\n    {{ block.super }}\r\n    <script type=\"text/javascript\" src=\"{% static 'engine/js/3rdparty/svg.js' %}\"></script>\r\n    <script type=\"text/javascript\" src=\"{% static 'engine/js/3rdparty/svg.draw.js' %}\"></script>\r\n    <script type=\"text/javascript\" src=\"{% static 'engine/js/3rdparty/svg.resize.min.js' %}\"></script>\r\n    <script type=\"text/javascript\" src=\"{% static 'engine/js/3rdparty/svg.draggable.js' %}\"></script>\r\n    <script type=\"text/javascript\" src=\"{% static 'engine/js/3rdparty/svg.select.js' %}\"></script>\r\n    <script type=\"text/javascript\" src=\"{% static 'engine/js/3rdparty/defiant.min.js' %}\"></script>\r\n    <script type=\"text/javascript\" src=\"{% static 'engine/js/3rdparty/jquery-3.3.1.js' %}\"></script>\r\n    <script type=\"text/javascript\" src=\"{% static 'engine/js/3rdparty/js.cookie.js' %}\"></script>\r\n    <script type=\"text/javascript\" src=\"{% static 'engine/js/3rdparty/jquery.fullscreen.js' %}\"></script>\r\n    <script type=\"text/javascript\" src=\"{% static 'engine/js/cvat-core.min.js' %}\"></script>\r\n    {% for js_file in js_3rdparty %}\r\n        <script type=\"text/javascript\" src=\"{% static js_file %}\"></script>\r\n    {% endfor %}\r\n{% endblock %}\r\n\r\n\r\n{% block head_js_cvat %}\r\n    {{ block.super }}\r\n        <script type=\"text/javascript\" src=\"{% static 'engine/js/utils.js' %}\"></script>\r\n        <script type=\"text/javascript\">\r\n            window.UI_URL = \"{{ ui_url }}\";\r\n        </script>\r\n        <script type=\"text/javascript\" src=\"{% static 'engine/js/logger.js' %}\"></script>\r\n        <script type=\"text/javascript\" src=\"{% static 'engine/js/server.js' %}\"></script>\r\n        <script type=\"text/javascript\" src=\"{% static 'engine/js/listener.js' %}\"></script>\r\n        <script type=\"text/javascript\" src=\"{% static 'engine/js/history.js' %}\"></script>\r\n        <script type=\"text/javascript\" src=\"{% static 'engine/js/borderSticker.js' %}\"></script>\r\n        <script type=\"text/javascript\" src=\"{% static 'engine/js/coordinateTranslator.js' %}\"></script>\r\n        <script type=\"text/javascript\" src=\"{% static 'engine/js/labelsInfo.js' %}\"></script>\r\n        <script type=\"text/javascript\" src=\"{% static 'engine/js/annotationParser.js' %}\"></script>\r\n        <script type=\"text/javascript\" src=\"{% static 'engine/js/attributeAnnotationMode.js' %}\"></script>\r\n        <script type=\"text/javascript\" src=\"{% static 'engine/js/shapeFilter.js' %}\"></script>\r\n        <script type=\"text/javascript\" src=\"{% static 'engine/js/shapeSplitter.js' %}\"></script>\r\n        <script type=\"text/javascript\" src=\"{% static 'engine/js/polyshapeEditor.js' %}\"></script>\r\n\r\n        <script type=\"text/javascript\" src=\"{% static 'engine/js/bootstrap.js' %}\"></script>\r\n\r\n        <script type=\"text/javascript\" src=\"{% static 'engine/js/shapes.js' %}\"></script>\r\n        <script type=\"text/javascript\" src=\"{% static 'engine/js/cuboidShape.js' %}\"></script>\r\n        <script type=\"text/javascript\" src=\"{% static 'engine/js/shapeCollection.js' %}\"></script>\r\n\r\n        <script type=\"text/javascript\" src=\"{% static 'engine/js/player.js' %}\"></script>\r\n\r\n        <script type=\"text/javascript\" src=\"{% static 'engine/js/shapeMerger.js' %}\"></script>\r\n        <script type=\"text/javascript\" src=\"{% static 'engine/js/shapeCreator.js' %}\"></script>\r\n        <script type=\"text/javascript\" src=\"{% static 'engine/js/shapeBuffer.js' %}\"></script>\r\n        <script type=\"text/javascript\" src=\"{% static 'engine/js/shapeGrouper.js' %}\"></script>\r\n\r\n        <script type=\"text/javascript\" src=\"{% static 'engine/js/annotationSaver.js' %}\"></script>\r\n        <script type=\"text/javascript\" src=\"{% static 'engine/js/annotationUI.js' %}\"></script>\r\n{% endblock %}\r\n\r\n\r\n{% block content %}\r\n<div id=\"taskAnnotationCenterPanel\">\r\n    <div id=\"player\">\r\n        <div id=\"playerFrame\">\r\n            <div id=\"rotationWrapper\">\r\n                <svg id=\"frameLoadingAnim\" style=\"width: 100%; height: 100%;\" class=\"hidden\">\r\n                    <circle r=\"30\" cx=\"50%\" cy=\"50%\" id=\"frameLoadingAnimation\"/>\r\n                </svg>\r\n                <svg id=\"frameContent\"> </svg>\r\n                <svg id=\"frameText\"> </svg>\r\n                <svg id=\"frameBackground\"> </svg>\r\n                <canvas id=\"canvasBackground\"> </canvas>\r\n                <svg id=\"frameGrid\" xmlns=\"http://www.w3.org/2000/svg\">\r\n                    <defs>\r\n                        <pattern id=\"playerGridPattern\" width=\"100\" height=\"100\" patternUnits=\"userSpaceOnUse\">\r\n                            <!-- Max size value for grid is 1000. Path size should be >= such value in order to it displayed correct -->\r\n                            <path id=\"playerGridPath\" d=\"M 1000 0 L 0 0 0 1000\" fill=\"none\" stroke=\"white\" opacity=\"0\" stroke-width=\"2\"/>\r\n                        </pattern>\r\n                    </defs>\r\n                    <rect width=\"100%\" height=\"100%\" fill=\"url(#playerGridPattern)\" />\r\n                </svg>\r\n\r\n                <ul id=\"shapeContextMenu\" class='custom-menu' oncontextmenu=\"return false;\">\r\n                    <li action=\"object_url\"> Copy Object URL </li>\r\n                    <li action=\"change_color\"> Change Color </li>\r\n                    <li action=\"remove_shape\"> Remove Shape </li>\r\n                    <li action=\"switch_occluded\"> Switch Occluded </li>\r\n                    <li action=\"switch_lock\"> Switch Lock </li>\r\n                    <li class=\"interpolationItem\" action=\"split_track\"> Split </li>\r\n                    <li class=\"polygonItem\" action=\"drag_polygon\"> Enable Dragging </li>\r\n                    <li class=\"cuboidItem\" action=\"reset_perspective\"> Reset Perspective </li>\r\n                    <li class=\"cuboidItem\" action=\"switch_orientation\"> Switch Perspective Orientation </li>\r\n\r\n                </ul>\r\n\r\n                <ul id=\"playerContextMenu\" class='custom-menu' oncontextmenu=\"return false;\">\r\n                    <li action=\"job_url\"> Copy Job URL </li>\r\n                    <li action=\"frame_url\"> Copy Frame URL </li>\r\n                </ul>\r\n\r\n                <ul id=\"pointContextMenu\" class='custom-menu' oncontextmenu=\"return false;\">\r\n                    <li action=\"remove_point\"> Remove </li>\r\n                </ul>\r\n            </div>\r\n        </div>\r\n        <div id=\"playerPanel\">\r\n            <svg id=\"firstButton\" class=\"playerButton\">\r\n                <polygon points=\"100,0 100,80 75,60 75,80 50,60, 50,80 0,40 50,0 50,20 75,0 75,20\" transform=\"scale(0.4)\"/>\r\n            </svg>\r\n            <svg id=\"multiplePrevButton\" class=\"playerButton\">\r\n                <polygon points=\"100,0 100,80 75,60 75,80 25,40 75,0 75,20\" transform=\"scale(0.4)\"/>\r\n            </svg>\r\n\r\n            <svg id=\"prevButton\" class=\"playerButton\">\r\n                <polygon points=\"90,20 90,60 50,60 50,80 10,40 50,0 50,20\" transform=\"scale(0.4)\"/>\r\n            </svg>\r\n\r\n            <svg id=\"playButton\" class=\"playerButton\">\r\n                <polygon points=\"35,0 35,80 85,40\" transform=\"scale(0.4)\"/>\r\n            </svg>\r\n\r\n            <svg id=\"pauseButton\" class=\"playerButton hidden\">\r\n                <rect x=\"25\" y=\"0\" width=\"20\" height=\"80\" transform=\"scale(0.4)\" />\r\n                <rect x=\"65\" y=\"0\" width=\"20\" height=\"80\" transform=\"scale(0.4)\" />\r\n            </svg>\r\n\r\n            <svg id=\"nextButton\" class=\"playerButton\">\r\n                <polygon points=\"10,20 10,60 50,60 50,80 90,40 50,0 50,20\" transform=\"scale(0.4)\"/>\r\n            </svg>\r\n\r\n            <svg id=\"multipleNextButton\" class=\"playerButton\">\r\n                <polygon points=\"1,1 1,80 25,60 25,80 75,40 25,0 25,20\" transform=\"scale(0.4)\"/>\r\n            </svg>\r\n\r\n            <svg id=\"lastButton\" class=\"playerButton\">\r\n                <polygon points=\"1,1 1,80 25,60 25,80 50,60 50,80 100,40 50,0 50,20 25,0 25,20\" transform=\"scale(0.4)\"/>\r\n            </svg>\r\n            <input type = \"range\" id = \"playerProgress\"/>\r\n        </div>  <!-- END of PLAYER PANEL -->\r\n        <div style=\"margin-top: 20px\">\r\n            <button id=\"menuButton\" class=\"regular h2\"> Open Menu </button>\r\n            <label class=\"regular h2\" style=\"margin-left: 50px\"> Filter: </label>\r\n            <datalist id=\"filterSubmitList\" style=\"display: none;\"> </datalist>\r\n            <input type=\"text\" list=\"filterSubmitList\" id=\"filterInputString\" class=\"regular h2\" placeholder='car[attr/model=/\"mazda\"'/>\r\n            <button id=\"resetFilterButton\" class=\"regular h2\"> Reset </button>\r\n            <button class=\"regular h2\" id=\"undoButton\" disabled> &#x27F2; </button>\r\n            <select size=\"2\" class=\"regular\" style=\"overflow: hidden; width: 15%; top: 0.5em; position: relative;\" disabled>\r\n                <option id=\"lastUndoText\" title=\"Undo Action\" selected> None </option>\r\n                <option id=\"lastRedoText\" title=\"Redo Action\"> None </option>\r\n            </select>\r\n            <button class=\"regular h2\" id=\"redoButton\" disabled> &#10227; </button>\r\n            <label class=\"regular h2\" style=\"margin-left: 15px;\"> Propagation </label>\r\n            <input type =\"number\" id=\"propagateFramesInput\" style=\"width: 3em\" min=\"1\" max=\"10000\" value=\"50\" class=\"regular h2\"/>\r\n            <label class=\"regular h2\" style=\"margin-left: 15px;\"> Rotation </label>\r\n            <button class=\"regular h2\" id=\"clockwiseRotation\" title=\"Clockwise rotation\"> &#10227; </button>\r\n            <button class=\"regular h2\" id=\"counterClockwiseRotation\" title=\"Counter clockwise rotation\"> &#10226; </button>\r\n            <div style=\"float: right;\">\r\n                <label class=\"regular h2\"> Frame </label>\r\n                <input class=\"regular h2\" style=\"width: 3.5em;\" type=\"number\" id=\"frameNumber\">\r\n            </div>\r\n            <hr>\r\n            <table id=\"annotationSettingsTable\" class=\"regular\">\r\n                <tr>\r\n                <td style=\"width: auto;\">\r\n                        <div style=\"float: left;\"> <label class=\"semiBold\"> Fill Opacity: </label> </div>\r\n                        <div style=\"float: left; margin-left: 1em;\"> <input type=\"range\" min=\"-1\" max=\"1\" step=\"0.2\" value=\"0\" id=\"fillOpacityRange\"/> </div>\r\n                    </td>\r\n                    <td style=\"width: auto;\">\r\n                        <div style=\"float: left;\"> <label class=\"semiBold\"> Selected Fill Opacity: </label> </div>\r\n                        <div style=\"float: left; margin-left: 1em;\"> <input type=\"range\" min=\"0\" max=\"1\" value=\"0.2\" step=\"0.2\" id=\"selectedFillOpacityRange\"/> </div>\r\n                    </td>\r\n                    <td style=\"width: auto;\">\r\n                        <div style=\"float: left;\"> <label class=\"semiBold\"> Black Stroke: </label> </div>\r\n                        <div style=\"float: left; margin-left: 1em;\"> <input type=\"checkbox\" id=\"blackStrokeCheckbox\" class=\"settingsBox\"/> </div>\r\n                    </td>\r\n                    <td style=\"width: auto;\">\r\n                        <div style=\"float: left;\"> <label class=\"semiBold\"> Color by: </label> </div>\r\n                        <div style=\"float: left; margin-left: 10px;\">\r\n                            <label style=\"margin-right: 10px;\"> Instance </label>\r\n                            <input type=\"radio\" name=\"colorByRadio\" id=\"colorByInstanceRadio\" checked class=\"settingsBox\"/>\r\n                        </div>\r\n                        <div style=\"float: left; margin-left: 10px;\">\r\n                            <label style=\"margin-right: 10px;\"> Group </label>\r\n                            <input type=\"radio\" name=\"colorByRadio\" id=\"colorByGroupRadio\" class=\"settingsBox\"/>\r\n                        </div>\r\n                        <div style=\"float: left; margin-left: 10px;\">\r\n                            <label style=\"margin-right: 10px;\"> Label </label>\r\n                            <input type=\"radio\" name=\"colorByRadio\" id=\"colorByLabelRadio\" class=\"settingsBox\"/>\r\n                        </div>\r\n                        <div style=\"float: left; margin-left: 50px;\" title=\"Press Ctrl to switch\">\r\n                            <label style=\"display: none;\">\r\n                                Common borders\r\n                                <input type=\"checkbox\" id=\"commonBordersCheckbox\" class=\"settingsBox\" style=\"margin-left: 10px; display: none;\"/>\r\n                            </label>\r\n                        </div>\r\n                    </td>\r\n                </tr>\r\n            </table>\r\n        </div>\r\n    </div>  <!-- END of PLAYER -->\r\n\r\n    <div id=\"helpWindow\" class=\"modal hidden\">\r\n        <div id=\"helpWindowContent\" class=\"modal-content\">\r\n            <div style=\"width: 100%; height: 90%; overflow-y: auto;\">\r\n                <div class=\"selectable\">\r\n                    <label class=\"h1 semiBold\"> Shortkeys: </label> <br>\r\n                    <table class=\"regular\" id=\"shortkeyHelpTable\"> </table>\r\n                    <label class=\"h1 semiBold\"> <br> Hints: <br> </label>\r\n                    <label class=\"regular\"> - Hold MOUSEWHEEL in order to move frame (during drawing for example). </label> <br>\r\n                    <label class=\"regular\"> - Hold CTRL key when track highlighted and fix it. </label> <br>\r\n                    <label class=\"regular\"> - Hold CTRL key when paste shape from buffer for multiple pasting. </label> <br>\r\n                    <label class=\"h1 semiBold\"> <br> Filter Help: <br> </label>\r\n                    <label class=\"regular\">\r\n                        Filter Format: label[property operator \"value\"] (USE LOWER CASE ONLY) <br>\r\n                        Label is a type of bounding box (car, person, etc). Use \"*\" for any label. <br>\r\n                        Property is a limited set of values: id, type, lock, occluded, attr. <br>\r\n                        Operator is \"=\", \"!=\" for any properties and \">\", \"<\", \">=\", \"<=\" for numeric properties. <br>\r\n                        For complex conditions please use 'or', 'and' (for properties) \"|\" (for labels) operators. <br> <br>\r\n                        Examples: <br>\r\n                        *[mode=\"annotation\"] - only annotation objects <br>\r\n                        *[type=\"polygon\"] - only polygon objects <br>\r\n                        car[occluded=\"true\"] - only occluded cars <br>\r\n                        *[lock!=\"true\"] - only unlocked tracks <br>\r\n                        person[attr/age>=\"25\" and attr/age<=\"35\"] - persons with age (number) between [25,40] years <br>\r\n                        car[attr/parked=\"true\"] - only parked cars <br>\r\n                        person[attr/race=\"asian\"] | car[attr/model=\"bmw\"] - asians and BMW cars <br>\r\n                        face[attr/glass=\"sunglasses\" or attr/glass=\"no\"] - faces with sunglasses or without glass <br>\r\n                        *[attr/*=\"__undefined__\"] - any tracks with any unlabeled attributes <br>\r\n                        *[width<300 or height<300] - shapes with height or width less than 300px <br>\r\n                        person[width>300 and height<200] - person shapes with width > 300px and height < 200px <br>\r\n                     </label>\r\n                </div>\r\n            </div>\r\n            <center> <button id=\"closeHelpButton\" class=\"regular h1\" style=\"margin-top: 15px;\"> Close </button> </center>\r\n        </div>\r\n    </div>\r\n\r\n    <div id=\"settingsWindow\" class=\"modal hidden\">\r\n        <div id=\"settingsWindowContent\" class=\"modal-content\">\r\n            <div id=\"playerSettings\" style=\"width: 48%; height: 90%; float: left;\">\r\n                <center> <label class=\"semiBold h1\"> Player Settings </label> </center>\r\n                <table style=\"border-collapse: separate; border-spacing: 10px; overflow-y: auto;\" class=\"regular\">\r\n                    <tr>\r\n                        <td> <label> Player Step </label> </td>\r\n                        <td> <input type=\"number\" min=\"1\" max=\"100\" value=\"10\" id=\"playerStep\" class=\"regular h2\"/> </td>\r\n                    </tr>\r\n                    <tr>\r\n                        <td> <label> Player Speed </label> </td>\r\n                        <td>\r\n                            <select id=\"speedSelect\" class=\"regular h3\">\r\n                                <option value=\"1\"> 1 FPS </option>\r\n                                <option value=\"2\"> 5 FPS </option>\r\n                                <option value=\"3\"> 12 FPS </option>\r\n                                <option value=\"4\" selected> 25 FPS </option>\r\n                                <option value=\"5\"> 50 FPS </option>\r\n                                <option value=\"6\"> 100 FPS </option>\r\n                            </select>\r\n                        </td>\r\n                    </tr>\r\n                    <tr>\r\n                        <td> <label> Reset Zoom </label> </td>\r\n                        <td> <input type=\"checkbox\"  id=\"resetZoomBox\" class=\"settingsBox\"/> </td>\r\n                    </tr>\r\n                    <tr>\r\n                        <td> <label> Grid Size </label> </td>\r\n                        <td> <input type=\"number\" min=\"5\" max=\"1000\" value=\"100\" id=\"playerGridSizeInput\" class=\"regular h2\"/> </td>\r\n                    </tr>\r\n                    <tr>\r\n                        <td> <label> Grid Opacity </label> </td>\r\n                        <td> <input type=\"range\" min=\"0\" max=\"5\" value=\"0\" id=\"playerGridOpacityInput\" class=\"regular h2\"/> </td>\r\n                    </tr>\r\n                    <tr>\r\n                        <td> <label> Grid Stroke </label> </td>\r\n                        <td>\r\n                            <select id=\"playerGridStrokeInput\" class=\"regular h2\">\r\n                                <option value=\"black\"> Black </option>\r\n                                <option value=\"red\"> Red </option>\r\n                                <option value=\"green\"> Green </option>\r\n                                <option value=\"blue\"> Blue </option>\r\n                                <option value=\"white\" selected> White </option>\r\n                            </select>\r\n                        </td>\r\n                    </tr>\r\n                    <tr>\r\n                        <td> <label for=\"playerBrightnessRange\"> Brightness: </label> </td>\r\n                        <td> <input type=\"range\" min=\"50\" max=\"200\" value=\"100\" id=\"playerBrightnessRange\"> </td>\r\n                    </tr>\r\n                    <tr>\r\n                        <td> <label for=\"playerContrastRange\"> Contrast: </label> </td>\r\n                        <td> <input type=\"range\" min=\"50\" max=\"200\" value=\"100\" id=\"playerContrastRange\"> </td>\r\n                    </tr>\r\n                    <tr>\r\n                        <td> <label for=\"playerSaturationRange\"> Saturation: </label> </td>\r\n                        <td> <input type=\"range\" min=\"0\" max=\"300\" value=\"100\" id=\"playerSaturationRange\"> </td>\r\n                    </tr>\r\n                    <tr>\r\n                        <td colspan=\"2\">\r\n                            <button id=\"resetPlayerFilterButton\" class=\"regular h1\"> Reset Color Settings </button>\r\n                        </td>\r\n                    </tr>\r\n                </table>\r\n            </div>\r\n\r\n            <div id=\"otherSettigns\" style=\"width: 48%; height: 90%; float: left;\">\r\n                <center> <label class=\"semiBold h1\"> Other Settings </label> </center>\r\n                <table style=\"border-collapse: separate; border-spacing: 10px; overflow-y: auto;\" class=\"regular\">\r\n                    <tr>\r\n                        <td> <label> Show All Interpolation Tracks </label> </td>\r\n                        <td> <input type = \"checkbox\"  id=\"showAllInterBox\" class=\"settingsBox\"/> </td>\r\n                    </tr>\r\n                    <tr >\r\n                        <td> <label> AAM Zoom Margin </label> </td>\r\n                        <td> <input type=\"range\" min=\"0\" max=\"1000\" value=\"100\" id=\"aamZoomMargin\"/> </td>\r\n                    </tr>\r\n                    <tr>\r\n                        <td> <label> Enable Auto Saving </label> </td>\r\n                        <td> <input type = \"checkbox\"  id=\"autoSaveBox\" class=\"settingsBox\"/> </td>\r\n                    </tr>\r\n                    <tr>\r\n                        <td> <label> Auto Saving Interval (Min) </label> </td>\r\n                        <td> <input type = \"number\"  id=\"autoSaveTime\" style=\"width: 3em\" min=\"5\" max=\"60\" value=\"15\" class=\"regular h2\"/> </td>\r\n                    </tr>\r\n                    <tr>\r\n                        <td> <label> Rotate All Images </label> </td>\r\n                        <td> <input type = \"checkbox\"  id=\"rotateAllImages\" class=\"settingsBox\"/> </td>\r\n                    </tr>\r\n                    <tr>\r\n                        <td> <label> Cuboid Projection Lines: </label> </td>\r\n                        <td><input type=\"checkbox\" id=\"projectionLineEnable\" class=\"settingsBox\"/></td>\r\n                    </tr>\r\n                </table>\r\n            </div>\r\n\r\n            <center>\r\n                <button id=\"closeSettignsButton\" class=\"regular h1\" style=\"margin-top: 15px;\"> Close </button>\r\n            </center>\r\n        </div>\r\n    </div>\r\n\r\n    <div id=\"annotationMenu\" class=\"hidden regular\">\r\n        <center style=\"float:left; width: 28%; height: 100%;\" id=\"engineMenuButtons\">\r\n            <select id=\"downloadAnnotationButton\" class=\"menuButton semiBold h2\" style=\"text-align-last: center;\">\r\n                <option selected disabled> Dump Annotation </option>\r\n            </select>\r\n\r\n            <select id=\"uploadAnnotationButton\" class=\"menuButton semiBold h2\" style=\"text-align-last: center;\">\r\n                    <option selected disabled> Upload Annotation </option>\r\n            </select>\r\n\r\n            <button id=\"openTaskButton\" class=\"menuButton semiBold h2\"> Open Task </button>\r\n            <button id=\"removeAnnotationButton\" class=\"menuButton semiBold h2\"> Remove Annotation </button>\r\n            <button id=\"settingsButton\" class=\"menuButton semiBold h2\"> Settings </button>\r\n            <button id=\"fullScreenButton\" class=\"menuButton semiBold h2\"> Fullscreen Player </button>\r\n            <button id=\"switchAAMButton\" class=\"menuButton semiBold h2\"> Switch AAM </button>\r\n            <button id=\"helpButton\" class=\"menuButton semiBold h2\"> Help </button>\r\n            <button id=\"saveButton\" class=\"menuButton semiBold h2\"> Save Work </button>\r\n            <input type=\"file\" id=\"annotationFileSelector\" style=\"display: none\"/>\r\n        </center>\r\n        <div style=\"float:left; width: 70%; height: 100%; text-align: left;\" class=\"selectable\">\r\n            <center>\r\n                <label id=\"statTaskName\" class=\"semiBold h2\"> </label>  <br>\r\n                <center>\r\n                    <select id=\"statTaskStatus\" class=\"regular h2\" style=\"outline: none; border-radius: 10px; background:#B0C4DE; border: 1px solid black;\">\r\n                        {% for status in status_list %}\r\n                            <option value=\"{{status}}\"> {{status}} </option>\r\n                        {% endfor %}\r\n                    </select>\r\n                </center>\r\n            </center>\r\n            <center>\r\n                <table style=\"width: 100%\">\r\n                    <tr>\r\n                        <td style=\"width: 30%;\">\r\n                            <label class=\"regular h2\"> Frames: </label>\r\n                            <label id=\"statFrames\" class=\"regular h2\"> </label>\r\n                        </td>\r\n                        <td style=\"width: 30%;\">\r\n                            <label class=\"regular h2\"> Overlap: </label>\r\n                            <label id=\"statOverlap\" class=\"regular h2\"> </label>\r\n                        </td>\r\n                        <td style=\"width: 30%;\">\r\n                            <label class=\"regular h2\"> Z-Order: </label>\r\n                            <label id=\"statZOrder\" class=\"regular h2\"> </label>\r\n                        </td>\r\n                    </tr>\r\n                </table>\r\n            </center>\r\n            <center> <label class=\"semiBold h2\"> Segment Statistic </label> </center>\r\n            <div style=\"text-align: center; max-height: 250px; overflow: auto; display: block;\">\r\n                <table id=\"annotationStatisticTable\">\r\n                    <tr class=\"semiBold\">\r\n                        <td> Label </td>\r\n                        <td colspan=\"2\"> Boxes </td>\r\n                        <td colspan=\"2\"> Polygons </td>\r\n                        <td colspan=\"2\"> Polylines </td>\r\n                        <td colspan=\"2\"> Points </td>\r\n                        <td colspan=\"2\"> Cuboids </td>\r\n                        <td> Manually </td>\r\n                        <td> Interpolated </td>\r\n                        <td> Total </td>\r\n                    </tr>\r\n                    <tr>\r\n                        <td> </td> <!-- Empty -->\r\n                        <td> S </td>\r\n                        <td> T </td>\r\n                        <td> S </td>\r\n                        <td> T </td>\r\n                        <td> S </td>\r\n                        <td> T </td>\r\n                        <td> S </td>\r\n                        <td> T </td>\r\n                        <td> S </td>\r\n                        <td> T </td>\r\n                        <td> </td>  <!-- Empty -->\r\n                        <td> </td>  <!-- Empty -->\r\n                    </tr>\r\n                </table>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</div>\r\n\r\n\r\n<div class=\"tab customizedTab\">\r\n    <button class=\"h2 regular activeTabButton\" id=\"sidePanelObjectsButton\" style=\"width: 50%\">Objects</button>\r\n    <button class=\"h2 regular\" id=\"sidePanelLabelsButton\" style=\"width: 50%\">Labels</button>\r\n</div>\r\n<div id=\"taskAnnotationRightPanel\">\r\n    <div id=\"uiContent\"> </div>\r\n    <div id=\"labelsContent\" class=\"hidden\"> </div>\r\n    <div id=\"trackManagement\">\r\n        <button id=\"createShapeButton\" class=\"regular h2\" style=\"width: 80%;\"> Create Shape </button>\r\n        <button id=\"mergeTracksButton\" class=\"regular h2\" style=\"width: 80%; margin-top: 5px;\"> Merge Shapes </button>\r\n        <button id=\"groupShapesButton\" class=\"regular h2\" style=\"width: 80%; margin-top: 5px;\"> Group Shapes </button>\r\n        <select id=\"shapeLabelSelector\" class=\"regular h2\"> </select>\r\n        <select id=\"shapeModeSelector\" class=\"regular h2\">\r\n            <option value=\"annotation\" class=\"regular\"> Annotation </option>\r\n            <option value=\"interpolation\" class=\"regular\"> Interpolation </option>\r\n        </select>\r\n        <select id=\"shapeTypeSelector\" class=\"regular h2\">\r\n            <option value=\"box\" class=\"regular\" selected> Box </option>\r\n            <option value=\"box_by_4_points\" class=\"regular\"> Box by 4 points </option>\r\n            <option value=\"polygon\" class=\"regular\"> Polygon </option>\r\n            <option value=\"polyline\" class=\"regular\"> Polyline </option>\r\n            <option value=\"points\" class=\"regular\"> Points </option>\r\n            <option value=\"cuboid\" class=\"regular\"> Cuboid </option>\r\n        </select>\r\n        <div id=\"polyShapeSizeWrapper\">\r\n            <label for=\"polyShapeSize\" class=\"regular h2\"> Poly Shape Size: </label>\r\n            <input id=\"polyShapeSize\" type=\"text\" value=\"\" class=\"regular h2\" style=\"width: 30%; margin-top: 1%;\" placeholder=\"0-100\"/>\r\n        </div>\r\n    </div>\r\n    <div id=\"aamMenu\" class=\"hidden\">\r\n        <label class=\"regular h1\"> AAM Mode </label>\r\n        <label id=\"aamCounter\" class=\"regular h1\"> </label> <br>\r\n        <label id=\"aamTitle\" class=\"regular h2\"> </label>\r\n        <div id=\"aamHelpContainer\" class=\"regular\">\r\n        </div>\r\n    </div>\r\n</div>\r\n{% endblock %}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/cvat/apps/engine/templates/engine/annotation.html b/cvat/apps/engine/templates/engine/annotation.html
+--- a/cvat/apps/engine/templates/engine/annotation.html	
++++ b/cvat/apps/engine/templates/engine/annotation.html	
+@@ -426,8 +426,6 @@
+         </div>
+     </div>
+ </div>
+-
+-
+ <div class="tab customizedTab">
+     <button class="h2 regular activeTabButton" id="sidePanelObjectsButton" style="width: 50%">Objects</button>
+     <button class="h2 regular" id="sidePanelLabelsButton" style="width: 50%">Labels</button>

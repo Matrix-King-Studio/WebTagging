@@ -566,15 +566,12 @@ class TaskViewSet(auth.TaskGetQuerySetMixin, viewsets.ModelViewSet):
             if action not in dm.task.PatchAction.values():
                 raise serializers.ValidationError("请为请求指定正确的“操作”")
             serializer = LabeledDataSerializer(data=request.data)
-            if serializer.is_valid():
+            if serializer.is_valid(raise_exception=True):
                 try:
                     data = dm.task.patch_task_data(pk, serializer.data, action)
                 except (AttributeError, IntegrityError) as e:
-                    return Response(data=str(e), status=status.HTTP_200_OK)
+                    return Response(data=str(e), status=status.HTTP_400_BAD_REQUEST)
                 return Response(data)
-            else:
-                print(serializer.errors)
-                return Response(serializer.errors, status=status.HTTP_200_OK)
 
     @swagger_auto_schema(method='get', operation_summary='创建任务时，该方法返回有关创建进程状态的信息')
     @action(detail=True, methods=['GET'], serializer_class=RqStatusSerializer)
@@ -582,11 +579,8 @@ class TaskViewSet(auth.TaskGetQuerySetMixin, viewsets.ModelViewSet):
         self.get_object()  # force to call check_object_permissions
         response = self._get_rq_response(queue="default", job_id="/api/{}/tasks/{}".format(request.version, pk))
         serializer = RqStatusSerializer(data=response)
-        if serializer.is_valid():
+        if serializer.is_valid(raise_exception=True):
             return Response(serializer.data)
-        else:
-            print(serializer.errors)
-            return Response(serializer.errors, status=status.HTTP_200_OK)
 
     @staticmethod
     def _get_rq_response(queue, job_id):
