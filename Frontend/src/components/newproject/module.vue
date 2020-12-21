@@ -232,7 +232,8 @@ export default {
             As a result, she is sometimes regarded as the first to recognise the full potential of a "computing machine" and the first computer programmer.`,
             bornAt: '1815-12-10T00:00:00.000Z',
             diedAt: '1852-11-27T00:00:00.000Z'
-          }, {
+          },
+          {
             id: '5968fcad629fa84ab65a5246',
             firstname: 'Grace',
             lastname: 'Hopper',

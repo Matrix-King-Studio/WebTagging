@@ -1,5 +1,6 @@
 <template>
   <div class="main-box">
+    <!-- 左边的工具栏 -->
     <div class="sidebar">
       <el-tooltip
         :class="['item','tools',{'tool-active':flag === 'cursor'}]"
@@ -23,7 +24,9 @@
         </el-button>
       </el-tooltip>
     </div>
+    <!-- 右边的工具栏 -->
     <div ref="objBar" class="object-bar">
+      <!-- 展示/隐藏右边栏的按钮 -->
       <div
         ref="drawer"
         class="drawer"
@@ -31,7 +34,6 @@
       >
         <i :class="[{'el-icon-right':flag2},{'el-icon-back':!flag2}]" />
       </div>
-
       <!--右边的用来选择标签的框的box-->
       <div class="label-obj-box" >
         <!--右边的用来选择标签的框，每一项-->
@@ -92,21 +94,23 @@
           </div>
         </div>
       </div>
+      <!-- 所有的功能按钮 -->
       <div class="main-btn-box">
-        <div class="images">
-          <div class="img-btn this">
-            <template>
-              <div class="block">
-                <el-slider
-                  v-model="imageIndexFrom1"
-                  show-input
-                  @change="changeImg"
-                  :min="1"
-                  :max="imagesSize"
-                >
-                </el-slider>
-              </div>
-            </template>
+        <div class="switch-images">
+          <div class="back">
+            <span @click="changeImg(1)">-</span>
+          </div>
+          <div class="slider">
+            <el-slider
+              v-model="slideBarImageIndex"
+              @change="changeImg(3)"
+              :min="1"
+              :max="imagesSize"
+            >
+            </el-slider>
+          </div>
+          <div class="next">
+            <span @click="changeImg(2)">+</span>
           </div>
         </div>
         <div class="main-func">
@@ -123,6 +127,7 @@
         </div>
       </div>
     </div>
+    <!-- 进行标注的地方 -->
     <div ref="paintBox" class="paint-box">
       <canvas
         id="myCanvas"
@@ -177,7 +182,8 @@ export default {
       imagesData: '',
       //imagesSize原来为0，这里我改成了1，最小值应该为1吧
       imagesSize: 1,
-      imageIndex: 0,
+      imageIndex: 1,
+      slideBarImageIndex: 1,
       imageIndexFrom1: 1,
       imageInfo: {},
       imageScale: 1,//图片缩放比例 ：缩放后/缩放前
@@ -186,7 +192,7 @@ export default {
       shapes: {
         rectangles: [],
       },
-      rectangleIndex: 1,
+      // rectangleIndex: 1,
       recTop: 0,
       recLeft: 0,
 
@@ -199,11 +205,9 @@ export default {
       // 设置 job 的起始 frame 和终止 frame
       start_frame: 0,
       stop_frame: 0,
-    }
-  },
-  computed:{
-    imageRealIndex(){
-        return this.imageIndex + 1;
+
+      //是否正在切换图片
+      isChangingImage: false,
     }
   },
   created() {
@@ -255,11 +259,11 @@ export default {
     /** 不能直接用 url 中的 id 去拿图片，如果暴力改变 url 需要回到 home 要用路由守卫*/
     getImages() {
       //请求图片数据
-      console.log("1.开始请求第" + (this.imageIndex+1) + "张图片的数据数据")
+      console.log("1.开始请求第" + (this.imageIndex) + "张图片的数据数据")
       this.$http.get('v1/tasks/' + this.$route.params.index + '/data', {
         params: {
           type: 'chunk',
-          number: this.imageIndex,
+          number: this.imageIndex - 1,
           quality: 'compressed'
         },
         // 请求数据的格式
@@ -351,55 +355,45 @@ export default {
             this.$refs.tipsBox.parentNode.removeChild(this.$refs.tipsBox)
             this.isFirst = false
           }
+          this.isChangingImage = false
         }
       }, 100)
     },
     //切换图片
-    changeImg(index) {
-      let indexFrom0 = index-1;
-      this.imageIndex = indexFrom0
-      this.getImages()
-      this.removeRec('all')
-      this.reDrawTags(1, this.imageIndex)
-
-      // if (indexFrom0 !== 0) {
-      //   this.imageIndex = indexFrom0
-      //   this.getImages()
-      //   this.removeRec('all')
-      //   this.reDrawTags(1, this.imageIndex)
-      // }
-
-      //   if (mod === 'start') {//第一张
-      //   //如果不是第一张就加载
-      //   if (this.imageIndex !== 0) {
-      //     this.imageIndex = 0
-      //     this.getImages()
-      //     this.removeRec('all')
-      //     this.reDrawTags(1, this.imageIndex)
-      //   }
-      // } else if (mod === 'back') {//上一张
-      //   if (this.imageIndex !== 0) {
-      //     this.imageIndex -= 1
-      //     this.getImages()
-      //     this.removeRec('all')
-      //     this.reDrawTags(1, this.imageIndex)
-      //   }
-      // } else if (mod === 'next') {//下一张
-      //   if (this.imageIndex !== (this.imagesSize - 1)) {
-      //     this.imageIndex += 1
-      //     this.getImages()
-      //     this.removeRec('all')
-      //     this.reDrawTags(1, this.imageIndex)
-      //   }
-      // } else if (mod === 'end') {//最后一张
-      //   if (this.imageIndex !== (this.imagesSize - 1)) {
-      //     this.imageIndex = this.imagesSize - 1
-      //     this.getImages()
-      //     this.removeRec('all')
-      //     this.reDrawTags(1, this.imageIndex)
-      //   }
-      // }
-
+    //mod: 1.上一张  2. 下一张  3. 根据滑块改变
+    changeImg(mod) {
+      //如果图片加载完
+      if(!this.isChangingImage){
+        //这个变量在drawImages中变为false
+        this.isChangingImage = true
+        if(mod === 1){
+          //如果在第一张禁止后退
+          if(this.imageIndex === 1) {
+            this.isChangingImage = false
+            return
+          }
+          this.imageIndex -= 1
+          this.slideBarImageIndex -= 1
+        }
+        else if(mod === 2){
+          //如果在最后一张禁止后退
+          if(this.imageIndex === this.imagesSize) {
+            this.isChangingImage = false
+            return
+          }
+          this.imageIndex += 1
+          this.slideBarImageIndex += 1
+        }
+        else if(mod === 3){
+          this.imageIndex = this.slideBarImageIndex
+        }
+        this.getImages()
+        this.removeRec('all')
+        this.reDrawTags(1, this.imageIndex)
+      } else {
+        //如果该张图片没有加载完 让 sliderBar跳回去
+        this.slideBarImageIndex = this.imageIndex
+      }
     },
     //切换工具
     initDrawTools(attr) {
@@ -607,7 +601,6 @@ export default {
       });
     },
     //提交标注信息
-    /** 提交成功后的逻辑还需进一步改进 暂时改成不能再次进入*/
     submitTags() {
       let TagsInfo = this.$store.state.imageTags
       console.log(TagsInfo)
@@ -832,7 +825,6 @@ export default {
   background-color: #e4f5ef;
   box-shadow: -1px 0 6px 2px #c1d4cd;
   transition: all 0.4s ease;
-
   .drawer {
     position: absolute;
     top: 35px;
@@ -848,11 +840,9 @@ export default {
       text-align: center;
     }
   }
-
   .drawer:hover {
     background-color: rgba(0, 0, 0, 0.1);
   }
-
   .label-obj-box {
     width: 280px;
     height: 550px;
@@ -865,11 +855,9 @@ export default {
       height: 80px;
       width: 100%;
       border-bottom: 1px solid #cae7dc;
-
       .label-info {
         width: 100%;
         height: 30px;
-
         span {
           display: block;
           float: left;
@@ -912,39 +900,35 @@ export default {
       }
     }
   }
-
-  .images {
+  .switch-images {
     width: 290px;
     height: 40px;
-    margin: 5px 5px 5px 10px;
-
-    .img-btn {
-      height: 38px;
-      width: 100%;
-      float: left;
-      border-radius: 5px;
-      text-align: center;
-      line-height: 30px;
-      transition: all 0.2s;
-      font-size: 18px;
-      input{
+    margin: 5px;
+    display: flex;
+    .back, .next{
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      span{
         display: block;
-        outline: none;
-        border: none;
-        background-color: transparent;
+        width: 26px;
+        height: 26px;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: 0.3s;
+
+        font-size: 26px;
+        line-height: 22px;
+        text-align: center;
+      }
+      span:hover{
+        background-color: #bbe6d6;
       }
     }
-
-    .img-btn:hover {
-      background-color: #bbe6d6 !important;;
-    }
-
-    .this {
-      font-size: 14px;
-    }
-
-    .this:hover {
-      background-color: #def1ea;
+    .slider{
+      flex: 5;
+      padding: 0 5px;
     }
   }
 
@@ -969,12 +953,10 @@ export default {
       letter-spacing: 3px;
       font-size: 14px;
       transition: all 0.2s;
-
       i {
         font-size: 18px;
       }
     }
-
     .abandon {
       width: 46px;
       height: 26px;
@@ -984,12 +966,10 @@ export default {
       margin-top: 20px;
       border-radius: 2px;
     }
-
     .submit {
       width: 200px;
       letter-spacing: 2px;
     }
-
     .main-btn:hover {
       background-color: #bbe6d6;
     }
