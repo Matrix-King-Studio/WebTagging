@@ -2,10 +2,16 @@
   <div class="setting-page">
     <div class="task-info">
       <div class="basic-info-box">
-        <div class="task-name">
+        <div
+          v-if="taskInformation.results"
+          class="task-name"
+        >
           <span>项目名：{{ taskInformation.results[0].name }}</span>
         </div>
-        <div class="basic-info">
+        <div
+          v-if="taskInformation.results"
+          class="basic-info"
+        >
           <div class="info">
             <div>图像质量：{{ taskInformation.results[0].image_quality }}</div>
           </div>
@@ -109,6 +115,7 @@
       <span>
         <el-button
           v-for="item in exportTaggingFormat"
+          :key="item.name"
           type="success"
           plain
           @click="updateData(item.format)"
@@ -130,15 +137,14 @@
 export default {
   data() {
     return {
-      /* Alex Start */
+      //导出界面使用
       exportTaggingDialogVisible: false,   // 是否显示导出标注数据 dialog
       exportTaggingFormat: [
         {name: 'COCO', format: 'COCO%201.0'},
         {name: 'YOLO', format: 'YOLO%201.1'},
       ],
       taskInformation: {},
-      /* Alex End */
-
+      //项目基本信息
       jobsInfo: [],
       usersInfo: []
     }
@@ -150,6 +156,7 @@ export default {
   methods: {
     //两个用于下载标注数据
     updateData(format) {
+      console.log(format);
       this.$http.get('v1/tasks/' + this.$route.params.index + '/annotations?format=' + format, {
         responseType: 'blob'
       }).then((e) => {
@@ -198,7 +205,7 @@ export default {
         }
       }).then((e) => {
         this.taskInformation = e.data
-        console.log(this.taskInformation);
+        console.log('当前项目信息', this.taskInformation);
         this.jobsInfo = e.data.results[0].segments
         for (let i = 0; i < this.jobsInfo.length; i++) {
           this.jobsInfo[i]["index"] = i
@@ -331,7 +338,7 @@ export default {
         }
 
         .delete {
-          width: 40px;
+          width: 60px;
         }
       }
     }
