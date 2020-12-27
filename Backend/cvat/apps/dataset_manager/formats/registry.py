@@ -52,8 +52,7 @@ def exporter(name, version, ext, display_name=None):
     assert name not in EXPORT_FORMATS, "Export format '%s' already registered" % name
 
     def wrap_with_params(f_or_cls):
-        t = _wrap_format(f_or_cls, Exporter,
-                         name=name, ext=ext, version=version, display_name=display_name)
+        t = _wrap_format(f_or_cls, Exporter, name=name, ext=ext, version=version, display_name=display_name)
         key = t.DISPLAY_NAME
         assert key not in EXPORT_FORMATS, "Export format '%s' already registered" % name
         EXPORT_FORMATS[key] = t

@@ -1,11 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="8aff03a2-0667-4496-ac86-7694afcaba37" name="Default Changelist" comment="1. 获取日志列表的接口开发&#10;2. 创建日志的接口开发">
-      <change afterPath="$PROJECT_DIR$/.idea/other.xml" afterDir="false" />
+    <list default="true" id="8aff03a2-0667-4496-ac86-7694afcaba37" name="Default Changelist" comment="2020-12-21">
+      <change afterPath="$PROJECT_DIR$/cvat/apps/engine/migrations/0026_auto_20201221_2328.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_2020_12_20_14_48_[Default_Changelist]1/shelved.patch" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cvat/apps/authentication/api_urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/authentication/api_urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cvat/apps/authentication/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/authentication/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cvat/apps/auto_annotation/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/auto_annotation/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cvat/apps/dataset_manager/formats/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/dataset_manager/formats/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cvat/apps/dataset_manager/formats/datumaro/export_templates/plugins/cvat_rest_api_task_images.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/dataset_manager/formats/datumaro/export_templates/plugins/cvat_rest_api_task_images.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cvat/apps/dataset_manager/formats/registry.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/dataset_manager/formats/registry.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cvat/apps/dataset_manager/formats/yolo.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/dataset_manager/formats/yolo.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cvat/apps/dataset_manager/task.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/dataset_manager/task.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cvat/apps/engine/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/engine/admin.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cvat/apps/engine/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/engine/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cvat/apps/engine/serializers.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/engine/serializers.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cvat/apps/engine/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/engine/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cvat/apps/engine/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/engine/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Frontend/public/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/../Frontend/public/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cvat/settings/base.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/settings/base.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Images/1bbe309979fe58fc9456dff9f6d1e8b2.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Images/4ae4e2cbf4ff34862fb75b189a6f15cd.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Images/6544f4e1515717873fc9414bcc90b80a.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Images/742627dde1655bad72e905dfbb30c56a.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Images/86dc4b2d3f898d0ab9cc390e14830cb0.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Images/b7a7c098fa369c08bf1437780a01d804.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Images/c94ff160c589fc40df8600d8563ea1ec.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Images/da7fafa64ef995bcfdab54f457da8738.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Images/fb2c412bd975d5ec730d3b3745f97fad.jpg" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -48,37 +70,13 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="true" />
+    <property name="WebServerToolWindowPanel.toolwindow.highlight.mappings" value="true" />
+    <property name="WebServerToolWindowPanel.toolwindow.highlight.symlinks" value="true" />
+    <property name="WebServerToolWindowPanel.toolwindow.show.date" value="false" />
+    <property name="WebServerToolWindowPanel.toolwindow.show.permissions" value="false" />
+    <property name="WebServerToolWindowPanel.toolwindow.show.size" value="false" />
     <property name="last_opened_file_path" value="G:/Graduate" />
     <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
-  </component>
-  <component name="RunManager">
-    <configuration name="views" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
-      <module name="AlexAILab" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/File" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/File/views.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
-    <recent_temporary>
-      <list>
-        <item itemvalue="Python.views" />
-      </list>
-    </recent_temporary>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -93,8 +91,24 @@
       <workItem from="1608027860758" duration="475000" />
       <workItem from="1608030750627" duration="1833000" />
       <workItem from="1608032959962" duration="7972000" />
+      <workItem from="1608727967047" duration="6252000" />
+      <workItem from="1608784394815" duration="6875000" />
+      <workItem from="1608896278725" duration="5989000" />
+      <workItem from="1608968246630" duration="100000" />
+      <workItem from="1609077072859" duration="1080000" />
     </task>
+    <task id="LOCAL-00001" summary="2020-12-21">
+      <created>1608530665874</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1608530665875</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">
@@ -107,5 +121,9 @@
       </map>
     </option>
     <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="2020-12-21" />
+    <option name="LAST_COMMIT_MESSAGE" value="2020-12-21" />
   </component>
 </project>

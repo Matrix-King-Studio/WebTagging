@@ -496,4 +496,4 @@ class LogSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Log
-        fields = ("job", "task", "user", "time", "message", "taskName", "userName")
+        fields = ("task", "user", "time", "message", "taskName", "userName")

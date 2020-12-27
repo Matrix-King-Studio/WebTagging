@@ -3,6 +3,7 @@ import shutil
 import traceback
 import django_rq
 import os.path as osp
+
 from datetime import datetime
 from tempfile import mkstemp
 from django.conf import settings
@@ -24,6 +25,7 @@ from rest_framework.exceptions import APIException
 from rest_framework.permissions import SAFE_METHODS, IsAuthenticated
 from rest_framework.renderers import JSONRenderer
 from rest_framework.response import Response
+from rest_framework.viewsets import ModelViewSet
 from sendfile import sendfile
 
 import cvat.apps.dataset_manager as dm
@@ -32,13 +34,11 @@ from cvat.apps.authentication import auth
 from cvat.apps.authentication.decorators import login_required
 from cvat.apps.dataset_manager.serializers import DatasetFormatsSerializer
 from cvat.apps.engine.frame_provider import FrameProvider
-from cvat.apps.engine.models import Job, Plugin, StatusChoice, Task, Log
+from cvat.apps.engine.models import Job, StatusChoice, Task, Log
 from cvat.apps.engine.serializers import (
     AnnotationFileSerializer, BasicUserSerializer,
-    DataMetaSerializer, DataSerializer, ExceptionSerializer,
-    FileInfoSerializer, JobSerializer, LabeledDataSerializer,
-    LogEventSerializer, PluginSerializer, ProjectSerializer,
-    RqStatusSerializer, TaskSerializer, UserSerializer, LogSerializer)
+    DataMetaSerializer, DataSerializer, ExceptionSerializer, FileInfoSerializer, JobSerializer, LabeledDataSerializer,
+    LogEventSerializer, ProjectSerializer, RqStatusSerializer, TaskSerializer, UserSerializer, LogSerializer)
 from cvat.settings.base import CSS_3RDPARTY, JS_3RDPARTY
 
 from . import models, task
@@ -243,11 +243,11 @@ class ProjectViewSet(auth.ProjectGetQuerySetMixin, viewsets.ModelViewSet):
             serializer.save(owner=self.request.user)
 
     @swagger_auto_schema(method='get',
-                         operation_summary='Returns information of the tasks of the project with the selected id',
+                         operation_summary='返回具有选定id的项目任务的信息',
                          responses={'200': TaskSerializer(many=True)})
     @action(detail=True, methods=['GET'], serializer_class=TaskSerializer)
     def tasks(self, request, pk):
-        self.get_object()  # force to call check_object_permissions
+        self.get_object()
         queryset = Task.objects.filter(project_id=pk).order_by('-id')
         queryset = auth.filter_task_queryset(queryset, request.user)
 
@@ -278,12 +278,10 @@ class DjangoFilterInspector(CoreAPICompatInspector):
         if isinstance(filter_backend, DjangoFilterBackend):
             result = super(DjangoFilterInspector, self).get_filter_parameters(filter_backend)
             res = result.copy()
-
             for param in result:
                 if param.get('name') == 'project_id' or param.get('name') == 'project':
                     res.remove(param)
             return res
-
         return NotHandled
 
 
@@ -329,14 +327,12 @@ class DjangoFilterInspector(CoreAPICompatInspector):
 @method_decorator(name='partial_update',
                   decorator=swagger_auto_schema(operation_summary='方法对任务中选定的字段执行部分更新'))
 class TaskViewSet(auth.TaskGetQuerySetMixin, viewsets.ModelViewSet):
-    queryset = Task.objects.all().prefetch_related(
-        "label_set__attributespec_set",
-        "segment_set__job_set",
-    ).order_by('-id')
+    filterset_class = TaskFilter
     serializer_class = TaskSerializer
     search_fields = ("name", "owner__username", "mode", "status")
-    filterset_class = TaskFilter
-    ordering_fields = ("id", "name", "owner", "status", "a`ssignee")
+    ordering_fields = ("id", "name", "owner", "status", "assignee")
+    queryset = Task.objects.all().prefetch_related("label_set__attributespec_set", "segment_set__job_set").order_by(
+        '-id')
 
     def get_permissions(self):
         http_method = self.request.method
@@ -432,6 +428,9 @@ class TaskViewSet(auth.TaskGetQuerySetMixin, viewsets.ModelViewSet):
             return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
         else:
             jobId = request.query_params.get('jobId', None)
+
+            LogViewSet.createLog(taskId=pk, userId=request.user.id, message="Load task information")
+
             data_type = request.query_params.get('type', None)
             data_id = request.query_params.get('number', None)
             data_quality = request.query_params.get('quality', 'compressed')
@@ -522,6 +521,7 @@ class TaskViewSet(auth.TaskGetQuerySetMixin, viewsets.ModelViewSet):
     def annotations(self, request, pk):
         db_task = self.get_object()  # force to call check_object_permissions
         if request.method == 'GET':
+            LogViewSet.createLog(taskId=pk, userId=request.user.id, message="Download task annotation data")
             format_name = request.query_params.get('format')
             if format_name:
                 return _export_annotations(db_task=db_task,
@@ -534,12 +534,10 @@ class TaskViewSet(auth.TaskGetQuerySetMixin, viewsets.ModelViewSet):
             else:
                 data = dm.task.get_task_data(pk)
                 serializer = LabeledDataSerializer(data=data)
-                if serializer.is_valid():
+                if serializer.is_valid(raise_exception=True):
                     return Response(serializer.data)
-                else:
-                    print(serializer.errors)
-                    return Response(serializer.errors, status=status.HTTP_200_OK)
         elif request.method == 'PUT':
+            LogViewSet.createLog(taskId=pk, userId=request.user.id, message="Upload task annotation data")
             format_name = request.query_params.get('format')
             if format_name:
                 return _import_annotations(
@@ -550,18 +548,17 @@ class TaskViewSet(auth.TaskGetQuerySetMixin, viewsets.ModelViewSet):
                     format_name=format_name)
             else:
                 serializer = LabeledDataSerializer(data=request.data)
-                if serializer.is_valid():
+                if serializer.is_valid(raise_exception=True):
                     data = dm.task.put_task_data(pk, serializer.data)
                     return Response(data)
-                else:
-                    print(serializer.errors)
-                    return Response(serializer.errors, status=status.HTTP_200_OK)
         elif request.method == 'DELETE':
+            LogViewSet.createLog(taskId=pk, userId=request.user.id, message="Delete task annotation data")
             dm.task.delete_task_data(pk)
             return Response(status=status.HTTP_204_NO_CONTENT)
         elif request.method == 'PATCH':
             # 获取要执行的操作
             action = self.request.query_params.get("action", None)
+            LogViewSet.createLog(taskId=pk, userId=request.user.id, message=action + " task annotation")
             # 判断操作是否允许
             if action not in dm.task.PatchAction.values():
                 raise serializers.ValidationError("请为请求指定正确的“操作”")
@@ -605,6 +602,8 @@ class TaskViewSet(auth.TaskGetQuerySetMixin, viewsets.ModelViewSet):
                          responses={'200': DataMetaSerializer()})
     @action(detail=True, methods=['GET'], serializer_class=DataMetaSerializer, url_path='data/meta')
     def data_info(request, pk):
+        LogViewSet.createLog(taskId=pk, userId=request.user.id, message="Load task data info")
+
         db_task = models.Task.objects.prefetch_related('data__images').select_related('data__video').get(pk=pk)
 
         if hasattr(db_task.data, 'video'):
@@ -650,6 +649,7 @@ class TaskViewSet(auth.TaskGetQuerySetMixin, viewsets.ModelViewSet):
     @action(detail=True, methods=['GET'], serializer_class=None,
             url_path='dataset')
     def dataset_export(self, request, pk):
+        LogViewSet.createLog(taskId=pk, userId=request.user.id, message="Download dataset data")
         db_task = self.get_object()  # force to call check_object_permissions
 
         format_name = request.query_params.get("format", "")
@@ -709,9 +709,11 @@ class JobViewSet(viewsets.GenericViewSet,
     def annotations(self, request, pk):
         self.get_object()  # force to call check_object_permissions
         if request.method == 'GET':
+            LogViewSet.createLog(taskId=pk, userId=request.user.id, message="Download job annotation data")
             data = dm.task.get_job_data(pk)
             return Response(data)
         elif request.method == 'PUT':
+            LogViewSet.createLog(taskId=pk, userId=request.user.id, message="Upload job annotation data")
             format_name = request.query_params.get("format", "")
             if format_name:
                 return _import_annotations(
@@ -733,22 +735,21 @@ class JobViewSet(viewsets.GenericViewSet,
                     print(serializer.errors)
                     return Response(serializer.errors, status=status.HTTP_200_OK)
         elif request.method == 'DELETE':
+            LogViewSet.createLog(taskId=pk, userId=request.user.id, message="Delete job annotation data")
             dm.task.delete_job_data(pk)
             return Response(status=status.HTTP_204_NO_CONTENT)
         elif request.method == 'PATCH':
             action = self.request.query_params.get("action", None)
+            LogViewSet.createLog(taskId=pk, userId=request.user.id, message=action + " job annotation")
             if action not in dm.task.PatchAction.values():
                 raise serializers.ValidationError("请为请求指定正确的“操作”")
             serializer = LabeledDataSerializer(data=request.data)
-            if serializer.is_valid():
+            if serializer.is_valid(raise_exception=True):
                 try:
                     data = dm.task.patch_job_data(pk, serializer.data, action)
                 except (AttributeError, IntegrityError) as e:
                     return Response(data=str(e), status=status.HTTP_200_OK)
                 return Response(data)
-            else:
-                print(serializer.errors)
-                return Response(serializer.errors, status=status.HTTP_200_OK)
 
 
 @method_decorator(name='list',
@@ -802,40 +803,12 @@ class UserViewSet(viewsets.GenericViewSet,
         return Response(serializer.data)
 
 
-class PluginViewSet(viewsets.ModelViewSet):
-    queryset = Plugin.objects.all()
-    serializer_class = PluginSerializer
-
-    # @action(detail=True, methods=['GET', 'PATCH', 'PUT'], serializer_class=None)
-    # def config(self, request, name):
-    #     pass
-
-    # @action(detail=True, methods=['GET', 'POST'], serializer_class=None)
-    # def data(self, request, name):
-    #     pass
-
-    # @action(detail=True, methods=['GET', 'DELETE', 'PATCH', 'PUT'],
-    #     serializer_class=None, url_path='data/(?P<id>\d+)')
-    # def data_detail(self, request, name, id):
-    #     pass
-
-    @action(detail=True, methods=['GET', 'POST'], serializer_class=RqStatusSerializer)
-    def requests(self, request, name):
-        pass
-
-    @action(detail=True, methods=['GET', 'DELETE'],
-            serializer_class=RqStatusSerializer, url_path='requests/(?P<id>\d+)')
-    def request_detail(self, request, name, rq_id):
-        pass
-
-
 def rq_handler(job, exc_type, exc_value, tb):
     job.exc_info = "".join(
         traceback.format_exception_only(exc_type, exc_value))
     job.save()
     if "tasks" in job.id.split("/"):
         return task.rq_handler(job, exc_type, exc_value, tb)
-
     return True
 
 
@@ -855,10 +828,8 @@ def _import_annotations(request, rq_id, rq_func, pk, format_name):
     if not rq_job:
         serializer = AnnotationFileSerializer(data=request.data)
         if serializer.is_valid(raise_exception=True):
-            if format_name not in \
-                [f.DISPLAY_NAME for f in dm.views.get_import_formats()]:
-                raise serializers.ValidationError(
-                    "Unknown input format '{}'".format(format_name))
+            if format_name not in [f.DISPLAY_NAME for f in dm.views.get_import_formats()]:
+                raise serializers.ValidationError("Unknown input format '{}'".format(format_name))
 
             anno_file = serializer.validated_data['annotation_file']
             fd, filename = mkstemp(prefix='cvat_{}'.format(pk))
@@ -937,18 +908,17 @@ def _export_annotations(db_task, rq_id, request, format_name, action, callback, 
         server_address = None
 
     ttl = dm.views.CACHE_TTL.total_seconds()
-    queue.enqueue_call(func=callback,
-                       args=(db_task.id, format_name, server_address), job_id=rq_id,
-                       meta={'request_time': timezone.localtime()},
-                       result_ttl=ttl, failure_ttl=ttl)
+    queue.enqueue_call(func=callback, args=(db_task.id, format_name, server_address), job_id=rq_id,
+                       meta={'request_time': timezone.localtime()}, result_ttl=ttl, failure_ttl=ttl)
     return Response(status=status.HTTP_202_ACCEPTED)
 
 
-class LogViewSet(viewsets.GenericViewSet,
-                 mixins.CreateModelMixin,
-                 mixins.ListModelMixin,
-                 mixins.RetrieveModelMixin,
-                 mixins.UpdateModelMixin):
+class LogViewSet(ModelViewSet):
     queryset = Log.objects.all().order_by('time')
     permission_classes = [IsAuthenticated]
     serializer_class = LogSerializer
+
+    @classmethod
+    def createLog(cls, taskId, userId, message):
+        log = Log(task_id=taskId, user_id=userId, time=timezone.now(), message=message)
+        log.save()

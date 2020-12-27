@@ -94,25 +94,3 @@ class Login(LoginView):
         else:
             print(self.serializer.errors)
             return Response(self.serializer.errors, status=status.HTTP_200_OK)
-
-
-class PasswordChange(PasswordChangeView):
-    serializer_class = PasswordChangeSerializer
-    permission_classes = (IsAuthenticated,)
-
-    @sensitive_post_parameters_m
-    def dispatch(self, *args, **kwargs):
-        return super(PasswordChangeView, self).dispatch(*args, **kwargs)
-
-    def post(self, request, *args, **kwargs):
-        old_password = request.POST.get("old_password", None)
-        print(old_password)
-        print(request.user)
-        print(request.user.check_password(old_password))
-        if request.user.check_password(old_password):
-            serializer = self.get_serializer(data=request.data)
-            serializer.is_valid(raise_exception=True)
-            serializer.save()
-            return Response({"detail": "New password has been saved."})
-        else:
-            return Response({"error": "旧密码错误！"})

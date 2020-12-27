@@ -30,8 +30,8 @@ def _import(src_file, task_data):
         Archive(src_file.name).extractall(tmp_dir)
 
         image_info = {}
-        anno_files = glob(osp.join(tmp_dir, '**', '*.txt'), recursive=True)
-        for filename in anno_files:
+        annotationFiles = glob(osp.join(tmp_dir, '**', '*.txt'), recursive=True)
+        for filename in annotationFiles:
             filename = osp.splitext(osp.basename(filename))[0]
             frame_info = None
             try:

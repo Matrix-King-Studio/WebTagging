@@ -44,11 +44,9 @@ def bulk_create(db_model, objects, flt_param):
             else:
                 ids = list(db_model.objects.filter(**flt_param).values_list('id', flat=True))
                 db_model.objects.bulk_create(objects)
-
                 return list(db_model.objects.exclude(id__in=ids).filter(**flt_param))
         else:
             return db_model.objects.bulk_create(objects)
-
     return []
 
 
@@ -367,10 +365,7 @@ class JobAnnotation:
                 ]))
 
     def _init_tags_from_db(self):
-        db_tags = self.db_job.labeledimage_set.prefetch_related(
-            "label",
-            "labeledimageattributeval_set"
-        ).values(
+        db_tags = self.db_job.labeledimage_set.prefetch_related("label","labeledimageattributeval_set").values(
             'id',
             'frame',
             'label_id',
@@ -400,10 +395,7 @@ class JobAnnotation:
         self.ir_data.tags = serializer.data
 
     def _init_shapes_from_db(self):
-        db_shapes = self.db_job.labeledshape_set.prefetch_related(
-            "label",
-            "labeledshapeattributeval_set"
-        ).values(
+        db_shapes = self.db_job.labeledshape_set.prefetch_related("label","labeledshapeattributeval_set").values(
             'id',
             'label_id',
             'type',
