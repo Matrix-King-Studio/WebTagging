@@ -9,6 +9,7 @@ from tempfile import mkstemp
 from django.conf import settings
 from django.contrib.auth.models import User
 from django.db import IntegrityError
+from django.forms import model_to_dict
 from django.http import HttpResponse, HttpResponseNotFound
 from django.shortcuts import render
 from django.utils import timezone
@@ -34,7 +35,7 @@ from cvat.apps.authentication import auth
 from cvat.apps.authentication.decorators import login_required
 from cvat.apps.dataset_manager.serializers import DatasetFormatsSerializer
 from cvat.apps.engine.frame_provider import FrameProvider
-from cvat.apps.engine.models import Job, StatusChoice, Task, Log
+from cvat.apps.engine.models import Job, StatusChoice, Task, Log, Segment
 from cvat.apps.engine.serializers import (
     AnnotationFileSerializer, BasicUserSerializer,
     DataMetaSerializer, DataSerializer, ExceptionSerializer, FileInfoSerializer, JobSerializer, LabeledDataSerializer,
@@ -406,7 +407,7 @@ class TaskViewSet(auth.TaskGetQuerySetMixin, viewsets.ModelViewSet):
                                                in_=openapi.IN_QUERY,
                                                required=True,
                                                type=openapi.TYPE_NUMBER,
-                                               description="标识块或帧的唯一数值对于“预览”类型无关紧要"),
+                                               description="标识块或帧的唯一数值，对于“预览”类型无关紧要"),
                          ]
                          )
     @action(detail=True, methods=['POST', 'GET'])
@@ -427,13 +428,19 @@ class TaskViewSet(auth.TaskGetQuerySetMixin, viewsets.ModelViewSet):
             task.create(db_task.id, data)
             return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
         else:
-            jobId = request.query_params.get('jobId', None)
-
-            LogViewSet.createLog(taskId=pk, userId=request.user.id, message="Load task information")
+            LogViewSet.createLog(taskId=pk, userId=request.user.id, message="Load task data")
 
             data_type = request.query_params.get('type', None)
             data_id = request.query_params.get('number', None)
             data_quality = request.query_params.get('quality', 'compressed')
+
+            jobId = request.query_params.get('jobId', None)
+            if jobId:
+                segment = Segment.objects.filter(job__pk=jobId).first()
+                segment = model_to_dict(segment)
+
+                if jobId and not int(segment["start_frame"]) <= int(data_id) <= int(segment["stop_frame"]):
+                    return Response(data="不是你的终究不是你的", status=status.HTTP_403_FORBIDDEN)
 
             possible_data_type_values = ('chunk', 'frame', 'preview')
             possible_quality_values = ('compressed', 'original')

@@ -20,7 +20,6 @@ def _export(dst_file, task_data, save_images=False):
     with TemporaryDirectory() as temp_dir:
         converter = dm_env.make_converter('yolo', save_images=save_images)
         converter(extractor, save_dir=temp_dir)
-
         make_zip_archive(temp_dir, dst_file)
 
 

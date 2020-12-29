@@ -91,9 +91,7 @@ def clear_export_cache(task_id, file_path, file_ctime):
     try:
         if osp.exists(file_path) and osp.getctime(file_path) == file_ctime:
             os.remove(file_path)
-            slogger.task[task_id].info(
-                "Export cache file '{}' successfully removed" \
-                    .format(file_path))
+            slogger.task[task_id].info("Export cache file '{}' successfully removed".format(file_path))
     except Exception:
         log_exception(slogger.task[task_id])
         raise

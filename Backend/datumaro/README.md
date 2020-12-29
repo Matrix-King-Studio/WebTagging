@@ -1,6 +1,6 @@
-# Dataset Framework (Datumaro)
+# 数据集框架 (Datumaro)
 
-A framework to build, transform, and analyze datasets.
+构建、转换和分析数据集的框架。
 
 <!--lint disable fenced-code-flag-->
 ```
@@ -14,41 +14,41 @@ VOC-like dataset  --                              ---> Publication etc.
 
 ## Contents
 
-- [Documentation](#documentation)
+- [文档](#文档)
 - [Features](#features)
 - [Installation](#installation)
 - [Usage](#usage)
 - [Examples](#examples)
 - [Contributing](#contributing)
 
-## Documentation
+## 文档
 
-- [User manual](docs/user_manual.md)
-- [Design document](docs/design.md)
+- [用户手册](docs/用户手册.md)
+- [设计文档](docs/设计.md)
 - [Contributing](CONTRIBUTING.md)
 
 ## Features
 
-- Dataset format conversions:
+- 数据集格式转换:
   - COCO (`image_info`, `instances`, `person_keypoints`, `captions`, `labels`*)
-    - [Format specification](http://cocodataset.org/#format-data)
+    - [格式规范](http://cocodataset.org/#format-data)
     - `labels` are our extension - like `instances` with only `category_id`
   - PASCAL VOC (`classification`, `detection`, `segmentation` (class, instances), `action_classification`, `person_layout`)
-    - [Format specification](http://host.robots.ox.ac.uk/pascal/VOC/voc2012/htmldoc/index.html)
+    - [格式规范](http://host.robots.ox.ac.uk/pascal/VOC/voc2012/htmldoc/index.html)
   - YOLO (`bboxes`)
-    - [Format specification](https://github.com/AlexeyAB/darknet#how-to-train-pascal-voc-data)
+    - [格式规范](https://github.com/AlexeyAB/darknet#how-to-train-pascal-voc-data)
   - TF Detection API (`bboxes`, `masks`)
-    - Format specifications: [bboxes](https://github.com/tensorflow/models/blob/master/research/object_detection/g3doc/using_your_own_dataset.md), [masks](https://github.com/tensorflow/models/blob/master/research/object_detection/g3doc/instance_segmentation.md)
+    - 格式规范s: [bboxes](https://github.com/tensorflow/models/blob/master/research/object_detection/g3doc/using_your_own_dataset.md), [masks](https://github.com/tensorflow/models/blob/master/research/object_detection/g3doc/instance_segmentation.md)
   - CVAT
-    - [Format specification](https://github.com/opencv/cvat/blob/develop/cvat/apps/documentation/xml_format.md)
-- Dataset building operations:
-  - Merging multiple datasets into one
-  - Dataset filtering with custom conditions, for instance:
-    - remove all annotations except polygons of a certain class
-    - remove images without a specific class
-    - remove occluded annotations from images
-    - keep only vertically-oriented images
-    - remove small area bounding boxes from annotations
+    - [格式规范](https://github.com/opencv/cvat/blob/develop/cvat/apps/documentation/xml_format.md)
+- 数据集生成操作:
+  - 将多个数据集合并为一个
+  - 例如，使用自定义条件筛选数据集：
+    - 删除除某个类的多边形之外的所有注释
+    - 删除没有特定类的图像
+    - 从图像中删除被遮挡的标注
+    - 只保留垂直方向的图像
+    - 从标注中删除小区域边界框
   - Annotation conversions, for instance
     - polygons to instance masks and vise-versa
     - apply a custom colormap for mask annotations
@@ -58,7 +58,7 @@ VOC-like dataset  --                              ---> Publication etc.
   - Inference (OpenVINO and custom models)
   - Explainable AI ([RISE algorithm](https://arxiv.org/abs/1806.07421))
 
-> Check the [design document](docs/design.md) for a full list of features
+> Check the [design document](docs/设计.md) for a full list of features
 
 ## Installation
 
