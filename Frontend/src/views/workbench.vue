@@ -94,7 +94,7 @@ export default {
     /** 用户身份判断需完善*/
     getCurrentUserInfo(){
       this.$http.get('v1/users/self').then((e)=>{
-        console.log(e.data);
+        console.log('当前用户信息', e.data);
         this.userInfo = e.data
         if(e.data.groups[0] === 'annotator'){
           this.userId = false
