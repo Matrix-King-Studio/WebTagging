@@ -502,9 +502,9 @@ class TaskViewSet(auth.TaskGetQuerySetMixin, viewsets.ModelViewSet):
                                                required=False,
                                                enum=['download'])],
                          responses={
-                             '202': openapi.Response(description='已开始转储批注'),
-                             '201': openapi.Response(description='注释文件已准备好下载'),
-                             '200': openapi.Response(description='已开始下载文件')})
+                             '202': openapi.Response(description='开始转储标注数据集'),
+                             '201': openapi.Response(description='标注数据集准备下载'),
+                             '200': openapi.Response(description='开始下载标注数据集')})
     @swagger_auto_schema(method='put', operation_summary='方法允许上载任务批注',
                          manual_parameters=[
                              openapi.Parameter('format', openapi.IN_QUERY,
@@ -880,14 +880,14 @@ def _export_annotations(db_task, rq_id, request, format_name, action, callback, 
 
     queue = django_rq.get_queue("default")
     rqJob = queue.fetch_job(rq_id)
-    if rqJob:
+    if rqJob:       # 队列中任务存在
         lastTaskUpdateTime = timezone.localtime(db_task.updated_date)
         request_time = rqJob.meta.get('request_time', None)
         if request_time is None or request_time < lastTaskUpdateTime:
             rqJob.cancel()
             rqJob.delete()
         else:
-            if rqJob.is_finished:
+            if rqJob.is_finished:       # 标注数据集生成成功
                 file_path = rqJob.return_value
                 if action == "download" and osp.exists(file_path):
                     rqJob.delete()
@@ -898,11 +898,11 @@ def _export_annotations(db_task, rq_id, request, format_name, action, callback, 
                 else:
                     if osp.exists(file_path):
                         return Response(status=status.HTTP_201_CREATED)
-            elif rqJob.is_failed:
+            elif rqJob.is_failed:       # 标注数据集生成失败
                 exc_info = str(rqJob.exc_info)
                 rqJob.delete()
                 return Response(exc_info, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-            else:
+            else:                       # 标注数据集正在生成
                 return Response(status=status.HTTP_202_ACCEPTED)
     try:
         if request.scheme:

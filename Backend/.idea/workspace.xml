@@ -2,22 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="8aff03a2-0667-4496-ac86-7694afcaba37" name="Default Changelist" comment="Alex：用户获取待标注图片的权限">
-      <change afterPath="$PROJECT_DIR$/../工作日志/2020-12-13 .docx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../工作日志/2020-12-14.docx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../工作日志/2020-12-15.docx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../工作日志/2020-12-21.docx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../工作日志/2020-12-24.docx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../工作日志/2020-12-25.docx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../工作日志/2020-12-27.docx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../工作日志/2020-12-29.docx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../工作日志/2020-12-30.docx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../工作日志/2020-12-31.docx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../工作日志/刘兆峰-12月-工作日志.zip" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/engine/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/engine/models.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cvat/apps/engine/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/engine/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Frontend/src/components/workbench/setting.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../Frontend/src/components/workbench/setting.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../工作日志/刘兆峰-11月-工作日志.zip" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -98,7 +84,7 @@
       <workItem from="1609307271923" duration="4763000" />
       <workItem from="1609390948505" duration="73000" />
       <workItem from="1609391108756" duration="25000" />
-      <workItem from="1609498328472" duration="10636000" />
+      <workItem from="1609498328472" duration="11457000" />
     </task>
     <task id="LOCAL-00001" summary="2020-12-21">
       <created>1608530665874</created>
