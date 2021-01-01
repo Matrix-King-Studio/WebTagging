@@ -42,15 +42,15 @@
           :key="item.index"
           :id="'style_'+(item.index)"
           class="label-obj"
-          @mouseenter="showRecObj(item.index),showLabObj(item.index)"
-          @mouseleave="hideRecObj(item.index),hideLabObj(item.index)"
+          @mouseenter="showRecObj(item.index), showLabObj(item.index)"
+          @mouseleave="hideRecObj(item.index), hideLabObj(item.index)"
         >
           <!--右边的用来选择标签的框，上半部分，显示序号和标签下拉选择-->
           <div class="label-info">
             <span>{{ item.index }}</span>
             <div class="change-label">
               <el-select
-                v-model="shapes.rectangles[item.index-1].label_id"
+                v-model="item.label_id"
                 placeholder="请选择"
                 size="mini"
                 @change="saveTagsToStore"
@@ -70,18 +70,18 @@
               class="func lock"
               @click="lockRecObj(item.index)"
             >
-              <i :class="[{'el-icon-lock':shapes.rectangles[item.index-1].isLock},{'el-icon-unlock':!shapes.rectangles[item.index-1].isLock}]" />
+              <i :class="[{'el-icon-lock':item.isLock},{'el-icon-unlock':!item.isLock}]" />
             </div>
             <div
               class="func visible"
               @click="invisibleRecObj(item.index)"
             >
               <span
-                v-show="!shapes.rectangles[item.index-1].isInvisible"
+                v-show="!item.isInvisible"
                 class="iconfont"
               >&#xe9c1;</span>
               <span
-                v-show="shapes.rectangles[item.index-1].isInvisible"
+                v-show="item.isInvisible"
                 class="iconfont"
               >&#xe6fe;</span>
             </div>
@@ -192,7 +192,7 @@ export default {
       shapes: {
         rectangles: [],
       },
-      // rectangleIndex: 1,
+      rectangleIndex: 1,
       recTop: 0,
       recLeft: 0,
 
@@ -249,7 +249,7 @@ export default {
     //获取images信息列表
     getImagesInfo() {
       this.$http.get('v1/tasks/' + this.$route.params.index + '/data/meta').then(e => {
-        console.log(e.data);
+        console.log('所有image信息',e.data)
         this.imagesSize = e.data.size
         this.start_frame = e.data.start_frame
         this.stop_frame = e.data.stop_frame
@@ -313,7 +313,7 @@ export default {
       this.myCanvas.height = document.body.clientHeight - 35
       console.log('3.1重置画布大小完成')
       this.drawImages()
-      this.reDrawTags(2, this.imageIndex)
+      this.reDrawTags(2, this.imageIndex - 1)
     },
     //绘制图片
     drawImages() {
@@ -326,7 +326,7 @@ export default {
         console.log("4.base64数据嵌入完成");
         img.onload = ()=>{
           // console.log('图片原始尺寸' + img.width, img.height);
-          //图片比窗口长，则上下填充满
+          //图片比窗口高，则上下填充满
           if (img.width / img.height < (this.myCanvas.width - 300) / this.myCanvas.height) {
             this.imageInfo = {
               left: (this.myCanvas.width - 300 - this.myCanvas.height * img.width / img.height) / 2 + 5,
@@ -334,7 +334,7 @@ export default {
               width: this.myCanvas.height * img.width / img.height - 10,
               height: this.myCanvas.height - 10
             }
-          } else {//窗口比图片长，左右填满
+          } else {//图片比窗口长，左右填满
             this.imageInfo = {
               left: 5,
               top: (this.myCanvas.height - (this.myCanvas.width - 300) * img.height / img.width) / 2 + 5,
@@ -355,6 +355,7 @@ export default {
             this.$refs.tipsBox.parentNode.removeChild(this.$refs.tipsBox)
             this.isFirst = false
           }
+
           this.isChangingImage = false
         }
       }, 100)
@@ -464,6 +465,7 @@ export default {
         if (mPos.top >= topBorder && mPos.top <= bottomBorder && mPos.left >= leftBorder && mPos.left <= rightBorder) {
           if (!this.isDrawing) {
             //转换绘制状态
+            /** 直接改成true*/
             this.isDrawing = !this.isDrawing
             //创建元素并设置元素的左上角位置
             let rec = document.createElement('div')
@@ -480,8 +482,10 @@ export default {
             rec.onmouseleave = (e) => {
               this.hideLabObj(e.target.id)
             }
+
             this.recTop = mPos.top
             this.recLeft = mPos.left
+
             //向矩形框数组添加对象
             let r = {
               type: "rectangle",
@@ -490,13 +494,15 @@ export default {
               index: this.rectangleIndex,//矩形框序号
               el: rec,//矩形框DOM元素
               // id:5,
-              frame: this.imageIndex + 1,//第几张图片，从1开始
+              frame: this.imageIndex,//第几张图片，从1开始
               label_id: this.options[0].value,//一级标签默认选择第一个
               group: 0,
+
               isLock: false,
               isInvisible: false,
+
               attributes: [],
-              points: [],//记录矩形框位置
+              points: [],/** 记录矩形框位置*/
             }
             this.rectangleIndex++
             this.shapes.rectangles.push(r)
@@ -516,9 +522,11 @@ export default {
             ]
             console.log('矩形框两点数据', this.shapes.rectangles[this.shapes.rectangles.length - 1].points);
             //画完自动保存
+            /** 直接调接口*/
             this.saveTagsToStore()
             //完成一个标记,切换回鼠标模式
             // this.initDrawTools('cursor')
+            this.saveTagsToServer()
           }
         }
       }
@@ -561,7 +569,7 @@ export default {
         params: {
           id: this.$route.params.index,
           page: 1,
-          page_size: 10
+          page_size: 20
         }
       }).then((e) => {
         this.jobId = e.data.results[0].segments[0].jobs[0].id
@@ -584,6 +592,10 @@ export default {
         message: '自动保存成功',
         type: "success"
       })
+    },
+    //将标注信息存储到服务器中
+    saveTagsToServer(){
+
     },
     //提交前询问
     isPrepare() {
@@ -622,7 +634,7 @@ export default {
      * 是否锁定的参数没有保存回传*/
     reDrawTags(mod, index) {
       //切换到了第几张图片
-      let imgIndex = index + 1
+      let imgIndex = index
       let TagsInfo = {}
       let that = this
       if (mod === 1) {
@@ -733,25 +745,20 @@ export default {
     },
     //删除
     deleteRecObj(index) {
-
       // console.log(this.shapes.rectangles[index-1].el);
       //删除元素
       this.shapes.rectangles[index - 1].el.parentNode.removeChild(this.shapes.rectangles[index - 1].el)
-      //
+      //之后元素的序号往前挪
       for (let i = index; i < this.shapes.rectangles.length; i++) {
         // console.log(this.shapes.rectangles[i]);
         this.shapes.rectangles[i].index -= 1
       }
       //删除数据
       this.shapes.rectangles.splice(index - 1, 1)
-
       // console.log(this.shapes.rectangles);
-
       this.rectangleIndex--
-
       this.$store.commit('cleanTagsInfo', this.imageIndex)
       this.$store.commit('saveTagsInfo', this.shapes)
-
       this.$message({
         message: "元素成功移除",
         type: "success"

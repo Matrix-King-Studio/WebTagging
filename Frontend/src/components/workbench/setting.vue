@@ -2,10 +2,16 @@
   <div class="setting-page">
     <div class="task-info">
       <div class="basic-info-box">
-        <div class="task-name">
+        <div
+          v-if="taskInformation.results"
+          class="task-name"
+        >
           <span>项目名：{{ taskInformation.results[0].name }}</span>
         </div>
-        <div class="basic-info">
+        <div
+          v-if="taskInformation.results"
+          class="basic-info"
+        >
           <div class="info">
             <div>图像质量：{{ taskInformation.results[0].image_quality }}</div>
           </div>
@@ -109,6 +115,7 @@
       <span>
         <el-button
           v-for="item in exportTaggingFormat"
+          :key="item.name"
           type="success"
           plain
           @click="updateData(item)"
@@ -190,7 +197,7 @@ export default {
         }
       }).then((e) => {
         this.taskInformation = e.data
-        console.log(this.taskInformation);
+        console.log('当前项目信息', this.taskInformation);
         this.jobsInfo = e.data.results[0].segments
         for (let i = 0; i < this.jobsInfo.length; i++) {
           this.jobsInfo[i]["index"] = i
@@ -323,7 +330,7 @@ export default {
         }
 
         .delete {
-          width: 40px;
+          width: 60px;
         }
       }
     }

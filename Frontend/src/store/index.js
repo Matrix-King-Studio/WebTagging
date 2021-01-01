@@ -126,15 +126,13 @@ export default new Vuex.Store({
     },
     //多次保存到时候先清除标注对象
     cleanTagsInfo(state,frame){
-      let imgIndex = frame + 1
 
       // console.log(state.imageTags.shapes)
-      // console.log('开始删除第'+imgIndex+'张图片的信息')
+      console.log('开始删除第'+frame+'张图片的信息')
 
       for(let l = 0;l < state.imageTags.shapes.length;l++){
-        console.log(l)
-        if(state.imageTags.shapes[l].frame === imgIndex){
-          console.log(state.imageTags.shapes[l])
+        console.log(state.imageTags.shapes[l])
+        if(state.imageTags.shapes[l].frame === frame){
           state.imageTags.shapes.splice(l,1)
           l--
         }
