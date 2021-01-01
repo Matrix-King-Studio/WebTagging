@@ -353,19 +353,19 @@ class TaskViewSet(auth.TaskGetQuerySetMixin, viewsets.ModelViewSet):
         return [perm() for perm in permissions]
 
     def perform_create(self, serializer):
-        def validate_task_limit(owner):
+        def validateTaskLimit(master):
             admin_perm = auth.AdminRolePermission()
-            is_admin = admin_perm.has_permission(self.request, self)
-            if not is_admin and settings.RESTRICTIONS['task_limit'] is not None and \
-                Task.objects.filter(owner=owner).count() >= settings.RESTRICTIONS['task_limit']:
-                raise serializers.ValidationError('用户拥有最大数量的任务')
+            isAdmin = admin_perm.has_permission(self.request, self)
+            if not isAdmin and settings.RESTRICTIONS['task_limit'] is not None:
+                if Task.objects.filter(owner=master).count() >= settings.RESTRICTIONS['task_limit']:
+                    raise serializers.ValidationError('用户拥有最大数量的任务')
 
         owner = self.request.data.get('owner', None)
         if owner:
-            validate_task_limit(owner)
+            validateTaskLimit(owner)
             serializer.save()
         else:
-            validate_task_limit(self.request.user)
+            validateTaskLimit(self.request.user)
             serializer.save(owner=self.request.user)
 
     def perform_destroy(self, instance):
@@ -376,9 +376,7 @@ class TaskViewSet(auth.TaskGetQuerySetMixin, viewsets.ModelViewSet):
             shutil.rmtree(instance.data.get_data_dirname(), ignore_errors=True)
             instance.data.delete()
 
-    @swagger_auto_schema(method='get',
-                         operation_summary='返回特定任务的作业列表',
-                         responses={'200': JobSerializer(many=True)})
+    @swagger_auto_schema(method='get', operation_summary='返回特定任务的作业列表', responses={'200': JobSerializer(many=True)})
     @action(detail=True, methods=['GET'], serializer_class=JobSerializer)
     def jobs(self, request, pk):
         self.get_object()  # force to call check_object_permissions
@@ -434,12 +432,14 @@ class TaskViewSet(auth.TaskGetQuerySetMixin, viewsets.ModelViewSet):
             data_id = request.query_params.get('number', None)
             data_quality = request.query_params.get('quality', 'compressed')
 
+            # 管理员或项目创建者调用时没有 jobId 参数则可以拿到所有的图片
             jobId = request.query_params.get('jobId', None)
             if jobId:
                 segment = Segment.objects.filter(job__pk=jobId).first()
                 segment = model_to_dict(segment)
 
-                if jobId and not int(segment["start_frame"]) <= int(data_id) <= int(segment["stop_frame"]):
+                # 判断用户请求的图片 index 在所请求 job 的范围内
+                if not int(segment["start_frame"]) <= int(data_id) <= int(segment["stop_frame"]):
                     return Response(data="不是你的终究不是你的", status=status.HTTP_403_FORBIDDEN)
 
             possible_data_type_values = ('chunk', 'frame', 'preview')
@@ -530,6 +530,7 @@ class TaskViewSet(auth.TaskGetQuerySetMixin, viewsets.ModelViewSet):
         if request.method == 'GET':
             LogViewSet.createLog(taskId=pk, userId=request.user.id, message="Download task annotation data")
             format_name = request.query_params.get('format')
+            print('query_params.get("action", "") = ', request.query_params.get("action", ""))
             if format_name:
                 return _export_annotations(db_task=db_task,
                                            rq_id="/api/v1/tasks/{}/annotations/{}".format(pk, format_name),
@@ -540,6 +541,7 @@ class TaskViewSet(auth.TaskGetQuerySetMixin, viewsets.ModelViewSet):
                                            filename=request.query_params.get("filename", "").lower())
             else:
                 data = dm.task.get_task_data(pk)
+                print("data = ", data)
                 serializer = LabeledDataSerializer(data=data)
                 if serializer.is_valid(raise_exception=True):
                     return Response(serializer.data)
@@ -868,45 +870,40 @@ def _import_annotations(request, rq_id, rq_func, pk, format_name):
 
 
 def _export_annotations(db_task, rq_id, request, format_name, action, callback, filename):
-    # 如果action提供了意外的参数，返回错误结果
+    # 如果 action 提供了意外的参数，返回错误结果
     if action not in {"", "download"}:
         raise serializers.ValidationError("为请求指定了意外的操作")
 
-    # 如果format_name不是允许的格式，返回错误结果
+    # 如果 format_name 不是允许的格式，返回错误结果
     if format_name not in [f.DISPLAY_NAME for f in dm.views.get_export_formats()]:
         raise serializers.ValidationError("为请求指定的格式未知")
 
     queue = django_rq.get_queue("default")
-
-    rq_job = queue.fetch_job(rq_id)
-    if rq_job:
-        last_task_update_time = timezone.localtime(db_task.updated_date)
-        request_time = rq_job.meta.get('request_time', None)
-        if request_time is None or request_time < last_task_update_time:
-            rq_job.cancel()
-            rq_job.delete()
+    rqJob = queue.fetch_job(rq_id)
+    if rqJob:
+        lastTaskUpdateTime = timezone.localtime(db_task.updated_date)
+        request_time = rqJob.meta.get('request_time', None)
+        if request_time is None or request_time < lastTaskUpdateTime:
+            rqJob.cancel()
+            rqJob.delete()
         else:
-            if rq_job.is_finished:
-                file_path = rq_job.return_value
+            if rqJob.is_finished:
+                file_path = rqJob.return_value
                 if action == "download" and osp.exists(file_path):
-                    rq_job.delete()
-
-                    timestamp = datetime.strftime(last_task_update_time, "%Y_%m_%d_%H_%M_%S")
+                    rqJob.delete()
+                    timestamp = datetime.strftime(lastTaskUpdateTime, "%Y_%m_%d_%H_%M_%S")
                     filename = filename or "task_{}-{}-{}{}".format(
-                        db_task.name, timestamp,
-                        format_name, osp.splitext(file_path)[1])
+                        db_task.name, timestamp, format_name, osp.splitext(file_path)[1])
                     return sendfile(request, file_path, attachment=True, attachment_filename=filename.lower())
                 else:
                     if osp.exists(file_path):
                         return Response(status=status.HTTP_201_CREATED)
-            elif rq_job.is_failed:
-                exc_info = str(rq_job.exc_info)
-                rq_job.delete()
-                return Response(exc_info,
-                                status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            elif rqJob.is_failed:
+                exc_info = str(rqJob.exc_info)
+                rqJob.delete()
+                return Response(exc_info, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
             else:
                 return Response(status=status.HTTP_202_ACCEPTED)
-
     try:
         if request.scheme:
             server_address = request.scheme + '://'
@@ -920,7 +917,19 @@ def _export_annotations(db_task, rq_id, request, format_name, action, callback, 
     return Response(status=status.HTTP_202_ACCEPTED)
 
 
+class LogFilter(filters.FilterSet):
+    task = filters.CharFilter(field_name="task__name", lookup_expr="icontains")
+    user = filters.CharFilter(field_name="user__username", lookup_expr="icontains")
+    time = filters.DateTimeFilter(field_name="time", lookup_expr="icontains")
+    message = filters.CharFilter(field_name="message", lookup_expr="icontains")
+
+    class Meta:
+        model = Log
+        fields = ("id", "task_id", "task", "user", "time", "message")
+
+
 class LogViewSet(ModelViewSet):
+    filterset_class = LogFilter
     queryset = Log.objects.all().order_by('time')
     permission_classes = [IsAuthenticated]
     serializer_class = LogSerializer

@@ -434,3 +434,6 @@ class Log(models.Model):
 
     time = models.DateTimeField(auto_now_add=True)
     message = models.CharField(max_length=4096)
+
+    def __str__(self):
+        return self.task.name + " - " + self.user.username + " - " + self.message
