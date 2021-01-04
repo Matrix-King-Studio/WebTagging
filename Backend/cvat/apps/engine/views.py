@@ -530,18 +530,15 @@ class TaskViewSet(auth.TaskGetQuerySetMixin, viewsets.ModelViewSet):
         if request.method == 'GET':
             LogViewSet.createLog(taskId=pk, userId=request.user.id, message="Download task annotation data")
             format_name = request.query_params.get('format')
-            print('query_params.get("action", "") = ', request.query_params.get("action", ""))
             if format_name:
                 return _export_annotations(db_task=db_task,
                                            rq_id="/api/v1/tasks/{}/annotations/{}".format(pk, format_name),
                                            request=request,
                                            action=request.query_params.get("action", "").lower(),
                                            callback=dm.views.export_task_annotations,
-                                           format_name=format_name,
-                                           filename=request.query_params.get("filename", "").lower())
+                                           format_name=format_name)
             else:
                 data = dm.task.get_task_data(pk)
-                print("data = ", data)
                 serializer = LabeledDataSerializer(data=data)
                 if serializer.is_valid(raise_exception=True):
                     return Response(serializer.data)
@@ -667,9 +664,7 @@ class TaskViewSet(auth.TaskGetQuerySetMixin, viewsets.ModelViewSet):
                                    request=request,
                                    action=request.query_params.get("action", "").lower(),
                                    callback=dm.views.export_task_as_dataset,
-                                   format_name=format_name,
-                                   filename=request.query_params.get("filename", "").lower(),
-                                   )
+                                   format_name=format_name)
 
 
 @method_decorator(name='retrieve',
@@ -869,7 +864,7 @@ def _import_annotations(request, rq_id, rq_func, pk, format_name):
     return Response(status=status.HTTP_202_ACCEPTED)
 
 
-def _export_annotations(db_task, rq_id, request, format_name, action, callback, filename):
+def _export_annotations(db_task, rq_id, request, format_name, action, callback):
     # 如果 action 提供了意外的参数，返回错误结果
     if action not in {"", "download"}:
         raise serializers.ValidationError("为请求指定了意外的操作")
@@ -880,29 +875,29 @@ def _export_annotations(db_task, rq_id, request, format_name, action, callback, 
 
     queue = django_rq.get_queue("default")
     rqJob = queue.fetch_job(rq_id)
-    if rqJob:       # 队列中任务存在
+    if rqJob:  # 队列中任务存在
         lastTaskUpdateTime = timezone.localtime(db_task.updated_date)
         request_time = rqJob.meta.get('request_time', None)
         if request_time is None or request_time < lastTaskUpdateTime:
             rqJob.cancel()
             rqJob.delete()
         else:
-            if rqJob.is_finished:       # 标注数据集生成成功
+            if rqJob.is_finished:  # 标注数据集生成成功
                 file_path = rqJob.return_value
                 if action == "download" and osp.exists(file_path):
                     rqJob.delete()
                     timestamp = datetime.strftime(lastTaskUpdateTime, "%Y_%m_%d_%H_%M_%S")
-                    filename = filename or "task_{}-{}-{}{}".format(
+                    filename = "task_{}-{}-{}{}".format(
                         db_task.name, timestamp, format_name, osp.splitext(file_path)[1])
                     return sendfile(request, file_path, attachment=True, attachment_filename=filename.lower())
                 else:
                     if osp.exists(file_path):
                         return Response(status=status.HTTP_201_CREATED)
-            elif rqJob.is_failed:       # 标注数据集生成失败
+            elif rqJob.is_failed:  # 标注数据集生成失败
                 exc_info = str(rqJob.exc_info)
                 rqJob.delete()
                 return Response(exc_info, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-            else:                       # 标注数据集正在生成
+            else:  # 标注数据集正在生成
                 return Response(status=status.HTTP_202_ACCEPTED)
     try:
         if request.scheme:

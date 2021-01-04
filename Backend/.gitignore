@@ -55,3 +55,5 @@ pnpm-debug.log*
 *.sw?
 
 /工作日志
+*.doc
+*.zip

@@ -1,7 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="8aff03a2-0667-4496-ac86-7694afcaba37" name="Default Changelist" comment="Alex：用户获取待标注图片的权限">
+    <list default="true" id="8aff03a2-0667-4496-ac86-7694afcaba37" name="Default Changelist" comment="Alex：更新厚点git ignore文件">
+      <change afterPath="$PROJECT_DIR$/../工作日志/2020-10-03.docx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../工作日志/2020-10-05.docx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../工作日志/2020-10-09.docx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../工作日志/2020-10-11.docx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../工作日志/2020-10-15.docx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../工作日志/2020-10-18.docx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../工作日志/2020-10-23.docx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../工作日志/2020-10-25.docx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../工作日志/2020-10-26.docx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../工作日志/2020-10-28.docx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../工作日志/2020-11-15.docx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../工作日志/2020-11-17.docx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../工作日志/2020-11-19.docx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../工作日志/2020-11-23.docx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../工作日志/2020-11-25.docx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../工作日志/2020-11-27.docx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../工作日志/2020-11-28.docx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../工作日志/2020-11-29.docx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../工作日志/2020-12-13 .docx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../工作日志/2020-12-14.docx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../工作日志/2020-12-15.docx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../工作日志/2020-12-21.docx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../工作日志/2020-12-24.docx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../工作日志/2020-12-25.docx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../工作日志/2020-12-27.docx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../工作日志/2020-12-29.docx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../工作日志/2020-12-30.docx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../工作日志/2020-12-31.docx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../工作日志/刘兆峰-12月-工作日志.zip" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cvat/apps/engine/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/engine/views.py" afterDir="false" />
     </list>
@@ -84,7 +114,9 @@
       <workItem from="1609307271923" duration="4763000" />
       <workItem from="1609390948505" duration="73000" />
       <workItem from="1609391108756" duration="25000" />
-      <workItem from="1609498328472" duration="11457000" />
+      <workItem from="1609498328472" duration="11720000" />
+      <workItem from="1609589984078" duration="612000" />
+      <workItem from="1609757655238" duration="946000" />
     </task>
     <task id="LOCAL-00001" summary="2020-12-21">
       <created>1608530665874</created>
@@ -107,7 +139,14 @@
       <option name="project" value="LOCAL" />
       <updated>1609246528310</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Alex：更新厚点git ignore文件">
+      <created>1609759794620</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1609759794620</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -129,6 +168,7 @@
     <MESSAGE value="2020-12-21" />
     <MESSAGE value="2020-12-27" />
     <MESSAGE value="Alex：用户获取待标注图片的权限" />
-    <option name="LAST_COMMIT_MESSAGE" value="Alex：用户获取待标注图片的权限" />
+    <MESSAGE value="Alex：更新厚点git ignore文件" />
+    <option name="LAST_COMMIT_MESSAGE" value="Alex：更新厚点git ignore文件" />
   </component>
 </project>
