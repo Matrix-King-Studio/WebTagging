@@ -2,6 +2,7 @@
   <div class="item" ref="item" @mouseenter="showStart" @mouseleave="hideStart">
     <span class="pro-name">{{ proInfo.name }}</span>
     <span class="pro-info">{{ proInfo.describe }}</span>
+    <span v-if="!userInfo" class="pro-id">任务Id:{{ proInfo.segIndex }}</span>
 <!--    <div class="done">-->
 <!--      <span class="remain">剩余待标记: {{ remain }}</span>-->
 <!--      <span class="ratio">任务完成度: {{ ratio }}</span>-->
@@ -10,14 +11,14 @@
     <div class="cover" ref="cover">
       <div
         class="start"
-        @click="toWorkbench(proInfo.id)"
+        @click.stop="toWorkbench(proInfo.id, jobId)"
       >
         开始标记
       </div>
       <div
         v-if="userInfo"
         class="exam"
-        @click="toTaskSetting(proInfo.id)"
+        @click="toTaskSetting(proInfo.id, jobId)"
       >
         配置
       </div>
@@ -27,7 +28,7 @@
 
 <script>
 export default {
-  props: ["proInfo","userInfo"],
+  props: ["proInfo","userInfo","jobId"],
   data() {
     return{
       projectId: '1',
@@ -57,7 +58,7 @@ export default {
       this.$refs.cover.style.top = "300px"
     },
     //开始标记
-    toWorkbench(index){
+    toWorkbench(index, jobId){
       //组织数据
       let logs = this.log
       let newDate = new Date()
@@ -68,8 +69,27 @@ export default {
       }).catch(()=>{
         // console.log('-1.创建log失败')
       })
-      this.$router.push('/workbench/task/' + index)
+      if(this.userInfo){
+        //管理员进入整个task
+        this.$router.push('/workbench/task/' + index)
+      } else {
+        //标注员获取对应job的图片
+        this.$store.commit('saveJobInfo', jobId)
+        this.$router.push('/workbench/task/' + index + '/job/' + jobId)
+      }
     },
+    // //获取标注员对应的jobId
+    // /** 先规定一个人只能拥有一个task中的一个job*/
+    // /** 之后考虑一个人被分配了多个不相邻的job啊啊啊啊啊啊啊啊啊啊*/
+    // getJobId(){
+    //   console.log(this.proInfo);
+    //   for(let item of this.proInfo.segments){
+    //     if(item.jobs[0].assignee === this.$store.state.userInfo.id){
+    //       console.log('该标注员对应的jobId', item.jobs[0].id);
+    //       return item.jobs[0].id
+    //     }
+    //   }
+    // },
     //转到Task控制台
     toTaskSetting(index){
       this.$router.push('/workbench/setting/' + index)
@@ -109,6 +129,13 @@ export default {
       position: absolute;
       left: 15px;
       top: 37px;
+      font-size: 14px;
+      color: #aaaaaa;
+    }
+    .pro-id{
+      position: absolute;
+      left: 15px;
+      top: 56px;
       font-size: 14px;
       color: #aaaaaa;
     }

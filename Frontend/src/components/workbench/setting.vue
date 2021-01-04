@@ -193,7 +193,22 @@ export default {
     },
     //删除项目
     deleteTask() {
-      console.log('delete');
+      this.$confirm('确认删除该项目?', '注意', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.$http.delete('v1/tasks/' + this.taskInformation.results[0].id).then((e)=>{
+          console.log(e)
+        })
+        this.$message({
+          type: 'success',
+          message: '删除成功'
+        })
+        this.$router.push('/home')
+      }).catch(() => {
+        console.log('取消删除');
+      });
     },
 
     // 获取 task 数据，用于 job 配置
