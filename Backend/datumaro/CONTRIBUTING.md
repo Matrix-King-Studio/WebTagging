@@ -71,7 +71,7 @@ python manage.py test datumaro/
 
 ## Design and code structure
 
-- [Design document](docs/design.md)
+- [Design document](docs/设计.md)
 
 ### Command-line
 
