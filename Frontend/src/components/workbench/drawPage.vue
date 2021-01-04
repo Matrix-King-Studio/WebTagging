@@ -64,6 +64,13 @@
               </el-select>
             </div>
           </div>
+          <div class="img-cover"
+          >
+            <el-radio-group @change="saveTagsToStore" v-model="shapes.rectangles[item.index-1].isCover">
+              <el-radio :label="0">未被遮挡</el-radio>
+              <el-radio :label="1">被遮挡</el-radio>
+            </el-radio-group>
+          </div>
           <!--右边的用来选择标签的框，下半部分，显示一些按钮-->
           <div class="label-func">
             <div
@@ -208,6 +215,9 @@ export default {
 
       //是否正在切换图片
       isChangingImage: false,
+
+      //标注遮挡单选框
+      // radio: 0,
     }
   },
   created() {
@@ -497,10 +507,9 @@ export default {
               frame: this.imageIndex,//第几张图片，从1开始
               label_id: this.options[0].value,//一级标签默认选择第一个
               group: 0,
-
-              isLock: false,
-              isInvisible: false,
-
+              isLock: false, //锁住
+              isInvisible: false, //隐藏
+              isCover: 0, //0表示未被遮挡，1表示被遮挡
               attributes: [],
               points: [],/** 记录矩形框位置*/
             }
@@ -563,6 +572,12 @@ export default {
         this.rectangleIndex = 1
       }
     },
+    //遮挡单选框更改
+    // coverChange(item){
+    //   console.log("单选框更改")
+    //   console.log(this.shapes.rectangles[item.index - 1].isCover);
+    //   this.saveTagsToStore()
+    // },
     //获取job信息
     getJobInfo() {
       this.$http.get('v1/tasks?', {
@@ -693,6 +708,7 @@ export default {
             group: TagsInfo[item].group,
             isLock: false,
             isInvisible: false,
+            isCover: TagsInfo[item].isCover, //是否覆盖
             attributes: TagsInfo[item].attributes,
             points: TagsInfo[item].points,
           })
@@ -859,7 +875,7 @@ export default {
     overflow: auto;
     background-color: #fafbfc;
     .label-obj{
-      height: 80px;
+      height: 110px;
       width: 100%;
       border-bottom: 1px solid #cae7dc;
       .label-info {
@@ -904,6 +920,11 @@ export default {
         .func:hover {
           background-color: #b9d4ca;
         }
+      }
+
+      .img-cover {
+        height: 30px;
+        padding-left: 20px;
       }
     }
   }
