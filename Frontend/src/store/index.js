@@ -5,6 +5,10 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
+    //用户信息
+    userInfo: '',
+    //job信息
+    jobInfo: {},
     //选择的模式：1代表用户上传数据集，2代表用户使用已经存在的数据集
     userChoiceModel: 1,
     //项目基本信息
@@ -39,6 +43,15 @@ export default new Vuex.Store({
     allUsers: []
   },
   mutations: {
+    //保存当前登录的用户信息
+    saveUserInfo(state, userInfo){
+      state.userInfo = userInfo
+      console.log('1.3.保存用户信息到仓库', state.userInfo);
+    },
+    //当前进入的job信息
+    saveJobInfo(state, jobInfo){
+      state.jobInfo.jobId = jobInfo
+    },
     //设置用户选择的上传模式
     changeUserChoiceModel(state,num){
       state.userChoiceModel = num;
@@ -102,23 +115,24 @@ export default new Vuex.Store({
     //标注时保存标注对象信息
     saveTagsInfo(state, shapes) {
       console.log('开始保存新的矩形框信息');
-      for(let item = 0;item < shapes.rectangles.length;item++){
+      for(let i = 0;i < shapes.rectangles.length;i++){
 
-        // console.log('正在保存第'+shapes.rectangles[item].index+'个矩形框的信息')
+        // console.log('正在保存第'+shapes.rectangles[i].index+'个矩形框的信息')
 
         state.imageTags.shapes.push({
           "type":"rectangle",
           "occluded":false,
           "z_order":0,
-          "points":shapes.rectangles[item].points,
+          "points":shapes.rectangles[i].points,
           "attributes":[
             // {
             //   "spec_id":"17",
             //   "value":""
             // }
           ],
-          "frame":shapes.rectangles[item].frame,
-          "label_id":shapes.rectangles[item].label_id,
+          "frame":shapes.rectangles[i].frame,
+          id: shapes.rectangles[i].id,
+          "label_id":shapes.rectangles[i].label_id,
           "isCover":shapes.rectangles[item].isCover,
           "group":0
         })
@@ -127,12 +141,9 @@ export default new Vuex.Store({
     },
     //多次保存到时候先清除标注对象
     cleanTagsInfo(state,frame){
-
       // console.log(state.imageTags.shapes)
       console.log('开始删除第'+frame+'张图片的信息')
-
       for(let l = 0;l < state.imageTags.shapes.length;l++){
-        console.log(state.imageTags.shapes[l])
         if(state.imageTags.shapes[l].frame === frame){
           state.imageTags.shapes.splice(l,1)
           l--
