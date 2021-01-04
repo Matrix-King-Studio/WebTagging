@@ -66,12 +66,11 @@ def export_task(task_id, dst_format, server_url=None, save_images=False):
                                                 func=clear_export_cache,
                                                 task_id=task_id,
                                                 file_path=output_path, file_ctime=archive_ctime)
-            slogger.task[task_id].info(
-                "The task '{}' is exported as '{}' at '{}' "
-                "and available for downloading for the next {}. "
-                "Export cache cleaning job is enqueued, id '{}'".format(
-                    db_task.name, dst_format, output_path, CACHE_TTL,
-                    cleaning_job.id))
+            slogger.task[task_id].info("The task '{}' is exported as '{}' at '{}' "
+                                       "and available for downloading for the next {}. "
+                                       "Export cache cleaning job is enqueued, id '{}'".format(
+                db_task.name, dst_format, output_path, CACHE_TTL,
+                cleaning_job.id))
 
         return output_path
     except Exception:

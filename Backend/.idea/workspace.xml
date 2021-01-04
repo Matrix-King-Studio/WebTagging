@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="8aff03a2-0667-4496-ac86-7694afcaba37" name="Default Changelist" comment="Alex：更新厚点git ignore文件">
+    <list default="true" id="8aff03a2-0667-4496-ac86-7694afcaba37" name="Default Changelist" comment="Alex：导出标注数据集删除自定义文件名">
       <change afterPath="$PROJECT_DIR$/../工作日志/2020-10-03.docx" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../工作日志/2020-10-05.docx" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../工作日志/2020-10-09.docx" afterDir="false" />
@@ -31,7 +31,6 @@
       <change afterPath="$PROJECT_DIR$/../工作日志/2020-12-30.docx" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../工作日志/2020-12-31.docx" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../工作日志/刘兆峰-12月-工作日志.zip" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cvat/apps/engine/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/engine/views.py" afterDir="false" />
     </list>
@@ -116,7 +115,7 @@
       <workItem from="1609391108756" duration="25000" />
       <workItem from="1609498328472" duration="11720000" />
       <workItem from="1609589984078" duration="612000" />
-      <workItem from="1609757655238" duration="946000" />
+      <workItem from="1609757655238" duration="3866000" />
     </task>
     <task id="LOCAL-00001" summary="2020-12-21">
       <created>1608530665874</created>
@@ -146,7 +145,14 @@
       <option name="project" value="LOCAL" />
       <updated>1609759794620</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="Alex：导出标注数据集删除自定义文件名">
+      <created>1609760045221</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1609760045221</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -169,6 +175,7 @@
     <MESSAGE value="2020-12-27" />
     <MESSAGE value="Alex：用户获取待标注图片的权限" />
     <MESSAGE value="Alex：更新厚点git ignore文件" />
-    <option name="LAST_COMMIT_MESSAGE" value="Alex：更新厚点git ignore文件" />
+    <MESSAGE value="Alex：导出标注数据集删除自定义文件名" />
+    <option name="LAST_COMMIT_MESSAGE" value="Alex：导出标注数据集删除自定义文件名" />
   </component>
 </project>

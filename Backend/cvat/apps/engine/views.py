@@ -652,8 +652,7 @@ class TaskViewSet(auth.TaskGetQuerySetMixin, viewsets.ModelViewSet):
                                     '200': openapi.Response(description='已开始下载文件')
                                     }
                          )
-    @action(detail=True, methods=['GET'], serializer_class=None,
-            url_path='dataset')
+    @action(detail=True, methods=['GET'], serializer_class=None, url_path='dataset')
     def dataset_export(self, request, pk):
         LogViewSet.createLog(taskId=pk, userId=request.user.id, message="Download dataset data")
         db_task = self.get_object()  # force to call check_object_permissions
@@ -827,38 +826,36 @@ def rq_handler(job, exc_type, exc_value, tb):
 # @api_view(['PUT'])
 def _import_annotations(request, rq_id, rq_func, pk, format_name):
     queue = django_rq.get_queue("default")
-    rq_job = queue.fetch_job(rq_id)
-
-    if not rq_job:
+    rqJob = queue.fetch_job(rq_id)
+    if not rqJob:
         serializer = AnnotationFileSerializer(data=request.data)
         if serializer.is_valid(raise_exception=True):
             if format_name not in [f.DISPLAY_NAME for f in dm.views.get_import_formats()]:
                 raise serializers.ValidationError("Unknown input format '{}'".format(format_name))
 
-            anno_file = serializer.validated_data['annotation_file']
+            annotationFile = serializer.validated_data['annotation_file']
             fd, filename = mkstemp(prefix='cvat_{}'.format(pk))
             with open(filename, 'wb+') as f:
-                for chunk in anno_file.chunks():
+                for chunk in annotationFile.chunks():
                     f.write(chunk)
-            rq_job = queue.enqueue_call(
+            rqJob = queue.enqueue_call(
                 func=rq_func,
                 args=(pk, filename, format_name),
-                job_id=rq_id
-            )
-            rq_job.meta['tmp_file'] = filename
-            rq_job.meta['tmp_file_descriptor'] = fd
-            rq_job.save_meta()
+                job_id=rq_id)
+            rqJob.meta['tmp_file'] = filename
+            rqJob.meta['tmp_file_descriptor'] = fd
+            rqJob.save_meta()
     else:
-        if rq_job.is_finished:
-            os.close(rq_job.meta['tmp_file_descriptor'])
-            os.remove(rq_job.meta['tmp_file'])
-            rq_job.delete()
+        if rqJob.is_finished:
+            os.close(rqJob.meta['tmp_file_descriptor'])
+            os.remove(rqJob.meta['tmp_file'])
+            rqJob.delete()
             return Response(status=status.HTTP_201_CREATED)
-        elif rq_job.is_failed:
-            os.close(rq_job.meta['tmp_file_descriptor'])
-            os.remove(rq_job.meta['tmp_file'])
-            exc_info = str(rq_job.exc_info)
-            rq_job.delete()
+        elif rqJob.is_failed:
+            os.close(rqJob.meta['tmp_file_descriptor'])
+            os.remove(rqJob.meta['tmp_file'])
+            exc_info = str(rqJob.exc_info)
+            rqJob.delete()
             return Response(data=exc_info, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     return Response(status=status.HTTP_202_ACCEPTED)

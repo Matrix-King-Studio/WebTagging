@@ -143,6 +143,7 @@ export default {
       exportTaggingFormat: [
         {name: 'COCO', format: 'COCO%201.0'},
         {name: 'YOLO', format: 'YOLO%201.1'},
+        {name: 'PASCAL VOC', format: "PASCAL%20VOC%201.1"},
       ],
       taskInformation: {},
       /* Alex End */
