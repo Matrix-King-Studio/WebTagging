@@ -133,6 +133,7 @@ export default new Vuex.Store({
           "frame":shapes.rectangles[i].frame,
           id: shapes.rectangles[i].id,
           "label_id":shapes.rectangles[i].label_id,
+          "isCover":shapes.rectangles[item].isCover,
           "group":0
         })
       }

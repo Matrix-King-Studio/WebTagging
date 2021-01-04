@@ -36,7 +36,7 @@ def my_importer(file_object, task_data, **options):
 
 @importer(name="MyFormat", version="2.0", ext="XML")
 class my_importer(file_object, task_data, **options):
-  def __call__(self, file_object, task_data, **options):
+  def __call__(cls, file_object, task_data, **options):
     ...
 
 @exporter(name="MyFormat", version="1.0", ext="ZIP"):

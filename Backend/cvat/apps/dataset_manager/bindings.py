@@ -413,16 +413,12 @@ class CvatTaskDataExtractor(datumaro.SourceExtractor):
         for frame_data in task_data.group_by_frame(include_empty=True):
             loader = None
             if include_images:
-                loader = lambda p, i=frame_data.idx: frame_provider.get_frame(i,
-                                                                              quality=frame_provider.Quality.ORIGINAL,
-                                                                              out_type=frame_provider.Type.NUMPY_ARRAY)[
-                    0]
-            dm_image = Image(path=frame_data.name, loader=loader,
-                             size=(frame_data.height, frame_data.width)
-                             )
+                loader = lambda p, i=frame_data.idx: \
+                    frame_provider.get_frame(i, quality=frame_provider.Quality.ORIGINAL,
+                                             out_type=frame_provider.Type.NUMPY_ARRAY)[0]
+            dm_image = Image(path=frame_data.name, loader=loader, size=(frame_data.height, frame_data.width))
             dm_anno = self._read_cvat_anno(frame_data, task_data)
-            dm_item = datumaro.DatasetItem(id=frame_data.frame,
-                                           annotations=dm_anno, image=dm_image)
+            dm_item = datumaro.DatasetItem(id=frame_data.frame, annotations=dm_anno, image=dm_image)
             dm_items.append(dm_item)
 
         self._items = dm_items
@@ -464,8 +460,7 @@ class CvatTaskDataExtractor(datumaro.SourceExtractor):
 
         label_attrs = {
             label['name']: label['attributes']
-            for _, label in task_data.meta['task']['labels']
-        }
+            for _, label in task_data.meta['task']['labels']}
 
         def convert_attrs(label, cvat_attrs):
             cvat_attrs = {a.name: a.value for a in cvat_attrs}
@@ -480,9 +475,7 @@ class CvatTaskDataExtractor(datumaro.SourceExtractor):
                         a_value = (a_value.lower() == 'true')
                     dm_attr[a_name] = a_value
                 except Exception as e:
-                    raise Exception(
-                        "Failed to convert attribute '%s'='%s': %s" %
-                        (a_name, a_value, e))
+                    raise Exception("Failed to convert attribute '%s'='%s': %s" % (a_name, a_value, e))
             return dm_attr
 
         for tag_obj in cvat_frame_anno.tags:
@@ -490,8 +483,7 @@ class CvatTaskDataExtractor(datumaro.SourceExtractor):
             anno_label = map_label(tag_obj.label)
             anno_attr = convert_attrs(tag_obj.label, tag_obj.attributes)
 
-            anno = datumaro.Label(label=anno_label,
-                                  attributes=anno_attr, group=anno_group)
+            anno = datumaro.Label(label=anno_label, attributes=anno_attr, group=anno_group)
             item_anno.append(anno)
 
         for shape_obj in cvat_frame_anno.labeled_shapes:

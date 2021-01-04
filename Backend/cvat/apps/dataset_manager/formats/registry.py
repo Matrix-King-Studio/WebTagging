@@ -23,12 +23,13 @@ class Importer(_Format):
 def _wrap_format(f_or_cls, klass, name, version, ext, display_name):
     import inspect
     assert inspect.isclass(f_or_cls) or inspect.isfunction(f_or_cls)
+
+    target = None
     if inspect.isclass(f_or_cls):
         assert hasattr(f_or_cls, '__call__')
         target = f_or_cls
     elif inspect.isfunction(f_or_cls):
         class wrapper(klass):
-            # pylint: disable=arguments-differ
             def __call__(self, *args, **kwargs):
                 f_or_cls(*args, **kwargs)
 
@@ -49,13 +50,12 @@ EXPORT_FORMATS = {}
 
 
 def exporter(name, version, ext, display_name=None):
-    assert name not in EXPORT_FORMATS, "Export format '%s' already registered" % name
+    assert name not in EXPORT_FORMATS, "导出格式 '%s' 已注册" % name
 
     def wrap_with_params(f_or_cls):
-        t = _wrap_format(f_or_cls, Exporter,
-                         name=name, ext=ext, version=version, display_name=display_name)
+        t = _wrap_format(f_or_cls, Exporter, name=name, ext=ext, version=version, display_name=display_name)
         key = t.DISPLAY_NAME
-        assert key not in EXPORT_FORMATS, "Export format '%s' already registered" % name
+        assert key not in EXPORT_FORMATS, "导出格式 '%s' 已注册" % name
         EXPORT_FORMATS[key] = t
         return t
 
@@ -83,15 +83,3 @@ def make_importer(name):
 
 def make_exporter(name):
     return EXPORT_FORMATS[name]()
-
-
-# pylint: disable=unused-import
-import cvat.apps.dataset_manager.formats.coco
-import cvat.apps.dataset_manager.formats.cvat
-import cvat.apps.dataset_manager.formats.datumaro
-import cvat.apps.dataset_manager.formats.labelme
-import cvat.apps.dataset_manager.formats.mask
-import cvat.apps.dataset_manager.formats.mot
-import cvat.apps.dataset_manager.formats.pascal_voc
-import cvat.apps.dataset_manager.formats.tfrecord
-import cvat.apps.dataset_manager.formats.yolo

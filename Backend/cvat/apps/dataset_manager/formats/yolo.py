@@ -20,7 +20,6 @@ def _export(dst_file, task_data, save_images=False):
     with TemporaryDirectory() as temp_dir:
         converter = dm_env.make_converter('yolo', save_images=save_images)
         converter(extractor, save_dir=temp_dir)
-
         make_zip_archive(temp_dir, dst_file)
 
 
@@ -30,8 +29,8 @@ def _import(src_file, task_data):
         Archive(src_file.name).extractall(tmp_dir)
 
         image_info = {}
-        anno_files = glob(osp.join(tmp_dir, '**', '*.txt'), recursive=True)
-        for filename in anno_files:
+        annotationFiles = glob(osp.join(tmp_dir, '**', '*.txt'), recursive=True)
+        for filename in annotationFiles:
             filename = osp.splitext(osp.basename(filename))[0]
             frame_info = None
             try:

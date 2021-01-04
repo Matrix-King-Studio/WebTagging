@@ -77,15 +77,15 @@ builtin functions like __str, int, float, max, min, range__.
      # label - expected value is int
      # frame_number - expected value is int
      # attributes - dictionary of attribute_name: attribute_value pairs, for example {"confidence": "0.83"}
-     add_box(self, xtl, ytl, xbr, ybr, label, frame_number, attributes=None)
+     add_box(cls, xtl, ytl, xbr, ybr, label, frame_number, attributes=None)
 
      # points - list of (x, y) pairs of float or int, for example [(57.3, 100), (67, 102.7)]
      # label - expected value is int
      # frame_number - expected value is int
      # attributes - dictionary of attribute_name: attribute_value pairs, for example {"confidence": "0.83"}
-     add_points(self, points, label, frame_number, attributes=None)
-     add_polygon(self, points, label, frame_number, attributes=None)
-     add_polyline(self, points, label, frame_number, attributes=None)
+     add_points(cls, points, label, frame_number, attributes=None)
+     add_polygon(cls, points, label, frame_number, attributes=None)
+     add_polyline(cls, points, label, frame_number, attributes=None)
      ```
 
 ### Testing script

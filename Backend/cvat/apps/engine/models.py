@@ -1,6 +1,7 @@
-from enum import Enum
 import re
 import os
+
+from enum import Enum
 
 from django.db import models
 from django.conf import settings
@@ -237,6 +238,12 @@ class Job(models.Model):
     assignee = models.ForeignKey(User, null=True, blank=True, on_delete=models.SET_NULL)
     status = models.CharField(max_length=32, choices=StatusChoice.choices(), default=StatusChoice.ANNOTATION)
 
+    def __str__(self):
+        text = self.segment.task.name + "-" + self.status
+        if self.assignee:
+            text += "-" + self.assignee.username
+        return text
+
     class Meta:
         default_permissions = ()
 
@@ -296,10 +303,10 @@ class AttributeVal(models.Model):
 
 
 class ShapeType(str, Enum):
-    RECTANGLE = 'rectangle'     # (x0, y0, x1, y1)
-    POLYGON = 'polygon'         # (x0, y0, ..., xn, yn)
-    POLYLINE = 'polyline'       # (x0, y0, ..., xn, yn)
-    POINTS = 'points'           # (x0, y0, ..., xn, yn)
+    RECTANGLE = 'rectangle'  # (x0, y0, x1, y1)
+    POLYGON = 'polygon'  # (x0, y0, ..., xn, yn)
+    POLYLINE = 'polyline'  # (x0, y0, ..., xn, yn)
+    POINTS = 'points'  # (x0, y0, ..., xn, yn)
     CUBOID = 'cuboid'
 
     @classmethod
@@ -422,9 +429,11 @@ class PluginOption(models.Model):
 
 
 class Log(models.Model):
-    job = models.ForeignKey(Job, on_delete=models.CASCADE)
     task = models.ForeignKey(Task, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
     time = models.DateTimeField(auto_now_add=True)
     message = models.CharField(max_length=4096)
+
+    def __str__(self):
+        return self.task.name + " - " + self.user.username + " - " + self.message

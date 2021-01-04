@@ -1,8 +1,8 @@
+import io
 import os
-import tempfile
 import shutil
 import zipfile
-import io
+import tempfile
 from abc import ABC, abstractmethod
 
 import av
@@ -21,7 +21,6 @@ def get_mime(name):
     for type_name, type_def in MEDIA_TYPES.items():
         if type_def['has_mime_type'](name):
             return type_name
-
     return 'unknown'
 
 
@@ -78,16 +77,11 @@ class ImageListReader(IMediaReader):
         step = max(step, 1)
         assert stop > start
 
-        super().__init__(
-            source_path=source_path,
-            step=step,
-            start=start,
-            stop=stop,
-        )
+        super().__init__(source_path=source_path, step=step, start=start, stop=stop)
 
     def __iter__(self):
         for i in range(self._start, self._stop, self._step):
-            yield (self.get_image(i), self.get_path(i), i)
+            yield self.get_image(i), self.get_path(i), i
 
     def get_path(self, i):
         return self._source_path[i]
@@ -115,12 +109,7 @@ class DirectoryReader(ImageListReader):
                 paths = [os.path.join(root, f) for f in files]
                 paths = filter(lambda x: get_mime(x) == 'image', paths)
                 image_paths.extend(paths)
-        super().__init__(
-            source_path=image_paths,
-            step=step,
-            start=start,
-            stop=stop,
-        )
+        super().__init__(source_path=image_paths, step=step, start=start, stop=stop)
 
 
 class ArchiveReader(DirectoryReader):
@@ -128,12 +117,7 @@ class ArchiveReader(DirectoryReader):
         self._tmp_dir = create_tmp_dir()
         self._archive_source = source_path[0]
         Archive(self._archive_source).extractall(self._tmp_dir)
-        super().__init__(
-            source_path=[self._tmp_dir],
-            step=step,
-            start=start,
-            stop=stop,
-        )
+        super().__init__(source_path=[self._tmp_dir], step=step, start=start, stop=stop)
 
     def __del__(self):
         delete_tmp_dir(self._tmp_dir)
@@ -157,12 +141,7 @@ class PdfReader(DirectoryReader):
             output = os.path.join(self._tmp_dir, '{}{:09d}.jpeg'.format(basename, page_num))
             page.save(output, 'JPEG')
 
-        super().__init__(
-            source_path=[self._tmp_dir],
-            step=step,
-            start=start,
-            stop=stop,
-        )
+        super().__init__(source_path=[self._tmp_dir], step=step, start=start, stop=stop)
 
     def __del__(self):
         delete_tmp_dir(self._tmp_dir)
@@ -256,9 +235,9 @@ class IChunkWriter(ABC):
     @staticmethod
     def _compress_image(image_path, quality):
         image = image_path.to_image() if isinstance(image_path, av.VideoFrame) else Image.open(image_path)
-        # Ensure image data fits into 8bit per pixel before RGB conversion as PIL clips values on conversion
+        # 在RGB转换之前，确保图像数据适合每像素8位，因为PIL剪辑转换时的值
         if image.mode == "I":
-            # Image mode is 32bit integer pixels.
+            # 图像模式为32位整数像素。
             # Autoscale pixels by factor 2**8 / im_data.max() to fit into 8bit
             im_data = np.array(image)
             im_data = im_data * (2 ** 8 / im_data.max())

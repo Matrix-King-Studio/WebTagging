@@ -1,5 +1,6 @@
 from django.contrib import admin
 from .models import Task, Segment, Job, Label, AttributeSpec, Log
+from .models import LabeledImage, LabeledImageAttributeVal, LabeledShape, LabeledShapeAttributeVal
 
 
 class JobInline(admin.TabularInline):
@@ -72,4 +73,9 @@ class TaskAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Task, TaskAdmin)
+admin.site.register(LabeledImage)
+admin.site.register(LabeledImageAttributeVal)
+admin.site.register(LabeledShape)
+admin.site.register(LabeledShapeAttributeVal)
+admin.site.register(Job)
 admin.site.register(Log)
