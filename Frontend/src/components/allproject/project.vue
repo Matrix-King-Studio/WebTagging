@@ -1,6 +1,12 @@
 <template>
   <div class="item-box">
-    <projectitem v-for="item in projectData" :key="item.url" :proInfo="item" :userInfo="ifAdmin"></projectitem>
+    <projectitem
+      v-for="item in projectData"
+      :key="ifAdmin ? item.id : item.segments[item.segIndex].jobs[0].id"
+      :proInfo="item"
+      :userInfo="ifAdmin"
+      :jobId="ifAdmin? item.id : item.segments[item.segIndex].jobs[0].id"
+    ></projectitem>
     <newprojectitem v-if="ifAdmin === 'admin'"></newprojectitem>
   </div>
 </template>
@@ -32,15 +38,22 @@ export default {
           page: this.page
         }
       }).then((res) => {
-        console.log('2.获取第' + this.page + '页项目信息', res);
+        console.log('2.获取第' + this.page + '页项目信息', res)
         //查找所有的项目
         for (let index = 0; index < res.data.results.length; index++) {
-          //筛选 掉 没有分配的项目
-          if (res.data.results[index].segments[0] !== undefined) {
-            for (let i = 0; i < res.data.results[index].segments[0].jobs.length; i++) {
-              //筛选 出 是拥有者或者是被分配的项目
-              if (res.data.results[index].segments[0].jobs[i].assignee === userId || res.data.results[index].owner === userId) {
-                this.projectData.push(res.data.results[index])
+          //筛出由此用户创建的项目
+          if(res.data.results[index].owner === userId){
+            this.projectData.push(res.data.results[index])
+          } else if (res.data.results[index].segments[0] !== undefined) {
+            //如果不是创建者，遍历job查看是否有被分配的项目
+            for(let segIndex = 0; segIndex < res.data.results[index].segments.length; segIndex++){
+              //如果只是一个job中的标注员，push一个job后继续查找后面的job
+              if(res.data.results[index].segments[segIndex].jobs[0].assignee === userId){
+                //将项目对象深拷贝
+                let jobData = JSON.parse(JSON.stringify(res.data.results[index]))
+                //添加对应的jobId 用于组件的循环渲染
+                jobData.segIndex = segIndex
+                this.projectData.push(jobData)
               }
             }
           }
@@ -49,21 +62,23 @@ export default {
           this.page = this.page + 1
           this.getAllProject(userId)
         } else {
-          console.log('3.项目信息获取完成');
+          console.log('3.项目信息获取完成,清洗后为', this.projectData)
         }
       })
     },
     getUserInfo() {
       this.$http.get('v1/users/self').then((res) => {
-        this.ifAdmin = res.data.groups.find(val => {
-          return val === 'admin'
-        })
-        console.log('1.获取用户信息完成, 用户id:' + res.data.id);
+        this.ifAdmin = res.data.groups.indexOf('admin') !== -1;
+        console.log('1.1.获取用户信息完成, 用户id:' + res.data.id);
+        console.log('1.2.用户身份判断', this.ifAdmin);
+        res.data.ifAdmin = this.ifAdmin
+        this.$store.commit('saveUserInfo', res.data)
         return new Promise(resolve => {
-          resolve(res.data.id)
+          resolve(res.data)
         })
       }).then(value => {
-        this.getAllProject(value)
+        this.getAllProject(value.id)
+
       })
     }
   },

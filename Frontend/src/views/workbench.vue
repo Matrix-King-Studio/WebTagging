@@ -17,9 +17,8 @@
         </el-dropdown>
       </div>
       <router-link
-        v-if="mod === 'task' && userId"
+        v-if="mod === 'task' && ifAdmin"
         class="to-setting"
-
         :to="'/workbench/setting/' + taskId"
         tag="div"
         @click.native="changeMod"
@@ -28,7 +27,7 @@
         <span>项目设置</span>
       </router-link>
       <router-link
-        v-if="mod === 'set' && userId"
+        v-if="mod === 'set' && ifAdmin"
         class="to-task"
         :to="'/workbench/task/' + taskId"
         tag="div"
@@ -50,6 +49,7 @@ export default {
       taskId: '',
       userInfo: {},
       userId: '',
+      ifAdmin: ''
     }
   },
   created() {
@@ -96,12 +96,9 @@ export default {
       this.$http.get('v1/users/self').then((e)=>{
         console.log('当前用户信息', e.data);
         this.userInfo = e.data
-        if(e.data.groups[0] === 'annotator'){
-          this.userId = false
-        } else {
-          this.userId = true
-        }
+        this.userId = e.data.groups[0] !== 'annotator';
       })
+      this.ifAdmin = this.$store.state.userInfo.ifAdmin
     },
     //用户下拉菜单点击事件处理
     handleUserClick(command){

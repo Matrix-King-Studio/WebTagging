@@ -41,7 +41,9 @@ const routes = [
         component: WorkBench,
         children: [
             {path: 'task/:index', component: DrawPage},
-            {path: 'setting/:index', component: Setting}
+            {path: 'task/:index/job/:jobIndex', component: DrawPage},
+            {path: 'setting/:index', component: Setting},
+            {path: 'setting/:index/job/:jobIndex', component: Setting}
         ]
     }
 ]
