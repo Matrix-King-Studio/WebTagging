@@ -1,4 +1,5 @@
 from django.contrib import admin
+
 from .models import Task, Segment, Job, Label, AttributeSpec, Log
 from .models import LabeledImage, LabeledImageAttributeVal, LabeledShape, LabeledShapeAttributeVal
 

@@ -2,37 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="8aff03a2-0667-4496-ac86-7694afcaba37" name="Default Changelist" comment="Alex：导出标注数据集删除自定义文件名">
-      <change afterPath="$PROJECT_DIR$/../工作日志/2020-10-03.docx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../工作日志/2020-10-05.docx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../工作日志/2020-10-09.docx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../工作日志/2020-10-11.docx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../工作日志/2020-10-15.docx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../工作日志/2020-10-18.docx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../工作日志/2020-10-23.docx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../工作日志/2020-10-25.docx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../工作日志/2020-10-26.docx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../工作日志/2020-10-28.docx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../工作日志/2020-11-15.docx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../工作日志/2020-11-17.docx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../工作日志/2020-11-19.docx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../工作日志/2020-11-23.docx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../工作日志/2020-11-25.docx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../工作日志/2020-11-27.docx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../工作日志/2020-11-28.docx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../工作日志/2020-11-29.docx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../工作日志/2020-12-13 .docx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../工作日志/2020-12-14.docx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../工作日志/2020-12-15.docx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../工作日志/2020-12-21.docx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../工作日志/2020-12-24.docx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../工作日志/2020-12-25.docx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../工作日志/2020-12-27.docx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../工作日志/2020-12-29.docx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../工作日志/2020-12-30.docx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../工作日志/2020-12-31.docx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../工作日志/刘兆峰-12月-工作日志.zip" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/engine/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/engine/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cvat/apps/dataset_manager/util.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/dataset_manager/util.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cvat/apps/dataset_manager/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/dataset_manager/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cvat/apps/engine/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/engine/admin.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cvat/apps/engine/frame_provider.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/engine/frame_provider.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -115,7 +89,12 @@
       <workItem from="1609391108756" duration="25000" />
       <workItem from="1609498328472" duration="11720000" />
       <workItem from="1609589984078" duration="612000" />
-      <workItem from="1609757655238" duration="3866000" />
+      <workItem from="1609757655238" duration="7080000" />
+      <workItem from="1609810672274" duration="47000" />
+      <workItem from="1609836727856" duration="1770000" />
+      <workItem from="1609844067946" duration="70000" />
+      <workItem from="1609850615752" duration="986000" />
+      <workItem from="1609852533265" duration="1044000" />
     </task>
     <task id="LOCAL-00001" summary="2020-12-21">
       <created>1608530665874</created>
