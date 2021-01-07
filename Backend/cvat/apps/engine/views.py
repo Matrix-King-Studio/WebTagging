@@ -580,6 +580,7 @@ class TaskViewSet(auth.TaskGetQuerySetMixin, viewsets.ModelViewSet):
     @action(detail=True, methods=['GET'], serializer_class=RqStatusSerializer)
     def status(self, request, pk):
         self.get_object()  # force to call check_object_permissions
+        print("job_id = ", "/api/{}/tasks/{}".format(request.version, pk))
         response = self._get_rq_response(queue="default", job_id="/api/{}/tasks/{}".format(request.version, pk))
         serializer = RqStatusSerializer(data=response)
         if serializer.is_valid(raise_exception=True):
@@ -588,8 +589,9 @@ class TaskViewSet(auth.TaskGetQuerySetMixin, viewsets.ModelViewSet):
     @staticmethod
     def _get_rq_response(queue, job_id):
         queue = django_rq.get_queue(queue)
+        print("queue = ", queue)
         job = queue.fetch_job(job_id)
-        response = {}
+        print("job = ", job)
         if job is None or job.is_finished:
             response = {"state": "Finished"}
         elif job.is_queued:

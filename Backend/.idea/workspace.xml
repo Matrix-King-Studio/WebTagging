@@ -2,11 +2,24 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="8aff03a2-0667-4496-ac86-7694afcaba37" name="Default Changelist" comment="Alex：导出标注数据集删除自定义文件名">
+      <change afterPath="$PROJECT_DIR$/cvat/apps/engine/prepare.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/dataset_manager/util.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/dataset_manager/util.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/dataset_manager/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/dataset_manager/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/engine/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/engine/admin.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/engine/frame_provider.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/engine/frame_provider.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cvat/apps/engine/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/engine/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cvat/apps/engine/serializers.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/engine/serializers.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cvat/apps/engine/task.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/engine/task.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cvat/apps/engine/utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/engine/utils.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cvat/apps/engine/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/engine/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cvat/requirements/base.txt" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/requirements/base.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cvat/settings/base.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/settings/base.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Images/car (1).jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Images/car (2).jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Images/car (3).jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Images/car (4).jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Images/car (5).jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Images/car (6).jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Images/car (7).jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Images/car (8).jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Images/car (9).jpg" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -62,8 +75,16 @@
     <property name="WebServerToolWindowPanel.toolwindow.show.date" value="false" />
     <property name="WebServerToolWindowPanel.toolwindow.show.permissions" value="false" />
     <property name="WebServerToolWindowPanel.toolwindow.show.size" value="false" />
-    <property name="last_opened_file_path" value="G:/AI/AlexYolo" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/cvat/apps/engine" />
+    <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.path.for.package.eslint" value="project" />
+    <property name="node.js.selected.package.eslint" value="(autodetect)" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="E:\WebTagging\Backend\cvat\apps\engine" />
+    </key>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -95,6 +116,7 @@
       <workItem from="1609844067946" duration="70000" />
       <workItem from="1609850615752" duration="986000" />
       <workItem from="1609852533265" duration="1044000" />
+      <workItem from="1610022377584" duration="5251000" />
     </task>
     <task id="LOCAL-00001" summary="2020-12-21">
       <created>1608530665874</created>
