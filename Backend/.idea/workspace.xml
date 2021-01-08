@@ -1,25 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="8aff03a2-0667-4496-ac86-7694afcaba37" name="Default Changelist" comment="Alex：导出标注数据集删除自定义文件名">
-      <change afterPath="$PROJECT_DIR$/cvat/apps/engine/prepare.py" afterDir="false" />
+    <list default="true" id="8aff03a2-0667-4496-ac86-7694afcaba37" name="Default Changelist" comment="Alex：Task任务创建和Data上传进度">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/engine/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/engine/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/engine/serializers.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/engine/serializers.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/engine/task.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/engine/task.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/engine/utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/engine/utils.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cvat/apps/engine/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/engine/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/requirements/base.txt" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/requirements/base.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/settings/base.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/settings/base.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Images/car (1).jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Images/car (2).jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Images/car (3).jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Images/car (4).jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Images/car (5).jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Images/car (6).jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Images/car (7).jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Images/car (8).jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Images/car (9).jpg" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -116,7 +100,9 @@
       <workItem from="1609844067946" duration="70000" />
       <workItem from="1609850615752" duration="986000" />
       <workItem from="1609852533265" duration="1044000" />
-      <workItem from="1610022377584" duration="5251000" />
+      <workItem from="1610022377584" duration="6303000" />
+      <workItem from="1610086239324" duration="2456000" />
+      <workItem from="1610106785492" duration="1963000" />
     </task>
     <task id="LOCAL-00001" summary="2020-12-21">
       <created>1608530665874</created>
@@ -153,7 +139,14 @@
       <option name="project" value="LOCAL" />
       <updated>1609760045221</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="Alex：Task任务创建和Data上传进度">
+      <created>1610031433419</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1610031433419</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -177,6 +170,7 @@
     <MESSAGE value="Alex：用户获取待标注图片的权限" />
     <MESSAGE value="Alex：更新厚点git ignore文件" />
     <MESSAGE value="Alex：导出标注数据集删除自定义文件名" />
-    <option name="LAST_COMMIT_MESSAGE" value="Alex：导出标注数据集删除自定义文件名" />
+    <MESSAGE value="Alex：Task任务创建和Data上传进度" />
+    <option name="LAST_COMMIT_MESSAGE" value="Alex：Task任务创建和Data上传进度" />
   </component>
 </project>
