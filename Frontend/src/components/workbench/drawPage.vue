@@ -47,7 +47,7 @@
         >
           <!--右边的用来选择标签的框，上半部分，显示序号和标签下拉选择-->
           <div class="label-info">
-            <span>{{ item.index }}</span>
+            <span class="item-index">{{ item.index }}</span>
             <div class="change-label">
               <el-select
                 v-model="item.label_id"
@@ -63,13 +63,16 @@
                 />
               </el-select>
             </div>
-          </div>
-          <div class="img-cover"
-          >
-            <el-radio-group @change="saveTagsToStore" v-model="shapes.rectangles[item.index-1].isCover">
-              <el-radio :label="0">未被遮挡</el-radio>
-              <el-radio :label="1">被遮挡</el-radio>
-            </el-radio-group>
+            <div class="more-function">
+              <el-dropdown>
+                <span class="el-dropdown-link">
+                  <i class="el-icon-more"></i>
+                </span>
+                <el-dropdown-menu slot="dropdown">
+                  <el-dropdown-item icon="el-icon-plus">更多功能生在开发</el-dropdown-item>
+                </el-dropdown-menu>
+              </el-dropdown>
+            </div>
           </div>
           <!--右边的用来选择标签的框，下半部分，显示一些按钮-->
           <div class="label-func">
@@ -98,6 +101,10 @@
             >
               <i class="el-icon-delete" />
             </div>
+          </div>
+          <div class="label-add-attr">
+            <i class="el-icon-caret-bottom"></i>
+
           </div>
         </div>
       </div>
@@ -208,7 +215,7 @@ export default {
       recLeft: 0,
 
       //job信息
-      jobId: 0,
+      jobId: [],
       //提交到服务器的版本号
       updateVersion: 0,
 
@@ -261,7 +268,7 @@ export default {
     },
     //获取task信息
     getTaskInfo() {
-      /** job数量大于20时 这个pagesize会产生bug*/
+      /** job数量大于20时 这个pagesize会产生bug */
       this.$http.get('v1/tasks?', {
         params: {
           id: this.$route.params.index,
@@ -269,9 +276,7 @@ export default {
           page_size: 20
         }
       }).then((e) => {
-
         //先获取task中的标签信息
-        this.jobId = e.data.results[0].segments[0].jobs[0].id
         console.log('当前task信息', e.data)
         for (let item in e.data.results[0].labels) {
           let label = {
@@ -282,8 +287,20 @@ export default {
         }
         console.log('标签列表', this.options);
 
-        //如果是管理员获取所有图片信息
-        if(this.$store.state.userInfo.ifAdmin){
+        //这个if是之后要添加的项目拥有者(创建者)浏览全部图片的接口
+        //检查是否是管理员(要改) 并且 url中不带jobId
+        if(this.$store.state.userInfo.ifAdmin && !this.$route.params.jobIndex){
+
+          console.log('error');
+
+          /** 还要改一下jobid序列的存储方式*/
+          //拿到对应task下所有的jobid 用于获取标注数据
+          let jobsId = []
+          for(let item of e.data.results[0].segments){
+            jobsId.push(item.jobs[0].id)
+          }
+          this.jobId = jobsId
+
           //获取task所有图片列表
           this.$http.get('v1/tasks/' + this.$route.params.index + '/data/meta').then(e => {
             console.log('task' + this.$route.params.index + '所有image信息',e.data)
@@ -294,10 +311,11 @@ export default {
           })
           //否则先将路径中的jobid与进入项目时获取的id比较，拦截非法跳转
         } else if (this.$route.params.jobIndex === this.$store.state.jobInfo.jobId+''){
+          this.jobId = this.$route.params.jobIndex
           //再遍历task的job列表 寻找被分配的job 初始化开始结束图片和数量 如果没有找到拦截非法跳转
           if(e.data.results[0].segments.some((item)=>{
             //查看 jobId与仓库对应的job 的 标注员信息 是否与当前用户相同
-            if(item.jobs[0].id === this.$store.state.jobInfo.jobId && item.jobs[0].assignee === this.$store.state.userInfo.id) {
+            if(item.jobs[0].id === this.$store.state.jobInfo.jobId && ((item.jobs[0].assignee === this.$store.state.userInfo.id) || this.$store.state.userInfo.ifOwner)) {
               //相同就设置图片开始结束标记
               console.log('图片范围', item.start_frame, item.stop_frame)
               this.start_frame = item.start_frame
@@ -317,7 +335,6 @@ export default {
           this.$router.push('/home')
           /** 记得清除数据*/
         }
-
       }).then(()=>{
         this.initCanvas()
         this.getShapes()
@@ -325,10 +342,19 @@ export default {
     },
     //获取标注数据
     getShapes(){
+      let serveShapes = {
+        shapes: [],
+        tags: [],
+        tracks: []
+      }
       this.$http.get('v1/jobs/'+ this.jobId +'/annotations').then((e)=>{
-        console.log('服务器的标注数据', e.data);
+        serveShapes.shapes.push(e.data.shapes.shapes)
+        serveShapes.tags.push(e.data.shapes.tags)
+        serveShapes.tracks.push(e.data.shapes.tracks)
         this.updateVersion = e.data.version
         this.reDrawTags(3, 1, e.data.shapes)
+      }).catch((err)=>{
+        console.log('获取标注数据失败', err);
       })
     },
     //获取图片压缩包并解压，将 base64 代码保存到 imagesData 里
@@ -636,34 +662,6 @@ export default {
         this.rectangleIndex = 1
       }
     },
-    //遮挡单选框更改
-    // coverChange(item){
-    //   console.log("单选框更改")
-    //   console.log(this.shapes.rectangles[item.index - 1].isCover);
-    //   this.saveTagsToStore()
-    // },
-    //获取job信息
-    getJobInfo() {
-      this.$http.get('v1/tasks?', {
-        params: {
-          id: this.$route.params.index,
-          page: 1,
-          page_size: 20
-        }
-      }).then((e) => {
-        this.jobId = e.data.results[0].segments[0].jobs[0].id
-        // console.log(e)
-        for (let item in e.data.results[0].labels) {
-          let label = {
-            value: e.data.results[0].labels[item].id,
-            label: e.data.results[0].labels[item].name
-          }
-          this.options.push(label)
-        }
-        console.log('标签列表', this.options);
-      })
-    },
-
     //将标注信息存储到store中
     saveTagsToStore() {
       this.$store.commit('cleanTagsInfo', this.imageIndex)
@@ -981,15 +979,15 @@ export default {
     overflow: auto;
     background-color: #fafbfc;
     .label-obj{
-      height: 110px;
       width: 100%;
       border-bottom: 1px solid #cae7dc;
       .label-info {
         width: 100%;
         height: 30px;
-        span {
+        display: flex;
+        .item-index {
           display: block;
-          float: left;
+          flex: 1;
           padding-left: 20px;
           box-sizing: border-box;
           font-size: 14px;
@@ -997,40 +995,49 @@ export default {
           width: 30%;
           overflow: hidden;
         }
-
         .change-label {
-          float: right;
+          flex: 4;
           height: 100%;
-          width: 60%;
           box-sizing: border-box;
-          margin-right: 20px;
           padding: 2px;
+        }
+        .more-function {
+          flex: 1;
+          height: 100%;
+
+          text-align: center;
+          line-height: 30px;
+          .el-dropdown-link{
+            cursor: pointer;
+            color: #333;
+          }
+          .el-icon-more{
+            font-size: 14px;
+          }
         }
       }
 
       .label-func {
         width: 100%;
         height: 50px;
-
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
         .func {
           width: 30px;
           height: 30px;
-          margin: 10px 20px;
-          float: left;
           border-radius: 6px;
           transition: background-color 0.2s;
           text-align: center;
           line-height: 30px;
         }
-
         .func:hover {
           background-color: #b9d4ca;
         }
       }
-
-      .img-cover {
-        height: 30px;
-        padding-left: 20px;
+      .label-add-attr{
+        width: 100%;
+        height: 20px;
       }
     }
   }

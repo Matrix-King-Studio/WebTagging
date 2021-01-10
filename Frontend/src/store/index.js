@@ -48,6 +48,10 @@ export default new Vuex.Store({
       state.userInfo = userInfo
       console.log('1.3.保存用户信息到仓库', state.userInfo);
     },
+    saveIfOwnerToUserInfo(state, ifOwner){
+      state.userInfo.ifOwner = ifOwner
+      console.log('1.3.保存用户信息到仓库', state.userInfo);
+    },
     //当前进入的job信息
     saveJobInfo(state, jobInfo){
       state.jobInfo.jobId = jobInfo
@@ -133,7 +137,7 @@ export default new Vuex.Store({
           "frame":shapes.rectangles[i].frame,
           id: shapes.rectangles[i].id,
           "label_id":shapes.rectangles[i].label_id,
-          "isCover":shapes.rectangles[item].isCover,
+          "isCover":shapes.rectangles[i].isCover,
           "group":0
         })
       }
