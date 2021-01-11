@@ -86,18 +86,6 @@ export default {
       //跳转
       this.$router.push('/workbench/task/' + index + '/job/' + jobId)
     },
-    // //获取标注员对应的jobId
-    // /** 先规定一个人只能拥有一个task中的一个job*/
-    // /** 之后考虑一个人被分配了多个不相邻的job啊啊啊啊啊啊啊啊啊啊*/
-    // getJobId(){
-    //   console.log(this.proInfo);
-    //   for(let item of this.proInfo.segments){
-    //     if(item.jobs[0].assignee === this.$store.state.userInfo.id){
-    //       console.log('该标注员对应的jobId', item.jobs[0].id);
-    //       return item.jobs[0].id
-    //     }
-    //   }
-    // },
     //转到Task控制台
     toTaskSetting(index){
       this.$store.commit('saveIfOwnerToUserInfo', this.ifOwner)

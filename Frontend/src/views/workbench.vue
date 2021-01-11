@@ -30,12 +30,21 @@
         v-if="mod === 'set' && ifOwner"
         class="to-task"
       >
-        <el-dropdown>
+        <el-dropdown
+          @command="toWorkbench"
+          :show-timeout=100
+        >
           <span class="el-dropdown-link">
             <i class="el-icon-menu"></i>去往工作台
           </span>
           <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item>黄金糕</el-dropdown-item>
+            <el-dropdown-item
+              v-for="item in this.$store.state.allJobs"
+              :key="item.jobs[0].id"
+              :command="item.jobs[0].id"
+            >
+              <span> 任务序号:{{ item.jobs[0].id }}</span>
+            </el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
       </div>
@@ -85,6 +94,11 @@ export default {
       } else if (this.mod === 'set'){
         this.mod = 'task'
       }
+    },
+    toWorkbench(jobId){
+      this.changeMod()
+      this.$store.commit('saveJobInfo', jobId)
+      this.$router.push('/workbench/task/' + this.taskId + '/job/' + jobId)
     },
     //拿到项目id
     getTaskId(id){

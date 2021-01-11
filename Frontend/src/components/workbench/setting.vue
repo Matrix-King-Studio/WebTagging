@@ -215,10 +215,10 @@ export default {
         this.taskInformation = e.data
         console.log('当前项目信息', this.taskInformation);
         this.jobsInfo = e.data.results[0].segments
+        this.$store.commit('saveAllJobs', this.jobsInfo)
         for (let i = 0; i < this.jobsInfo.length; i++) {
           this.jobsInfo[i]["index"] = i
         }
-        // console.log(this.jobsInfo);
       })
     },
     //拿所有人员的数据用于分配任务

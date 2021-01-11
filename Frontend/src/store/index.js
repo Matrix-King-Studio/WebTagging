@@ -9,6 +9,7 @@ export default new Vuex.Store({
     userInfo: '',
     //job信息
     jobInfo: {},
+    allJobs: [],
     //选择的模式：1代表用户上传数据集，2代表用户使用已经存在的数据集
     userChoiceModel: 1,
     //项目基本信息
@@ -55,6 +56,10 @@ export default new Vuex.Store({
     //当前进入的job信息
     saveJobInfo(state, jobInfo){
       state.jobInfo.jobId = jobInfo
+    },
+    //
+    saveAllJobs(state, jobs){
+      state.allJobs = jobs
     },
     //设置用户选择的上传模式
     changeUserChoiceModel(state,num){
