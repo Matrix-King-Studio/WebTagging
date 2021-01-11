@@ -53,7 +53,7 @@
                 v-model="item.label_id"
                 placeholder="请选择"
                 size="mini"
-                @change="saveTagsToStore"
+                @change="changeTagInfo(item)"
               >
                 <el-option
                   v-for="i in options"
@@ -843,6 +843,7 @@ export default {
       this.shapes[index-1].el.style.backgroundColor = 'transparent'
     },
     //鼠标放到矩形框高亮右侧信息栏
+    //TODO: 删除矩形框后这里会产生错误 切换图片后再切回来就恢复正常
     showLabObj(index){
       let styleid = "style_"+index;
       let object = document.getElementById(styleid);
@@ -854,6 +855,28 @@ export default {
       object.style.background = 'rgb(255,255,255)'
     },
     //信息栏中的功能
+    //更新矩形框(标注对象)标签
+    //TODO: 后续的更改标签直接改成选择默认标签 不用每次标注后再更改标签信息
+    changeTagInfo(item){
+      //更新页面数据： 不用更新，点选的时候是直接绑定的
+      //更新仓库数据
+      this.$store.commit('changeTagInfo', item)
+      //向服务器提交更新
+      let shapes = [item]
+      this.$http.patch('v1/jobs/' + this.jobId + '/annotations?action=update', {
+        shapes: shapes,
+        tracks: [],
+        tags: [],
+        version: this.updateVersion
+      }).then(() => {
+        this.$message({
+          message: "修改已保存",
+          type: "success"
+        })
+      }).catch((err) => {
+        console.log('标注信息更新错误', err)
+      })
+    },
     //锁定
     lockRecObj(index) {
       this.shapes[index - 1].isLock = !this.shapes[index - 1].isLock
