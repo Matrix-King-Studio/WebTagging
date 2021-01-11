@@ -57,7 +57,7 @@ export default new Vuex.Store({
     saveJobInfo(state, jobInfo){
       state.jobInfo.jobId = jobInfo
     },
-    //
+    //setting界面中返回项目job时的列表
     saveAllJobs(state, jobs){
       state.allJobs = jobs
     },
@@ -121,44 +121,30 @@ export default new Vuex.Store({
     saveTreeCheckedKeyList(state, listData){
       state.treeCheckedKeyList = listData
     },
-    //标注时保存标注对象信息
-    saveTagsInfo(state, shapes) {
-      console.log('开始保存新的矩形框信息');
-      for(let i = 0;i < shapes.rectangles.length;i++){
-
-        // console.log('正在保存第'+shapes.rectangles[i].index+'个矩形框的信息')
-
-        state.imageTags.shapes.push({
-          "type":"rectangle",
-          "occluded":false,
-          "z_order":0,
-          "points":shapes.rectangles[i].points,
-          "attributes":[
-            // {
-            //   "spec_id":"17",
-            //   "value":""
-            // }
-          ],
-          "frame":shapes.rectangles[i].frame,
-          id: shapes.rectangles[i].id,
-          "label_id":shapes.rectangles[i].label_id,
-          "isCover":shapes.rectangles[i].isCover,
-          "group":0
-        })
-      }
-      console.log('新数据保存成功', state.imageTags.shapes)
+    //每创建一个标注对象时添加到本地仓库
+    saveTagsInfo(state, shape) {
+      state.imageTags.shapes.push(shape)
     },
-    //多次保存到时候先清除标注对象
-    cleanTagsInfo(state,frame){
-      // console.log(state.imageTags.shapes)
-      console.log('开始删除第'+frame+'张图片的信息')
-      for(let l = 0;l < state.imageTags.shapes.length;l++){
-        if(state.imageTags.shapes[l].frame === frame){
-          state.imageTags.shapes.splice(l,1)
-          l--
+    //删除标注数据
+    delTagInfo(state, shapeId){
+      for(let item of state.imageTags.shapes){
+        if(item.id === shapeId){
+          state.imageTags.shapes.splice(state.imageTags.shapes.indexOf(item), 1)
         }
       }
-      console.log('原数据清空完成');
+    },
+    //退出工作台清除仓库中标注数据缓存
+    cleanTagsInfo(state){
+      state.imageTags = {
+        "shapes":[
+        ],
+        "tracks":[
+        ],
+        "tags":[
+        ],
+        "version":26
+      }
+      console.log('仓库标注缓存已被清除');
     },
     //保存任务分配
     //没有设置人员列表无segmentsize，设置人员列表segmentsize等于列表长度
