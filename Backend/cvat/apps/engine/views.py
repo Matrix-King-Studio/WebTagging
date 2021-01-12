@@ -580,6 +580,7 @@ class TaskViewSet(auth.TaskGetQuerySetMixin, viewsets.ModelViewSet):
     @action(detail=True, methods=['GET'], serializer_class=RqStatusSerializer)
     def status(self, request, pk):
         self.get_object()  # force to call check_object_permissions
+        print("job_id = ", "/api/{}/tasks/{}".format(request.version, pk))
         response = self._get_rq_response(queue="default", job_id="/api/{}/tasks/{}".format(request.version, pk))
         serializer = RqStatusSerializer(data=response)
         if serializer.is_valid(raise_exception=True):
@@ -589,8 +590,9 @@ class TaskViewSet(auth.TaskGetQuerySetMixin, viewsets.ModelViewSet):
     def _get_rq_response(queue, job_id):
         queue = django_rq.get_queue(queue)
         job = queue.fetch_job(job_id)
-        response = {}
-        if job is None or job.is_finished:
+        if job is None:
+            response = {"state": "Started"}
+        elif job.is_finished:
             response = {"state": "Finished"}
         elif job.is_queued:
             response = {"state": "Queued"}
@@ -666,13 +668,9 @@ class TaskViewSet(auth.TaskGetQuerySetMixin, viewsets.ModelViewSet):
                                    format_name=format_name)
 
 
-@method_decorator(name='retrieve',
-                  decorator=swagger_auto_schema(operation_summary='方法返回作业的详细信息'))
-@method_decorator(name='update',
-                  decorator=swagger_auto_schema(operation_summary='方法按id更新作业'))
-@method_decorator(name='partial_update',
-                  decorator=swagger_auto_schema(
-                      operation_summary='方法对作业中的选定字段执行部分更新'))
+@method_decorator(name='retrieve', decorator=swagger_auto_schema(operation_summary='方法返回作业的详细信息'))
+@method_decorator(name='update', decorator=swagger_auto_schema(operation_summary='方法按id更新作业'))
+@method_decorator(name='partial_update', decorator=swagger_auto_schema(operation_summary='方法对作业中的选定字段执行部分更新'))
 class JobViewSet(viewsets.GenericViewSet,
                  mixins.RetrieveModelMixin,
                  mixins.UpdateModelMixin):
@@ -711,12 +709,13 @@ class JobViewSet(viewsets.GenericViewSet,
             serializer_class=LabeledDataSerializer)
     def annotations(self, request, pk):
         self.get_object()  # force to call check_object_permissions
+        segment = Segment.objects.filter(job__pk=pk).first()
         if request.method == 'GET':
-            LogViewSet.createLog(taskId=pk, userId=request.user.id, message="Download job annotation data")
+            LogViewSet.createLog(taskId=segment.task_id, userId=request.user.id, message="Download job annotation data")
             data = dm.task.get_job_data(pk)
             return Response(data)
         elif request.method == 'PUT':
-            LogViewSet.createLog(taskId=pk, userId=request.user.id, message="Upload job annotation data")
+            LogViewSet.createLog(taskId=segment.task_id, userId=request.user.id, message="Upload job annotation data")
             format_name = request.query_params.get("format", "")
             if format_name:
                 return _import_annotations(
@@ -738,12 +737,12 @@ class JobViewSet(viewsets.GenericViewSet,
                     print(serializer.errors)
                     return Response(serializer.errors, status=status.HTTP_200_OK)
         elif request.method == 'DELETE':
-            LogViewSet.createLog(taskId=pk, userId=request.user.id, message="Delete job annotation data")
+            LogViewSet.createLog(taskId=segment.task_id, userId=request.user.id, message="Delete job annotation data")
             dm.task.delete_job_data(pk)
             return Response(status=status.HTTP_204_NO_CONTENT)
         elif request.method == 'PATCH':
             action = self.request.query_params.get("action", None)
-            LogViewSet.createLog(taskId=pk, userId=request.user.id, message=action + " job annotation")
+            LogViewSet.createLog(taskId=segment.task_id, userId=request.user.id, message=action + " job annotation")
             if action not in dm.task.PatchAction.values():
                 raise serializers.ValidationError("请为请求指定正确的“操作”")
             serializer = LabeledDataSerializer(data=request.data)

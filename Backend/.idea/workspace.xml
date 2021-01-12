@@ -1,36 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="8aff03a2-0667-4496-ac86-7694afcaba37" name="Default Changelist" comment="Alex：导出标注数据集删除自定义文件名">
-      <change afterPath="$PROJECT_DIR$/../工作日志/2020-10-03.docx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../工作日志/2020-10-05.docx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../工作日志/2020-10-09.docx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../工作日志/2020-10-11.docx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../工作日志/2020-10-15.docx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../工作日志/2020-10-18.docx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../工作日志/2020-10-23.docx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../工作日志/2020-10-25.docx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../工作日志/2020-10-26.docx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../工作日志/2020-10-28.docx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../工作日志/2020-11-15.docx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../工作日志/2020-11-17.docx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../工作日志/2020-11-19.docx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../工作日志/2020-11-23.docx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../工作日志/2020-11-25.docx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../工作日志/2020-11-27.docx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../工作日志/2020-11-28.docx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../工作日志/2020-11-29.docx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../工作日志/2020-12-13 .docx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../工作日志/2020-12-14.docx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../工作日志/2020-12-15.docx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../工作日志/2020-12-21.docx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../工作日志/2020-12-24.docx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../工作日志/2020-12-25.docx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../工作日志/2020-12-27.docx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../工作日志/2020-12-29.docx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../工作日志/2020-12-30.docx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../工作日志/2020-12-31.docx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../工作日志/刘兆峰-12月-工作日志.zip" afterDir="false" />
+    <list default="true" id="8aff03a2-0667-4496-ac86-7694afcaba37" name="Default Changelist" comment="Alex：Task任务创建和Data上传进度">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cvat/apps/engine/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/engine/views.py" afterDir="false" />
     </list>
@@ -88,8 +59,16 @@
     <property name="WebServerToolWindowPanel.toolwindow.show.date" value="false" />
     <property name="WebServerToolWindowPanel.toolwindow.show.permissions" value="false" />
     <property name="WebServerToolWindowPanel.toolwindow.show.size" value="false" />
-    <property name="last_opened_file_path" value="G:/AI/AlexYolo" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/cvat/apps/engine" />
+    <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.path.for.package.eslint" value="project" />
+    <property name="node.js.selected.package.eslint" value="(autodetect)" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="E:\WebTagging\Backend\cvat\apps\engine" />
+    </key>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -115,7 +94,15 @@
       <workItem from="1609391108756" duration="25000" />
       <workItem from="1609498328472" duration="11720000" />
       <workItem from="1609589984078" duration="612000" />
-      <workItem from="1609757655238" duration="3866000" />
+      <workItem from="1609757655238" duration="7080000" />
+      <workItem from="1609810672274" duration="47000" />
+      <workItem from="1609836727856" duration="1770000" />
+      <workItem from="1609844067946" duration="70000" />
+      <workItem from="1609850615752" duration="986000" />
+      <workItem from="1609852533265" duration="1044000" />
+      <workItem from="1610022377584" duration="6303000" />
+      <workItem from="1610086239324" duration="2456000" />
+      <workItem from="1610106785492" duration="1963000" />
     </task>
     <task id="LOCAL-00001" summary="2020-12-21">
       <created>1608530665874</created>
@@ -152,7 +139,14 @@
       <option name="project" value="LOCAL" />
       <updated>1609760045221</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="Alex：Task任务创建和Data上传进度">
+      <created>1610031433419</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1610031433419</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -176,6 +170,7 @@
     <MESSAGE value="Alex：用户获取待标注图片的权限" />
     <MESSAGE value="Alex：更新厚点git ignore文件" />
     <MESSAGE value="Alex：导出标注数据集删除自定义文件名" />
-    <option name="LAST_COMMIT_MESSAGE" value="Alex：导出标注数据集删除自定义文件名" />
+    <MESSAGE value="Alex：Task任务创建和Data上传进度" />
+    <option name="LAST_COMMIT_MESSAGE" value="Alex：Task任务创建和Data上传进度" />
   </component>
 </project>

@@ -1,13 +1,14 @@
 import math
+
+import numpy as np
+
+from PIL import Image
 from enum import Enum
 from io import BytesIO
 
-import numpy as np
-from PIL import Image
-
-from cvat.apps.engine.media_extractors import VideoReader, ZipReader
-from cvat.apps.engine.mime_types import mimetypes
 from cvat.apps.engine.models import DataChoice
+from cvat.apps.engine.mime_types import mimetypes
+from cvat.apps.engine.media_extractors import VideoReader, ZipReader
 
 
 class RandomAccessIterator:
@@ -136,8 +137,8 @@ class FrameProvider:
 
         frame = self._convert_frame(frame, loader.reader_class, out_type)
         if loader.reader_class is VideoReader:
-            return (frame, 'image/png')
-        return (frame, mimetypes.guess_type(frame_name))
+            return frame, 'image/png'
+        return frame, mimetypes.guess_type(frame_name)
 
     def get_frames(self, quality=Quality.ORIGINAL, out_type=Type.BUFFER):
         for idx in range(self._db_data.size):

@@ -44,6 +44,30 @@ class DataChoice(str, Enum):
         return self.value
 
 
+class StorageMethodChoice(str, Enum):
+    CACHE = 'cache'
+    FILE_SYSTEM = 'file_system'
+
+    @classmethod
+    def choices(cls):
+        return tuple((x.value, x.name) for x in cls)
+
+    def __str__(self):
+        return self.value
+
+
+class StorageChoice(str, Enum):
+    LOCAL = 'local'
+    SHARE = 'share'
+
+    @classmethod
+    def choices(cls):
+        return tuple((x.value, x.name) for x in cls)
+
+    def __str__(self):
+        return self.value
+
+
 class Data(models.Model):
     chunk_size = models.PositiveIntegerField(null=True)
     size = models.PositiveIntegerField(default=0)
@@ -53,6 +77,8 @@ class Data(models.Model):
     frame_filter = models.CharField(max_length=256, default="", blank=True)
     compressed_chunk_type = models.CharField(max_length=32, choices=DataChoice.choices(), default=DataChoice.IMAGESET)
     original_chunk_type = models.CharField(max_length=32, choices=DataChoice.choices(), default=DataChoice.IMAGESET)
+    storage_method = models.CharField(max_length=15, choices=StorageMethodChoice.choices(), default=StorageMethodChoice.FILE_SYSTEM)
+    storage = models.CharField(max_length=15, choices=StorageChoice.choices(), default=StorageChoice.LOCAL)
 
     class Meta:
         default_permissions = ()

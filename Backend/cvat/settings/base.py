@@ -442,3 +442,19 @@ CORS_ALLOW_HEADERS = (
     'Pragma',
     'Access-Control-Allow-Origin',
 )
+
+# http://www.grantjenks.com/docs/diskcache/tutorial.html#djangocache
+CACHE_ROOT = os.path.join(DATA_ROOT, 'cache')
+os.makedirs(CACHE_ROOT, exist_ok=True)
+CACHES = {
+    'default': {
+        'BACKEND': 'diskcache.DjangoCache',
+        'LOCATION': CACHE_ROOT,
+        'TIMEOUT': None,
+        'OPTIONS': {
+            'size_limit': 2 ** 40,  # 1 Tb
+        }
+    }
+}
+
+USE_CACHE = True

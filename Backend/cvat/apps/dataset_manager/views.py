@@ -41,18 +41,14 @@ CACHE_TTL = DEFAULT_CACHE_TTL
 def export_task(task_id, dst_format, server_url=None, save_images=False):
     try:
         db_task = Task.objects.get(pk=task_id)
-
         cache_dir = get_export_cache_dir(db_task)
-
         exporter = EXPORT_FORMATS[dst_format]
-        output_base = '%s_%s' % ('dataset' if save_images else 'task',
-                                 make_file_name(to_snake_case(dst_format)))
+        output_base = '%s_%s' % ('dataset' if save_images else 'task', make_file_name(to_snake_case(dst_format)))
         output_path = '%s.%s' % (output_base, exporter.EXT)
         output_path = osp.join(cache_dir, output_path)
 
         task_time = timezone.localtime(db_task.updated_date).timestamp()
-        if not (osp.exists(output_path) and \
-                task_time <= osp.getmtime(output_path)):
+        if not (osp.exists(output_path) and task_time <= osp.getmtime(output_path)):
             os.makedirs(cache_dir, exist_ok=True)
             with tempfile.TemporaryDirectory(dir=cache_dir) as temp_dir:
                 temp_file = osp.join(temp_dir, 'result')

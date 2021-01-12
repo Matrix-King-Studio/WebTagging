@@ -117,8 +117,7 @@ class RemoteFileSerializer(serializers.ModelSerializer):
 
 
 class RqStatusSerializer(serializers.Serializer):
-    state = serializers.ChoiceField(choices=[
-        "Queued", "Started", "Finished", "Failed"])
+    state = serializers.ChoiceField(choices=["Queued", "Started", "Finished", "Failed"])
     message = serializers.CharField(allow_blank=True, default="")
 
 
