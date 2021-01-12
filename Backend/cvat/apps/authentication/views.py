@@ -28,31 +28,17 @@ def register_user(request):
             user = authenticate(username=username, password=raw_password)
             login(request, user)
             return redirect(settings.LOGIN_REDIRECT_URL)
-    else:
-        form = forms.NewUserForm()
-    return render(request, 'register.html', {'form': form})
 
 
 @method_decorator(name='post', decorator=swagger_auto_schema(
     request_body=openapi.Schema(
         type=openapi.TYPE_OBJECT,
-        required=[
-            'url'
-        ],
-        properties={
-            'url': openapi.Schema(type=openapi.TYPE_STRING)
-        }
+        required=['url'],
+        properties={'url': openapi.Schema(type=openapi.TYPE_STRING)}
     ),
     responses={'200': openapi.Response(description='text URL')}
 ))
 class SigningView(views.APIView):
-    """
-    This method signs URL for access to the server.
-
-    Signed URL contains a token which authenticates a user on the server.
-    Signed URL is valid during 30 seconds since signing.
-    """
-
     def post(self, request):
         url = request.data.get('url')
         if not url:

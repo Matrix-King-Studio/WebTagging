@@ -1,11 +1,12 @@
 import ast
-import os
-import subprocess
+import cv2 as cv
 from collections import namedtuple
 import importlib
 import sys
 import traceback
-import cv2 as cv
+import subprocess
+import os
+
 from django.core.exceptions import ValidationError
 
 Import = namedtuple("Import", ["module", "name", "alias"])

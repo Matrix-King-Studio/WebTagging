@@ -1,5 +1,10 @@
-import os
+
+# Copyright (C) 2019-2020 Intel Corporation
+#
+# SPDX-License-Identifier: MIT
+
 import inspect
+import os, os.path as osp
 import zipfile
 
 
@@ -9,7 +14,7 @@ def current_function_name(depth=1):
 
 def make_zip_archive(src_path, dst_path):
     with zipfile.ZipFile(dst_path, 'w') as archive:
-        for (dirPath, _, filenames) in os.walk(src_path):
+        for (dirpath, _, filenames) in os.walk(src_path):
             for name in filenames:
-                path = os.path.join(dirPath, name)
-                archive.write(path, os.path.relpath(path, src_path))
+                path = osp.join(dirpath, name)
+                archive.write(path, osp.relpath(path, src_path))

@@ -27,8 +27,8 @@ from .log import slogger
 # Low Level server API
 
 def create(tid, data):
-    """Schedule the task"""
-    q = django_rq.get_queue('default')
+    """ Schedule the task """
+    q = django_rq.get_queue("default")
     q.enqueue_call(func=_create_thread, args=(tid, data), job_id="/api/v1/tasks/{}".format(tid))
 
 
@@ -42,11 +42,10 @@ def rq_handler(job, exc_type, exc_value, traceback):
             print_exception(exc_type, exc_value, traceback, file=log_file)
     except models.Task.DoesNotExist:
         pass  # skip exceptions in the code
-
     return False
 
 
-############################# Internal implementation for server API
+# Internal implementation for server API
 
 def _copy_data_from_share(server_files, upload_dir):
     job = rq.get_current_job()
@@ -89,8 +88,8 @@ def _save_task_to_db(db_task):
     for start_frame in range(0, db_task.data.size, segment_step):
         stop_frame = min(start_frame + segment_size - 1, db_task.data.size - 1)
 
-        slogger.glob.info("New segment for task #{}: start_frame = {}, \
-            stop_frame = {}".format(db_task.id, start_frame, stop_frame))
+        slogger.glob.info("New segment for task #{}: start_frame = {}, stop_frame = {}"
+                          .format(db_task.id, start_frame, stop_frame))
 
         db_segment = models.Segment()
         db_segment.task = db_task
@@ -216,14 +215,17 @@ def _download_data(urls, upload_dir):
 @transaction.atomic
 def _create_thread(tid, data):
     slogger.glob.info("create task #{}".format(tid))
-
     db_task = models.Task.objects.select_for_update().get(pk=tid)
     db_data = db_task.data
-    if db_task.data.size != 0:
-        raise NotImplementedError("Adding more data is not implemented")
 
+    # 如果 Task 已经有绑定的数据集
+    if db_task.data.size != 0:
+        raise NotImplementedError("Task 增加数据集暂未实现")
+
+    # 获取数据集上传文件夹
     upload_dir = db_data.get_upload_dirname()
 
+    # 如果是远程文件则下载
     if data['remote_files']:
         data['remote_files'] = _download_data(data['remote_files'], upload_dir)
 
@@ -234,6 +236,7 @@ def _create_thread(tid, data):
         assert settings.USE_CACHE and db_data.storage_method == StorageMethodChoice.CACHE, \
             "File with meta information can be uploaded if 'Use cache' option is also selected"
 
+    # 如果是服务端文件则复制过来
     if data['server_files']:
         if db_data.storage == StorageChoice.LOCAL:
             _copy_data_from_share(data['server_files'], upload_dir)
@@ -260,8 +263,7 @@ def _create_thread(tid, data):
                 source_path=source_paths,
                 step=db_data.get_frame_step(),
                 start=db_data.start_frame,
-                stop=data['stop_frame'],
-            )
+                stop=data['stop_frame'])
     if extractor.__class__ == MEDIA_TYPES['zip']['extractor']:
         extractor.extract()
     db_task.mode = task_mode
@@ -303,10 +305,8 @@ def _create_thread(tid, data):
 
     if settings.USE_CACHE and db_data.storage_method == StorageMethodChoice.CACHE:
         for media_type, media_files in media.items():
-
             if not media_files:
                 continue
-
             if task_mode == MEDIA_TYPES['video']['mode']:
                 try:
                     if meta_info_file:
@@ -328,21 +328,17 @@ def _create_thread(tid, data):
                                 media_file=media_files[0],
                                 upload_dir=upload_dir,
                                 meta_dir=os.path.dirname(db_data.get_meta_path()),
-                                chunk_size=db_data.chunk_size
-                            )
+                                chunk_size=db_data.chunk_size)
                             assert smooth_decoding == True, 'Too few keyframes for smooth video decoding.'
                     else:
                         meta_info, smooth_decoding = prepare_meta(
                             media_file=media_files[0],
                             upload_dir=upload_dir,
                             meta_dir=os.path.dirname(db_data.get_meta_path()),
-                            chunk_size=db_data.chunk_size
-                        )
+                            chunk_size=db_data.chunk_size)
                         assert smooth_decoding == True, 'Too few keyframes for smooth video decoding.'
-
                     all_frames = meta_info.get_task_size()
                     video_size = meta_info.frame_sizes
-
                     db_data.size = len(range(db_data.start_frame,
                                              min(data['stop_frame'] + 1 if data['stop_frame'] else all_frames,
                                                  all_frames), db_data.get_frame_step()))
@@ -351,13 +347,12 @@ def _create_thread(tid, data):
                     db_data.storage_method = StorageMethodChoice.FILE_SYSTEM
                     if os.path.exists(db_data.get_meta_path()):
                         os.remove(db_data.get_meta_path())
-                    base_msg = str(ex) if isinstance(ex,
-                                                     AssertionError) else "Uploaded video does not support a quick way of task creating."
+                    base_msg = str(ex) if isinstance(ex, AssertionError) else \
+                        "Uploaded video does not support a quick way of task creating."
                     job.meta['status'] = "{} The task will be created using the old method".format(base_msg)
                     job.save_meta()
             else:  # images,archive
                 db_data.size = len(extractor)
-
                 counter = itertools.count()
                 for chunk_number, chunk_frames in itertools.groupby(extractor.frame_range,
                                                                     lambda x: next(counter) // db_data.chunk_size):
@@ -367,13 +362,11 @@ def _create_thread(tid, data):
                         for path, frame_id in chunk_paths:
                             dummy_chunk.write(os.path.relpath(path, upload_dir) + '\n')
                             img_sizes.append(extractor.get_image_size(frame_id))
-
                     db_images.extend([
                         models.Image(data=db_data,
                                      path=os.path.relpath(path, upload_dir),
                                      frame=frame, width=w, height=h)
-                        for (path, frame), (w, h) in zip(chunk_paths, img_sizes)
-                    ])
+                        for (path, frame), (w, h) in zip(chunk_paths, img_sizes)])
 
     if db_data.storage_method == StorageMethodChoice.FILE_SYSTEM or not settings.USE_CACHE:
         counter = itertools.count()
@@ -394,7 +387,6 @@ def _create_thread(tid, data):
                         frame=data[2],
                         width=size[0],
                         height=size[1])
-
                     for data, size in zip(chunk_data, img_sizes)
                 ])
             else:
