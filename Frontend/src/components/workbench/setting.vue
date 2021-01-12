@@ -2,10 +2,16 @@
   <div class="setting-page">
     <div class="task-info">
       <div class="basic-info-box">
-        <div class="task-name">
+        <div
+          v-if="taskInformation.results"
+          class="task-name"
+        >
           <span>项目名：{{ taskInformation.results[0].name }}</span>
         </div>
-        <div class="basic-info">
+        <div
+          v-if="taskInformation.results"
+          class="basic-info"
+        >
           <div class="info">
             <div>图像质量：{{ taskInformation.results[0].image_quality }}</div>
           </div>
@@ -35,7 +41,7 @@
         </div>
       </div>
       <div class="update-info-box">
-        <div class="labels-box" />
+        <div class="labels-box"/>
       </div>
     </div>
     <div class="jobs-info">
@@ -66,13 +72,13 @@
         </div>
         <div class="job-info">
           <div class="job-id info-box">
-            <span v-text="item.jobs[0].id" />
+            <span v-text="item.jobs[0].id"/>
           </div>
           <div class="frames info-box">
-            <span v-text="item.start_frame + '-' + item.stop_frame" />
+            <span v-text="item.start_frame + '-' + item.stop_frame"/>
           </div>
           <div class="status info-box">
-            <span v-text="item.jobs[0].status" />
+            <span v-text="item.jobs[0].status"/>
           </div>
           <div class="start-time info-box">
             <span>无</span>
@@ -109,9 +115,10 @@
       <span>
         <el-button
           v-for="item in exportTaggingFormat"
+          :key="item.name"
           type="success"
           plain
-          @click="updateData(item.format)"
+          @click="updateData(item)"
         >{{ item.name }}</el-button>
       </span>
       <span
@@ -123,6 +130,7 @@
         >取 消</el-button>
       </span>
     </el-dialog>
+    <a href="" id="downloadAnchor"></a>
   </div>
 </template>
 
@@ -135,6 +143,7 @@ export default {
       exportTaggingFormat: [
         {name: 'COCO', format: 'COCO%201.0'},
         {name: 'YOLO', format: 'YOLO%201.1'},
+        {name: 'PASCAL VOC', format: "PASCAL%20VOC%201.1"},
       ],
       taskInformation: {},
       /* Alex End */
@@ -149,44 +158,50 @@ export default {
   },
   methods: {
     //两个用于下载标注数据
-    updateData(format) {
-      this.$http.get('v1/tasks/' + this.$route.params.index + '/annotations?format=' + format, {
-        responseType: 'blob'
+    updateData(item) {
+      this.$http.get('v1/tasks/' + this.$route.params.index
+        + '/annotations?format=' + item.format, {
+        headers: {
+          "Accept": "application/json, text/plain, */*",
+          "Accept-Encoding": "gzip, deflate",
+          "Accept-Language": "en-US,en;q=0.9,zh-CN;q=0.8,zh;q=0.7",
+        }
       }).then((e) => {
         console.log(e);
         if (e.status === 202) {
-          this.updateData()
+          this.updateData(item)
         } else if (e.status === 201) {
-          this.downloadData()
+          this.downloadData(item)
         }
       })
     },
-    downloadData() {
-      this.$http.get('v1/tasks/' + this.$route.params.index + '/annotations?action=download', {
-        responseType: 'blob'
-      }).then((res) => {
-        console.log(res);
-        const blob = new Blob([res.data], {
-          type: 'application/octet-stream'
-        })
-        let link = document.createElement('a')
-        let body = document.querySelector('body')
-        link.href = window.URL.createObjectURL(blob)
-        console.log(link.href)
-        link.style.display = 'none'
-        body.appendChild(link)
-        link.click()
-        body.removeChild(link)
-        window.URL.revokeObjectURL(link.href)
-        /* Alex Start */
-        // 隐藏导出标注数据 dialog
-        this.exportTaggingDialogVisible = false
-        /* Alex End */
-      })
+    downloadData(item) {
+      const downloadAnchor = window.document.getElementById('downloadAnchor');
+      downloadAnchor.href = "http://alexking.site:8080/api/v1/tasks/4/annotations?action=download&format=" + item.format;
+      downloadAnchor.click();
+      /* Alex Start */
+      // 隐藏导出标注数据 dialog
+      this.exportTaggingDialogVisible = false
+      /* Alex End */
     },
     //删除项目
     deleteTask() {
-      console.log('delete');
+      this.$confirm('确认删除该项目?', '注意', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.$http.delete('v1/tasks/' + this.taskInformation.results[0].id).then((e)=>{
+          console.log(e)
+        })
+        this.$message({
+          type: 'success',
+          message: '删除成功'
+        })
+        this.$router.push('/home')
+      }).catch(() => {
+        console.log('取消删除');
+      });
     },
 
     // 获取 task 数据，用于 job 配置
@@ -198,7 +213,7 @@ export default {
         }
       }).then((e) => {
         this.taskInformation = e.data
-        console.log(this.taskInformation);
+        console.log('当前项目信息', this.taskInformation);
         this.jobsInfo = e.data.results[0].segments
         for (let i = 0; i < this.jobsInfo.length; i++) {
           this.jobsInfo[i]["index"] = i
@@ -331,7 +346,7 @@ export default {
         }
 
         .delete {
-          width: 40px;
+          width: 60px;
         }
       }
     }

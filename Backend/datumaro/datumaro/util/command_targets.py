@@ -4,8 +4,7 @@ from enum import Enum
 from datumaro.components.project import Project
 from datumaro.util.image import load_image
 
-TargetKinds = Enum('TargetKinds',
-                   ['project', 'source', 'external_dataset', 'inference', 'image'])
+TargetKinds = Enum('TargetKinds', ['project', 'source', 'external_dataset', 'inference', 'image'])
 
 
 def is_project_name(value, project):

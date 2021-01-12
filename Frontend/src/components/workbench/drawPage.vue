@@ -42,15 +42,15 @@
           :key="item.index"
           :id="'style_'+(item.index)"
           class="label-obj"
-          @mouseenter="showRecObj(item.index),showLabObj(item.index)"
-          @mouseleave="hideRecObj(item.index),hideLabObj(item.index)"
+          @mouseenter="showRecObj(item.index), showLabObj(item.index)"
+          @mouseleave="hideRecObj(item.index), hideLabObj(item.index)"
         >
           <!--右边的用来选择标签的框，上半部分，显示序号和标签下拉选择-->
           <div class="label-info">
             <span>{{ item.index }}</span>
             <div class="change-label">
               <el-select
-                v-model="shapes.rectangles[item.index-1].label_id"
+                v-model="item.label_id"
                 placeholder="请选择"
                 size="mini"
                 @change="saveTagsToStore"
@@ -77,18 +77,18 @@
               class="func lock"
               @click="lockRecObj(item.index)"
             >
-              <i :class="[{'el-icon-lock':shapes.rectangles[item.index-1].isLock},{'el-icon-unlock':!shapes.rectangles[item.index-1].isLock}]" />
+              <i :class="[{'el-icon-lock':item.isLock},{'el-icon-unlock':!item.isLock}]" />
             </div>
             <div
               class="func visible"
               @click="invisibleRecObj(item.index)"
             >
               <span
-                v-show="!shapes.rectangles[item.index-1].isInvisible"
+                v-show="!item.isInvisible"
                 class="iconfont"
               >&#xe9c1;</span>
               <span
-                v-show="shapes.rectangles[item.index-1].isInvisible"
+                v-show="item.isInvisible"
                 class="iconfont"
               >&#xe6fe;</span>
             </div>
@@ -128,7 +128,10 @@
             <i class="el-icon-upload" />
             <span>提交所有</span>
           </div>
-          <div class="main-btn abandon">
+          <div
+            class="main-btn abandon"
+            @click="getAllTags()"
+          >
             <span>废弃</span>
           </div>
         </div>
@@ -163,6 +166,7 @@
 
 <script>
 import JSZip from '@/assets/js/jszip'
+import {Tag} from "element-ui";
 
 export default {
   data() {
@@ -199,12 +203,14 @@ export default {
       shapes: {
         rectangles: [],
       },
-      // rectangleIndex: 1,
+      rectangleIndex: 1,
       recTop: 0,
       recLeft: 0,
 
       //job信息
       jobId: 0,
+      //提交到服务器的版本号
+      updateVersion: 0,
 
       //控制页面改变大小时刷新的变量
       isResizing: '',
@@ -221,36 +227,10 @@ export default {
     }
   },
   created() {
-    //获取图片信息
-    this.getImagesInfo()
-    //获取job信息
-    this.getJobInfo()
-      //快捷键
-      let _self = this
-      document.onkeyup = function (e) {
-        let key = window.event.keyCode
-
-        if (key === 87){ //w，切换为鼠标指针
-            _self.initDrawTools('cursor')
-        }
-        if (key === 83){ //s，切换为矩形框
-            _self.initDrawTools('rectangle')
-        }
-        if (key === 65){ //a，上一张图片
-            _self.changeImg(1)
-        }
-        if (key === 68){ //d，下一张图片
-            _self.changeImg(2)
-        }
-      }
-
-  },
-  beforeDestroy(){
-      //销毁前将快捷键取消
-
+    //获取task信息
+    this.getTaskInfo()
   },
   mounted() {
-    this.initCanvas()
     //停止改变窗口大小后0.3秒重新绘制图片
     window.onresize = () => {
       if (this.isResizing) {
@@ -279,13 +259,76 @@ export default {
         this.flag2 = true
       }
     },
-    //获取images信息列表
-    getImagesInfo() {
-      this.$http.get('v1/tasks/' + this.$route.params.index + '/data/meta').then(e => {
-        console.log(e.data);
-        this.imagesSize = e.data.size
-        this.start_frame = e.data.start_frame
-        this.stop_frame = e.data.stop_frame
+    //获取task信息
+    getTaskInfo() {
+      /** job数量大于20时 这个pagesize会产生bug*/
+      this.$http.get('v1/tasks?', {
+        params: {
+          id: this.$route.params.index,
+          page: 1,
+          page_size: 20
+        }
+      }).then((e) => {
+
+        //先获取task中的标签信息
+        this.jobId = e.data.results[0].segments[0].jobs[0].id
+        console.log('当前task信息', e.data)
+        for (let item in e.data.results[0].labels) {
+          let label = {
+            value: e.data.results[0].labels[item].id,
+            label: e.data.results[0].labels[item].name
+          }
+          this.options.push(label)
+        }
+        console.log('标签列表', this.options);
+
+        //如果是管理员获取所有图片信息
+        if(this.$store.state.userInfo.ifAdmin){
+          //获取task所有图片列表
+          this.$http.get('v1/tasks/' + this.$route.params.index + '/data/meta').then(e => {
+            console.log('task' + this.$route.params.index + '所有image信息',e.data)
+            console.log('图片范围', e.data.start_frame, e.data.stop_frame)
+            this.start_frame = e.data.start_frame
+            this.stop_frame = e.data.stop_frame
+            this.imagesSize = e.data.size
+          })
+          //否则先将路径中的jobid与进入项目时获取的id比较，拦截非法跳转
+        } else if (this.$route.params.jobIndex === this.$store.state.jobInfo.jobId+''){
+          //再遍历task的job列表 寻找被分配的job 初始化开始结束图片和数量 如果没有找到拦截非法跳转
+          if(e.data.results[0].segments.some((item)=>{
+            //查看 jobId与仓库对应的job 的 标注员信息 是否与当前用户相同
+            if(item.jobs[0].id === this.$store.state.jobInfo.jobId && item.jobs[0].assignee === this.$store.state.userInfo.id) {
+              //相同就设置图片开始结束标记
+              console.log('图片范围', item.start_frame, item.stop_frame)
+              this.start_frame = item.start_frame
+              this.stop_frame = item.stop_frame
+              this.imagesSize = item.stop_frame - item.start_frame + 1
+              return true
+            }
+          })){
+            console.log('ok');
+          } else {
+            //没有找到当前用户对应的job信息
+            alert('没有被分配的任务，请返回主页')
+            this.$router.push('/home')
+          }
+        } else {
+          alert('路径错误，请重新进入项目')
+          this.$router.push('/home')
+          /** 记得清除数据*/
+        }
+
+      }).then(()=>{
+        this.initCanvas()
+        this.getShapes()
+      })
+    },
+    //获取标注数据
+    getShapes(){
+      this.$http.get('v1/jobs/'+ this.jobId +'/annotations').then((e)=>{
+        console.log('服务器的标注数据', e.data);
+        this.updateVersion = e.data.version
+        this.reDrawTags(3, 1, e.data.shapes)
       })
     },
     //获取图片压缩包并解压，将 base64 代码保存到 imagesData 里
@@ -296,7 +339,7 @@ export default {
       this.$http.get('v1/tasks/' + this.$route.params.index + '/data', {
         params: {
           type: 'chunk',
-          number: this.imageIndex - 1,
+          number: this.imageIndex - 1 + this.start_frame,
           quality: 'compressed'
         },
         // 请求数据的格式
@@ -367,7 +410,7 @@ export default {
               width: this.myCanvas.height * img.width / img.height - 10,
               height: this.myCanvas.height - 10
             }
-          } else {//窗口比图片长，左右填满
+          } else {//图片比窗口长，左右填满
             this.imageInfo = {
               left: 5,
               top: (this.myCanvas.height - (this.myCanvas.width - 300) * img.height / img.width) / 2 + 5,
@@ -388,6 +431,7 @@ export default {
             this.$refs.tipsBox.parentNode.removeChild(this.$refs.tipsBox)
             this.isFirst = false
           }
+
           this.isChangingImage = false
         }
       }, 100)
@@ -483,7 +527,7 @@ export default {
         left: event.clientX
       }
     },
-    //画矩形
+    //创建矩形元素
     createRec(e) {
       if (e) {
         //获取点击的坐标
@@ -496,9 +540,9 @@ export default {
         //如果在图片上点击
         if (mPos.top >= topBorder && mPos.top <= bottomBorder && mPos.left >= leftBorder && mPos.left <= rightBorder) {
           if (!this.isDrawing) {
-            //转换绘制状态
-            this.isDrawing = !this.isDrawing
-            //创建元素并设置元素的左上角位置
+            //转换绘制状态 到正在绘制
+            this.isDrawing = true
+            //创建元素
             let rec = document.createElement('div')
             rec.className += 'rec-obj'
             //id用来标记是第几个div
@@ -513,6 +557,7 @@ export default {
             rec.onmouseleave = (e) => {
               this.hideLabObj(e.target.id)
             }
+            //设置元素的左上角位置
             this.recTop = mPos.top
             this.recLeft = mPos.left
             //向矩形框数组添加对象
@@ -523,14 +568,14 @@ export default {
               index: this.rectangleIndex,//矩形框序号
               el: rec,//矩形框DOM元素
               // id:5,
-              frame: this.imageIndex + 1,//第几张图片，从1开始
+              frame: this.imageIndex + this.start_frame,//第几张图片，从1开始
               label_id: this.options[0].value,//一级标签默认选择第一个
               group: 0,
               isLock: false, //锁住
               isInvisible: false, //隐藏
               isCover: 0, //0表示未被遮挡，1表示被遮挡
               attributes: [],
-              points: [],//记录矩形框位置
+              points: [],/** 记录矩形框位置*/
             }
             this.rectangleIndex++
             this.shapes.rectangles.push(r)
@@ -539,7 +584,7 @@ export default {
             //根据鼠标位置调整矩形框的大小
             document.body.addEventListener('mousemove', this.resizeRec, false)
           } else {
-            this.isDrawing = !this.isDrawing
+            this.isDrawing = false
             document.body.removeEventListener('mousemove', this.resizeRec, false)
             //记录矩形框左上，右下两个点的x1,y1,x2,y2坐标在 !原图! 上的坐标
             this.shapes.rectangles[this.shapes.rectangles.length - 1].points = [
@@ -550,9 +595,11 @@ export default {
             ]
             console.log('矩形框两点数据', this.shapes.rectangles[this.shapes.rectangles.length - 1].points);
             //画完自动保存
+            /** 直接调接口*/
             this.saveTagsToStore()
             //完成一个标记,切换回鼠标模式
             // this.initDrawTools('cursor')
+            this.saveTagsToServer('create', this.shapes.rectangles[this.shapes.rectangles.length - 1])
           }
         }
       }
@@ -601,7 +648,7 @@ export default {
         params: {
           id: this.$route.params.index,
           page: 1,
-          page_size: 10
+          page_size: 20
         }
       }).then((e) => {
         this.jobId = e.data.results[0].segments[0].jobs[0].id
@@ -616,6 +663,7 @@ export default {
         console.log('标签列表', this.options);
       })
     },
+
     //将标注信息存储到store中
     saveTagsToStore() {
       this.$store.commit('cleanTagsInfo', this.imageIndex)
@@ -625,7 +673,43 @@ export default {
         type: "success"
       })
     },
+    //将标注信息存储到服务器中
+    saveTagsToServer(mod, shapeInfo){
+      if(mod === 'create'){
+        console.log(shapeInfo)
+        let shapes = [shapeInfo]
+        this.$http.patch('v1/jobs/'+ this.jobId +'/annotations?action=create', {
+          shapes: shapes,
+          tracks: [],
+          tags: [],
+          version: this.updateVersion
+        }).then((e)=>{
+          this.updateVersion += 1
+          //把服务器分配的id赋值给shapes中
+          shapeInfo.id = e.data.shapes[0].id
+
+        }).catch((err)=>{
+          console.log(err)
+        })
+      } else if(mod === 'delete'){
+        //提交到服务器
+        console.log(this.shapes.rectangles[shapeInfo - 1]);
+        this.$http.patch('v1/jobs/'+ this.jobId +'/annotations?action=delete', {
+          shapes: [this.shapes.rectangles[shapeInfo - 1]],
+          tracks: [],
+          tags: [],
+          version: this.updateVersion
+        }).then((e)=>{
+          this.updateVersion++
+          console.log(e);
+        }).catch((err)=>{
+          console.log(err);
+        })
+      }
+    },
     //提交前询问
+    /** 这里可以改成结束标注*/
+    /** 再加一个暂停标注*/
     isPrepare() {
       this.$confirm('提交后无法修改, 是否继续?', '提示', {
         confirmButtonText: '确定',
@@ -660,22 +744,27 @@ export default {
     //mod:  1：切换图片  2：改变窗口大小
     /**   切换图片后矩形框内的鼠标样式有问题
      * 是否锁定的参数没有保存回传*/
-    reDrawTags(mod, index) {
-      //切换到了第几张图片
-      let imgIndex = index + 1
+    reDrawTags(mod, index, shapes = []) {
+      //切换到了第几张图片, 这里的index是this.imageindex 也就是从1开始的数字
+      let imgIndex = index
       let TagsInfo = {}
       let that = this
       if (mod === 1) {
         //从store获取所有的标注信息
         TagsInfo = that.$store.state.imageTags.shapes
+        console.log('从store获取此图片的标注信息',TagsInfo);
       } else if (mod === 2) {
         TagsInfo = that.shapes.rectangles
         this.removeRec('all')
+        console.log('从页面获取此图片的标注信息',TagsInfo);
+      } else if(mod === 3){
+        TagsInfo = shapes
+        console.log('从服务器获取此图片的标注信息',TagsInfo);
       }
       //清洗出这张图片的标注信息
-      console.log('获取此图片的标注信息',TagsInfo);
       for (let item in TagsInfo) {
-        if (TagsInfo[item].frame === imgIndex) {
+        //这里的frame是图片实际的index
+        if (TagsInfo[item].frame === imgIndex + this.start_frame) {
 
           console.log('矩形框在页面上的位置', TagsInfo[item].points);
 
@@ -715,7 +804,7 @@ export default {
             z_order: TagsInfo[item].z_order,
             index: this.rectangleIndex,
             el: rec,
-            // id:5,
+            id: TagsInfo[item].id,
             frame: TagsInfo[item].frame,
             label_id: TagsInfo[item].label_id,
             group: TagsInfo[item].group,
@@ -774,25 +863,24 @@ export default {
     },
     //删除
     deleteRecObj(index) {
-
       // console.log(this.shapes.rectangles[index-1].el);
       //删除元素
       this.shapes.rectangles[index - 1].el.parentNode.removeChild(this.shapes.rectangles[index - 1].el)
-      //
+
+      //之后元素的序号往前挪
       for (let i = index; i < this.shapes.rectangles.length; i++) {
         // console.log(this.shapes.rectangles[i]);
         this.shapes.rectangles[i].index -= 1
       }
-      //删除数据
+
+      this.saveTagsToServer('delete', index)
+
+      //在本地删除数据
       this.shapes.rectangles.splice(index - 1, 1)
-
-      // console.log(this.shapes.rectangles);
-
       this.rectangleIndex--
-
+      //提交到store
       this.$store.commit('cleanTagsInfo', this.imageIndex)
       this.$store.commit('saveTagsInfo', this.shapes)
-
       this.$message({
         message: "元素成功移除",
         type: "success"
