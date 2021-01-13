@@ -1,97 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="8aff03a2-0667-4496-ac86-7694afcaba37" name="Default Changelist" comment="Alex：解决获取job报错，因为job id和task id弄反了">
-      <change afterPath="$PROJECT_DIR$/.nycrc" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.prettierignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.prettierrc" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cvat/apps/dataset_manager/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cvat/apps/dataset_manager/formats/camvid.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cvat/apps/dataset_manager/formats/imagenet.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cvat/apps/dataset_manager/formats/mots.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cvat/apps/dataset_manager/formats/predefined_colors.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cvat/apps/dataset_manager/formats/utils.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cvat/apps/dataset_manager/tests/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cvat/apps/dataset_manager/tests/test_formats.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cvat/apps/dataset_repo/README.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cvat/apps/dataset_repo/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cvat/apps/dataset_repo/apps.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cvat/apps/dataset_repo/dataset_repo.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cvat/apps/dataset_repo/management/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cvat/apps/dataset_repo/management/commands/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cvat/apps/dataset_repo/management/commands/update_git_states.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cvat/apps/dataset_repo/migrations/0001_initial.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cvat/apps/dataset_repo/migrations/0002_auto_20190123_1305.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cvat/apps/dataset_repo/migrations/0003_gitdata_lfs.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cvat/apps/dataset_repo/migrations/0004_rename.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cvat/apps/dataset_repo/migrations/0005_auto_20201019_1100.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cvat/apps/dataset_repo/migrations/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cvat/apps/dataset_repo/models.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cvat/apps/dataset_repo/tests.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cvat/apps/dataset_repo/urls.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cvat/apps/dataset_repo/views.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cvat/apps/engine/cache.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cvat/apps/lambda_manager/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cvat/apps/lambda_manager/apps.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cvat/apps/lambda_manager/urls.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cvat/apps/lambda_manager/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.codacy.yml" beforeDir="false" afterPath="$PROJECT_DIR$/.codacy.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.coveragerc" beforeDir="false" afterPath="$PROJECT_DIR$/.coveragerc" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.editorconfig" beforeDir="false" afterPath="$PROJECT_DIR$/.editorconfig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitattributes" beforeDir="false" afterPath="$PROJECT_DIR$/.gitattributes" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+    <list default="true" id="8aff03a2-0667-4496-ac86-7694afcaba37" name="Default Changelist" comment="Alex：超级大更新">
+      <change afterPath="$PROJECT_DIR$/ffmpeg-4.3.1.tar.bz2" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/openh264-2.1.1.tar.gz" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.pylintrc" beforeDir="false" afterPath="$PROJECT_DIR$/.pylintrc" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.remarkrc.js" beforeDir="false" afterPath="$PROJECT_DIR$/.remarkrc.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.travis.yml" beforeDir="false" afterPath="$PROJECT_DIR$/.travis.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/Dockerfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dockerfile.ci" beforeDir="false" afterPath="$PROJECT_DIR$/Dockerfile.ci" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/authentication/auth.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/authentication/auth.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/authentication/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/authentication/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/dataset_manager/annotation.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/dataset_manager/annotation.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/dataset_manager/bindings.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/dataset_manager/bindings.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/dataset_manager/formats/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/dataset_manager/formats/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/dataset_manager/formats/coco.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/dataset_manager/formats/coco.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/dataset_manager/formats/cvat.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/dataset_manager/formats/cvat.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/dataset_manager/formats/datumaro/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/dataset_manager/formats/datumaro/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/dataset_manager/formats/datumaro/export_templates/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/dataset_manager/formats/datumaro/export_templates/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/dataset_manager/formats/datumaro/export_templates/plugins/cvat_rest_api_task_images.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/dataset_manager/formats/datumaro/export_templates/plugins/cvat_rest_api_task_images.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/dataset_manager/formats/labelme.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/dataset_manager/formats/labelme.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/dataset_manager/formats/mask.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/dataset_manager/formats/mask.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/dataset_manager/formats/mot.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/dataset_manager/formats/mot.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/dataset_manager/formats/pascal_voc.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/dataset_manager/formats/pascal_voc.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/dataset_manager/formats/registry.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/dataset_manager/formats/registry.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/dataset_manager/formats/tfrecord.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/dataset_manager/formats/tfrecord.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/dataset_manager/formats/yolo.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/dataset_manager/formats/yolo.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/dataset_manager/serializers.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/dataset_manager/serializers.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/dataset_manager/task.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/dataset_manager/task.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/dataset_manager/tests/_test_formats.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/dataset_manager/tests/test_annotation.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/dataset_manager/tests/test_annotation.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/dataset_manager/util.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/dataset_manager/util.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/dataset_manager/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/dataset_manager/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/engine/apps.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/engine/apps.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/engine/frame_provider.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/engine/frame_provider.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/engine/log.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/engine/log.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/engine/media.mimetypes" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/engine/media.mimetypes" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/engine/media_extractors.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/engine/media_extractors.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/engine/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/engine/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/engine/pagination.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/engine/pagination.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cvat/apps/authentication/serializers.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/authentication/serializers.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cvat/apps/authentication/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/authentication/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cvat/apps/dataset_manager/formats/utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/dataset_manager/formats/utils.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cvat/apps/engine/serializers.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/engine/serializers.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/engine/signals.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/engine/signals.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/engine/task.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/engine/task.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/engine/utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/engine/utils.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/engine/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/engine/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cvat/apps/engine/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/engine/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cvat/requirements/base.txt" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/requirements/base.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cvat/requirements/development.txt" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/requirements/development.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cvat/requirements/production.txt" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/requirements/production.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cvat/requirements/staging.txt" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/requirements/staging.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cvat/requirements/testing.txt" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/requirements/testing.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cvat/settings/base.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/settings/base.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/settings/development.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/settings/development.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/settings/production.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/settings/production.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/settings/staging.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/settings/staging.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/settings/testing.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/settings/testing.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/simpleworker.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/simpleworker.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docker-compose.ci.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.ci.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/supervisord.conf" beforeDir="false" afterPath="$PROJECT_DIR$/supervisord.conf" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -156,10 +82,10 @@
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="E:\WebTagging\Backend" />
+      <recent name="E:\WebTagging\Backend\cvat\requirements" />
       <recent name="E:\WebTagging\Backend\cvat\utils" />
       <recent name="E:\WebTagging\Backend\cvat\settings" />
       <recent name="E:\WebTagging\Backend\cvat\apps" />
-      <recent name="E:\WebTagging\Backend\cvat\apps\engine" />
     </key>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
@@ -197,7 +123,8 @@
       <workItem from="1610106785492" duration="5948000" />
       <workItem from="1610157915857" duration="179000" />
       <workItem from="1610374387309" duration="978000" />
-      <workItem from="1610450747498" duration="10131000" />
+      <workItem from="1610450747498" duration="12654000" />
+      <workItem from="1610501463565" duration="13939000" />
     </task>
     <task id="LOCAL-00001" summary="2020-12-21">
       <created>1608530665874</created>
@@ -248,7 +175,14 @@
       <option name="project" value="LOCAL" />
       <updated>1610114295938</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="Alex：超级大更新">
+      <created>1610463279963</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1610463279963</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -274,6 +208,7 @@
     <MESSAGE value="Alex：导出标注数据集删除自定义文件名" />
     <MESSAGE value="Alex：Task任务创建和Data上传进度" />
     <MESSAGE value="Alex：解决获取job报错，因为job id和task id弄反了" />
-    <option name="LAST_COMMIT_MESSAGE" value="Alex：解决获取job报错，因为job id和task id弄反了" />
+    <MESSAGE value="Alex：超级大更新" />
+    <option name="LAST_COMMIT_MESSAGE" value="Alex：超级大更新" />
   </component>
 </project>

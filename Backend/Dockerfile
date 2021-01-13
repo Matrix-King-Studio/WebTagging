@@ -11,6 +11,7 @@ RUN apt-get update && \
         apache2-dev \
         build-essential \
         curl \
+        libgeos-dev \
         libldap2-dev \
         libsasl2-dev \
         nasm \
@@ -29,20 +30,20 @@ ENV FFMPEG_VERSION=4.3.1 \
     OPENH264_VERSION=2.1.1
 
 WORKDIR /tmp/openh264
-RUN curl -sL https://github.com/cisco/openh264/archive/v${OPENH264_VERSION}.tar.gz --output openh264-${OPENH264_VERSION}.tar.gz && \
-    tar -zx --strip-components=1 -f openh264-${OPENH264_VERSION}.tar.gz && \
+COPY openh264-2.1.1.tar.gz /tmp/openh264/
+RUN tar -zx --strip-components=1 -f openh264-${OPENH264_VERSION}.tar.gz && \
     make -j5 && make install PREFIX=${PREFIX} && make clean
 
 WORKDIR /tmp/ffmpeg
-RUN curl -sLO https://ffmpeg.org/releases/ffmpeg-${FFMPEG_VERSION}.tar.bz2 && \
-    tar -jx --strip-components=1 -f ffmpeg-${FFMPEG_VERSION}.tar.bz2 && \
+COPY ffmpeg-4.3.1.tar.bz2 /tmp/ffmpeg/
+RUN tar -jx --strip-components=1 -f ffmpeg-${FFMPEG_VERSION}.tar.bz2 && \
     ./configure --disable-nonfree --disable-gpl --enable-libopenh264 --enable-shared --disable-static --prefix="${PREFIX}" && \
     make -j5 && make install && make distclean
 
 # Install requirements
 RUN python3 -m venv /opt/venv
 ENV PATH="/opt/venv/bin:${PATH}"
-RUN python3 -m pip install --no-cache-dir -U pip==20.0.1 setuptools==49.6.0 wheel==0.35.1 -i http://mirrors.aliyun.com/pypi/simple --trusted-host mirrors.aliyun.com
+RUN python3 -m pip install --no-cache-dir -U pip==20.3.3 setuptools==49.6.0 wheel==0.35.1 -i http://mirrors.aliyun.com/pypi/simple --trusted-host mirrors.aliyun.com
 COPY cvat/requirements/ /tmp/requirements/
 RUN DATUMARO_HEADLESS=1 python3 -m pip install --no-cache-dir -r /tmp/requirements/${DJANGO_CONFIGURATION}.txt -i http://mirrors.aliyun.com/pypi/simple --trusted-host mirrors.aliyun.com
 
@@ -141,7 +142,6 @@ COPY --chown=${USER} ssh ${HOME}/.ssh
 COPY --chown=${USER} supervisord.conf mod_wsgi.conf wait-for-it.sh manage.py ${HOME}/
 COPY --chown=${USER} cvat/ ${HOME}/cvat
 COPY --chown=${USER} utils/ ${HOME}/utils
-COPY --chown=${USER} tests/ ${HOME}/tests
 
 # RUN all commands below as 'django' user
 USER ${USER}

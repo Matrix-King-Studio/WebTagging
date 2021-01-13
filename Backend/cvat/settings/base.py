@@ -90,7 +90,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'cvat.apps.authentication',
-    'cvat.apps.documentation',
     'cvat.apps.dataset_manager',
     'cvat.apps.engine',
     'cvat.apps.dataset_repo',

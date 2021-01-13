@@ -14,7 +14,6 @@ router.register('users', views.UserViewSet)
 router.register('server', views.ServerViewSet, basename='server')
 
 urlpatterns = [
-    path('', views.dispatch_request),
     path('api/v1/auth/', include('cvat.apps.authentication.api_urls')),
     path('api/v1/', include((router.urls, 'cvat'), namespace='v1'))
 ]

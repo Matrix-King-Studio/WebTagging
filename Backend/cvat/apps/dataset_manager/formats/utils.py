@@ -1,7 +1,3 @@
-# Copyright (C) 2019 Intel Corporation
-#
-# SPDX-License-Identifier: MIT
-
 import os.path as osp
 from hashlib import blake2s
 
