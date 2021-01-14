@@ -50,6 +50,7 @@ from cvat.settings.base import CSS_3RDPARTY, JS_3RDPARTY
 
 from . import models, task
 from .log import clogger, slogger
+from .utils import av_scan_paths
 
 
 class ServerViewSet(viewsets.ViewSet):
@@ -595,9 +596,7 @@ class TaskViewSet(auth.TaskGetQuerySetMixin, viewsets.ModelViewSet):
     def _get_rq_response(queue, job_id):
         queue = django_rq.get_queue(queue)
         job = queue.fetch_job(job_id)
-        if job is None:  # job 还未创建
-            response = {"state": "None"}
-        elif job.is_finished:  # job 以完成
+        if job is None or job.is_finished:  # job 还未创建 or job 以完成
             response = {"state": "Finished"}
         elif job.is_queued:  # job 正在队列中
             response = {"state": "Queued"}
@@ -776,7 +775,6 @@ class ReviewViewSet(viewsets.GenericViewSet, mixins.DestroyModelMixin, mixins.Cr
             permissions.append(auth.JobReviewPermission)
         else:
             permissions.append(auth.AdminRolePermission)
-
         return [perm() for perm in permissions]
 
     def create(self, request, *args, **kwargs):

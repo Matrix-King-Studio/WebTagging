@@ -343,10 +343,9 @@ class TaskSerializer(WriteOnceMixin, serializers.ModelSerializer):
     class Meta:
         model = models.Task
         fields = ('url', 'id', 'name', 'project_id', 'mode', 'owner', 'assignee', 'owner_id', 'assignee_id',
-                  'bug_tracker', 'created_date', 'updated_date', 'overlap',
-                  'segment_size', 'status', 'labels', 'segments',
-                  'data_chunk_size', 'data_compressed_chunk_type', 'data_original_chunk_type', 'size', 'image_quality',
-                  'data')
+                  'bug_tracker', 'created_date', 'updated_date', 'overlap', 'describe', 'segment_size', 'status',
+                  'labels', 'segments', 'data_chunk_size', 'data_compressed_chunk_type', 'data_original_chunk_type',
+                  'size', 'image_quality', 'data')
         read_only_fields = ('mode', 'created_date', 'updated_date', 'status', 'data_chunk_size', 'owner', 'assignee',
                             'data_compressed_chunk_type', 'data_original_chunk_type', 'size', 'image_quality', 'data')
         write_once_fields = ('overlap', 'segment_size', 'project_id')
@@ -673,13 +672,11 @@ class CombinedReviewSerializer(ReviewSerializer):
         db_review = models.Review.objects.create(**validated_data)
         for issue in issues_validated_data:
             issue['review'] = db_review
-
             comments_validated_data = issue.pop('comment_set')
             db_issue = models.Issue.objects.create(**issue)
             for comment in comments_validated_data:
                 comment['issue'] = db_issue
                 models.Comment.objects.create(**comment)
-
         return db_review
 
 
