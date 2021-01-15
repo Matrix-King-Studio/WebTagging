@@ -261,6 +261,7 @@ export default {
     //清除页面和仓库暂存的标注数据
     this.shapes = []
     this.$store.commit('cleanTagsInfo')
+    //TODO: 在矩形框标注的状态下退出标注页面删除鼠标移动的监听器，就是控制横竖直线的监听器
   },
   methods: {
     //右侧信息栏

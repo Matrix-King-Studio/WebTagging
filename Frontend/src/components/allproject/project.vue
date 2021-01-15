@@ -42,7 +42,7 @@ export default {
         //查找所有的项目
         for (let index = 0; index < res.data.results.length; index++) {
           //筛出由此用户创建的项目
-          if(res.data.results[index].owner === userId){
+          if(res.data.results[index].owner.id === userId){
             res.data.results[index].ifOwner = true
             this.projectData.push(res.data.results[index])
           } else if (res.data.results[index].segments[0] !== undefined) {
