@@ -1,3 +1,8 @@
+
+# Copyright (C) 2020 Intel Corporation
+#
+# SPDX-License-Identifier: MIT
+
 import getpass
 import json
 import os
@@ -17,15 +22,15 @@ CONFIG_SCHEMA = SchemaBuilder() \
     .add('server_url', str) \
     .build()
 
-
 class cvat_rest_api_task_images(SourceExtractor):
     def _image_local_path(self, item_id):
         task_id = self._config.task_id
-        return osp.join(self._cache_dir, 'task_{}_frame_{:06d}.jpg'.format(task_id, int(item_id)))
+        return osp.join(self._cache_dir,
+            'task_{}_frame_{:06d}.jpg'.format(task_id, int(item_id)))
 
     def _make_image_loader(self, item_id):
         return lazy_image(item_id,
-                          lambda item_id: self._image_loader(item_id, self))
+            lambda item_id: self._image_loader(item_id, self))
 
     def _is_image_cached(self, item_id):
         return osp.isfile(self._image_local_path(item_id))
@@ -33,35 +38,23 @@ class cvat_rest_api_task_images(SourceExtractor):
     def _download_image(self, item_id):
         self._connect()
         os.makedirs(self._cache_dir, exist_ok=True)
-        self._cvat_cli.tasks_frame(task_id=self._config.task_id, frame_ids=[item_id], outdir=self._cache_dir,
-                                   quality='original')
+        self._cvat_cli.tasks_frame(task_id=self._config.task_id,
+            frame_ids=[item_id], outdir=self._cache_dir, quality='original')
 
     def _connect(self):
-        if self._session is not None:
+        if self._cvat_cli is not None:
             return
 
-        session = None
-        try:
-            print("Enter credentials for '%s' to read task data:" % self._config.server_url)
-            username = input('User: ')
-            password = getpass.getpass()
+        print("Enter credentials for '%s' to read task data:" % \
+            (self._config.server_url))
+        username = input('User: ')
+        password = getpass.getpass()
 
-            session = requests.Session()
-            session.auth = (username, password)
+        session = requests.Session()
 
-            api = CVAT_API_V1(self._config.server_url)
-            cli = CVAT_CLI(session, api)
-
-            self._session = session
-            self._cvat_cli = cli
-        except Exception:
-            if session is not None:
-                session.close()
-
-    def __del__(self):
-        if hasattr(self, '_session'):
-            if self._session is not None:
-                self._session.close()
+        api = CVAT_API_V1(self._config.server_url)
+        cli = CVAT_CLI(session, api, credentials=(username, password))
+        self._cvat_cli = cli
 
     @staticmethod
     def _image_loader(item_id, extractor):
@@ -94,16 +87,14 @@ class cvat_rest_api_task_images(SourceExtractor):
             if entry.get('height') and entry.get('width'):
                 size = (entry['height'], entry['width'])
             image = Image(data=self._make_image_loader(item_id),
-                          path=item_filename, size=size)
-            item = DatasetItem(id=item_id, image=image)
+                path=self._image_local_path(item_id), size=size)
+            item = DatasetItem(id=osp.splitext(item_filename)[0], image=image)
             items.append((item.id, item))
 
-        items = sorted(items, key=lambda e: int(e[0]))
         items = OrderedDict(items)
         self._items = items
 
         self._cvat_cli = None
-        self._session = None
 
     def __iter__(self):
         for item in self._items.values():

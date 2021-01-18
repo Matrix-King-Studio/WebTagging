@@ -18,6 +18,9 @@ os.makedirs(TASKS_ROOT, exist_ok=True)
 MODELS_ROOT = os.path.join(DATA_ROOT, 'models')
 os.makedirs(MODELS_ROOT, exist_ok=True)
 
+CACHE_ROOT = os.path.join(DATA_ROOT, 'cache')
+os.makedirs(CACHE_ROOT, exist_ok=True)
+
 # To avoid ERROR django.security.SuspiciousFileOperation:
 # The joined path (...) is located outside of the base path component
 MEDIA_ROOT = _temp_dir.name
@@ -40,8 +43,6 @@ PASSWORD_HASHERS = (
 TEST_RUNNER = "cvat.settings.testing.PatchedDiscoverRunner"
 
 from django.test.runner import DiscoverRunner
-
-
 class PatchedDiscoverRunner(DiscoverRunner):
     def __init__(self, *args, **kwargs):
         # Used fakeredis for testing (don't affect production redis)
