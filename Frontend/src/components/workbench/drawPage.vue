@@ -242,6 +242,26 @@ export default {
   created() {
     //获取task信息
     this.getTaskInfo()
+      //快捷键
+      let _self = this
+      document.onkeyup = function (e) {
+        let key = window.event.keyCode
+        if (key === 87){ //w，切换为鼠标指针
+            _self.initDrawTools('cursor')
+        }
+        if (key === 83){ //s，切换为矩形框
+            _self.initDrawTools('rectangle')
+        }
+        if (key === 65){ //a，上一张图片
+            _self.changeImg(1)
+        }
+        if (key === 68){ //d，下一张图片
+            _self.changeImg(2)
+        }
+      }
+  },
+  beforeDestroy(){
+      //销毁前将快捷键取消
     //快捷键
     let _self = this
     document.onkeyup = function (e) {
@@ -260,10 +280,6 @@ export default {
         _self.changeImg(2)
       }
     }
-
-  },
-  beforeDestroy(){
-    //销毁前将快捷键取消
 
   },
 
