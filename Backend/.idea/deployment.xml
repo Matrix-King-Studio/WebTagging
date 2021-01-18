@@ -5,7 +5,7 @@
       <paths name="CVAT">
         <serverdata>
           <mappings>
-            <mapping deploy="/root/WebTagging" local="$PROJECT_DIR$" web="/" />
+            <mapping deploy="/root/Backend" local="$PROJECT_DIR$" web="/" />
           </mappings>
         </serverdata>
       </paths>

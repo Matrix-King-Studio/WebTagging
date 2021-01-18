@@ -5,9 +5,9 @@
       :key="ifAdmin ? item.id : item.segments[item.segIndex].jobs[0].id"
       :proInfo="item"
       :userInfo="ifAdmin"
-      :jobId="ifAdmin? item.id : item.segments[item.segIndex].jobs[0].id"
+      :ifOwner="item.ifOwner"
     ></projectitem>
-    <newprojectitem v-if="ifAdmin === 'admin'"></newprojectitem>
+    <newprojectitem v-if="ifAdmin"></newprojectitem>
   </div>
 </template>
 
@@ -42,7 +42,8 @@ export default {
         //查找所有的项目
         for (let index = 0; index < res.data.results.length; index++) {
           //筛出由此用户创建的项目
-          if(res.data.results[index].owner === userId){
+          if(res.data.results[index].owner.id === userId){
+            res.data.results[index].ifOwner = true
             this.projectData.push(res.data.results[index])
           } else if (res.data.results[index].segments[0] !== undefined) {
             //如果不是创建者，遍历job查看是否有被分配的项目

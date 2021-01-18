@@ -13,9 +13,7 @@ from django.core.files.storage import FileSystemStorage
 class SafeCharField(models.CharField):
     def get_prep_value(self, value):
         value = super().get_prep_value(value)
-        if value:
-            return value[:self.max_length]
-        return value
+        return value[:self.max_length] if value else value
 
 
 class StatusChoice(str, Enum):
@@ -44,6 +42,30 @@ class DataChoice(str, Enum):
         return self.value
 
 
+class StorageMethodChoice(str, Enum):
+    CACHE = 'cache'
+    FILE_SYSTEM = 'file_system'
+
+    @classmethod
+    def choices(cls):
+        return tuple((x.value, x.name) for x in cls)
+
+    def __str__(self):
+        return self.value
+
+
+class StorageChoice(str, Enum):
+    LOCAL = 'local'
+    SHARE = 'share'
+
+    @classmethod
+    def choices(cls):
+        return tuple((x.value, x.name) for x in cls)
+
+    def __str__(self):
+        return self.value
+
+
 class Data(models.Model):
     chunk_size = models.PositiveIntegerField(null=True)
     size = models.PositiveIntegerField(default=0)
@@ -53,6 +75,9 @@ class Data(models.Model):
     frame_filter = models.CharField(max_length=256, default="", blank=True)
     compressed_chunk_type = models.CharField(max_length=32, choices=DataChoice.choices(), default=DataChoice.IMAGESET)
     original_chunk_type = models.CharField(max_length=32, choices=DataChoice.choices(), default=DataChoice.IMAGESET)
+    storage_method = models.CharField(max_length=15, choices=StorageMethodChoice.choices(),
+                                      default=StorageMethodChoice.FILE_SYSTEM)
+    storage = models.CharField(max_length=15, choices=StorageChoice.choices(), default=StorageChoice.LOCAL)
 
     class Meta:
         default_permissions = ()
@@ -100,6 +125,12 @@ class Data(models.Model):
     def get_preview_path(self):
         return os.path.join(self.get_data_dirname(), 'preview.jpeg')
 
+    def get_meta_path(self):
+        return os.path.join(self.get_upload_dirname(), 'meta_info.txt')
+
+    def get_dummy_chunk_path(self, chunk_number):
+        return os.path.join(self.get_upload_dirname(), 'dummy_{}.txt'.format(chunk_number))
+
     def __str__(self):
         return self.get_data_dirname()
 
@@ -132,8 +163,22 @@ class Project(models.Model):
     bug_tracker = models.CharField(max_length=2000, blank=True, default="")
     created_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now_add=True)
-    status = models.CharField(max_length=32, choices=StatusChoice.choices(),
-                              default=StatusChoice.ANNOTATION)
+    status = models.CharField(max_length=32, choices=StatusChoice.choices(), default=StatusChoice.ANNOTATION)
+
+    def get_project_dirname(self):
+        return os.path.join(settings.PROJECTS_ROOT, str(self.id))
+
+    def get_project_logs_dirname(self):
+        return os.path.join(self.get_project_dirname(), 'logs')
+
+    def get_client_log_path(self):
+        return os.path.join(self.get_project_logs_dirname(), "client.log")
+
+    def get_log_path(self):
+        return os.path.join(self.get_project_logs_dirname(), "project.log")
+
+    def __str__(self):
+        return self.name
 
     # 扩展默认权限模型
     class Meta:
@@ -236,6 +281,7 @@ class Segment(models.Model):
 class Job(models.Model):
     segment = models.ForeignKey(Segment, on_delete=models.CASCADE)
     assignee = models.ForeignKey(User, null=True, blank=True, on_delete=models.SET_NULL)
+    reviewer = models.ForeignKey(User, null=True, blank=True, related_name='review_job_set', on_delete=models.SET_NULL)
     status = models.CharField(max_length=32, choices=StatusChoice.choices(), default=StatusChoice.ANNOTATION)
 
     def __str__(self):
@@ -250,7 +296,9 @@ class Job(models.Model):
 
 class Label(models.Model):
     task = models.ForeignKey(Task, on_delete=models.CASCADE)
+    project = models.ForeignKey(Project, null=True, blank=True, on_delete=models.CASCADE)
     name = SafeCharField(max_length=64)
+    color = models.CharField(default='', max_length=8)
 
     def __str__(self):
         return self.name
@@ -317,12 +365,38 @@ class ShapeType(str, Enum):
         return self.value
 
 
+class SourceType(str, Enum):
+    AUTO = 'auto'
+    MANUAL = 'manual'
+
+    @classmethod
+    def choices(self):
+        return tuple((x.value, x.name) for x in self)
+
+    def __str__(self):
+        return self.value
+
+
+class ReviewStatus(str, Enum):
+    ACCEPTED = 'accepted'
+    REJECTED = 'rejected'
+    REVIEW_FURTHER = 'review_further'
+
+    @classmethod
+    def choices(self):
+        return tuple((x.value, x.name) for x in self)
+
+    def __str__(self):
+        return self.value
+
+
 class Annotation(models.Model):
     id = models.BigAutoField(primary_key=True)
     job = models.ForeignKey(Job, on_delete=models.CASCADE)
     label = models.ForeignKey(Label, on_delete=models.CASCADE)
     frame = models.PositiveIntegerField()
     group = models.PositiveIntegerField(null=True)
+    source = models.CharField(max_length=16, choices=SourceType.choices(), default=str(SourceType.MANUAL), null=True)
 
     class Meta:
         abstract = True
@@ -356,7 +430,6 @@ class FloatArrayField(models.TextField):
     def to_python(self, value):
         if isinstance(value, list):
             return value
-
         return self.from_db_value(value, None, None)
 
     def get_prep_value(self, value):
@@ -365,7 +438,7 @@ class FloatArrayField(models.TextField):
 
 class Shape(models.Model):
     type = models.CharField(max_length=16, choices=ShapeType.choices())
-    occluded = models.BooleanField(default=False)
+    occluded = models.BooleanField(default=False, help_text="是否被遮挡")
     z_order = models.IntegerField(default=0)
     points = FloatArrayField()
 
@@ -409,23 +482,36 @@ class TrackedShapeAttributeVal(AttributeVal):
     shape = models.ForeignKey(TrackedShape, on_delete=models.CASCADE)
 
 
-class Plugin(models.Model):
-    name = models.SlugField(max_length=32, primary_key=True)
-    description = SafeCharField(max_length=8192)
-    maintainer = models.ForeignKey(User, null=True, blank=True,
-                                   on_delete=models.SET_NULL, related_name="maintainers")
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now_add=True)
-
-    # 扩展默认权限模型
-    class Meta:
-        default_permissions = ()
+class Profile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    rating = models.FloatField(default=0.0)
 
 
-class PluginOption(models.Model):
-    plugin = models.ForeignKey(Plugin, on_delete=models.CASCADE)
-    name = SafeCharField(max_length=32)
-    value = SafeCharField(max_length=1024)
+class Review(models.Model):
+    job = models.ForeignKey(Job, on_delete=models.CASCADE)
+    reviewer = models.ForeignKey(User, null=True, blank=True, related_name='reviews', on_delete=models.SET_NULL)
+    assignee = models.ForeignKey(User, null=True, blank=True, related_name='reviewed', on_delete=models.SET_NULL)
+    estimated_quality = models.FloatField()
+    status = models.CharField(max_length=16, choices=ReviewStatus.choices())
+
+
+class Issue(models.Model):
+    frame = models.PositiveIntegerField()
+    position = FloatArrayField()
+    job = models.ForeignKey(Job, on_delete=models.CASCADE)
+    review = models.ForeignKey(Review, null=True, blank=True, on_delete=models.SET_NULL)
+    owner = models.ForeignKey(User, null=True, blank=True, related_name='issues', on_delete=models.SET_NULL)
+    resolver = models.ForeignKey(User, null=True, blank=True, related_name='resolved_issues', on_delete=models.SET_NULL)
+    created_date = models.DateTimeField(auto_now_add=True)
+    resolved_date = models.DateTimeField(null=True, blank=True)
+
+
+class Comment(models.Model):
+    issue = models.ForeignKey(Issue, on_delete=models.CASCADE)
+    author = models.ForeignKey(User, null=True, blank=True, on_delete=models.SET_NULL)
+    message = models.TextField(default='')
+    created_date = models.DateTimeField(auto_now_add=True)
+    updated_date = models.DateTimeField(auto_now=True)
 
 
 class Log(models.Model):

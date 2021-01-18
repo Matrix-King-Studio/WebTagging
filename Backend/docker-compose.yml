@@ -27,7 +27,7 @@ services:
 
     cvat:
         container_name: cvat
-        image: cvat
+        image: cvat/server
         restart: always
         depends_on:
             - cvat_redis
@@ -37,18 +37,17 @@ services:
             args:
                 http_proxy:
                 https_proxy:
-                no_proxy:
+                no_proxy: nuclio,${no_proxy}
                 socks_proxy:
-                TF_ANNOTATION: "yes"
-                AUTO_SEGMENTATION: "yes"
-                USER: "django"
-                DJANGO_CONFIGURATION: "production"
-                TZ: "Etc/UTC"
-                OPENVINO_TOOLKIT: "no"
+                USER: 'django'
+                DJANGO_CONFIGURATION: 'production'
+                TZ: 'Etc/UTC'
+                CLAM_AV: 'no'
         environment:
-            CVAT_SHARE_URL: 'Mounted from /mnt/share host directory'
-            DJANGO_MODWSGI_EXTRA_ARGS: ""
-            ALLOWED_HOSTS: '*'
+              DJANGO_MODWSGI_EXTRA_ARGS: ''
+              ALLOWED_HOSTS: '*'
+              CVAT_REDIS_HOST: 'cvat_redis'
+              CVAT_POSTGRES_HOST: 'cvat_db'
         volumes:
             - cvat_share:/home/django/share:ro
             - cvat_data:/home/django/data

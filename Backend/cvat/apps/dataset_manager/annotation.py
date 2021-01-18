@@ -1,8 +1,15 @@
-import numpy as np
+# Copyright (C) 2019 Intel Corporation
+#
+# SPDX-License-Identifier: MIT
+
 from copy import copy, deepcopy
-from shapely import geometry
-from cvat.apps.engine.models import ShapeType
+
+import numpy as np
+from itertools import chain
 from scipy.optimize import linear_sum_assignment
+from shapely import geometry
+
+from cvat.apps.engine.models import ShapeType
 from cvat.apps.engine.serializers import LabeledDataSerializer
 
 
@@ -59,8 +66,9 @@ class AnnotationIR:
 
         prev_shape = None
         for shape in track['shapes']:
-            if prev_shape and not prev_shape['outside'] and has_overlap(prev_shape['frame'], shape['frame']):
-                return True
+            if prev_shape and not prev_shape['outside'] and \
+                has_overlap(prev_shape['frame'], shape['frame']):
+                    return True
             prev_shape = shape
 
         if not prev_shape['outside'] and prev_shape['frame'] <= stop:
@@ -78,7 +86,7 @@ class AnnotationIR:
                     drop_count += 1
                 else:
                     break
-            # 如果所有形状都在外部，则需要保留最后一个形状
+            # Need to leave the last shape if all shapes are outside
             if drop_count == len(shapes):
                 drop_count -= 1
 
@@ -98,7 +106,8 @@ class AnnotationIR:
                 if not scoped_shapes[-1]['keyframe']:
                     segment_shapes.append(scoped_shapes[-1])
 
-            # 应该删除“插值形状”和“关键帧”关键点，因为轨迹和轨迹形状模型不需要这些字段
+            # Should delete 'interpolation_shapes' and 'keyframe' keys because
+            # Track and TrackedShape models don't expect these fields
             del track['interpolated_shapes']
             for shape in segment_shapes:
                 del shape['keyframe']
@@ -108,14 +117,14 @@ class AnnotationIR:
         return track
 
     def slice(self, start, stop):
-        # 从指定的帧间隔复制数据
+        #makes a data copy from specified frame interval
         splitted_data = AnnotationIR()
         splitted_data.tags = [deepcopy(t)
-                              for t in self.tags if self._is_shape_inside(t, start, stop)]
+            for t in self.tags if self._is_shape_inside(t, start, stop)]
         splitted_data.shapes = [deepcopy(s)
-                                for s in self.shapes if self._is_shape_inside(s, start, stop)]
+            for s in self.shapes if self._is_shape_inside(s, start, stop)]
         splitted_data.tracks = [self._slice_track(t, start, stop)
-                                for t in self.tracks if self._is_track_inside(t, start, stop)]
+            for t in self.tracks if self._is_track_inside(t, start, stop)]
 
         return splitted_data
 
@@ -124,7 +133,6 @@ class AnnotationIR:
         self.tags = []
         self.shapes = []
         self.tracks = []
-
 
 class AnnotationManager:
     def __init__(self, data):
@@ -151,7 +159,6 @@ class AnnotationManager:
         shapes = ShapeManager(self.data.shapes)
 
         return tracks + shapes.to_tracks()
-
 
 class ObjectManager:
     def __init__(self, objects):
@@ -186,16 +193,20 @@ class ObjectManager:
         raise NotImplementedError()
 
     def merge(self, objects, start_frame, overlap):
-        # 1. 将对象分成两部分：新的和可以与现有对象相交的部分。
-        new_objects = [obj for obj in objects if obj["frame"] >= start_frame + overlap]
-        int_objects = [obj for obj in objects if obj["frame"] < start_frame + overlap]
+        # 1. Split objects on two parts: new and which can be intersected
+        # with existing objects.
+        new_objects = [obj for obj in objects
+            if obj["frame"] >= start_frame + overlap]
+        int_objects = [obj for obj in objects
+            if obj["frame"] < start_frame + overlap]
         assert len(new_objects) + len(int_objects) == len(objects)
 
-        # 2. 转换为更方便的数据结构（按帧对象）
+        # 2. Convert to more convenient data structure (objects by frame)
         int_objects_by_frame = self._get_objects_by_frame(int_objects, start_frame)
         old_objects_by_frame = self._get_objects_by_frame(self.objects, start_frame)
 
-        # 3. 按原样添加新对象。只有在初始化旧的_objects_by_frame变量之后才能执行此操作。
+        # 3. Add new objects as is. It should be done only after old_objects_by_frame
+        # variable is initialized.
         self.objects.extend(new_objects)
 
         # Nothing to merge here. Just add all int_objects if any.
@@ -215,7 +226,7 @@ class ObjectManager:
                 int_objects = int_objects_by_frame[frame]
                 old_objects = old_objects_by_frame[frame]
                 cost_matrix = np.empty(shape=(len(int_objects), len(old_objects)),
-                                       dtype=float)
+                    dtype=float)
                 # 5.1 Construct cost matrix for the frame.
                 for i, int_obj in enumerate(int_objects):
                     for j, old_obj in enumerate(old_objects):
@@ -244,11 +255,10 @@ class ObjectManager:
                 for j in old_objects_indexes:
                     if j != -1:
                         self._modify_unmached_object(old_objects[j],
-                                                     start_frame + overlap)
+                            start_frame + overlap)
             else:
                 # We don't have old objects on the frame. Let's add all new ones.
                 self.objects.extend(int_objects_by_frame[frame])
-
 
 class TagManager(ObjectManager):
     @staticmethod
@@ -269,11 +279,9 @@ class TagManager(ObjectManager):
     def _modify_unmached_object(obj, end_frame):
         pass
 
-
 def pairwise(iterable):
     a = iter(iterable)
     return zip(a, a)
-
 
 class ShapeManager(ObjectManager):
     def to_tracks(self):
@@ -308,9 +316,12 @@ class ShapeManager(ObjectManager):
     def _calc_objects_similarity(obj0, obj1, start_frame, overlap):
         def _calc_polygons_similarity(p0, p1):
             overlap_area = p0.intersection(p1).area
-            return overlap_area / (p0.area + p1.area - overlap_area)
+            if p0.area == 0 or p1.area == 0: # a line with many points
+                return 0
+            else:
+                return overlap_area / (p0.area + p1.area - overlap_area)
 
-        has_same_type = obj0["type"] == obj1["type"]
+        has_same_type  = obj0["type"] == obj1["type"]
         has_same_label = obj0.get("label_id") == obj1.get("label_id")
         if has_same_type and has_same_label:
             if obj0["type"] == ShapeType.RECTANGLE:
@@ -320,11 +331,11 @@ class ShapeManager(ObjectManager):
                 return _calc_polygons_similarity(p0, p1)
             elif obj0["type"] == ShapeType.POLYGON:
                 p0 = geometry.Polygon(pairwise(obj0["points"]))
-                p1 = geometry.Polygon(pairwise(obj0["points"]))
+                p1 = geometry.Polygon(pairwise(obj1["points"]))
 
                 return _calc_polygons_similarity(p0, p1)
             else:
-                return 0  # FIXME: need some similarity for points and polylines
+                return 0 # FIXME: need some similarity for points and polylines
         return 0
 
     @staticmethod
@@ -335,7 +346,6 @@ class ShapeManager(ObjectManager):
     @staticmethod
     def _modify_unmached_object(obj, end_frame):
         pass
-
 
 class TrackManager(ObjectManager):
     def to_shapes(self, end_frame):
@@ -354,7 +364,7 @@ class TrackManager(ObjectManager):
         # Just for unification. All tracks are assigned on the same frame
         objects_by_frame = {0: []}
         for obj in objects:
-            shape = obj["shapes"][-1]  # optimization for old tracks
+            shape = obj["shapes"][-1] # optimization for old tracks
             if shape["frame"] >= start_frame or not shape["outside"]:
                 objects_by_frame[0].append(obj)
 
@@ -376,8 +386,8 @@ class TrackManager(ObjectManager):
             end_frame = start_frame + overlap
             obj0_shapes = TrackManager.get_interpolated_shapes(obj0, start_frame, end_frame)
             obj1_shapes = TrackManager.get_interpolated_shapes(obj1, start_frame, end_frame)
-            obj0_shapes_by_frame = {shape["frame"]: shape for shape in obj0_shapes}
-            obj1_shapes_by_frame = {shape["frame"]: shape for shape in obj1_shapes}
+            obj0_shapes_by_frame = {shape["frame"]:shape for shape in obj0_shapes}
+            obj1_shapes_by_frame = {shape["frame"]:shape for shape in obj1_shapes}
             assert obj0_shapes_by_frame and obj1_shapes_by_frame
 
             count, error = 0, 0
@@ -420,7 +430,7 @@ class TrackManager(ObjectManager):
     def normalize_shape(shape):
         points = list(shape["points"])
         if len(points) == 2:
-            points.extend(points)  # duplicate points for single point case
+            points.extend(points) # duplicate points for single point case
         points = np.asarray(points).reshape(-1, 2)
         broken_line = geometry.LineString(points)
         points = []
@@ -436,40 +446,289 @@ class TrackManager(ObjectManager):
 
     @staticmethod
     def get_interpolated_shapes(track, start_frame, end_frame):
-        def interpolate(shape0, shape1):
+        def copy_shape(source, frame, points=None):
+            copied = deepcopy(source)
+            copied["keyframe"] = False
+            copied["frame"] = frame
+            if points is not None:
+                copied["points"] = points
+            return copied
+
+        def simple_interpolation(shape0, shape1):
             shapes = []
-            is_same_type = shape0["type"] == shape1["type"]
+            distance = shape1["frame"] - shape0["frame"]
+            diff = np.subtract(shape1["points"], shape0["points"])
+
+            for frame in range(shape0["frame"] + 1, shape1["frame"]):
+                offset = (frame - shape0["frame"]) / distance
+                points = None
+                if shape1["outside"]:
+                    points = np.asarray(shape0["points"])
+                else:
+                    points = shape0["points"] + diff * offset
+
+                shapes.append(copy_shape(shape0, frame, points.tolist()))
+
+            return shapes
+
+        def points_interpolation(shape0, shape1):
+            if len(shape0["points"]) == 2 and len(shape1["points"]) == 2:
+                return simple_interpolation(shape0, shape1)
+            else:
+                shapes = []
+                for frame in range(shape0["frame"] + 1, shape1["frame"]):
+                    shapes.append(copy_shape(shape0, frame))
+
+            return shapes
+
+        def interpolate_position(left_position, right_position, offset):
+            def to_array(points):
+                return np.asarray(
+                    list(map(lambda point: [point["x"], point["y"]], points))
+                ).flatten()
+
+            def to_points(array):
+                return list(map(
+                    lambda point: {"x": point[0], "y": point[1]}, np.asarray(array).reshape(-1, 2)
+                ))
+
+            def curve_length(points):
+                length = 0
+                for i in range(1, len(points)):
+                    dx = points[i]["x"] - points[i - 1]["x"]
+                    dy = points[i]["y"] - points[i - 1]["y"]
+                    length += np.sqrt(dx ** 2 + dy ** 2)
+                return length
+
+            def curve_to_offset_vec(points, length):
+                offset_vector = [0]
+                accumulated_length = 0
+                for i in range(1, len(points)):
+                    dx = points[i]["x"] - points[i - 1]["x"]
+                    dy = points[i]["y"] - points[i - 1]["y"]
+                    accumulated_length += np.sqrt(dx ** 2 + dy ** 2)
+                    offset_vector.append(accumulated_length / length)
+
+                return offset_vector
+
+            def find_nearest_pair(value, curve):
+                minimum = [0, abs(value - curve[0])]
+                for i in range(1, len(curve)):
+                    distance = abs(value - curve[i])
+                    if distance < minimum[1]:
+                        minimum = [i, distance]
+
+                return minimum[0]
+
+            def match_left_right(left_curve, right_curve):
+                matching = {}
+                for i, left_curve_item in enumerate(left_curve):
+                    matching[i] = [find_nearest_pair(left_curve_item, right_curve)]
+                return matching
+
+            def match_right_left(left_curve, right_curve, left_right_matching):
+                matched_right_points = list(chain.from_iterable(left_right_matching.values()))
+                unmatched_right_points = filter(lambda x: x not in matched_right_points, range(len(right_curve)))
+                updated_matching = deepcopy(left_right_matching)
+
+                for right_point in unmatched_right_points:
+                    left_point = find_nearest_pair(right_curve[right_point], left_curve)
+                    updated_matching[left_point].append(right_point)
+
+                for key, value in updated_matching.items():
+                    updated_matching[key] = sorted(value)
+
+                return updated_matching
+
+            def reduce_interpolation(interpolated_points, matching, left_points, right_points):
+                def average_point(points):
+                    sumX = 0
+                    sumY = 0
+                    for point in points:
+                        sumX += point["x"]
+                        sumY += point["y"]
+
+                    return {
+                        "x": sumX / len(points),
+                        "y": sumY / len(points)
+                    }
+
+                def compute_distance(point1, point2):
+                    return np.sqrt(
+                        ((point1["x"] - point2["x"])) ** 2
+                        + ((point1["y"] - point2["y"]) ** 2)
+                    )
+
+                def minimize_segment(base_length, N, start_interpolated, stop_interpolated):
+                    threshold = base_length / (2 * N)
+                    minimized = [interpolated_points[start_interpolated]]
+                    latest_pushed = start_interpolated
+                    for i in range(start_interpolated + 1, stop_interpolated):
+                        distance = compute_distance(
+                            interpolated_points[latest_pushed], interpolated_points[i]
+                        )
+
+                        if distance >= threshold:
+                            minimized.append(interpolated_points[i])
+                            latest_pushed = i
+
+                    minimized.append(interpolated_points[stop_interpolated])
+
+                    if len(minimized) == 2:
+                        distance = compute_distance(
+                            interpolated_points[start_interpolated],
+                            interpolated_points[stop_interpolated]
+                        )
+
+                        if distance < threshold:
+                            return [average_point(minimized)]
+
+                    return minimized
+
+                reduced = []
+                interpolated_indexes = {}
+                accumulated = 0
+                for i in range(len(left_points)):
+                    interpolated_indexes[i] = []
+                    for _ in range(len(matching[i])):
+                        interpolated_indexes[i].append(accumulated)
+                        accumulated += 1
+
+                def left_segment(start, stop):
+                    start_interpolated = interpolated_indexes[start][0]
+                    stop_interpolated = interpolated_indexes[stop][0]
+
+                    if start_interpolated == stop_interpolated:
+                        reduced.append(interpolated_points[start_interpolated])
+                        return
+
+                    base_length = curve_length(left_points[start: stop + 1])
+                    N = stop - start + 1
+
+                    reduced.extend(
+                        minimize_segment(base_length, N, start_interpolated, stop_interpolated)
+                    )
+
+
+                def right_segment(left_point):
+                    start = matching[left_point][0]
+                    stop = matching[left_point][-1]
+                    start_interpolated = interpolated_indexes[left_point][0]
+                    stop_interpolated = interpolated_indexes[left_point][-1]
+                    base_length = curve_length(right_points[start: stop + 1])
+                    N = stop - start + 1
+
+                    reduced.extend(
+                        minimize_segment(base_length, N, start_interpolated, stop_interpolated)
+                    )
+
+                previous_opened = None
+                for i in range(len(left_points)):
+                    if len(matching[i]) == 1:
+                        if previous_opened is not None:
+                            if matching[i][0] == matching[previous_opened][0]:
+                                continue
+                            else:
+                                start = previous_opened
+                                stop = i - 1
+                                left_segment(start, stop)
+                                previous_opened = i
+                        else:
+                            previous_opened = i
+                    else:
+                        if previous_opened is not None:
+                            start = previous_opened
+                            stop = i - 1
+                            left_segment(start, stop)
+                            previous_opened = None
+
+                        right_segment(i)
+
+                if previous_opened is not None:
+                    left_segment(previous_opened, len(left_points) - 1)
+
+                return reduced
+
+            left_points = to_points(left_position["points"])
+            right_points = to_points(right_position["points"])
+            left_offset_vec = curve_to_offset_vec(left_points, curve_length(left_points))
+            right_offset_vec = curve_to_offset_vec(right_points, curve_length(right_points))
+
+            matching = match_left_right(left_offset_vec, right_offset_vec)
+            completed_matching = match_right_left(
+                left_offset_vec, right_offset_vec, matching
+            )
+
+            interpolated_points = []
+            for left_point_index, left_point in enumerate(left_points):
+                for right_point_index in completed_matching[left_point_index]:
+                    right_point = right_points[right_point_index]
+                    interpolated_points.append({
+                        "x": left_point["x"] + (right_point["x"] - left_point["x"]) * offset,
+                        "y": left_point["y"] + (right_point["y"] - left_point["y"]) * offset
+                    })
+
+            reducedPoints = reduce_interpolation(
+                interpolated_points,
+                completed_matching,
+                left_points,
+                right_points
+            )
+
+            return to_array(reducedPoints).tolist()
+
+        def polyshape_interpolation(shape0, shape1):
+            shapes = []
             is_polygon = shape0["type"] == ShapeType.POLYGON
-            is_polyline = shape0["type"] == ShapeType.POLYLINE
-            is_same_size = len(shape0["points"]) == len(shape1["points"])
-            if not is_same_type or is_polygon or is_polyline or not is_same_size:
-                shape0 = TrackManager.normalize_shape(shape0)
-                shape1 = TrackManager.normalize_shape(shape1)
+            if is_polygon:
+                shape0["points"].extend(shape0["points"][:2])
+                shape1["points"].extend(shape1["points"][:2])
 
             distance = shape1["frame"] - shape0["frame"]
-            step = np.subtract(shape1["points"], shape0["points"]) / distance
             for frame in range(shape0["frame"] + 1, shape1["frame"]):
-                off = frame - shape0["frame"]
+                offset = (frame - shape0["frame"]) / distance
+                points = None
                 if shape1["outside"]:
-                    points = np.asarray(shape0["points"]).reshape(-1, 2)
+                    points = np.asarray(shape0["points"])
                 else:
-                    points = (shape0["points"] + step * off).reshape(-1, 2)
-                shape = deepcopy(shape0)
-                if len(points) == 1:
-                    shape["points"] = points.flatten()
-                else:
-                    broken_line = geometry.LineString(points).simplify(0.05, False)
-                    shape["points"] = [x for p in broken_line.coords for x in p]
+                    points = interpolate_position(shape0, shape1, offset)
 
-                shape["keyframe"] = False
-                shape["frame"] = frame
-                shapes.append(shape)
+                shapes.append(copy_shape(shape0, frame, points))
+
+            if is_polygon:
+                shape0["points"] = shape0["points"][:-2]
+                shape1["points"] = shape1["points"][:-2]
+                for shape in shapes:
+                    shape["points"] = shape["points"][:-2]
+
+            return shapes
+
+        def interpolate(shape0, shape1):
+            is_same_type = shape0["type"] == shape1["type"]
+            is_rectangle = shape0["type"] == ShapeType.RECTANGLE
+            is_cuboid = shape0["type"] == ShapeType.CUBOID
+            is_polygon = shape0["type"] == ShapeType.POLYGON
+            is_polyline = shape0["type"] == ShapeType.POLYLINE
+            is_points = shape0["type"] == ShapeType.POINTS
+
+            if not is_same_type:
+                raise NotImplementedError()
+
+            shapes = []
+            if is_rectangle or is_cuboid:
+                shapes = simple_interpolation(shape0, shape1)
+            elif is_points:
+                shapes = points_interpolation(shape0, shape1)
+            elif is_polygon or is_polyline:
+                shapes = polyshape_interpolation(shape0, shape1)
+            else:
+                raise NotImplementedError()
+
             return shapes
 
         if track.get("interpolated_shapes"):
             return track["interpolated_shapes"]
 
-        # TODO: should be return an iterator?
         shapes = []
         curr_frame = track["shapes"][0]["frame"]
         prev_shape = {}
@@ -487,10 +746,7 @@ class TrackManager(ObjectManager):
             curr_frame = shape["frame"]
             prev_shape = shape
 
-        # TODO: Need to modify a client and a database (append "outside" shapes for polytracks)
-        if not prev_shape["outside"] and (prev_shape["type"] == ShapeType.RECTANGLE
-                                          or prev_shape["type"] == ShapeType.POINTS or prev_shape[
-                                              "type"] == ShapeType.CUBOID):
+        if not prev_shape["outside"]:
             shape = copy(prev_shape)
             shape["frame"] = end_frame
             shapes.extend(interpolate(prev_shape, shape))
@@ -503,7 +759,7 @@ class TrackManager(ObjectManager):
     def _unite_objects(obj0, obj1):
         track = obj0 if obj0["frame"] < obj1["frame"] else obj1
         assert obj0["label_id"] == obj1["label_id"]
-        shapes = {shape["frame"]: shape for shape in obj0["shapes"]}
+        shapes = {shape["frame"]:shape for shape in obj0["shapes"]}
         for shape in obj1["shapes"]:
             frame = shape["frame"]
             if frame in shapes:

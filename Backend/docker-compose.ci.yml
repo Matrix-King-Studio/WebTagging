@@ -1,14 +1,15 @@
-version: "2.3"
+version: '3.3'
 
 services:
   cvat_ci:
     image: cvat_ci
+    network_mode: host
     build:
-      network: host
       context: .
       dockerfile: Dockerfile.ci
     depends_on:
       - cvat
+      - cvat_proxy
     environment:
       COVERALLS_REPO_TOKEN:
       TRAVIS:

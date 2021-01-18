@@ -9,6 +9,7 @@ export default new Vuex.Store({
     userInfo: '',
     //job信息
     jobInfo: {},
+    allJobs: [],
     //选择的模式：1代表用户上传数据集，2代表用户使用已经存在的数据集
     userChoiceModel: 1,
     //项目基本信息
@@ -43,21 +44,32 @@ export default new Vuex.Store({
     allUsers: []
   },
   mutations: {
+  /** 基本信息相关 */
     //保存当前登录的用户信息
     saveUserInfo(state, userInfo){
       state.userInfo = userInfo
+      console.log('1.3.保存用户信息到仓库', state.userInfo);
+    },
+    saveIfOwnerToUserInfo(state, ifOwner){
+      state.userInfo.ifOwner = ifOwner
       console.log('1.3.保存用户信息到仓库', state.userInfo);
     },
     //当前进入的job信息
     saveJobInfo(state, jobInfo){
       state.jobInfo.jobId = jobInfo
     },
+    //setting界面中返回项目job时的列表
+    saveAllJobs(state, jobs){
+      state.allJobs = jobs
+    },
+
+  /** 新建项目相关数据 */
     //设置用户选择的上传模式
     changeUserChoiceModel(state,num){
       state.userChoiceModel = num;
     },
     //新建项目时保存label信息
-    /** label中的信息有变化，需要清洗*/
+    //TODO: label中的信息有变化，需要清洗
     addToStore(state, labData){
       //先删除原有数据
       state.projectInfo.labels = []
@@ -112,11 +124,18 @@ export default new Vuex.Store({
     saveTreeCheckedKeyList(state, listData){
       state.treeCheckedKeyList = listData
     },
-    //标注时保存标注对象信息
-    saveTagsInfo(state, shapes) {
-      console.log('开始保存新的矩形框信息');
-      for(let i = 0;i < shapes.rectangles.length;i++){
 
+  /** 页面标注数据相关操作 */
+    //每创建一个标注对象时添加到本地仓库
+    saveTagsInfo(state, shape) {
+      state.imageTags.shapes.push(shape)
+    },
+    //修改标注数据
+    changeTagInfo(state, TagInfo) {
+      for(let i = 0; i < state.imageTags.shapes.length; i++){
+        if(state.imageTags.shapes[i].id === TagInfo.id){
+          state.imageTags.shapes[i] = TagInfo
+        }
         // console.log('正在保存第'+shapes.rectangles[i].index+'个矩形框的信息')
 
         state.imageTags.shapes.push({
@@ -137,20 +156,31 @@ export default new Vuex.Store({
           "group":0
         })
       }
-      console.log('新数据保存成功', state.imageTags.shapes)
+      console.log('仓库标签信息修改结束', state.imageTags.shapes);
     },
-    //多次保存到时候先清除标注对象
-    cleanTagsInfo(state,frame){
-      // console.log(state.imageTags.shapes)
-      console.log('开始删除第'+frame+'张图片的信息')
-      for(let l = 0;l < state.imageTags.shapes.length;l++){
-        if(state.imageTags.shapes[l].frame === frame){
-          state.imageTags.shapes.splice(l,1)
-          l--
+    //删除标注数据
+    delTagInfo(state, shapeId){
+      for(let item of state.imageTags.shapes){
+        if(item.id === shapeId){
+          state.imageTags.shapes.splice(state.imageTags.shapes.indexOf(item), 1)
         }
       }
-      console.log('原数据清空完成');
     },
+    //退出工作台清除仓库中标注数据缓存
+    cleanTagsInfo(state){
+      state.imageTags = {
+        "shapes":[
+        ],
+        "tracks":[
+        ],
+        "tags":[
+        ],
+        "version":26
+      }
+      console.log('仓库标注缓存已被清除');
+    },
+
+  /** 下面未分类 */
     //保存任务分配
     //没有设置人员列表无segmentsize，设置人员列表segmentsize等于列表长度
     saveAllUsers(state, users){

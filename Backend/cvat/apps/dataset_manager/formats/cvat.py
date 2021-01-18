@@ -1,3 +1,7 @@
+# Copyright (C) 2018 Intel Corporation
+#
+# SPDX-License-Identifier: MIT
+
 import os
 import os.path as osp
 import zipfile
@@ -5,8 +9,10 @@ from collections import OrderedDict
 from glob import glob
 from tempfile import TemporaryDirectory
 
+from cvat.apps.dataset_manager.bindings import match_dm_item
 from cvat.apps.dataset_manager.util import make_zip_archive
 from cvat.apps.engine.frame_provider import FrameProvider
+from datumaro.components.extractor import DatasetItem
 from datumaro.util.image import save_image
 
 from .registry import exporter, importer
@@ -15,7 +21,6 @@ from .registry import exporter, importer
 def pairwise(iterable):
     a = iter(iterable)
     return zip(a, a)
-
 
 def create_xml_dumper(file_object):
     from xml.sax.saxutils import XMLGenerator
@@ -26,7 +31,7 @@ def create_xml_dumper(file_object):
             self.xmlgen = XMLGenerator(self.file, 'utf-8')
             self._level = 0
 
-        def _indent(self, newline=True):
+        def _indent(self, newline = True):
             if newline:
                 self.xmlgen.ignorableWhitespace("\n")
             self.xmlgen.ignorableWhitespace("  " * self._level)
@@ -167,7 +172,6 @@ def create_xml_dumper(file_object):
 
     return XmlAnnotationWriter(file_object)
 
-
 def dump_as_cvat_annotation(file_object, annotations):
     dumper = create_xml_dumper(file_object)
     dumper.open_root()
@@ -186,6 +190,7 @@ def dump_as_cvat_annotation(file_object, annotations):
             dump_data = OrderedDict([
                 ("label", shape.label),
                 ("occluded", str(int(shape.occluded))),
+                ("source", shape.source),
             ])
 
             if shape.type == "rectangle":
@@ -224,10 +229,10 @@ def dump_as_cvat_annotation(file_object, annotations):
                     )),
                 ]))
 
-            if annotations.meta["task"]["z_order"] != "False":
-                dump_data['z_order'] = str(shape.z_order)
+            dump_data['z_order'] = str(shape.z_order)
             if shape.group:
                 dump_data['group_id'] = str(shape.group)
+
 
             if shape.type == "rectangle":
                 dumper.open_box(dump_data)
@@ -264,6 +269,7 @@ def dump_as_cvat_annotation(file_object, annotations):
         for tag in frame_annotation.tags:
             tag_data = OrderedDict([
                 ("label", tag.label),
+                ("source", tag.source),
             ])
             if tag.group:
                 tag_data["group_id"] = str(tag.group)
@@ -280,17 +286,16 @@ def dump_as_cvat_annotation(file_object, annotations):
         dumper.close_image()
     dumper.close_root()
 
-
 def dump_as_cvat_interpolation(file_object, annotations):
     dumper = create_xml_dumper(file_object)
     dumper.open_root()
     dumper.add_meta(annotations.meta)
-
     def dump_track(idx, track):
         track_id = idx
         dump_data = OrderedDict([
             ("id", str(track_id)),
             ("label", track.label),
+            ("source", track.source),
         ])
 
         if track.group:
@@ -334,11 +339,10 @@ def dump_as_cvat_interpolation(file_object, annotations):
             else:
                 dump_data.update(OrderedDict([
                     ("points", ';'.join(['{:.2f},{:.2f}'.format(x, y)
-                                         for x, y in pairwise(shape.points)]))
+                        for x,y in pairwise(shape.points)]))
                 ]))
 
-            if annotations.meta["task"]["z_order"] != "False":
-                dump_data["z_order"] = str(shape.z_order)
+            dump_data["z_order"] = str(shape.z_order)
 
             if shape.type == "rectangle":
                 dumper.open_box(dump_data)
@@ -382,6 +386,7 @@ def dump_as_cvat_interpolation(file_object, annotations):
         dump_track(counter, annotations.Track(
             label=shape.label,
             group=shape.group,
+            source=shape.source,
             shapes=[annotations.TrackedShape(
                 type=shape.type,
                 points=shape.points,
@@ -391,23 +396,25 @@ def dump_as_cvat_interpolation(file_object, annotations):
                 z_order=shape.z_order,
                 frame=shape.frame,
                 attributes=shape.attributes,
+            )] +
+            ( # add a finishing frame if it does not hop over the last frame
+            [annotations.TrackedShape(
+                type=shape.type,
+                points=shape.points,
+                occluded=shape.occluded,
+                outside=True,
+                keyframe=True,
+                z_order=shape.z_order,
+                frame=shape.frame + annotations.frame_step,
+                attributes=shape.attributes,
+            )] if shape.frame + annotations.frame_step < \
+                    int(annotations.meta['task']['stop_frame']) \
+               else []
             ),
-                annotations.TrackedShape(
-                    type=shape.type,
-                    points=shape.points,
-                    occluded=shape.occluded,
-                    outside=True,
-                    keyframe=True,
-                    z_order=shape.z_order,
-                    frame=shape.frame + annotations.frame_step,
-                    attributes=shape.attributes,
-                ),
-            ],
         ))
         counter += 1
 
     dumper.close_root()
-
 
 def load(file_object, annotations):
     from defusedxml import ElementTree
@@ -428,11 +435,14 @@ def load(file_object, annotations):
                 track = annotations.Track(
                     label=el.attrib['label'],
                     group=int(el.attrib.get('group_id', 0)),
+                    source=el.attrib.get('source', 'manual'),
                     shapes=[],
                 )
             elif el.tag == 'image':
                 image_is_opened = True
-                frame_id = int(el.attrib['id'])
+                frame_id = annotations.abs_frame_id(match_dm_item(
+                    DatasetItem(id=el.attrib['id'], image=el.attrib['name']),
+                    annotations))
             elif el.tag in supported_shapes and (track is not None or image_is_opened):
                 attributes = []
                 shape = {
@@ -446,6 +456,7 @@ def load(file_object, annotations):
                     'label': el.attrib['label'],
                     'group': int(el.attrib.get('group_id', 0)),
                     'attributes': attributes,
+                    'source': str(el.attrib.get('source', 'manual'))
                 }
         elif ev == 'end':
             if el.tag == 'attribute' and attributes is not None:
@@ -462,6 +473,7 @@ def load(file_object, annotations):
                     shape['frame'] = frame_id
                     shape['label'] = el.attrib['label']
                     shape['group'] = int(el.attrib.get('group_id', 0))
+                    shape['source'] = str(el.attrib.get('source', 'manual'))
 
                 shape['type'] = 'rectangle' if el.tag == 'box' else el.tag
                 shape['occluded'] = el.attrib['occluded'] == '1'
@@ -511,42 +523,39 @@ def load(file_object, annotations):
                 tag = None
             el.clear()
 
-
 def _export(dst_file, task_data, anno_callback, save_images=False):
     with TemporaryDirectory() as temp_dir:
         with open(osp.join(temp_dir, 'annotations.xml'), 'wb') as f:
             anno_callback(f, task_data)
 
         if save_images:
+            ext = ''
+            if task_data.meta['task']['mode'] == 'interpolation':
+                ext = FrameProvider.VIDEO_FRAME_EXT
+
             img_dir = osp.join(temp_dir, 'images')
-            os.makedirs(img_dir)
             frame_provider = FrameProvider(task_data.db_task.data)
             frames = frame_provider.get_frames(
                 frame_provider.Quality.ORIGINAL,
-                frame_provider.Type.NUMPY_ARRAY)
+                frame_provider.Type.BUFFER)
             for frame_id, (frame_data, _) in enumerate(frames):
                 frame_name = task_data.frame_info[frame_id]['path']
-                if '.' in frame_name:
-                    save_image(osp.join(img_dir, frame_name),
-                               frame_data, jpeg_quality=100)
-                else:
-                    save_image(osp.join(img_dir, frame_name + '.png'),
-                               frame_data)
+                img_path = osp.join(img_dir, frame_name + ext)
+                os.makedirs(osp.dirname(img_path), exist_ok=True)
+                with open(img_path, 'wb') as f:
+                    f.write(frame_data.getvalue())
 
         make_zip_archive(temp_dir, dst_file)
-
 
 @exporter(name='CVAT for video', ext='ZIP', version='1.1')
 def _export_video(dst_file, task_data, save_images=False):
     _export(dst_file, task_data,
-            anno_callback=dump_as_cvat_interpolation, save_images=save_images)
-
+        anno_callback=dump_as_cvat_interpolation, save_images=save_images)
 
 @exporter(name='CVAT for images', ext='ZIP', version='1.1')
 def _export_images(dst_file, task_data, save_images=False):
     _export(dst_file, task_data,
-            anno_callback=dump_as_cvat_annotation, save_images=save_images)
-
+        anno_callback=dump_as_cvat_annotation, save_images=save_images)
 
 @importer(name='CVAT', ext='XML, ZIP', version='1.1')
 def _import(src_file, task_data):

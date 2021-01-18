@@ -2,23 +2,33 @@
   <div class="item" ref="item" @mouseenter="showStart" @mouseleave="hideStart">
     <span class="pro-name">{{ proInfo.name }}</span>
     <span class="pro-info">{{ proInfo.describe }}</span>
-    <span v-if="!userInfo" class="pro-id">任务Id:{{ proInfo.segIndex }}</span>
-<!--    <div class="done">-->
-<!--      <span class="remain">剩余待标记: {{ remain }}</span>-->
-<!--      <span class="ratio">任务完成度: {{ ratio }}</span>-->
-<!--    </div>-->
+    <span v-if="!ifOwner" class="pro-id">任务序号:{{ proInfo.segments[proInfo.segIndex].jobs[0].id }}</span>
     <div class="bg"></div>
     <div class="cover" ref="cover">
       <div
         class="start"
-        @click.stop="toWorkbench(proInfo.id, jobId)"
+        v-if="!ifOwner"
+        @click.stop="toWorkbench(proInfo.id, proInfo.segments[proInfo.segIndex].jobs[0].id)"
       >
         开始标记
       </div>
       <div
-        v-if="userInfo"
+        class="allJobs"
+        v-if="ifOwner"
+      >
+        <div
+          class="job"
+          v-for="item in proInfo.segments"
+          :key="item.jobs[0].id"
+          @click.stop="toWorkbench(proInfo.id, item.jobs[0].id)"
+        >
+          <span>任务序号:{{ item.jobs[0].id }}</span>
+        </div>
+      </div>
+      <div
+        v-if="ifOwner"
         class="exam"
-        @click="toTaskSetting(proInfo.id, jobId)"
+        @click="toTaskSetting(proInfo.id)"
       >
         配置
       </div>
@@ -28,7 +38,7 @@
 
 <script>
 export default {
-  props: ["proInfo","userInfo","jobId"],
+  props: ["proInfo","userInfo","ifOwner"],
   data() {
     return{
       projectId: '1',
@@ -55,7 +65,7 @@ export default {
       this.$refs.cover.style.top = "0px"
     },
     hideStart(){
-      this.$refs.cover.style.top = "300px"
+      this.$refs.cover.style.top = "200px"
     },
     //开始标记
     toWorkbench(index, jobId){
@@ -69,29 +79,16 @@ export default {
       }).catch(()=>{
         // console.log('-1.创建log失败')
       })
-      if(this.userInfo){
-        //管理员进入整个task
-        this.$router.push('/workbench/task/' + index)
-      } else {
-        //标注员获取对应job的图片
-        this.$store.commit('saveJobInfo', jobId)
-        this.$router.push('/workbench/task/' + index + '/job/' + jobId)
-      }
+      //保存用户对于当前点击的job的身份是否是创建者(拥有者)
+      this.$store.commit('saveIfOwnerToUserInfo', this.ifOwner)
+      //保存当前点击的job的id用于之后的对比
+      this.$store.commit('saveJobInfo', jobId)
+      //跳转
+      this.$router.push('/workbench/task/' + index + '/job/' + jobId)
     },
-    // //获取标注员对应的jobId
-    // /** 先规定一个人只能拥有一个task中的一个job*/
-    // /** 之后考虑一个人被分配了多个不相邻的job啊啊啊啊啊啊啊啊啊啊*/
-    // getJobId(){
-    //   console.log(this.proInfo);
-    //   for(let item of this.proInfo.segments){
-    //     if(item.jobs[0].assignee === this.$store.state.userInfo.id){
-    //       console.log('该标注员对应的jobId', item.jobs[0].id);
-    //       return item.jobs[0].id
-    //     }
-    //   }
-    // },
     //转到Task控制台
     toTaskSetting(index){
+      this.$store.commit('saveIfOwnerToUserInfo', this.ifOwner)
       this.$router.push('/workbench/setting/' + index)
     },
     //获取预览图片
@@ -162,10 +159,8 @@ export default {
       width: 100%;
       height: 100%;
       transition: top 0.2s ease;
-
       display: flex;
-      div{
-        //position: absolute;
+      .start, .exam{
         background-color: rgba(0,0,0,0.8);
         transition: background-color 0.2s;
         margin: 0;
@@ -184,14 +179,41 @@ export default {
       }
       .start{
         flex: 2;
-
-        left: 0;
-        width: 200px;
         transition: all 0.2s;
+        background-color: rgba(0,0,0,0.8);
       }
       .start:hover{
         background-color: rgba(0,0,0,0.4);
         color: #eeeeee;
+      }
+      .allJobs{
+        flex: 2;
+        overflow: auto;
+        display: flex;
+        flex-wrap: wrap;
+        align-content: stretch;
+        background-color: rgba(0,0,0,0.8);
+        .job{
+          box-sizing: border-box;
+          transition: all 0.2s;
+          width: 100%;
+          min-height: 30px;
+          color: #999999;
+          padding-left: 6px;
+          cursor: pointer;
+
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          background-color: rgba(0,0,0,0.4);
+        }
+        .job:hover{
+          color: #eeeeee;
+          background-color: rgba(0,0,0,0);
+        }
+      }
+      .allJobs:hover{
+        background-color: rgba(0,0,0,0.4);
       }
       .exam{
         flex: 1;

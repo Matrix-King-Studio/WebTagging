@@ -1,5 +1,8 @@
 from rest_auth.registration.serializers import RegisterSerializer
+from rest_auth.serializers import PasswordResetSerializer
 from rest_framework import serializers
+
+from django.conf import settings
 
 
 class RegisterSerializerEx(RegisterSerializer):
@@ -14,3 +17,16 @@ class RegisterSerializerEx(RegisterSerializer):
         })
 
         return data
+
+
+class PasswordResetSerializerEx(PasswordResetSerializer):
+    def get_email_options(self):
+        domain = None
+        if hasattr(settings, 'UI_HOST') and settings.UI_HOST:
+            domain = settings.UI_HOST
+            if hasattr(settings, 'UI_PORT') and settings.UI_PORT:
+                domain += ':{}'.format(settings.UI_PORT)
+        return {
+            'email_template_name': 'authentication/password_reset_email.html',
+            'domain_override': domain
+        }
