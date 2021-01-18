@@ -80,7 +80,6 @@ export default {
     getUserInfo() {
       this.$http.get('v1/users/self').then((res) => {
         this.userInfo = res.data;
-        console.log(this.userInfo);
         this.ifAdmin = res.data.groups.find(val => {
           return val === 'admin'
         })

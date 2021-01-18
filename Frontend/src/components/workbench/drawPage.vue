@@ -38,7 +38,7 @@
       <div class="label-obj-box" >
         <!--右边的用来选择标签的框，每一项-->
         <div
-          v-for="item in shapes.rectangles"
+          v-for="item in shapes"
           :key="item.index"
           :id="'style_'+(item.index)"
           class="label-obj"
@@ -47,13 +47,13 @@
         >
           <!--右边的用来选择标签的框，上半部分，显示序号和标签下拉选择-->
           <div class="label-info">
-            <span>{{ item.index }}</span>
+            <span class="item-index">{{ item.index }}</span>
             <div class="change-label">
               <el-select
                 v-model="item.label_id"
                 placeholder="请选择"
                 size="mini"
-                @change="saveTagsToStore"
+                @change="changeTagInfo(item)"
               >
                 <el-option
                   v-for="i in options"
@@ -63,13 +63,16 @@
                 />
               </el-select>
             </div>
-          </div>
-          <div class="img-cover"
-          >
-            <el-radio-group @change="saveTagsToStore" v-model="shapes.rectangles[item.index-1].isCover">
-              <el-radio :label="0">未被遮挡</el-radio>
-              <el-radio :label="1">被遮挡</el-radio>
-            </el-radio-group>
+            <div class="more-function">
+              <el-dropdown>
+                <span class="el-dropdown-link">
+                  <i class="el-icon-more"></i>
+                </span>
+                <el-dropdown-menu slot="dropdown">
+                  <el-dropdown-item icon="el-icon-plus">更多功能生在开发</el-dropdown-item>
+                </el-dropdown-menu>
+              </el-dropdown>
+            </div>
           </div>
           <!--右边的用来选择标签的框，下半部分，显示一些按钮-->
           <div class="label-func">
@@ -98,6 +101,10 @@
             >
               <i class="el-icon-delete" />
             </div>
+          </div>
+          <div class="label-add-attr">
+            <i class="el-icon-caret-bottom"></i>
+
           </div>
         </div>
       </div>
@@ -175,8 +182,12 @@ export default {
       flag: 'cursor',
       //项目栏是否展开
       flag2: true,
-      //是否是第一次打开
+      //是否是第一次打开， 用于删除“正在加载字样”
+      /** 后续会替代 */
       isFirst: true,
+      //是否第一次加载矩形框
+      /** 暂时用来解决刚进入job矩形框不加载的问题, 后续想更优雅的解决方法*/
+      isFirstDrawRec: true,
 
       //保存所有Tag选项
       options: [],
@@ -199,16 +210,16 @@ export default {
       imageInfo: {},
       imageScale: 1,//图片缩放比例 ：缩放后/缩放前
 
-      //矩形对象
-      shapes: {
-        rectangles: [],
-      },
+      //标注对象
+      shapes: [
+
+      ],
       rectangleIndex: 1,
       recTop: 0,
       recLeft: 0,
 
       //job信息
-      jobId: 0,
+      jobId: [],
       //提交到服务器的版本号
       updateVersion: 0,
 
@@ -224,6 +235,8 @@ export default {
 
       //标注遮挡单选框
       // radio: 0,
+
+      timeout: {},
     }
   },
   created() {
@@ -269,6 +282,10 @@ export default {
     //页面切换清除改变大小监听器
     window.onresize = () => {
     }
+    //清除页面和仓库暂存的标注数据
+    this.shapes = []
+    this.$store.commit('cleanTagsInfo')
+    //TODO: 在矩形框标注的状态下退出标注页面删除鼠标移动的监听器，就是控制横竖直线的监听器
   },
   methods: {
     //右侧信息栏
@@ -285,7 +302,7 @@ export default {
     },
     //获取task信息
     getTaskInfo() {
-      /** job数量大于20时 这个pagesize会产生bug*/
+      /** job数量大于20时 这个pagesize会产生bug */
       this.$http.get('v1/tasks?', {
         params: {
           id: this.$route.params.index,
@@ -293,9 +310,7 @@ export default {
           page_size: 20
         }
       }).then((e) => {
-
         //先获取task中的标签信息
-        this.jobId = e.data.results[0].segments[0].jobs[0].id
         console.log('当前task信息', e.data)
         for (let item in e.data.results[0].labels) {
           let label = {
@@ -306,8 +321,18 @@ export default {
         }
         console.log('标签列表', this.options);
 
-        //如果是管理员获取所有图片信息
-        if(this.$store.state.userInfo.ifAdmin){
+        //这个if是之后要添加的项目拥有者(创建者)浏览全部图片的接口
+        //检查是否是管理员(要改) 并且 url中不带jobId
+        if(this.$store.state.userInfo.ifAdmin && !this.$route.params.jobIndex){
+          /** 这个条件暂时无法进入， 后期会添加管理员浏览整个Task情况时开放，所以先输出error*/
+          console.log('error');
+          //拿到对应task下所有的jobid 用于获取标注数据
+          let jobsId = []
+          for(let item of e.data.results[0].segments){
+            jobsId.push(item.jobs[0].id)
+          }
+          this.jobId = jobsId
+
           //获取task所有图片列表
           this.$http.get('v1/tasks/' + this.$route.params.index + '/data/meta').then(e => {
             console.log('task' + this.$route.params.index + '所有image信息',e.data)
@@ -318,10 +343,11 @@ export default {
           })
           //否则先将路径中的jobid与进入项目时获取的id比较，拦截非法跳转
         } else if (this.$route.params.jobIndex === this.$store.state.jobInfo.jobId+''){
-          //再遍历task的job列表 寻找被分配的job 初始化开始结束图片和数量 如果没有找到拦截非法跳转
+          this.jobId = this.$route.params.jobIndex
+          //再遍历task的job列表 寻找被分配的job 或者是否是创建者(Owner) 初始化开始结束图片和数量 如果没有找到拦截非法跳转
           if(e.data.results[0].segments.some((item)=>{
             //查看 jobId与仓库对应的job 的 标注员信息 是否与当前用户相同
-            if(item.jobs[0].id === this.$store.state.jobInfo.jobId && item.jobs[0].assignee === this.$store.state.userInfo.id) {
+            if(item.jobs[0].id === this.$store.state.jobInfo.jobId && ((item.jobs[0].assignee === this.$store.state.userInfo.id) || this.$store.state.userInfo.ifOwner)) {
               //相同就设置图片开始结束标记
               console.log('图片范围', item.start_frame, item.stop_frame)
               this.start_frame = item.start_frame
@@ -330,6 +356,7 @@ export default {
               return true
             }
           })){
+            /** 我的代码结构有问题 if下面必须有句话 又没啥可以写的，就随便输出了个ok 之后再优化吧 */
             console.log('ok');
           } else {
             //没有找到当前用户对应的job信息
@@ -341,7 +368,6 @@ export default {
           this.$router.push('/home')
           /** 记得清除数据*/
         }
-
       }).then(()=>{
         this.initCanvas()
         this.getShapes()
@@ -350,9 +376,16 @@ export default {
     //获取标注数据
     getShapes(){
       this.$http.get('v1/jobs/'+ this.jobId +'/annotations').then((e)=>{
-        console.log('服务器的标注数据', e.data);
+        console.log('从服务器获取标注数据', e.data);
+        for(let item of e.data.shapes){
+          this.$store.commit('saveTagsInfo', item)
+        }
+        console.log('将从服务器获取标注数据保存到仓库完成', this.$store.state.imageTags.shapes);
         this.updateVersion = e.data.version
-        this.reDrawTags(3, 1, e.data.shapes)
+        //加载后 用切换图片的模式 渲染第1张图片的标记信息
+        this.reDrawTags(1, 1, e.data.shapes)
+      }).catch((err)=>{
+        console.log('获取标注数据失败', err);
       })
     },
     //获取图片压缩包并解压，将 base64 代码保存到 imagesData 里
@@ -463,6 +496,7 @@ export default {
     //切换图片
     //mod: 1.上一张  2. 下一张  3. 根据滑块改变
     changeImg(mod) {
+      clearTimeout(this.timeout)
       //如果图片加载完
       if(!this.isChangingImage){
         //这个变量在drawImages中变为false
@@ -490,7 +524,10 @@ export default {
         }
         this.getImages()
         this.removeRec('all')
-        this.reDrawTags(1, this.imageIndex)
+        this.timeout = setTimeout(()=>{
+          this.reDrawTags(1, this.imageIndex)
+          console.log('重新绘制矩形框');
+        }, 200)
       } else {
         //如果该张图片没有加载完 让 sliderBar跳回去
         this.slideBarImageIndex = this.imageIndex
@@ -586,23 +623,34 @@ export default {
             this.recLeft = mPos.left
             //向矩形框数组添加对象
             let r = {
+              //类型
               type: "rectangle",
+              //不知道
               occluded: false,
+              //z轴层级关系
               z_order: 0,
+              //本地渲染使用 不需要提交服务器
               index: this.rectangleIndex,//矩形框序号
+              //本地使用
               el: rec,//矩形框DOM元素
-              // id:5,
-              frame: this.imageIndex + this.start_frame,//第几张图片，从1开始
-              label_id: this.options[0].value,//一级标签默认选择第一个
+              //所在图片序号
+              frame: this.imageIndex + this.start_frame,
+              //一级标签默认选择第一个
+              label_id: this.options[0].value,
+              //不知道
               group: 0,
+              //下面三个本地渲染使用
               isLock: false, //锁住
               isInvisible: false, //隐藏
               isCover: 0, //0表示未被遮挡，1表示被遮挡
+              //属性
               attributes: [],
-              points: [],/** 记录矩形框位置*/
+              //左上 右下 两点数据
+              points: [],
             }
             this.rectangleIndex++
-            this.shapes.rectangles.push(r)
+            //TODO: 删掉了shapes后面的rectangle
+            this.shapes.push(r)
             //渲染到页面上
             this.$refs.recBox.appendChild(rec)
             //根据鼠标位置调整矩形框的大小
@@ -611,19 +659,19 @@ export default {
             this.isDrawing = false
             document.body.removeEventListener('mousemove', this.resizeRec, false)
             //记录矩形框左上，右下两个点的x1,y1,x2,y2坐标在 !原图! 上的坐标
-            this.shapes.rectangles[this.shapes.rectangles.length - 1].points = [
-              (parseInt(this.shapes.rectangles[this.shapes.rectangles.length - 1].el.style.left.replace('px', '')) - (parseInt(this.imageInfo.left) + 46)) * this.imageScale,
-              (parseInt(this.shapes.rectangles[this.shapes.rectangles.length - 1].el.style.top.replace('px', '')) - (parseInt(this.imageInfo.top) + 35)) * this.imageScale,
-              (parseInt(this.shapes.rectangles[this.shapes.rectangles.length - 1].el.style.width.replace('px', '')) + parseInt(this.shapes.rectangles[this.shapes.rectangles.length - 1].el.style.left.replace('px', '')) - (parseInt(this.imageInfo.left) + 46)) * this.imageScale,
-              (parseInt(this.shapes.rectangles[this.shapes.rectangles.length - 1].el.style.height.replace('px', '')) + parseInt(this.shapes.rectangles[this.shapes.rectangles.length - 1].el.style.top.replace('px', '')) - (parseInt(this.imageInfo.top) + 35)) * this.imageScale,
+            this.shapes[this.shapes.length - 1].points = [
+              (parseInt(this.shapes[this.shapes.length - 1].el.style.left.replace('px', '')) - (parseInt(this.imageInfo.left) + 46)) * this.imageScale,
+              (parseInt(this.shapes[this.shapes.length - 1].el.style.top.replace('px', '')) - (parseInt(this.imageInfo.top) + 35)) * this.imageScale,
+              (parseInt(this.shapes[this.shapes.length - 1].el.style.width.replace('px', '')) + parseInt(this.shapes[this.shapes.length - 1].el.style.left.replace('px', '')) - (parseInt(this.imageInfo.left) + 46)) * this.imageScale,
+              (parseInt(this.shapes[this.shapes.length - 1].el.style.height.replace('px', '')) + parseInt(this.shapes[this.shapes.length - 1].el.style.top.replace('px', '')) - (parseInt(this.imageInfo.top) + 35)) * this.imageScale,
             ]
-            console.log('矩形框两点数据', this.shapes.rectangles[this.shapes.rectangles.length - 1].points);
+            console.log('矩形框两点数据', this.shapes[this.shapes.length - 1].points);
             //画完自动保存
             /** 直接调接口*/
-            this.saveTagsToStore()
+            this.saveTagsToStore(this.shapes[this.shapes.length - 1])
             //完成一个标记,切换回鼠标模式
             // this.initDrawTools('cursor')
-            this.saveTagsToServer('create', this.shapes.rectangles[this.shapes.rectangles.length - 1])
+            this.addTagsToServer( this.shapes[this.shapes.length - 1])
           }
         }
       }
@@ -647,93 +695,58 @@ export default {
     },
     //绘制矩形框
     drawRec(top, right, bottom, left) {
-      this.shapes.rectangles[this.shapes.rectangles.length - 1].el.style.left = left + 'px'
-      this.shapes.rectangles[this.shapes.rectangles.length - 1].el.style.top = top + 'px'
-      this.shapes.rectangles[this.shapes.rectangles.length - 1].el.style.width = right - left + 'px'
-      this.shapes.rectangles[this.shapes.rectangles.length - 1].el.style.height = bottom - top + 'px'
+      this.shapes[this.shapes.length - 1].el.style.left = left + 'px'
+      this.shapes[this.shapes.length - 1].el.style.top = top + 'px'
+      this.shapes[this.shapes.length - 1].el.style.width = right - left + 'px'
+      this.shapes[this.shapes.length - 1].el.style.height = bottom - top + 'px'
     },
-    //删除元素
+    //清除屏幕上的标记元素 用于切换图片
     removeRec(mod) {
       if (mod === 'all') {
         this.$refs.recBox.innerHTML = ''
-        this.shapes.rectangles = []
+        this.shapes = []
         this.rectangleIndex = 1
       }
     },
-    //遮挡单选框更改
-    // coverChange(item){
-    //   console.log("单选框更改")
-    //   console.log(this.shapes.rectangles[item.index - 1].isCover);
-    //   this.saveTagsToStore()
-    // },
-    //获取job信息
-    getJobInfo() {
-      this.$http.get('v1/tasks?', {
-        params: {
-          id: this.$route.params.index,
-          page: 1,
-          page_size: 20
-        }
-      }).then((e) => {
-        this.jobId = e.data.results[0].segments[0].jobs[0].id
-        // console.log(e)
-        for (let item in e.data.results[0].labels) {
-          let label = {
-            value: e.data.results[0].labels[item].id,
-            label: e.data.results[0].labels[item].name
-          }
-          this.options.push(label)
-        }
-        console.log('标签列表', this.options);
-      })
-    },
-
     //将标注信息存储到store中
-    saveTagsToStore() {
-      this.$store.commit('cleanTagsInfo', this.imageIndex)
-      this.$store.commit('saveTagsInfo', this.shapes)
+    saveTagsToStore(shape) {
+      this.$store.commit('saveTagsInfo', shape)
       this.$message({
         message: '自动保存成功',
         type: "success"
       })
     },
-    //将标注信息存储到服务器中
-    saveTagsToServer(mod, shapeInfo){
-      if(mod === 'create'){
-        console.log(shapeInfo)
-        let shapes = [shapeInfo]
-        this.$http.patch('v1/jobs/'+ this.jobId +'/annotations?action=create', {
-          shapes: shapes,
-          tracks: [],
-          tags: [],
-          version: this.updateVersion
-        }).then((e)=>{
-          this.updateVersion += 1
-          //把服务器分配的id赋值给shapes中
-          shapeInfo.id = e.data.shapes[0].id
-
-        }).catch((err)=>{
-          console.log(err)
-        })
-      } else if(mod === 'delete'){
-        //提交到服务器
-        console.log(this.shapes.rectangles[shapeInfo - 1]);
-        this.$http.patch('v1/jobs/'+ this.jobId +'/annotations?action=delete', {
-          shapes: [this.shapes.rectangles[shapeInfo - 1]],
-          tracks: [],
-          tags: [],
-          version: this.updateVersion
-        }).then((e)=>{
-          this.updateVersion++
-          console.log(e);
-        }).catch((err)=>{
-          console.log(err);
-        })
-      }
+    //将标注信息的更改存储到服务器中
+    addTagsToServer(shapeInfo){
+      let shapes = [shapeInfo]
+      this.$http.patch('v1/jobs/' + this.jobId + '/annotations?action=create', {
+        shapes: shapes,
+        tracks: [],
+        tags: [],
+        version: this.updateVersion
+      }).then((e) => {
+        this.updateVersion += 1
+        //把服务器分配的id赋值给shapes中
+        shapeInfo.id = e.data.shapes[0].id
+      }).catch((err) => {
+        console.log('标注信息上传错误', err)
+      })
+    },
+    delTagFromServer(shapeIndex){
+      this.$http.patch('v1/jobs/' + this.jobId + '/annotations?action=delete', {
+        shapes: [this.shapes[shapeIndex]],
+        tracks: [],
+        tags: [],
+        version: this.updateVersion
+      }).then((e) => {
+        this.updateVersion++
+        console.log('删除标注信息返回值', e);
+      }).catch((err) => {
+        console.log('标注信息删除错误', err);
+      })
     },
     //提交前询问
-    /** 这里可以改成结束标注*/
-    /** 再加一个暂停标注*/
+    // TODO: 这里的按钮要大改
     isPrepare() {
       this.$confirm('提交后无法修改, 是否继续?', '提示', {
         confirmButtonText: '确定',
@@ -768,31 +781,24 @@ export default {
     //mod:  1：切换图片  2：改变窗口大小
     /**   切换图片后矩形框内的鼠标样式有问题
      * 是否锁定的参数没有保存回传*/
-    reDrawTags(mod, index, shapes = []) {
+    reDrawTags(mod, index) {
       //切换到了第几张图片, 这里的index是this.imageindex 也就是从1开始的数字
       let imgIndex = index
-      let TagsInfo = {}
+      let TagsInfo = []
       let that = this
       if (mod === 1) {
         //从store获取所有的标注信息
         TagsInfo = that.$store.state.imageTags.shapes
-        console.log('从store获取此图片的标注信息',TagsInfo);
       } else if (mod === 2) {
-        TagsInfo = that.shapes.rectangles
+        TagsInfo = that.shapes
         this.removeRec('all')
-        console.log('从页面获取此图片的标注信息',TagsInfo);
-      } else if(mod === 3){
-        TagsInfo = shapes
-        console.log('从服务器获取此图片的标注信息',TagsInfo);
       }
-      //清洗出这张图片的标注信息
-      for (let item in TagsInfo) {
-        //这里的frame是图片实际的index
-        if (TagsInfo[item].frame === imgIndex + this.start_frame) {
-
-          console.log('矩形框在页面上的位置', TagsInfo[item].points);
-
+      //清洗出当前图片的标注信息
+      for (let item of TagsInfo) {
+        if (item.frame === imgIndex + this.start_frame) {
+          // console.log('矩形框在页面上的位置', item.points);
           //创建矩形框
+          //TODO: 这里的创建矩形框建议和上面的creatRec中的拿出来做成单独的函数
           let rec = document.createElement('div')
           rec.className += 'rec-obj'
           //id用来标记是第几个div
@@ -805,38 +811,44 @@ export default {
           rec.onmouseleave = (e) => {
               this.hideLabObj(e.target.id)
           }
-
-          setTimeout(() => {
-            // console.log(parseInt(TagsInfo[item].points[0]) / this.imageScale);
-            // console.log(parseInt(this.imageInfo.left));
-            // console.log(parseInt(TagsInfo[item].points[1]) / this.imageScale);
-            // console.log(parseInt(this.imageInfo.top));
-            rec.style.left = parseInt(TagsInfo[item].points[0]) / this.imageScale + parseInt(this.imageInfo.left) + 46 + 'px'
-            rec.style.top = parseInt(TagsInfo[item].points[1]) / this.imageScale + parseInt(this.imageInfo.top) + 35 + 'px'
-            rec.style.width = (parseInt(TagsInfo[item].points[2]) - parseInt(TagsInfo[item].points[0])) / this.imageScale + 'px'
-            rec.style.height = (parseInt(TagsInfo[item].points[3]) - parseInt(TagsInfo[item].points[1])) / this.imageScale + 'px'
+          if(this.isFirstDrawRec){
+            setTimeout(() => {
+              rec.style.left = parseInt(item.points[0]) / this.imageScale + parseInt(this.imageInfo.left) + 46 + 'px'
+              rec.style.top = parseInt(item.points[1]) / this.imageScale + parseInt(this.imageInfo.top) + 35 + 'px'
+              rec.style.width = (parseInt(item.points[2]) - parseInt(item.points[0])) / this.imageScale + 'px'
+              rec.style.height = (parseInt(item.points[3]) - parseInt(item.points[1])) / this.imageScale + 'px'
+              rec.style.cursor = 'default'
+              this.$refs.recBox.appendChild(rec)
+            }, 100)
+            this.isFirstDrawRec = false
+          } else {
+            rec.style.left = parseInt(item.points[0]) / this.imageScale + parseInt(this.imageInfo.left) + 46 + 'px'
+            rec.style.top = parseInt(item.points[1]) / this.imageScale + parseInt(this.imageInfo.top) + 35 + 'px'
+            rec.style.width = (parseInt(item.points[2]) - parseInt(item.points[0])) / this.imageScale + 'px'
+            rec.style.height = (parseInt(item.points[3]) - parseInt(item.points[1])) / this.imageScale + 'px'
             rec.style.cursor = 'default'
             this.$refs.recBox.appendChild(rec)
-          }, 300)
+          }
 
-          // console.log('标记的真实数据', TagsInfo[item])
+          // console.log('标记的真实数据', item)
 
           //添加数据
-          this.shapes.rectangles.push({
-            type: TagsInfo[item].type,
-            occluded: TagsInfo[item].occluded,
-            z_order: TagsInfo[item].z_order,
+          this.shapes.push({
+            type: item.type,
+            occluded: item.occluded,
+            z_order: item.z_order,
             index: this.rectangleIndex,
             el: rec,
-            id: TagsInfo[item].id,
-            frame: TagsInfo[item].frame,
-            label_id: TagsInfo[item].label_id,
-            group: TagsInfo[item].group,
-            isLock: false,
-            isInvisible: false,
-            isCover: TagsInfo[item].isCover, //是否覆盖
-            attributes: TagsInfo[item].attributes,
-            points: TagsInfo[item].points,
+            id: item.id,
+            frame: item.frame,
+            label_id: item.label_id,
+            group: item.group,
+            //这三个如果时本地有标注数据 就直接用 如果是从服务器获取的就没有数据 默认赋值false
+            isLock: item.isLock || false,
+            isInvisible: item.isInvisible || false,
+            isCover: item.isCover || false,
+            attributes: item.attributes,
+            points: item.points,
           })
           this.rectangleIndex++
         }
@@ -850,12 +862,13 @@ export default {
     },
     //鼠标放到右侧信息栏高亮对应矩形框
     showRecObj(index) {
-      this.shapes.rectangles[index - 1].el.style.backgroundColor = 'rgba(255,255,255,0.4)'
+      this.shapes[index - 1].el.style.backgroundColor = 'rgba(255,255,255,0.4)'
     },
     hideRecObj(index){
-      this.shapes.rectangles[index-1].el.style.backgroundColor = 'transparent'
+      this.shapes[index-1].el.style.backgroundColor = 'transparent'
     },
     //鼠标放到矩形框高亮右侧信息栏
+    //TODO: 删除矩形框后这里会产生错误 切换图片后再切回来就恢复正常
     showLabObj(index){
       let styleid = "style_"+index;
       let object = document.getElementById(styleid);
@@ -867,44 +880,67 @@ export default {
       object.style.background = 'rgb(255,255,255)'
     },
     //信息栏中的功能
+    //更新矩形框(标注对象)标签
+    //TODO: 后续的更改标签直接改成选择默认标签 不用每次标注后再更改标签信息
+    changeTagInfo(item){
+      //更新页面数据： 不用更新，点选的时候是直接绑定的
+      //更新仓库数据
+      this.$store.commit('changeTagInfo', item)
+      //向服务器提交更新
+      let shapes = [item]
+      this.$http.patch('v1/jobs/' + this.jobId + '/annotations?action=update', {
+        shapes: shapes,
+        tracks: [],
+        tags: [],
+        version: this.updateVersion
+      }).then(() => {
+        this.$message({
+          message: "修改已保存",
+          type: "success"
+        })
+      }).catch((err) => {
+        console.log('标注信息更新错误', err)
+      })
+    },
     //锁定
     lockRecObj(index) {
-      this.shapes.rectangles[index - 1].isLock = !this.shapes.rectangles[index - 1].isLock
-      if (this.shapes.rectangles[index - 1].isLock) {
-        this.shapes.rectangles[index - 1].el.classList.add('rec-obj-lock')
+      this.shapes[index - 1].isLock = !this.shapes[index - 1].isLock
+      if (this.shapes[index - 1].isLock) {
+        this.shapes[index - 1].el.classList.add('rec-obj-lock')
       } else {
-        this.shapes.rectangles[index - 1].el.classList.remove('rec-obj-lock')
+        this.shapes[index - 1].el.classList.remove('rec-obj-lock')
       }
     },
     //不可见
     invisibleRecObj(index) {
-      if (this.shapes.rectangles[index - 1].isInvisible) {
-        this.shapes.rectangles[index - 1].el.style.display = 'block'
+      if (this.shapes[index - 1].isInvisible) {
+        this.shapes[index - 1].el.style.display = 'block'
       } else {
-        this.shapes.rectangles[index - 1].el.style.display = 'none'
+        this.shapes[index - 1].el.style.display = 'none'
       }
-      this.shapes.rectangles[index - 1].isInvisible = !this.shapes.rectangles[index - 1].isInvisible
+      this.shapes[index - 1].isInvisible = !this.shapes[index - 1].isInvisible
     },
     //删除
     deleteRecObj(index) {
-      // console.log(this.shapes.rectangles[index-1].el);
-      //删除元素
-      this.shapes.rectangles[index - 1].el.parentNode.removeChild(this.shapes.rectangles[index - 1].el)
-
-      //之后元素的序号往前挪
-      for (let i = index; i < this.shapes.rectangles.length; i++) {
-        // console.log(this.shapes.rectangles[i]);
-        this.shapes.rectangles[i].index -= 1
+      //index是从 1 开始的计数变量
+      // console.log(this.shapes, index);
+      //在页面上删除元素
+      this.shapes[index - 1].el.parentNode.removeChild(this.shapes[index - 1].el)
+      //向服务器提交删除请求
+      this.delTagFromServer( index-1)
+      //向仓库(store)提交删除
+      this.$store.commit('delTagInfo', this.shapes[index - 1].id)
+      console.log('仓库中信息删除');
+      //之后每个元素的序号往前挪
+      for (let i = index; i < this.shapes.length; i++) {
+        // console.log(this.shapes[i]);
+        this.shapes[i].index -= 1
       }
-
-      this.saveTagsToServer('delete', index)
-
+      console.log('本地数据更新后', this.shapes)
       //在本地删除数据
-      this.shapes.rectangles.splice(index - 1, 1)
+      this.shapes.splice(index - 1, 1)
+      //计数变量-1
       this.rectangleIndex--
-      //提交到store
-      this.$store.commit('cleanTagsInfo', this.imageIndex)
-      this.$store.commit('saveTagsInfo', this.shapes)
       this.$message({
         message: "元素成功移除",
         type: "success"
@@ -1005,15 +1041,15 @@ export default {
     overflow: auto;
     background-color: #fafbfc;
     .label-obj{
-      height: 110px;
       width: 100%;
       border-bottom: 1px solid #cae7dc;
       .label-info {
         width: 100%;
         height: 30px;
-        span {
+        display: flex;
+        .item-index {
           display: block;
-          float: left;
+          flex: 1;
           padding-left: 20px;
           box-sizing: border-box;
           font-size: 14px;
@@ -1021,40 +1057,49 @@ export default {
           width: 30%;
           overflow: hidden;
         }
-
         .change-label {
-          float: right;
+          flex: 4;
           height: 100%;
-          width: 60%;
           box-sizing: border-box;
-          margin-right: 20px;
           padding: 2px;
+        }
+        .more-function {
+          flex: 1;
+          height: 100%;
+
+          text-align: center;
+          line-height: 30px;
+          .el-dropdown-link{
+            cursor: pointer;
+            color: #333;
+          }
+          .el-icon-more{
+            font-size: 14px;
+          }
         }
       }
 
       .label-func {
         width: 100%;
         height: 50px;
-
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
         .func {
           width: 30px;
           height: 30px;
-          margin: 10px 20px;
-          float: left;
           border-radius: 6px;
           transition: background-color 0.2s;
           text-align: center;
           line-height: 30px;
         }
-
         .func:hover {
           background-color: #b9d4ca;
         }
       }
-
-      .img-cover {
-        height: 30px;
-        padding-left: 20px;
+      .label-add-attr{
+        width: 100%;
+        height: 20px;
       }
     }
   }

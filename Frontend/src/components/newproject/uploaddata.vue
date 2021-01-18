@@ -232,7 +232,7 @@ export default {
     closeLoading(){
       setTimeout(()=>{
         this.loading = false
-        console.log("遮罩已关闭")
+        // console.log("遮罩已关闭")
       },3000) //3秒钟后遮罩关闭
     },
     //节点被点击触发的方法
@@ -328,12 +328,12 @@ export default {
               resolve([]);
             });
           } else {
-              console.log(node.data.name + "不是文件夹，没有子文件")
+              // console.log(node.data.name + "不是文件夹，没有子文件")
               resolve([]);
           }
         }, 400);
       } else{
-        console.log('node.data不存在')
+        // console.log('node.data不存在')
       }
     },
   },

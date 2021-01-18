@@ -17,7 +17,7 @@
         </el-dropdown>
       </div>
       <router-link
-        v-if="mod === 'task' && ifAdmin"
+        v-if="mod === 'task' && ifOwner"
         class="to-setting"
         :to="'/workbench/setting/' + taskId"
         tag="div"
@@ -26,16 +26,28 @@
         <i class="el-icon-s-tools"></i>
         <span>项目设置</span>
       </router-link>
-      <router-link
-        v-if="mod === 'set' && ifAdmin"
+      <div
+        v-if="mod === 'set' && ifOwner"
         class="to-task"
-        :to="'/workbench/task/' + taskId"
-        tag="div"
-        @click.native="changeMod"
       >
-        <i class="el-icon-menu"></i>
-        <span>工作台</span>
-      </router-link>
+        <el-dropdown
+          @command="toWorkbench"
+          :show-timeout=100
+        >
+          <span class="el-dropdown-link">
+            <i class="el-icon-menu"></i>去往工作台
+          </span>
+          <el-dropdown-menu slot="dropdown">
+            <el-dropdown-item
+              v-for="item in this.$store.state.allJobs"
+              :key="item.jobs[0].id"
+              :command="item.jobs[0].id"
+            >
+              <span> 任务序号:{{ item.jobs[0].id }}</span>
+            </el-dropdown-item>
+          </el-dropdown-menu>
+        </el-dropdown>
+      </div>
     </div>
     <router-view></router-view>
   </div>
@@ -49,7 +61,8 @@ export default {
       taskId: '',
       userInfo: {},
       userId: '',
-      ifAdmin: ''
+      ifAdmin: '',
+      ifOwner: false,
     }
   },
   created() {
@@ -82,6 +95,11 @@ export default {
         this.mod = 'task'
       }
     },
+    toWorkbench(jobId){
+      this.changeMod()
+      this.$store.commit('saveJobInfo', jobId)
+      this.$router.push('/workbench/task/' + this.taskId + '/job/' + jobId)
+    },
     //拿到项目id
     getTaskId(id){
       this.taskId = id
@@ -91,7 +109,7 @@ export default {
       this.$router.push('/home')
     },
     //获取当前登录用户信息
-    /** 用户身份判断需完善*/
+    //TODO: 用户身份判断需完善
     getCurrentUserInfo(){
       this.$http.get('v1/users/self').then((e)=>{
         console.log('当前用户信息', e.data);
@@ -99,6 +117,8 @@ export default {
         this.userId = e.data.groups[0] !== 'annotator';
       })
       this.ifAdmin = this.$store.state.userInfo.ifAdmin
+      this.ifOwner = this.$store.state.userInfo.ifOwner
+
     },
     //用户下拉菜单点击事件处理
     handleUserClick(command){
@@ -155,6 +175,9 @@ export default {
       cursor: pointer;
       span{
         font-size: 14px;
+      }
+      .el-dropdown-link{
+        color: #222222;
       }
     }
     .user{
