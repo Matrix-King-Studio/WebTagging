@@ -1,3 +1,8 @@
+
+# Copyright (C) 2019-2020 Intel Corporation
+#
+# SPDX-License-Identifier: MIT
+
 import yaml
 
 
@@ -58,7 +63,6 @@ class Schema:
         if self._fallback is not None:
             return self._fallback.get(key, default)
 
-
 class SchemaBuilder:
     def __init__(self):
         self._items = {}
@@ -72,7 +76,6 @@ class SchemaBuilder:
 
     def build(self):
         return Schema(self._items)
-
 
 class Config:
     def __init__(self, config=None, fallback=None, schema=None, mutable=True):
@@ -104,21 +107,21 @@ class Config:
 
     def items(self, allow_fallback=True, allow_internal=True):
         return self._items(
-            allow_fallback=allow_fallback,
-            allow_internal=allow_internal
-        ).items()
+                allow_fallback=allow_fallback,
+                allow_internal=allow_internal
+            ).items()
 
     def keys(self, allow_fallback=True, allow_internal=True):
         return self._items(
-            allow_fallback=allow_fallback,
-            allow_internal=allow_internal
-        ).keys()
+                allow_fallback=allow_fallback,
+                allow_internal=allow_internal
+            ).keys()
 
     def values(self, allow_fallback=True, allow_internal=True):
         return self._items(
-            allow_fallback=allow_fallback,
-            allow_internal=allow_internal
-        ).values()
+                allow_fallback=allow_fallback,
+                allow_internal=allow_internal
+            ).values()
 
     def __contains__(self, key):
         return key in self.keys()
@@ -127,7 +130,7 @@ class Config:
         return len(self.items())
 
     def __iter__(self):
-        return iter(zip(self.keys(), self.values()))
+        return iter(self.keys())
 
     def __getitem__(self, key):
         default = object()
@@ -147,13 +150,18 @@ class Config:
 
     def __eq__(self, other):
         try:
-            for k, my_v in self.items(allow_internal=False):
+            keys = set(self.keys()) | set(other.keys())
+            for k in keys:
+                my_v = self[k]
                 other_v = other[k]
                 if my_v != other_v:
                     return False
             return True
-        except Exception:
+        except (KeyError, AttributeError):
             return False
+
+    def __repr__(self):
+        return repr(dict(self))
 
     def update(self, other):
         for k, v in other.items():
@@ -192,7 +200,7 @@ class Config:
             schema_entry_instance = schema_entry()
             if not isinstance(value, type(schema_entry_instance)):
                 if isinstance(value, dict) and \
-                    isinstance(schema_entry_instance, Config):
+                        isinstance(schema_entry_instance, Config):
                     schema_entry_instance.update(value)
                     value = schema_entry_instance
                 else:
@@ -202,9 +210,12 @@ class Config:
         return value
 
     @staticmethod
-    def parse(path):
-        with open(path, 'r') as f:
-            return Config(yaml.safe_load(f))
+    def parse(path, *args, **kwargs):
+        if isinstance(path, str):
+            with open(path, 'r') as f:
+                return Config(yaml.safe_load(f), *args, **kwargs)
+        else:
+            return Config(yaml.safe_load(path), *args, **kwargs)
 
     @staticmethod
     def yaml_representer(dumper, value):
@@ -212,14 +223,16 @@ class Config:
             value._items(allow_internal=False, allow_fallback=False))
 
     def dump(self, path):
-        with open(path, 'w+') as f:
-            yaml.dump(self, f)
-
+        if isinstance(path, str):
+            with open(path, 'w') as f:
+                yaml.dump(self, f)
+        else:
+            yaml.dump(self, path)
 
 yaml.add_multi_representer(Config, Config.yaml_representer)
 
 
-class DefaultConfig(Config):
+class DictConfig(Config):
     def __init__(self, default=None):
         super().__init__()
         self.__dict__['_default'] = default
@@ -230,6 +243,3 @@ class DefaultConfig(Config):
             return super().set(key, value)
         else:
             return super().set(key, value)
-
-
-DEFAULT_FORMAT = 'datumaro'

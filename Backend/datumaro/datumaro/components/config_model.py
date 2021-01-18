@@ -1,13 +1,18 @@
+
+# Copyright (C) 2019-2020 Intel Corporation
+#
+# SPDX-License-Identifier: MIT
+
 from datumaro.components.config import Config, \
-    DefaultConfig as _DefaultConfig, \
+    DictConfig as _DictConfig, \
     SchemaBuilder as _SchemaBuilder
+
 
 SOURCE_SCHEMA = _SchemaBuilder() \
     .add('url', str) \
     .add('format', str) \
     .add('options', dict) \
     .build()
-
 
 class Source(Config):
     def __init__(self, config=None):
@@ -16,10 +21,8 @@ class Source(Config):
 
 MODEL_SCHEMA = _SchemaBuilder() \
     .add('launcher', str) \
-    .add('model_dir', str, internal=True) \
     .add('options', dict) \
     .build()
-
 
 class Model(Config):
     def __init__(self, config=None):
@@ -29,13 +32,13 @@ class Model(Config):
 PROJECT_SCHEMA = _SchemaBuilder() \
     .add('project_name', str) \
     .add('format_version', int) \
- \
+    \
     .add('subsets', list) \
-    .add('sources', lambda: _DefaultConfig(
-    lambda v=None: Source(v))) \
-    .add('models', lambda: _DefaultConfig(
-    lambda v=None: Model(v))) \
- \
+    .add('sources', lambda: _DictConfig(
+        lambda v=None: Source(v))) \
+    .add('models', lambda: _DictConfig(
+        lambda v=None: Model(v))) \
+    \
     .add('models_dir', str, internal=True) \
     .add('plugins_dir', str, internal=True) \
     .add('sources_dir', str, internal=True) \

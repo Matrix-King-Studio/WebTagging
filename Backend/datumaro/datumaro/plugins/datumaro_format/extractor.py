@@ -1,10 +1,15 @@
+
+# Copyright (C) 2019-2020 Intel Corporation
+#
+# SPDX-License-Identifier: MIT
+
 import json
 import os.path as osp
 
 from datumaro.components.extractor import (SourceExtractor, DatasetItem,
-                                           AnnotationType, Label, RleMask, Points, Polygon, PolyLine, Bbox, Caption,
-                                           LabelCategories, MaskCategories, PointsCategories
-                                           )
+    AnnotationType, Label, RleMask, Points, Polygon, PolyLine, Bbox, Caption,
+    LabelCategories, MaskCategories, PointsCategories, Importer
+)
 from datumaro.util.image import Image
 
 from .format import DatumaroPath
@@ -27,16 +32,6 @@ class DatumaroExtractor(SourceExtractor):
             parsed_anns = json.load(f)
         self._categories = self._load_categories(parsed_anns)
         self._items = self._load_items(parsed_anns)
-
-    def categories(self):
-        return self._categories
-
-    def __iter__(self):
-        for item in self._items:
-            yield item
-
-    def __len__(self):
-        return len(self._items)
 
     @staticmethod
     def _load_categories(parsed):
@@ -65,7 +60,7 @@ class DatumaroExtractor(SourceExtractor):
             point_categories = PointsCategories()
             for item in parsed_points_cat['items']:
                 point_categories.add(int(item['label_id']),
-                                     item['labels'], joints=item['joints'])
+                    item['labels'], joints=item['joints'])
 
             categories[AnnotationType.points] = point_categories
 
@@ -77,22 +72,25 @@ class DatumaroExtractor(SourceExtractor):
             item_id = item_desc['id']
 
             image = None
-            image_info = item_desc.get('image', {})
+            image_info = item_desc.get('image')
             if image_info:
-                image_path = osp.join(self._images_dir,
-                                      image_info.get('path', ''))  # relative or absolute fits
+                image_path = image_info.get('path') or \
+                    item_id + DatumaroPath.IMAGE_EXT
+                image_path = osp.join(self._images_dir, image_path)
                 image = Image(path=image_path, size=image_info.get('size'))
 
             annotations = self._load_annotations(item_desc)
 
             item = DatasetItem(id=item_id, subset=self._subset,
-                               annotations=annotations, image=image)
+                annotations=annotations, image=image,
+                attributes=item_desc.get('attr'))
 
             items.append(item)
 
         return items
 
-    def _load_annotations(self, item):
+    @staticmethod
+    def _load_annotations(item):
         parsed = item['annotations']
         loaded = []
 
@@ -108,42 +106,47 @@ class DatumaroExtractor(SourceExtractor):
 
             if ann_type == AnnotationType.label:
                 loaded.append(Label(label=label_id,
-                                    id=ann_id, attributes=attributes, group=group))
+                    id=ann_id, attributes=attributes, group=group))
 
             elif ann_type == AnnotationType.mask:
                 rle = ann['rle']
                 rle['counts'] = rle['counts'].encode('ascii')
                 loaded.append(RleMask(rle=rle, label=label_id,
-                                      id=ann_id, attributes=attributes, group=group,
-                                      z_order=z_order))
+                    id=ann_id, attributes=attributes, group=group,
+                    z_order=z_order))
 
             elif ann_type == AnnotationType.polyline:
                 loaded.append(PolyLine(points, label=label_id,
-                                       id=ann_id, attributes=attributes, group=group,
-                                       z_order=z_order))
+                    id=ann_id, attributes=attributes, group=group,
+                    z_order=z_order))
 
             elif ann_type == AnnotationType.polygon:
                 loaded.append(Polygon(points, label=label_id,
-                                      id=ann_id, attributes=attributes, group=group,
-                                      z_order=z_order))
+                    id=ann_id, attributes=attributes, group=group,
+                    z_order=z_order))
 
             elif ann_type == AnnotationType.bbox:
                 x, y, w, h = ann['bbox']
                 loaded.append(Bbox(x, y, w, h, label=label_id,
-                                   id=ann_id, attributes=attributes, group=group,
-                                   z_order=z_order))
+                    id=ann_id, attributes=attributes, group=group,
+                    z_order=z_order))
 
             elif ann_type == AnnotationType.points:
                 loaded.append(Points(points, label=label_id,
-                                     id=ann_id, attributes=attributes, group=group,
-                                     z_order=z_order))
+                    id=ann_id, attributes=attributes, group=group,
+                    z_order=z_order))
 
             elif ann_type == AnnotationType.caption:
                 caption = ann.get('caption')
                 loaded.append(Caption(caption,
-                                      id=ann_id, attributes=attributes, group=group))
+                    id=ann_id, attributes=attributes, group=group))
 
             else:
                 raise NotImplementedError()
 
         return loaded
+
+class DatumaroImporter(Importer):
+    @classmethod
+    def find_sources(cls, path):
+        return cls._find_sources_recursive(path, '.json', 'datumaro')

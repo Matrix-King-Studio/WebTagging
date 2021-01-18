@@ -1,13 +1,16 @@
+
+# Copyright (C) 2019-2020 Intel Corporation
+#
+# SPDX-License-Identifier: MIT
+
 import argparse
 import textwrap
 
 
 class CliException(Exception): pass
 
-
 def add_subparser(subparsers, name, builder):
     return builder(lambda **kwargs: subparsers.add_parser(name, **kwargs))
-
 
 class MultilineFormatter(argparse.HelpFormatter):
     """
@@ -30,10 +33,31 @@ class MultilineFormatter(argparse.HelpFormatter):
         multiline_text = ''
         for paragraph in paragraphs:
             formatted_paragraph = textwrap.fill(paragraph, width,
-                                                initial_indent=indent, subsequent_indent=indent) + '\n'
+                initial_indent=indent, subsequent_indent=indent) + '\n'
             multiline_text += formatted_paragraph
         return multiline_text
 
+def required_count(nmin=0, nmax=0):
+    assert 0 <= nmin and 0 <= nmax and nmin or nmax
+
+    class RequiredCount(argparse.Action):
+        def __call__(self, parser, args, values, option_string=None):
+            k = len(values)
+            if not ((nmin and (nmin <= k) or not nmin) and \
+                    (nmax and (k <= nmax) or not nmax)):
+                msg = "Argument '%s' requires" % self.dest
+                if nmin and nmax:
+                    msg += " from %s to %s arguments" % (nmin, nmax)
+                elif nmin:
+                    msg += " at least %s arguments" % nmin
+                else:
+                    msg += " no more %s arguments" % nmax
+                raise argparse.ArgumentTypeError(msg)
+            setattr(args, self.dest, values)
+    return RequiredCount
+
+def at_least(n):
+    return required_count(n, 0)
 
 def make_file_name(s):
     # adapted from

@@ -788,13 +788,9 @@ class ReviewViewSet(viewsets.GenericViewSet, mixins.DestroyModelMixin, mixins.Cr
             reviewer_id = request.data['reviewer_id']
             reviewer = get_object_or_404(User, pk=reviewer_id)
 
-        request.data.update({
-            'reviewer_id': request.user.id,
-        })
+        request.data.update({'reviewer_id': request.user.id})
         if db_job.assignee:
-            request.data.update({
-                'assignee_id': db_job.assignee.id,
-            })
+            request.data.update({'assignee_id': db_job.assignee.id})
 
         issue_set = request.data['issue_set']
         for issue in issue_set:
@@ -818,7 +814,6 @@ class ReviewViewSet(viewsets.GenericViewSet, mixins.DestroyModelMixin, mixins.Cr
         else:
             db_job.reviewer = reviewer
             db_job.save()
-
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
 
@@ -859,7 +854,6 @@ class IssueViewSet(viewsets.GenericViewSet, mixins.DestroyModelMixin, mixins.Upd
             permissions.append(auth.IssueChangePermission)
         else:
             permissions.append(auth.AdminRolePermission)
-
         return [perm() for perm in permissions]
 
     @swagger_auto_schema(method='get', operation_summary='The action returns all comments of a specific issue',

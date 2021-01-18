@@ -1,11 +1,16 @@
+
+# Copyright (C) 2019-2020 Intel Corporation
+#
+# SPDX-License-Identifier: MIT
+
 from collections import OrderedDict
 import os.path as osp
 from defusedxml import ElementTree
 
 from datumaro.components.extractor import (SourceExtractor, DatasetItem,
-                                           AnnotationType, Points, Polygon, PolyLine, Bbox, Label,
-                                           LabelCategories
-                                           )
+    AnnotationType, Points, Polygon, PolyLine, Bbox, Label,
+    LabelCategories, Importer
+)
 from datumaro.util.image import Image
 
 from .format import CvatPath
@@ -16,11 +21,9 @@ class CvatExtractor(SourceExtractor):
 
     def __init__(self, path):
         assert osp.isfile(path), path
-        rootpath = ''
-        if path.endswith(osp.join(CvatPath.ANNOTATIONS_DIR, osp.basename(path))):
-            rootpath = path.rsplit(CvatPath.ANNOTATIONS_DIR, maxsplit=1)[0]
+        rootpath = osp.dirname(path)
         images_dir = ''
-        if rootpath and osp.isdir(osp.join(rootpath, CvatPath.IMAGES_DIR)):
+        if osp.isdir(osp.join(rootpath, CvatPath.IMAGES_DIR)):
             images_dir = osp.join(rootpath, CvatPath.IMAGES_DIR)
         self._images_dir = images_dir
         self._path = path
@@ -28,18 +31,8 @@ class CvatExtractor(SourceExtractor):
         super().__init__(subset=osp.splitext(osp.basename(path))[0])
 
         items, categories = self._parse(path)
-        self._items = self._load_items(items)
+        self._items = list(self._load_items(items).values())
         self._categories = categories
-
-    def categories(self):
-        return self._categories
-
-    def __iter__(self):
-        for item in self._items.values():
-            yield item
-
-    def __len__(self):
-        return len(self._items)
 
     @classmethod
     def _parse(cls, path):
@@ -59,7 +52,7 @@ class CvatExtractor(SourceExtractor):
             if ev == 'start':
                 if el.tag == 'track':
                     track = {
-                        'id': el.attrib.get('id'),
+                        'id': el.attrib['id'],
                         'label': el.attrib.get('label'),
                         'group': int(el.attrib.get('group_id', 0)),
                         'height': frame_size[0],
@@ -80,6 +73,7 @@ class CvatExtractor(SourceExtractor):
                     }
                     if track:
                         shape.update(track)
+                        shape['track_id'] = int(track['id'])
                     if image:
                         shape.update(image)
                 elif el.tag == 'tag' and image:
@@ -92,13 +86,13 @@ class CvatExtractor(SourceExtractor):
                     }
             elif ev == 'end':
                 if el.tag == 'attribute' and attributes is not None:
-                    attr_value = el.text
+                    attr_value = el.text or ''
                     if el.text in ['true', 'false']:
                         attr_value = attr_value == 'true'
                     else:
                         try:
                             attr_value = float(attr_value)
-                        except Exception:
+                        except ValueError:
                             pass
                     attributes[el.attrib['name']] = attr_value
                 elif el.tag in cls._SUPPORTED_SHAPES:
@@ -160,15 +154,13 @@ class CvatExtractor(SourceExtractor):
         categories = {}
 
         frame_size = None
-        has_z_order = False
-        mode = 'annotation'
+        mode = None
         labels = OrderedDict()
         label = None
 
         # Recursive descent parser
         el = None
         states = ['annotations']
-
         def accepted(expected_state, tag, next_state=None):
             state = states[-1]
             if state == expected_state and el is not None and el.tag == tag:
@@ -177,7 +169,6 @@ class CvatExtractor(SourceExtractor):
                 states.append(next_state)
                 return True
             return False
-
         def consumed(expected_state, tag):
             state = states[-1]
             if state == expected_state and el is not None and el.tag == tag:
@@ -187,45 +178,33 @@ class CvatExtractor(SourceExtractor):
 
         for ev, el in context:
             if ev == 'start':
-                if accepted('annotations', 'meta'):
-                    pass
-                elif accepted('meta', 'task'):
-                    pass
-                elif accepted('task', 'z_order'):
-                    pass
+                if accepted('annotations', 'meta'): pass
+                elif accepted('meta', 'task'): pass
+                elif accepted('task', 'mode'): pass
                 elif accepted('task', 'original_size'):
                     frame_size = [None, None]
-                elif accepted('original_size', 'height', next_state='frame_height'):
-                    pass
-                elif accepted('original_size', 'width', next_state='frame_width'):
-                    pass
-                elif accepted('task', 'labels'):
-                    pass
+                elif accepted('original_size', 'height', next_state='frame_height'): pass
+                elif accepted('original_size', 'width', next_state='frame_width'): pass
+                elif accepted('task', 'labels'): pass
                 elif accepted('labels', 'label'):
-                    label = {'name': None, 'attributes': set()}
-                elif accepted('label', 'name', next_state='label_name'):
-                    pass
-                elif accepted('label', 'attributes'):
-                    pass
-                elif accepted('attributes', 'attribute'):
-                    pass
-                elif accepted('attribute', 'name', next_state='attr_name'):
-                    pass
+                    label = { 'name': None, 'attributes': set() }
+                elif accepted('label', 'name', next_state='label_name'): pass
+                elif accepted('label', 'attributes'): pass
+                elif accepted('attributes', 'attribute'): pass
+                elif accepted('attribute', 'name', next_state='attr_name'): pass
                 elif accepted('annotations', 'image') or \
-                    accepted('annotations', 'track') or \
-                    accepted('annotations', 'tag'):
+                     accepted('annotations', 'track') or \
+                     accepted('annotations', 'tag'):
                     break
                 else:
                     pass
             elif ev == 'end':
                 if consumed('meta', 'meta'):
                     break
-                elif consumed('task', 'task'):
-                    pass
-                elif consumed('z_order', 'z_order'):
-                    has_z_order = (el.text == 'True')
-                elif consumed('original_size', 'original_size'):
-                    pass
+                elif consumed('task', 'task'): pass
+                elif consumed('mode', 'mode'):
+                    mode = el.text
+                elif consumed('original_size', 'original_size'): pass
                 elif consumed('frame_height', 'height'):
                     frame_size[0] = int(el.text)
                 elif consumed('frame_width', 'width'):
@@ -234,15 +213,12 @@ class CvatExtractor(SourceExtractor):
                     label['name'] = el.text
                 elif consumed('attr_name', 'name'):
                     label['attributes'].add(el.text)
-                elif consumed('attribute', 'attribute'):
-                    pass
-                elif consumed('attributes', 'attributes'):
-                    pass
+                elif consumed('attribute', 'attribute'): pass
+                elif consumed('attributes', 'attributes'): pass
                 elif consumed('label', 'label'):
                     labels[label['name']] = label['attributes']
                     label = None
-                elif consumed('labels', 'labels'):
-                    pass
+                elif consumed('labels', 'labels'): pass
                 else:
                     pass
 
@@ -253,6 +229,7 @@ class CvatExtractor(SourceExtractor):
         if mode == 'interpolation':
             common_attrs.append('keyframe')
             common_attrs.append('outside')
+            common_attrs.append('track_id')
 
         label_cat = LabelCategories(attributes=common_attrs)
         for label, attrs in labels.items():
@@ -264,16 +241,18 @@ class CvatExtractor(SourceExtractor):
 
     @classmethod
     def _parse_shape_ann(cls, ann, categories):
-        ann_id = ann.get('id')
+        ann_id = ann.get('id', 0)
         ann_type = ann['type']
 
-        attributes = ann.get('attributes', {})
+        attributes = ann.get('attributes') or {}
         if 'occluded' in categories[AnnotationType.label].attributes:
             attributes['occluded'] = ann.get('occluded', False)
-        if 'outside' in categories[AnnotationType.label].attributes:
-            attributes['outside'] = ann.get('outside', False)
-        if 'keyframe' in categories[AnnotationType.label].attributes:
-            attributes['keyframe'] = ann.get('keyframe', False)
+        if 'outside' in ann:
+            attributes['outside'] = ann['outside']
+        if 'keyframe' in ann:
+            attributes['keyframe'] = ann['keyframe']
+        if 'track_id' in ann:
+            attributes['track_id'] = ann['track_id']
 
         group = ann.get('group')
 
@@ -285,21 +264,21 @@ class CvatExtractor(SourceExtractor):
 
         if ann_type == 'polyline':
             return PolyLine(points, label=label_id, z_order=z_order,
-                            id=ann_id, attributes=attributes, group=group)
+                id=ann_id, attributes=attributes, group=group)
 
         elif ann_type == 'polygon':
             return Polygon(points, label=label_id, z_order=z_order,
-                           id=ann_id, attributes=attributes, group=group)
+                id=ann_id, attributes=attributes, group=group)
 
         elif ann_type == 'points':
             return Points(points, label=label_id, z_order=z_order,
-                          id=ann_id, attributes=attributes, group=group)
+                id=ann_id, attributes=attributes, group=group)
 
         elif ann_type == 'box':
             x, y = points[0], points[1]
             w, h = points[2] - x, points[3] - y
             return Bbox(x, y, w, h, label=label_id, z_order=z_order,
-                        id=ann_id, attributes=attributes, group=group)
+                id=ann_id, attributes=attributes, group=group)
 
         else:
             raise NotImplementedError("Unknown annotation type '%s'" % ann_type)
@@ -314,30 +293,19 @@ class CvatExtractor(SourceExtractor):
 
     def _load_items(self, parsed):
         for frame_id, item_desc in parsed.items():
-            filename = item_desc.get('name')
-            if filename:
-                filename = self._find_image(filename)
-            if not filename:
-                filename = item_desc.get('name')
+            name = item_desc.get('name', 'frame_%06d.png' % int(frame_id))
+            image = osp.join(self._images_dir, name)
             image_size = (item_desc.get('height'), item_desc.get('width'))
             if all(image_size):
-                image_size = (int(image_size[0]), int(image_size[1]))
-            else:
-                image_size = None
-            image = None
-            if filename:
-                image = Image(path=filename, size=image_size)
+                image = Image(path=image, size=tuple(map(int, image_size)))
 
-            parsed[frame_id] = DatasetItem(id=frame_id, subset=self._subset,
-                                           image=image, annotations=item_desc.get('annotations'))
+            parsed[frame_id] = DatasetItem(id=osp.splitext(name)[0],
+                subset=self._subset, image=image,
+                annotations=item_desc.get('annotations'),
+                attributes={'frame': int(frame_id)})
         return parsed
 
-    def _find_image(self, file_name):
-        search_paths = []
-        if self._images_dir:
-            search_paths += [osp.join(self._images_dir, file_name)]
-        search_paths += [osp.join(osp.dirname(self._path), file_name)]
-        for image_path in search_paths:
-            if osp.isfile(image_path):
-                return image_path
-        return None
+class CvatImporter(Importer):
+    @classmethod
+    def find_sources(cls, path):
+        return cls._find_sources_recursive(path, '.xml', 'cvat')

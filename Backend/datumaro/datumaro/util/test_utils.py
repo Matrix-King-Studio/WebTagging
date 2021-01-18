@@ -1,3 +1,8 @@
+
+# Copyright (C) 2019-2020 Intel Corporation
+#
+# SPDX-License-Identifier: MIT
+
 import inspect
 import os
 import os.path as osp
@@ -5,12 +10,12 @@ import shutil
 import tempfile
 
 from datumaro.components.extractor import AnnotationType
+from datumaro.components.dataset import Dataset
 from datumaro.util import find
 
 
 def current_function_name(depth=1):
     return inspect.getouterframes(inspect.currentframe())[depth].function
-
 
 class FileRemover:
     def __init__(self, path, is_dir=False, ignore_errors=False):
@@ -29,7 +34,6 @@ class FileRemover:
             os.remove(self.path)
     # pylint: enable=redefined-builtin
 
-
 class TestDir(FileRemover):
     def __init__(self, path=None, ignore_errors=False):
         if path is None:
@@ -39,22 +43,6 @@ class TestDir(FileRemover):
             os.makedirs(path, exist_ok=ignore_errors)
 
         super().__init__(path, is_dir=True, ignore_errors=ignore_errors)
-
-
-def ann_to_str(ann):
-    return vars(ann)
-
-
-def item_to_str(item):
-    return '\n'.join(
-        [
-            '%s' % vars(item)
-        ] + [
-            'ann[%s]: %s' % (i, ann_to_str(a))
-            for i, a in enumerate(item.annotations)
-        ]
-    )
-
 
 def compare_categories(test, expected, actual):
     test.assertEqual(
@@ -78,24 +66,77 @@ def compare_categories(test, expected, actual):
             actual[AnnotationType.points].items,
         )
 
+def _compare_annotations(expected, actual, ignored_attrs=None):
+    if not ignored_attrs:
+        return expected == actual
 
-def compare_datasets(test, expected, actual):
+    a_attr = expected.attributes
+    b_attr = actual.attributes
+
+    expected.attributes = {k:v for k,v in a_attr.items() if k not in ignored_attrs}
+    actual.attributes = {k:v for k,v in b_attr.items() if k not in ignored_attrs}
+    r = expected == actual
+
+    expected.attributes = a_attr
+    actual.attributes = b_attr
+    return r
+
+def compare_datasets(test, expected, actual, ignored_attrs=None,
+        require_images=False):
     compare_categories(test, expected.categories(), actual.categories())
 
     test.assertEqual(sorted(expected.subsets()), sorted(actual.subsets()))
     test.assertEqual(len(expected), len(actual))
     for item_a in expected:
         item_b = find(actual, lambda x: x.id == item_a.id and \
-                                        x.subset == item_a.subset)
+            x.subset == item_a.subset)
         test.assertFalse(item_b is None, item_a.id)
+        test.assertEqual(item_a.attributes, item_b.attributes)
+        if (require_images and item_a.has_image and item_a.image.has_data) or \
+                item_a.has_image and item_a.image.has_data and \
+                item_b.has_image and item_b.image.has_data:
+            test.assertEqual(item_a.image, item_b.image, item_a.id)
         test.assertEqual(len(item_a.annotations), len(item_b.annotations))
         for ann_a in item_a.annotations:
             # We might find few corresponding items, so check them all
             ann_b_matches = [x for x in item_b.annotations
-                             if x.id == ann_a.id and \
-                             x.type == ann_a.type and x.group == ann_a.group]
+                if x.type == ann_a.type]
             test.assertFalse(len(ann_b_matches) == 0, 'ann id: %s' % ann_a.id)
 
-            ann_b = find(ann_b_matches, lambda x: x == ann_a)
-            test.assertEqual(ann_a, ann_b, 'ann: %s' % ann_to_str(ann_a))
-            item_b.annotations.remove(ann_b)  # avoid repeats
+            ann_b = find(ann_b_matches, lambda x:
+                _compare_annotations(x, ann_a, ignored_attrs=ignored_attrs))
+            if ann_b is None:
+                test.fail('ann %s, candidates %s' % (ann_a, ann_b_matches))
+            item_b.annotations.remove(ann_b) # avoid repeats
+
+def compare_datasets_strict(test, expected, actual):
+    # Compares datasets for strong equality
+
+    test.assertEqual(expected.categories(), actual.categories())
+
+    test.assertListEqual(sorted(expected.subsets()), sorted(actual.subsets()))
+    test.assertEqual(len(expected), len(actual))
+
+    for subset_name in expected.subsets():
+        e_subset = expected.get_subset(subset_name)
+        a_subset = actual.get_subset(subset_name)
+        test.assertEqual(len(e_subset), len(a_subset))
+        for idx, (item_a, item_b) in enumerate(zip(e_subset, a_subset)):
+            test.assertEqual(item_a, item_b,
+                '%s:\n%s\nvs.\n%s\n' % \
+                (idx, item_a, item_b))
+
+def test_save_and_load(test, source_dataset, converter, test_dir, importer,
+        target_dataset=None, importer_args=None, compare=None):
+    converter(source_dataset, test_dir)
+
+    if importer_args is None:
+        importer_args = {}
+    parsed_dataset = Dataset.import_from(test_dir, importer, **importer_args)
+
+    if target_dataset is None:
+        target_dataset = source_dataset
+
+    if not compare:
+        compare = compare_datasets
+    compare(test, expected=target_dataset, actual=parsed_dataset)

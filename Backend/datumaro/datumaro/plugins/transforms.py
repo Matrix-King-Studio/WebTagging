@@ -1,17 +1,23 @@
+# Copyright (C) 2020 Intel Corporation
+#
+# SPDX-License-Identifier: MIT
+
+from collections import Counter
 from enum import Enum
 import logging as log
 import os.path as osp
 import random
+import re
 
 import pycocotools.mask as mask_utils
 
 from datumaro.components.extractor import (Transform, AnnotationType,
-                                           RleMask, Polygon, Bbox,
-                                           LabelCategories, MaskCategories, PointsCategories
-                                           )
+    RleMask, Polygon, Bbox, Label, DEFAULT_SUBSET_NAME,
+    LabelCategories, MaskCategories, PointsCategories
+)
 from datumaro.components.cli_plugin import CliPlugin
 import datumaro.util.mask_tools as mask_tools
-from datumaro.util.annotation_tools import find_group_leader, find_instances
+from datumaro.util.annotation_util import find_group_leader, find_instances
 
 
 class CropCoveredSegments(Transform, CliPlugin):
@@ -55,8 +61,8 @@ class CropCoveredSegments(Transform, CliPlugin):
         new_anns = []
         for ann, new_segment in zip(segment_anns, segments):
             fields = {'z_order': ann.z_order, 'label': ann.label,
-                      'id': ann.id, 'group': ann.group, 'attributes': ann.attributes
-                      }
+                'id': ann.id, 'group': ann.group, 'attributes': ann.attributes
+            }
             if ann.type == AnnotationType.polygon:
                 if fields['group'] is None:
                     fields['group'] = cls._make_group_id(
@@ -77,7 +83,6 @@ class CropCoveredSegments(Transform, CliPlugin):
         max_gid = max(anns, default=0, key=lambda x: x.group)
         return max_gid + 1
 
-
 class MergeInstanceSegments(Transform, CliPlugin):
     """
     Replaces instance masks and, optionally, polygons with a single mask.
@@ -87,7 +92,7 @@ class MergeInstanceSegments(Transform, CliPlugin):
     def build_cmdline_parser(cls, **kwargs):
         parser = super().build_cmdline_parser(**kwargs)
         parser.add_argument('--include-polygons', action='store_true',
-                            help="Include polygons")
+            help="Include polygons")
         return parser
 
     def __init__(self, extractor, include_polygons=False):
@@ -111,7 +116,7 @@ class MergeInstanceSegments(Transform, CliPlugin):
         h, w = item.image.size
         instances = self.find_instances(segments)
         segments = [self.merge_segments(i, w, h, self._include_polygons)
-                    for i in instances]
+            for i in instances]
         segments = sum(segments, [])
 
         annotations += segments
@@ -119,7 +124,7 @@ class MergeInstanceSegments(Transform, CliPlugin):
 
     @classmethod
     def merge_segments(cls, instance, img_width, img_height,
-                       include_polygons=False):
+            include_polygons=False):
         polygons = [a for a in instance if a.type == AnnotationType.polygon]
         masks = [a for a in instance if a.type == AnnotationType.mask]
         if not polygons and not masks:
@@ -135,7 +140,7 @@ class MergeInstanceSegments(Transform, CliPlugin):
             polygons = [p.points for p in polygons]
             mask = mask_tools.rles_to_mask(polygons, img_width, img_height)
         else:
-            instance += polygons  # keep unused polygons
+            instance += polygons # keep unused polygons
 
         if masks:
             masks = [m.image for m in masks]
@@ -150,16 +155,15 @@ class MergeInstanceSegments(Transform, CliPlugin):
         mask = mask_utils.frPyObjects(mask, *mask['size'])
         instance.append(
             RleMask(rle=mask, label=leader.label, z_order=leader.z_order,
-                    id=leader.id, attributes=leader.attributes, group=leader.group
-                    )
+                id=leader.id, attributes=leader.attributes, group=leader.group
+            )
         )
         return instance
 
     @staticmethod
     def find_instances(annotations):
         return find_instances(a for a in annotations
-                              if a.type in {AnnotationType.polygon, AnnotationType.mask})
-
+            if a.type in {AnnotationType.polygon, AnnotationType.mask})
 
 class PolygonsToMasks(Transform, CliPlugin):
     def transform_item(self, item):
@@ -180,8 +184,7 @@ class PolygonsToMasks(Transform, CliPlugin):
         rle = mask_utils.frPyObjects([polygon.points], img_h, img_w)[0]
 
         return RleMask(rle=rle, label=polygon.label, z_order=polygon.z_order,
-                       id=polygon.id, attributes=polygon.attributes, group=polygon.group)
-
+            id=polygon.id, attributes=polygon.attributes, group=polygon.group)
 
 class BoxesToMasks(Transform, CliPlugin):
     def transform_item(self, item):
@@ -202,8 +205,7 @@ class BoxesToMasks(Transform, CliPlugin):
         rle = mask_utils.frPyObjects([bbox.as_polygon()], img_h, img_w)[0]
 
         return RleMask(rle=rle, label=bbox.label, z_order=bbox.z_order,
-                       id=bbox.id, attributes=bbox.attributes, group=bbox.group)
-
+            id=bbox.id, attributes=bbox.attributes, group=bbox.group)
 
 class MasksToPolygons(Transform, CliPlugin):
     def transform_item(self, item):
@@ -213,9 +215,9 @@ class MasksToPolygons(Transform, CliPlugin):
                 polygons = self.convert_mask(ann)
                 if not polygons:
                     log.debug("[%s]: item %s: "
-                              "Mask conversion to polygons resulted in too "
-                              "small polygons, which were discarded" % \
-                              (self._get_name(__class__), item.id))
+                        "Mask conversion to polygons resulted in too "
+                        "small polygons, which were discarded" % \
+                        (self._get_name(__class__), item.id))
                 annotations.extend(polygons)
             else:
                 annotations.append(ann)
@@ -228,18 +230,17 @@ class MasksToPolygons(Transform, CliPlugin):
 
         return [
             Polygon(points=p, label=mask.label, z_order=mask.z_order,
-                    id=mask.id, attributes=mask.attributes, group=mask.group)
+                id=mask.id, attributes=mask.attributes, group=mask.group)
             for p in polygons
         ]
-
 
 class ShapesToBoxes(Transform, CliPlugin):
     def transform_item(self, item):
         annotations = []
         for ann in item.annotations:
-            if ann.type in {AnnotationType.mask, AnnotationType.polygon,
-                            AnnotationType.polyline, AnnotationType.points,
-                            }:
+            if ann.type in { AnnotationType.mask, AnnotationType.polygon,
+                AnnotationType.polyline, AnnotationType.points,
+            }:
                 annotations.append(self.convert_shape(ann))
             else:
                 annotations.append(ann)
@@ -250,26 +251,24 @@ class ShapesToBoxes(Transform, CliPlugin):
     def convert_shape(shape):
         bbox = shape.get_bbox()
         return Bbox(*bbox, label=shape.label, z_order=shape.z_order,
-                    id=shape.id, attributes=shape.attributes, group=shape.group)
-
+            id=shape.id, attributes=shape.attributes, group=shape.group)
 
 class Reindex(Transform, CliPlugin):
     @classmethod
     def build_cmdline_parser(cls, **kwargs):
         parser = super().build_cmdline_parser(**kwargs)
         parser.add_argument('-s', '--start', type=int, default=1,
-                            help="Start value for item ids")
+            help="Start value for item ids")
         return parser
 
     def __init__(self, extractor, start=1):
         super().__init__(extractor)
-
+        self._length = 'parent'
         self._start = start
 
     def __iter__(self):
         for i, item in enumerate(self._extractor):
             yield self.wrap_item(item, id=i + self._start)
-
 
 class MapSubsets(Transform, CliPlugin):
     @staticmethod
@@ -284,8 +283,8 @@ class MapSubsets(Transform, CliPlugin):
     def build_cmdline_parser(cls, **kwargs):
         parser = super().build_cmdline_parser(**kwargs)
         parser.add_argument('-s', '--subset', action='append',
-                            type=cls._mapping_arg, dest='mapping',
-                            help="Subset mapping of the form: 'src:dst' (repeatable)")
+            type=cls._mapping_arg, dest='mapping',
+            help="Subset mapping of the form: 'src:dst' (repeatable)")
         return parser
 
     def __init__(self, extractor, mapping=None):
@@ -297,10 +296,16 @@ class MapSubsets(Transform, CliPlugin):
             mapping = dict(tuple(m) for m in mapping)
         self._mapping = mapping
 
+        if extractor._subsets:
+            counts = Counter(mapping.get(s, s) or DEFAULT_SUBSET_NAME
+                for s in extractor._subsets)
+            if all(c == 1 for c in counts.values()):
+                self._length = 'parent'
+            self._subsets = set(counts)
+
     def transform_item(self, item):
         return self.wrap_item(item,
-                              subset=self._mapping.get(item.subset, item.subset))
-
+            subset=self._mapping.get(item.subset, item.subset))
 
 class RandomSplit(Transform, CliPlugin):
     """
@@ -310,6 +315,9 @@ class RandomSplit(Transform, CliPlugin):
     Example:|n
     |s|s%(prog)s --subset train:.67 --subset test:.33
     """
+
+    # avoid https://bugs.python.org/issue16399
+    _default_split = [('train', 0.67), ('test', 0.33)]
 
     @staticmethod
     def _split_arg(s):
@@ -323,13 +331,17 @@ class RandomSplit(Transform, CliPlugin):
     def build_cmdline_parser(cls, **kwargs):
         parser = super().build_cmdline_parser(**kwargs)
         parser.add_argument('-s', '--subset', action='append',
-                            type=cls._split_arg, dest='splits',
-                            help="Subsets in the form of: '<subset>:<ratio>' (repeatable)")
+            type=cls._split_arg, dest='splits',
+            help="Subsets in the form: '<subset>:<ratio>' "
+                "(repeatable, default: %s)" % dict(cls._default_split))
         parser.add_argument('--seed', type=int, help="Random seed")
         return parser
 
     def __init__(self, extractor, splits, seed=None):
         super().__init__(extractor)
+
+        if splits is None:
+            splits = self._default_split
 
         assert 0 < len(splits), "Expected at least one split"
         assert all(0.0 <= r and r <= 1.0 for _, r in splits), \
@@ -343,38 +355,86 @@ class RandomSplit(Transform, CliPlugin):
 
         dataset_size = len(extractor)
         indices = list(range(dataset_size))
-
         random.seed(seed)
         random.shuffle(indices)
         parts = []
         s = 0
-        for subset, ratio in splits:
+        lower_boundary = 0
+        for split_idx, (subset, ratio) in enumerate(splits):
             s += ratio
-            boundary = int(s * dataset_size)
-            parts.append((boundary, subset))
-
+            upper_boundary = int(s * dataset_size)
+            if split_idx == len(splits) - 1:
+                upper_boundary = dataset_size
+            subset_indices = set(indices[lower_boundary : upper_boundary])
+            parts.append((subset_indices, subset))
+            lower_boundary = upper_boundary
         self._parts = parts
 
+        self._subsets = set(s[0] for s in splits)
+        self._length = 'parent'
+
     def _find_split(self, index):
-        for boundary, subset in self._parts:
-            if index < boundary:
+        for subset_indices, subset in self._parts:
+            if index in subset_indices:
                 return subset
-        return subset  # all the possible remainder goes to the last split
+        return subset # all the possible remainder goes to the last split
 
     def __iter__(self):
         for i, item in enumerate(self._extractor):
             yield self.wrap_item(item, subset=self._find_split(i))
 
-
 class IdFromImageName(Transform, CliPlugin):
     def transform_item(self, item):
-        name = item.id
-        if item.has_image and item.image.filename:
-            name = osp.splitext(item.image.filename)[0]
-        return self.wrap_item(item, id=name)
+        if item.has_image and item.image.path:
+            name = osp.splitext(osp.basename(item.image.path))[0]
+            return self.wrap_item(item, id=name)
+        else:
+            log.debug("Can't change item id for item '%s': "
+                "item has no image info" % item.id)
+            return item
 
+class Rename(Transform, CliPlugin):
+    """
+    Renames items in the dataset. Supports regular expressions.
+    The first character in the expression is a delimiter for
+    the pattern and replacement parts. Replacement part can also
+    contain string.format tokens with 'item' object available.|n
+    |n
+    Examples:|n
+    - Replace 'pattern' with 'replacement':|n
+    |s|srename -e '|pattern|replacement|'|n
+    - Remove 'frame_' from item ids:|n
+    |s|srename -e '|frame_(\d+)|\\1|'
+    """
+
+    @classmethod
+    def build_cmdline_parser(cls, **kwargs):
+        parser = super().build_cmdline_parser(**kwargs)
+        parser.add_argument('-e', '--regex',
+            help="Regex for renaming.")
+        return parser
+
+    def __init__(self, extractor, regex):
+        super().__init__(extractor)
+
+        assert regex and isinstance(regex, str)
+        parts = regex.split(regex[0], maxsplit=3)
+        regex, sub = parts[1:3]
+        self._re = re.compile(regex)
+        self._sub = sub
+
+    def transform_item(self, item):
+        return self.wrap_item(item, id=self._re.sub(self._sub, item.id) \
+            .format(item=item))
 
 class RemapLabels(Transform, CliPlugin):
+    """
+    Changes labels in the dataset.|n
+    Examples:|n
+    - Rename 'person' to 'car' and 'cat' to 'dog', keep 'bus', remove others:|n
+    |s|sremap_labels -l person:car -l bus:bus -l cat:dog --default delete
+    """
+
     DefaultAction = Enum('DefaultAction', ['keep', 'delete'])
 
     @staticmethod
@@ -389,12 +449,12 @@ class RemapLabels(Transform, CliPlugin):
     def build_cmdline_parser(cls, **kwargs):
         parser = super().build_cmdline_parser(**kwargs)
         parser.add_argument('-l', '--label', action='append',
-                            type=cls._split_arg, dest='mapping',
-                            help="Label in the form of: '<src>:<dst>' (repeatable)")
+            type=cls._split_arg, dest='mapping',
+            help="Label in the form of: '<src>:<dst>' (repeatable)")
         parser.add_argument('--default',
-                            choices=[a.name for a in cls.DefaultAction],
-                            default=cls.DefaultAction.keep.name,
-                            help="Action for unspecified labels")
+            choices=[a.name for a in cls.DefaultAction],
+            default=cls.DefaultAction.keep.name,
+            help="Action for unspecified labels (default: %(default)s)")
         return parser
 
     def __init__(self, extractor, mapping, default=None):
@@ -442,14 +502,14 @@ class RemapLabels(Transform, CliPlugin):
         for src_index, src_label in enumerate(src_label_cat.items):
             dst_label = label_mapping.get(src_label.name)
             if not dst_label and default_action == self.DefaultAction.keep:
-                dst_label = src_label.name  # keep unspecified as is
+                dst_label = src_label.name # keep unspecified as is
             if not dst_label:
                 continue
 
             dst_index = dst_label_cat.find(dst_label)[0]
             if dst_index is None:
                 dst_index = dst_label_cat.add(dst_label,
-                                              src_label.parent, src_label.attributes)
+                    src_label.parent, src_label.attributes)
             id_mapping[src_index] = dst_index
 
         if log.getLogger().isEnabledFor(log.DEBUG):
@@ -457,9 +517,9 @@ class RemapLabels(Transform, CliPlugin):
             for src_id, src_label in enumerate(src_label_cat.items):
                 if id_mapping.get(src_id):
                     log.debug("#%s '%s' -> #%s '%s'",
-                              src_id, src_label.name, id_mapping[src_id],
-                              dst_label_cat.items[id_mapping[src_id]].name
-                              )
+                        src_id, src_label.name, id_mapping[src_id],
+                        dst_label_cat.items[id_mapping[src_id]].name
+                    )
                 else:
                     log.debug("#%s '%s' -> <deleted>", src_id, src_label.name)
 
@@ -470,18 +530,30 @@ class RemapLabels(Transform, CliPlugin):
         return self._categories
 
     def transform_item(self, item):
-        # TODO: provide non-inplace version
         annotations = []
         for ann in item.annotations:
-            if ann.type in {AnnotationType.label, AnnotationType.mask,
-                            AnnotationType.points, AnnotationType.polygon,
-                            AnnotationType.polyline, AnnotationType.bbox
-                            } and ann.label is not None:
+            if ann.type in { AnnotationType.label, AnnotationType.mask,
+                AnnotationType.points, AnnotationType.polygon,
+                AnnotationType.polyline, AnnotationType.bbox
+            } and ann.label is not None:
                 conv_label = self._map_id(ann.label)
                 if conv_label is not None:
-                    ann._label = conv_label
-                    annotations.append(ann)
+                    annotations.append(ann.wrap(label=conv_label))
             else:
-                annotations.append(ann)
-        item._annotations = annotations
-        return item
+                annotations.append(ann.wrap())
+        return item.wrap(annotations=annotations)
+
+class AnnsToLabels(Transform, CliPlugin):
+    """
+    Collects all labels from annotations (of all types) and
+    transforms them into a set of annotations of type Label
+    """
+
+    def transform_item(self, item):
+        labels = set(p.label for p in item.annotations
+            if getattr(p, 'label') != None)
+        annotations = []
+        for label in labels:
+            annotations.append(Label(label=label))
+
+        return item.wrap(annotations=annotations)

@@ -1,9 +1,20 @@
+
+# Copyright (C) 2019-2020 Intel Corporation
+#
+# SPDX-License-Identifier: MIT
+
 import numpy as np
 
 from datumaro.util.image import lazy_image, load_image
 
 
 def generate_colormap(length=256):
+    """
+    Generates colors using PASCAL VOC algorithm.
+
+    Returns index -> (R, G, B) mapping.
+    """
+
     def get_bit(number, index):
         return (number >> index) & 1
 
@@ -19,22 +30,18 @@ def generate_colormap(length=256):
         id: tuple(color) for id, color in enumerate(colormap)
     }
 
-
 def invert_colormap(colormap):
     return {
         tuple(a): index for index, a in colormap.items()
     }
-
 
 def check_is_mask(mask):
     assert len(mask.shape) in {2, 3}
     if len(mask.shape) == 3:
         assert mask.shape[2] == 1
 
-
 _default_colormap = generate_colormap()
 _default_unpaint_colormap = invert_colormap(_default_colormap)
-
 
 def unpaint_mask(painted_mask, inverse_colormap=None):
     # Covert color mask to index mask
@@ -47,12 +54,12 @@ def unpaint_mask(painted_mask, inverse_colormap=None):
 
     if callable(inverse_colormap):
         map_fn = lambda a: inverse_colormap(
-            (a >> 16) & 255, (a >> 8) & 255, a & 255
-        )
+                (a >> 16) & 255, (a >> 8) & 255, a & 255
+            )
     else:
         map_fn = lambda a: inverse_colormap[(
-            (a >> 16) & 255, (a >> 8) & 255, a & 255
-        )]
+                (a >> 16) & 255, (a >> 8) & 255, a & 255
+            )]
 
     painted_mask = painted_mask.astype(int)
     painted_mask = painted_mask[:, :, 0] + \
@@ -63,7 +70,6 @@ def unpaint_mask(painted_mask, inverse_colormap=None):
     unpainted_mask = palette[unpainted_mask].reshape(painted_mask.shape[:2])
 
     return unpainted_mask
-
 
 def paint_mask(mask, colormap=None):
     # Applies colormap to index mask
@@ -84,7 +90,6 @@ def paint_mask(mask, colormap=None):
     painted_mask = palette[mask].reshape((*mask.shape[:2], 3))
     return painted_mask
 
-
 def remap_mask(mask, map_fn):
     # Changes mask elements from one colormap to another
 
@@ -93,27 +98,22 @@ def remap_mask(mask, map_fn):
 
     return np.array([map_fn(c) for c in range(256)], dtype=np.uint8)[mask]
 
-
 def make_index_mask(binary_mask, index):
     return np.choose(binary_mask, np.array([0, index], dtype=np.uint8))
-
 
 def make_binary_mask(mask):
     return np.nonzero(mask)
 
 
 def load_mask(path, inverse_colormap=None):
-    mask = load_image(path)
-    mask = mask.astype(np.uint8)
+    mask = load_image(path, dtype=np.uint8)
     if inverse_colormap is not None:
         if len(mask.shape) == 3 and mask.shape[2] != 1:
             mask = unpaint_mask(mask, inverse_colormap)
     return mask
 
-
 def lazy_mask(path, inverse_colormap=None):
     return lazy_image(path, lambda path: load_mask(path, inverse_colormap))
-
 
 def mask_to_rle(binary_mask):
     # walk in row-major order as COCO format specifies
@@ -134,7 +134,6 @@ def mask_to_rle(binary_mask):
         'counts': counts,
         'size': list(binary_mask.shape)
     }
-
 
 def mask_to_polygons(mask, tolerance=1.0, area_threshold=1):
     """
@@ -162,13 +161,13 @@ def mask_to_polygons(mask, tolerance=1.0, area_threshold=1):
 
     for contour in contours:
         if not np.array_equal(contour[0], contour[-1]):
-            contour = np.vstack((contour, contour[0]))  # make polygon closed
+            contour = np.vstack((contour, contour[0])) # make polygon closed
 
         contour = measure.approximate_polygon(contour, tolerance)
         if len(contour) <= 2:
             continue
 
-        contour = np.flip(contour, axis=1).flatten().clip(0)  # [x0, y0, ...]
+        contour = np.flip(contour, axis=1).flatten().clip(0) # [x0, y0, ...]
 
         # Check if the polygon is big enough
         rle = mask_utils.frPyObjects([contour], mask.shape[0], mask.shape[1])
@@ -177,10 +176,9 @@ def mask_to_polygons(mask, tolerance=1.0, area_threshold=1):
             polygons.append(contour)
     return polygons
 
-
 def crop_covered_segments(segments, width, height,
-                          iou_threshold=0.0, ratio_tolerance=0.001, area_threshold=1,
-                          return_masks=False):
+        iou_threshold=0.0, ratio_tolerance=0.001, area_threshold=1,
+        return_masks=False):
     """
     Find all segments occluded by others and crop them to the visible part only.
     Input segments are expected to be sorted from background to foreground.
@@ -240,7 +238,7 @@ def crop_covered_segments(segments, width, height,
             rles_top += rle_top
 
         if not rles_top and not isinstance(segments[i][0], dict) \
-            and not return_masks:
+                and not return_masks:
             continue
 
         rle_bottom = rle_bottom[0]
@@ -255,12 +253,11 @@ def crop_covered_segments(segments, width, height,
 
         if not return_masks and not isinstance(segments[i][0], dict):
             segments[i] = mask_to_polygons(bottom_mask,
-                                           area_threshold=area_threshold)
+                area_threshold=area_threshold)
         else:
             segments[i] = bottom_mask
 
     return segments
-
 
 def rles_to_mask(rles, width, height):
     from pycocotools import mask as mask_utils
@@ -270,14 +267,12 @@ def rles_to_mask(rles, width, height):
     mask = mask_utils.decode(rles)
     return mask
 
-
 def find_mask_bbox(mask):
     cols = np.any(mask, axis=0)
     rows = np.any(mask, axis=1)
     x0, x1 = np.where(cols)[0][[0, -1]]
     y0, y1 = np.where(rows)[0][[0, -1]]
     return [x0, y0, x1 - x0, y1 - y0]
-
 
 def merge_masks(masks):
     """

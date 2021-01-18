@@ -32,7 +32,7 @@ class RiseTest(TestCase):
 
                 return [
                     Label(i, attributes={
-                        'score': cls_conf if cls == i else other_conf}) \
+                        'score': cls_conf if cls == i else other_conf }) \
                     for i in range(self.class_count)
                 ]
 
@@ -59,7 +59,7 @@ class RiseTest(TestCase):
 
     def test_rise_can_be_applied_to_detection_model(self):
         ROI = namedtuple('ROI',
-                         ['threshold', 'x', 'y', 'w', 'h', 'label'])
+            ['threshold', 'x', 'y', 'w', 'h', 'label'])
 
         class TestLauncher(Launcher):
             def __init__(self, rois, class_count, fp_count=4, pixel_jitter=20, **kwargs):
@@ -94,7 +94,7 @@ class RiseTest(TestCase):
                         cls = roi.label
                         detections.append(
                             Bbox(roi.x, roi.y, roi.w, roi.h,
-                                 label=cls, attributes={'score': cls_conf})
+                                label=cls, attributes={'score': cls_conf})
                         )
 
                     if first_run:
@@ -108,7 +108,7 @@ class RiseTest(TestCase):
                         offset = (np.random.rand(4) - 0.5) * self.pixel_jitter
                         detections.append(
                             Bbox(*(box + offset),
-                                 label=cls, attributes={'score': cls_conf})
+                                label=cls, attributes={'score': cls_conf})
                         )
 
                 return detections
@@ -174,7 +174,7 @@ class RiseTest(TestCase):
     @staticmethod
     def DISABLED_test_roi_nms():
         ROI = namedtuple('ROI',
-                         ['conf', 'x', 'y', 'w', 'h', 'label'])
+            ['conf', 'x', 'y', 'w', 'h', 'label'])
 
         class_count = 3
         noisy_count = 3
@@ -190,7 +190,7 @@ class RiseTest(TestCase):
         for i, roi in enumerate(rois):
             detections.append(
                 Bbox(roi.x, roi.y, roi.w, roi.h,
-                     label=roi.label, attributes={'score': roi.conf})
+                    label=roi.label, attributes={'score': roi.conf})
             )
 
             for j in range(noisy_count):
@@ -200,7 +200,7 @@ class RiseTest(TestCase):
                 offset = (np.random.rand(4) - 0.5) * pixel_jitter
                 detections.append(
                     Bbox(*(box + offset),
-                         label=cls, attributes={'score': cls_conf})
+                        label=cls, attributes={'score': cls_conf})
                 )
 
         import cv2
@@ -212,7 +212,7 @@ class RiseTest(TestCase):
             c = (0, 1 * (i % (1 + noisy_count) == 0), 1)
             cv2.rectangle(image, p1, p2, c)
             cv2.putText(image, 'd%s-%s-%.2f' % (i, roi.label, roi.conf),
-                        p1, cv2.FONT_HERSHEY_SIMPLEX, 0.25, c)
+                p1, cv2.FONT_HERSHEY_SIMPLEX, 0.25, c)
         cv2.imshow('nms_image', image)
         cv2.waitKey(0)
 
@@ -226,6 +226,6 @@ class RiseTest(TestCase):
             c = (0, 1, 0)
             cv2.rectangle(image, p1, p2, c)
             cv2.putText(image, 'p%s-%s-%.2f' % (i, roi.label, roi.conf),
-                        p1, cv2.FONT_HERSHEY_SIMPLEX, 0.25, c)
+                p1, cv2.FONT_HERSHEY_SIMPLEX, 0.25, c)
         cv2.imshow('nms_image', image)
         cv2.waitKey(0)

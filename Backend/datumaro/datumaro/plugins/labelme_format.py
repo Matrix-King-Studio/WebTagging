@@ -1,3 +1,7 @@
+# Copyright (C) 2020 Intel Corporation
+#
+# SPDX-License-Identifier: MIT
+
 from collections import defaultdict
 from defusedxml import ElementTree
 import logging as log
@@ -5,12 +9,10 @@ import numpy as np
 import os
 import os.path as osp
 
-from datumaro.components.extractor import (SourceExtractor, DEFAULT_SUBSET_NAME,
-                                           DatasetItem, AnnotationType, Mask, Bbox, Polygon, LabelCategories
-                                           )
-from datumaro.components.extractor import Importer
+from datumaro.components.extractor import (SourceExtractor, Importer,
+    DatasetItem, AnnotationType, Mask, Bbox, Polygon, LabelCategories
+)
 from datumaro.components.converter import Converter
-from datumaro.components.cli_plugin import CliPlugin
 from datumaro.util.image import Image, save_image
 from datumaro.util.mask_tools import load_mask, find_mask_bbox
 
@@ -18,7 +20,6 @@ from datumaro.util.mask_tools import load_mask, find_mask_bbox
 class LabelMePath:
     MASKS_DIR = 'Masks'
     IMAGE_EXT = '.jpg'
-
 
 class LabelMeExtractor(SourceExtractor):
     def __init__(self, path, subset_name=None):
@@ -29,16 +30,6 @@ class LabelMeExtractor(SourceExtractor):
         self._categories = categories
         self._items = items
 
-    def categories(self):
-        return self._categories
-
-    def __iter__(self):
-        for item in self._items:
-            yield item
-
-    def __len__(self):
-        return len(self._items)
-
     def _parse(self, path):
         categories = {
             AnnotationType.label: LabelCategories(attributes={
@@ -47,12 +38,14 @@ class LabelMeExtractor(SourceExtractor):
         }
 
         items = []
-        for p in sorted(p for p in os.listdir(path) if p.endswith('.xml')):
+        for p in os.listdir(path):
+            if not p.endswith('.xml'):
+                continue
             root = ElementTree.parse(osp.join(path, p))
 
-            image = None
-            image_path = osp.join(path, root.find('filename').text)
-
+            item_id = osp.join(root.find('folder').text or '',
+                root.find('filename').text)
+            image_path = osp.join(path, item_id)
             image_size = None
             imagesize_elem = root.find('imagesize')
             if imagesize_elem is not None:
@@ -63,8 +56,8 @@ class LabelMeExtractor(SourceExtractor):
 
             annotations = self._parse_annotations(root, path, categories)
 
-            items.append(DatasetItem(id=osp.splitext(p)[0], subset=self._subset,
-                                     image=image, annotations=annotations))
+            items.append(DatasetItem(id=osp.splitext(item_id)[0],
+                subset=self._subset, image=image, annotations=annotations))
         return items, categories
 
     @classmethod
@@ -82,7 +75,7 @@ class LabelMeExtractor(SourceExtractor):
                     else:
                         try:
                             value = float(value)
-                        except Exception:
+                        except ValueError:
                             pass
                     parsed.append((name, value))
                 else:
@@ -91,7 +84,6 @@ class LabelMeExtractor(SourceExtractor):
             return parsed
 
         label_cat = categories[AnnotationType.label]
-
         def get_label_id(label):
             if not label:
                 return None
@@ -132,7 +124,7 @@ class LabelMeExtractor(SourceExtractor):
 
             poly_elem = obj_elem.find('polygon')
             segm_elem = obj_elem.find('segm')
-            type_elem = obj_elem.find('type')  # the only value is 'bounding_box'
+            type_elem = obj_elem.find('type') # the only value is 'bounding_box'
             if poly_elem is not None:
                 user_elem = poly_elem.find('username')
                 if user_elem is not None and user_elem.text:
@@ -152,12 +144,12 @@ class LabelMeExtractor(SourceExtractor):
                     ymin = min(points[1::2])
                     ymax = max(points[1::2])
                     ann_items.append(Bbox(xmin, ymin, xmax - xmin, ymax - ymin,
-                                          label=label, attributes=attributes, id=obj_id,
-                                          ))
+                        label=label, attributes=attributes, id=obj_id,
+                    ))
                 else:
                     ann_items.append(Polygon(points,
-                                             label=label, attributes=attributes, id=obj_id,
-                                             ))
+                        label=label, attributes=attributes, id=obj_id,
+                    ))
             elif segm_elem is not None:
                 user_elem = segm_elem.find('username')
                 if user_elem is not None and user_elem.text:
@@ -165,13 +157,13 @@ class LabelMeExtractor(SourceExtractor):
                 attributes.append(('username', user))
 
                 mask_path = osp.join(dataset_root, LabelMePath.MASKS_DIR,
-                                     segm_elem.find('mask').text)
+                    segm_elem.find('mask').text)
                 if not osp.isfile(mask_path):
                     raise Exception("Can't find mask at '%s'" % mask_path)
                 mask = load_mask(mask_path)
                 mask = np.any(mask, axis=2)
                 ann_items.append(Mask(image=mask, label=label, id=obj_id,
-                                      attributes=attributes))
+                    attributes=attributes))
 
             if not deleted:
                 parsed_annotations[obj_id] = ann_items
@@ -204,7 +196,7 @@ class LabelMeExtractor(SourceExtractor):
                 continue
 
             if ann_id in root_annotations:
-                current_group_id += 1  # start a new group
+                current_group_id += 1 # start a new group
 
             group_id = current_group_id
             ann_assignment[0] = group_id
@@ -230,43 +222,13 @@ class LabelMeExtractor(SourceExtractor):
 
 
 class LabelMeImporter(Importer):
-    _EXTRACTOR_NAME = 'label_me'
+    EXTRACTOR = 'label_me'
 
     @classmethod
-    def detect(cls, path):
-        if not osp.isdir(path):
-            return False
-        return len(cls.find_subsets(path)) != 0
-
-    def __call__(self, path, **extra_params):
-        from datumaro.components.project import Project  # cyclic import
-        project = Project()
-
-        subset_paths = self.find_subsets(path)
-        if len(subset_paths) == 0:
-            raise Exception("Failed to find 'label_me' dataset at '%s'" % path)
-
-        for subset_path, subset_name in subset_paths:
-            params = {}
-            if subset_name:
-                params['subset_name'] = subset_name
-            params.update(extra_params)
-
-            source_name = osp.splitext(osp.basename(subset_path))[0]
-            project.add_source(source_name,
-                               {
-                                   'url': subset_path,
-                                   'format': self._EXTRACTOR_NAME,
-                                   'options': params,
-                               })
-
-        return project
-
-    @staticmethod
-    def find_subsets(path):
+    def find_sources(cls, path):
         subset_paths = []
         if not osp.isdir(path):
-            raise Exception("Expected directory path, got '%s'" % path)
+            return []
 
         path = osp.normpath(path)
 
@@ -274,80 +236,51 @@ class LabelMeImporter(Importer):
             return len([p for p in os.listdir(d) if p.endswith('.xml')]) != 0
 
         if has_annotations(path):
-            subset_paths = [(path, None)]
+            subset_paths.append({'url': path, 'format': cls.EXTRACTOR})
         else:
             for d in os.listdir(path):
                 subset = d
                 d = osp.join(path, d)
                 if osp.isdir(d) and has_annotations(d):
-                    subset_paths.append((d, subset))
+                    subset_paths.append({'url': d, 'format': cls.EXTRACTOR,
+                        'options': {'subset_name': subset}
+                    })
         return subset_paths
 
 
-class LabelMeConverter(Converter, CliPlugin):
-    @classmethod
-    def build_cmdline_parser(cls, **kwargs):
-        parser = super().build_cmdline_parser(**kwargs)
-        parser.add_argument('--save-images', action='store_true',
-                            help="Save images (default: %(default)s)")
-        return parser
+class LabelMeConverter(Converter):
+    DEFAULT_IMAGE_EXT = LabelMePath.IMAGE_EXT
 
-    def __init__(self, save_images=False):
-        super().__init__()
-
-        self._save_images = save_images
-
-    def __call__(self, extractor, save_dir):
-        self._extractor = extractor
-
-        subsets = extractor.subsets()
-        if len(subsets) == 0:
-            subsets = [None]
-
-        for subset_name in subsets:
-            if subset_name:
-                subset = extractor.get_subset(subset_name)
-            else:
-                subset_name = DEFAULT_SUBSET_NAME
-                subset = extractor
-
-            subset_dir = osp.join(save_dir, subset_name)
+    def apply(self):
+        for subset_name, subset in self._extractor.subsets().items():
+            subset_dir = osp.join(self._save_dir, subset_name)
             os.makedirs(subset_dir, exist_ok=True)
             os.makedirs(osp.join(subset_dir, LabelMePath.MASKS_DIR),
-                        exist_ok=True)
+                exist_ok=True)
 
-            for item in subset:
-                self._save_item(item, subset_dir)
+            for index, item in enumerate(subset):
+                self._save_item(item, subset_dir, index)
 
     def _get_label(self, label_id):
         if label_id is None:
             return ''
-        return self._extractor.categories()[AnnotationType.label] \
-            .items[label_id].name
+        return self._extractor.categories()[AnnotationType.label][label_id].name
 
-    def _save_item(self, item, subset_dir):
+    def _save_item(self, item, subset_dir, index):
         from lxml import etree as ET
 
         log.debug("Converting item '%s'", item.id)
 
-        image_filename = ''
-        if item.has_image:
-            image_filename = item.image.filename
+        image_filename = self._make_image_filename(item)
         if self._save_images:
             if item.has_image and item.image.has_data:
-                if image_filename:
-                    image_filename = osp.splitext(image_filename)[0]
-                else:
-                    image_filename = item.id
-                image_filename += LabelMePath.IMAGE_EXT
-                save_image(osp.join(subset_dir, image_filename),
-                           item.image.data)
+                self._save_image(item, osp.join(subset_dir, image_filename))
             else:
-                log.debug("Item '%s' has no image" % item.id)
+                log.debug("Item '%s' has no image", item.id)
 
         root_elem = ET.Element('annotation')
-        ET.SubElement(root_elem, 'filename').text = image_filename
-        ET.SubElement(root_elem, 'folder').text = ''
+        ET.SubElement(root_elem, 'filename').text = osp.basename(image_filename)
+        ET.SubElement(root_elem, 'folder').text = osp.dirname(image_filename)
 
         source_elem = ET.SubElement(root_elem, 'source')
         ET.SubElement(source_elem, 'sourceImage').text = ''
@@ -363,8 +296,8 @@ class LabelMeConverter(Converter, CliPlugin):
 
         obj_id = 0
         for ann in item.annotations:
-            if not ann.type in {AnnotationType.polygon,
-                                AnnotationType.bbox, AnnotationType.mask}:
+            if not ann.type in { AnnotationType.polygon,
+                    AnnotationType.bbox, AnnotationType.mask }:
                 continue
 
             obj_elem = ET.SubElement(root_elem, 'object')
@@ -388,7 +321,7 @@ class LabelMeConverter(Converter, CliPlugin):
 
                 poly_elem = ET.SubElement(obj_elem, 'polygon')
                 x0, y0, x1, y1 = ann.points
-                points = [(x0, y0), (x1, y0), (x1, y1), (x0, y1)]
+                points = [ (x0, y0), (x1, y0), (x1, y1), (x0, y1) ]
                 for x, y in points:
                     point_elem = ET.SubElement(poly_elem, 'pt')
                     ET.SubElement(point_elem, 'x').text = '%.2f' % x
@@ -406,10 +339,11 @@ class LabelMeConverter(Converter, CliPlugin):
                 ET.SubElement(poly_elem, 'username').text = \
                     str(ann.attributes.pop('username', ''))
             elif ann.type == AnnotationType.mask:
-                mask_filename = '%s_mask_%s.png' % (item.id, obj_id)
+                mask_filename = '%s_mask_%s.png' % \
+                    (item.id.replace('/', '_'), obj_id)
                 save_image(osp.join(subset_dir, LabelMePath.MASKS_DIR,
-                                    mask_filename),
-                           self._paint_mask(ann.image))
+                        mask_filename),
+                    self._paint_mask(ann.image))
 
                 segm_elem = ET.SubElement(obj_elem, 'segm')
                 ET.SubElement(segm_elem, 'mask').text = mask_filename
@@ -446,14 +380,14 @@ class LabelMeConverter(Converter, CliPlugin):
                 ET.SubElement(parts_elem, 'hasparts').text = ''
                 ET.SubElement(parts_elem, 'ispartof').text = str(leader_id)
 
-        xml_path = osp.join(subset_dir, '%s.xml' % item.id)
+        xml_path = osp.join(subset_dir, 'item_%09d.xml' % index)
         with open(xml_path, 'w', encoding='utf-8') as f:
             xml_data = ET.tostring(root_elem, encoding='unicode',
-                                   pretty_print=True)
+                pretty_print=True)
             f.write(xml_data)
 
     @staticmethod
     def _paint_mask(mask):
         # TODO: check if mask colors are random
         return np.array([[0, 0, 0, 0], [255, 203, 0, 153]],
-                        dtype=np.uint8)[mask.astype(np.uint8)]
+            dtype=np.uint8)[mask.astype(np.uint8)]

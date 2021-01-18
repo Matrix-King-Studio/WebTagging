@@ -1,9 +1,13 @@
+# Copyright (C) 2019-2020 Intel Corporation
+#
+# SPDX-License-Identifier: MIT
+
 from collections import OrderedDict
+
 
 _instance = None
 
 DEFAULT_CAPACITY = 2
-
 
 class ImageCache:
     @staticmethod
@@ -28,7 +32,7 @@ class ImageCache:
         if item is default:
             return None
 
-        self.items.move_to_end(item_id, last=False)  # naive splay tree
+        self.items.move_to_end(item_id, last=False) # naive splay tree
         return item
 
     def size(self):

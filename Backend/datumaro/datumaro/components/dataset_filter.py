@@ -1,9 +1,14 @@
+
+# Copyright (C) 2019-2020 Intel Corporation
+#
+# SPDX-License-Identifier: MIT
+
 import logging as log
-from lxml import etree as ET  # NOTE: lxml has proper XPath implementation
+from lxml import etree as ET # lxml has proper XPath implementation
 from datumaro.components.extractor import (Transform,
-                                           Annotation, AnnotationType,
-                                           Label, Mask, Points, Polygon, PolyLine, Bbox, Caption,
-                                           )
+    Annotation, AnnotationType,
+    Label, Mask, Points, Polygon, PolyLine, Bbox, Caption,
+)
 
 
 class DatasetItemEncoder:
@@ -27,7 +32,12 @@ class DatasetItemEncoder:
     def encode_image(cls, image):
         image_elem = ET.Element('image')
 
-        h, w = image.size
+        size = image.size
+        if size is not None:
+            h, w = size
+        else:
+            h = 'unknown'
+            w = h
         ET.SubElement(image_elem, 'width').text = str(w)
         ET.SubElement(image_elem, 'height').text = str(h)
 
@@ -203,7 +213,6 @@ class DatasetItemEncoder:
     def to_string(encoded_item):
         return ET.tostring(encoded_item, encoding='unicode', pretty_print=True)
 
-
 def XPathDatasetFilter(extractor, xpath=None):
     if xpath is None:
         return extractor
@@ -215,7 +224,6 @@ def XPathDatasetFilter(extractor, xpath=None):
     f = lambda item: bool(xpath(
         DatasetItemEncoder.encode(item, extractor.categories())))
     return extractor.select(f)
-
 
 class XPathAnnotationsFilter(Transform):
     def __init__(self, extractor, xpath=None, remove_empty=False):

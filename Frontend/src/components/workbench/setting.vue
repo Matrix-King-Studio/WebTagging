@@ -89,7 +89,7 @@
           <div class="assignee info-box">
             <div class="select-box">
               <el-select
-                v-model="item.jobs[0].assignee"
+                v-model="item.jobs[0].assignee.id"
                 filterable
                 size="mini"
                 placeholder="请选择"
@@ -101,6 +101,22 @@
                   :label="i.label"
                   :value="i.id"
                 />
+              </el-select>
+            </div>
+          </div>
+          <div class="assignee info-box">
+            <div class="select-box">
+              <el-select
+                v-model="item.jobs[0].reviewer.id"
+                filterable
+                size="mini"
+                placeholder="请选择"
+                @change="modifyJobReviewer(item.index)">
+                <el-option
+                  v-for="i in usersInfo"
+                  :key="i.key"
+                  :label="i.label"
+                  :value="i.id"/>
               </el-select>
             </div>
           </div>
@@ -179,10 +195,7 @@ export default {
       const downloadAnchor = window.document.getElementById('downloadAnchor');
       downloadAnchor.href = "http://alexking.site:8080/api/v1/tasks/4/annotations?action=download&format=" + item.format;
       downloadAnchor.click();
-      /* Alex Start */
-      // 隐藏导出标注数据 dialog
       this.exportTaggingDialogVisible = false
-      /* Alex End */
     },
     //删除项目
     deleteTask() {
@@ -237,8 +250,7 @@ export default {
     //点选之后patch修改后端数据
     modifyJobAssign(index) {
       this.$http.patch('v1/jobs/' + this.jobsInfo[index].jobs[0].id, {
-        "status": "annotation",
-        "assignee": this.jobsInfo[index].jobs[0].assignee
+        "assignee_id": this.jobsInfo[index].jobs[0].assignee.id
       }).then((e) => {
         if (e.status === 200) {
           this.$message({
@@ -248,7 +260,20 @@ export default {
         }
       })
       console.log(this.jobsInfo);
-    }
+    },
+    modifyJobReviewer(index) {
+      this.$http.patch('v1/jobs/' + this.jobsInfo[index].jobs[0].id, {
+        "reviewer_id": this.jobsInfo[index].jobs[0].reviewer.id
+      }).then((e) => {
+        if (e.status === 200) {
+          this.$message({
+            message: "修改成功",
+            type: "success"
+          })
+        }
+      })
+      console.log(this.jobsInfo);
+    },
   }
 }
 </script>

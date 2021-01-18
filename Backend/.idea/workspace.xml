@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="8aff03a2-0667-4496-ac86-7694afcaba37" name="Default Changelist" comment="Alex：成功部署版本">
+    <list default="true" id="8aff03a2-0667-4496-ac86-7694afcaba37" name="Default Changelist" comment="Alex：增加质检review和issue路由">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/engine/serializers.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/engine/serializers.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/engine/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/engine/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cvat/apps/engine/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/engine/models.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cvat/apps/engine/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/engine/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Frontend/src/components/workbench/setting.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../Frontend/src/components/workbench/setting.vue" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -113,7 +113,10 @@
       <workItem from="1610374387309" duration="978000" />
       <workItem from="1610450747498" duration="12654000" />
       <workItem from="1610501463565" duration="19851000" />
-      <workItem from="1610627178343" duration="5302000" />
+      <workItem from="1610627178343" duration="5601000" />
+      <workItem from="1610715149365" duration="3624000" />
+      <workItem from="1610941410149" duration="583000" />
+      <workItem from="1610973251364" duration="2677000" />
     </task>
     <task id="LOCAL-00001" summary="2020-12-21">
       <created>1608530665874</created>
@@ -178,7 +181,14 @@
       <option name="project" value="LOCAL" />
       <updated>1610528042835</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="Alex：增加质检review和issue路由">
+      <created>1610636408287</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1610636408287</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -206,6 +216,7 @@
     <MESSAGE value="Alex：解决获取job报错，因为job id和task id弄反了" />
     <MESSAGE value="Alex：超级大更新" />
     <MESSAGE value="Alex：成功部署版本" />
-    <option name="LAST_COMMIT_MESSAGE" value="Alex：成功部署版本" />
+    <MESSAGE value="Alex：增加质检review和issue路由" />
+    <option name="LAST_COMMIT_MESSAGE" value="Alex：增加质检review和issue路由" />
   </component>
 </project>

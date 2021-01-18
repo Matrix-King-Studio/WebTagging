@@ -83,7 +83,7 @@ class Data(models.Model):
         default_permissions = ()
 
     def get_frame_step(self):
-        match = re.search("step\s*=\s*([1-9]\d*)", self.frame_filter)
+        match = re.search(r"step\s*=\s*([1-9]\d*)", self.frame_filter)
         return int(match.group(1)) if match else 1
 
     def get_data_dirname(self):
@@ -370,8 +370,8 @@ class SourceType(str, Enum):
     MANUAL = 'manual'
 
     @classmethod
-    def choices(self):
-        return tuple((x.value, x.name) for x in self)
+    def choices(cls):
+        return tuple((x.value, x.name) for x in cls)
 
     def __str__(self):
         return self.value
@@ -383,8 +383,8 @@ class ReviewStatus(str, Enum):
     REVIEW_FURTHER = 'review_further'
 
     @classmethod
-    def choices(self):
-        return tuple((x.value, x.name) for x in self)
+    def choices(cls):
+        return tuple((x.value, x.name) for x in cls)
 
     def __str__(self):
         return self.value
@@ -422,6 +422,7 @@ class JobCommit(Commit):
 class FloatArrayField(models.TextField):
     separator = ","
 
+    # pylint: disable=no-self-use
     def from_db_value(self, value, expression, connection):
         if not value:
             return value
@@ -488,6 +489,9 @@ class Profile(models.Model):
 
 
 class Review(models.Model):
+    """
+    质检
+    """
     job = models.ForeignKey(Job, on_delete=models.CASCADE)
     reviewer = models.ForeignKey(User, null=True, blank=True, related_name='reviews', on_delete=models.SET_NULL)
     assignee = models.ForeignKey(User, null=True, blank=True, related_name='reviewed', on_delete=models.SET_NULL)
@@ -497,7 +501,7 @@ class Review(models.Model):
 
 class Issue(models.Model):
     frame = models.PositiveIntegerField()
-    position = FloatArrayField()
+    position = FloatArrayField(help_text="对应标注")
     job = models.ForeignKey(Job, on_delete=models.CASCADE)
     review = models.ForeignKey(Review, null=True, blank=True, on_delete=models.SET_NULL)
     owner = models.ForeignKey(User, null=True, blank=True, related_name='issues', on_delete=models.SET_NULL)
@@ -515,6 +519,9 @@ class Comment(models.Model):
 
 
 class Log(models.Model):
+    """
+    Log 日志系统
+    """
     task = models.ForeignKey(Task, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
