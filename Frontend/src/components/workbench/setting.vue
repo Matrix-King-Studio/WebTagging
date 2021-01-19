@@ -28,14 +28,12 @@
         <div class="func-box">
           <div
             class="export-data func-btn"
-            @click="exportTaggingDialogVisible = true"
-          >
+            @click="exportTaggingDialogVisible = true">
             <span>导出数据</span>
           </div>
           <div
             class="delete func-btn"
-            @click="deleteTask"
-          >
+            @click="deleteTask">
             <span>删除</span>
           </div>
         </div>
@@ -47,9 +45,7 @@
     <div class="jobs-info">
       <div
         v-for="item in jobsInfo"
-        :key="item.jobs[0].id"
-        class="job"
-      >
+        class="job">
         <div class="job-title">
           <div class="job-id title-box">
             <span>jobId</span>
@@ -71,7 +67,7 @@
           </div>
         </div>
         <div class="job-info">
-          <div class="job-id info-box">
+          <div class="job-id info-box" v-if="item.jobs[0]">
             <span v-text="item.jobs[0].id"/>
           </div>
           <div class="frames info-box">
@@ -89,34 +85,32 @@
           <div class="assignee info-box">
             <div class="select-box">
               <el-select
-                v-model="item.jobs[0].assignee.id"
+                v-model="item.jobs[0].assignee"
                 filterable
                 size="mini"
                 placeholder="请选择"
-                @change="modifyJobAssign(item.index)"
-              >
+                @change="modifyJobAssign(item.index)">
                 <el-option
-                  v-for="i in usersInfo"
-                  :key="i.key"
-                  :label="i.label"
-                  :value="i.id"
-                />
+                  v-for="user in usersInfo"
+                  :key="user.id"
+                  :label="user.label"
+                  :value="user"/>
               </el-select>
             </div>
           </div>
           <div class="assignee info-box">
             <div class="select-box">
               <el-select
-                v-model="item.jobs[0].reviewer.id"
+                v-model="item.jobs[0].reviewer"
                 filterable
                 size="mini"
                 placeholder="请选择"
                 @change="modifyJobReviewer(item.index)">
                 <el-option
-                  v-for="i in usersInfo"
-                  :key="i.key"
-                  :label="i.label"
-                  :value="i.id"/>
+                  v-for="user in usersInfo"
+                  :key="user.id"
+                  :label="user.label"
+                  :value="user"/>
               </el-select>
             </div>
           </div>
@@ -154,7 +148,6 @@
 export default {
   data() {
     return {
-      /* Alex Start */
       exportTaggingDialogVisible: false,   // 是否显示导出标注数据 dialog
       exportTaggingFormat: [
         {name: 'COCO', format: 'COCO%201.0'},
@@ -162,8 +155,6 @@ export default {
         {name: 'PASCAL VOC', format: "PASCAL%20VOC%201.1"},
       ],
       taskInformation: {},
-      /* Alex End */
-
       jobsInfo: [],
       usersInfo: []
     }
@@ -204,7 +195,7 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        this.$http.delete('v1/tasks/' + this.taskInformation.results[0].id).then((e)=>{
+        this.$http.delete('v1/tasks/' + this.taskInformation.results[0].id).then((e) => {
           console.log(e)
         })
         this.$message({
@@ -244,7 +235,6 @@ export default {
             id: user.id
           })
         })
-        // console.log(this.usersInfo);
       })
     },
     //点选之后patch修改后端数据

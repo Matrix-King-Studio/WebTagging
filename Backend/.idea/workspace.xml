@@ -2,9 +2,213 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="8aff03a2-0667-4496-ac86-7694afcaba37" name="Default Changelist" comment="Alex：增加质检review和issue路由">
+      <change afterPath="$PROJECT_DIR$/components/serverless/README.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/components/serverless/docker-compose.serverless.yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/document/installation.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/document/installation_automatic_annotation.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/document/static/documentation/images/cvat.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/document/static/documentation/images/gif001_detrac.gif" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/document/static/documentation/images/gif003_detrac.gif" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/document/static/documentation/images/gif005_detrac.gif" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/document/static/documentation/images/gif006_detrac.gif" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/document/static/documentation/images/gif007_mapillary_vistas.gif" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/document/static/documentation/images/gif010_detrac.gif" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/document/static/documentation/images/gif013_detrac.gif" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/document/static/documentation/images/gif014_detrac.gif" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/document/static/documentation/images/gif015_detrac.gif" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/document/static/documentation/images/gif016_mapillary_vistas.gif" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/document/static/documentation/images/gif017_mapillary_vistas.gif" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/document/static/documentation/images/gif018_mapillary_vistas.gif" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/document/static/documentation/images/gif019_detrac.gif" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/document/static/documentation/images/gif020_mapillary_vistas.gif" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/document/static/documentation/images/gif025_mapillary_vistas.gif" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/document/static/documentation/images/image001.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/document/static/documentation/images/image002.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/document/static/documentation/images/image003.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/document/static/documentation/images/image004.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/document/static/documentation/images/image005.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/document/static/documentation/images/image006_detrac.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/document/static/documentation/images/image007_detrac.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/document/static/documentation/images/image008.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/document/static/documentation/images/image009_mapillary_vistas.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/document/static/documentation/images/image010_affectnet.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/document/static/documentation/images/image011_detrac.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/document/static/documentation/images/image012.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/document/static/documentation/images/image013_detrac.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/document/static/documentation/images/image014.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/document/static/documentation/images/image015_detrac.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/document/static/documentation/images/image016.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/document/static/documentation/images/image017_detrac.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/document/static/documentation/images/image019.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/document/static/documentation/images/image020.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/document/static/documentation/images/image023_affectnet.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/document/static/documentation/images/image024_affectnet.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/document/static/documentation/images/image025_affectnet.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/document/static/documentation/images/image026.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/document/static/documentation/images/image028.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/document/static/documentation/images/image029.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/document/static/documentation/images/image032_detrac.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/document/static/documentation/images/image033_detrac.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/document/static/documentation/images/image034_detrac.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/document/static/documentation/images/image035.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/document/static/documentation/images/image036.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/document/static/documentation/images/image037.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/document/static/documentation/images/image038_detrac.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/document/static/documentation/images/image039_mapillary_vistas.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/document/static/documentation/images/image040.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/document/static/documentation/images/image041.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/document/static/documentation/images/image042.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/document/static/documentation/images/image044.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/document/static/documentation/images/image045.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/document/static/documentation/images/image046.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/document/static/documentation/images/image047.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/document/static/documentation/images/image048.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/document/static/documentation/images/image049_detrac.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/document/static/documentation/images/image050.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/document/static/documentation/images/image051.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/document/static/documentation/images/image052.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/document/static/documentation/images/image053.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/document/static/documentation/images/image054_mapillary_vistas.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/document/static/documentation/images/image055.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/document/static/documentation/images/image056.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/document/static/documentation/images/image057.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/document/static/documentation/images/image058_detrac.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/document/static/documentation/images/image059.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/document/static/documentation/images/image060.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/document/static/documentation/images/image061.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/document/static/documentation/images/image062.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/document/static/documentation/images/image063_affectnet.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/document/static/documentation/images/image064_mapillary_vistas.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/document/static/documentation/images/image065.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/document/static/documentation/images/image066.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/document/static/documentation/images/image067.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/document/static/documentation/images/image068_mapillary_vistas.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/document/static/documentation/images/image072.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/document/static/documentation/images/image073.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/document/static/documentation/images/image075.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/document/static/documentation/images/image077_detrac.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/document/static/documentation/images/image078_detrac.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/document/static/documentation/images/image080.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/document/static/documentation/images/image081.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/document/static/documentation/images/image082.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/document/static/documentation/images/image083.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/document/static/documentation/images/image084.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/document/static/documentation/images/image085.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/document/static/documentation/images/image086_detrac.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/document/static/documentation/images/image087_detrac.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/document/static/documentation/images/image088_detrac.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/document/static/documentation/images/image089_detrac.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/document/static/documentation/images/image090_detrac.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/document/static/documentation/images/image091.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/document/static/documentation/images/image093_detrac.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/document/static/documentation/images/image094_detrac.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/document/static/documentation/images/image095_detrac.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/document/static/documentation/images/image096.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/document/static/documentation/images/image097.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/document/static/documentation/images/image098.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/document/static/documentation/images/image099.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/document/static/documentation/images/image100_detrac.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/document/static/documentation/images/image102.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/document/static/documentation/images/image106.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/document/static/documentation/images/image109.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/document/static/documentation/images/image110.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/document/static/documentation/images/image113.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/document/static/documentation/images/image114.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/document/static/documentation/images/image115.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/document/static/documentation/images/image119_detrac.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/document/static/documentation/images/image120.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/document/static/documentation/images/image121_detrac.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/document/static/documentation/images/image122.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/document/static/documentation/images/image123.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/document/static/documentation/images/image124.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/document/static/documentation/images/image125.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/document/static/documentation/images/image126.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/document/static/documentation/images/image127.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/document/static/documentation/images/image128_use_cache.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/document/static/documentation/images/image130.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/document/static/documentation/images/image131_detrac.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/document/static/documentation/images/image133.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/document/static/documentation/images/image134.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/document/static/documentation/images/image135.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/document/static/documentation/images/image136.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/document/static/documentation/images/image137.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/document/static/documentation/images/image138_mapillary_vistas.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/document/static/documentation/images/image139_mapillary_vistas.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/document/static/documentation/images/image140.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/document/static/documentation/images/image141.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/document/static/documentation/images/image143.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/document/static/documentation/images/image144_detrac.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/document/static/documentation/images/image145.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/document/static/documentation/images/image146.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/document/static/documentation/images/image147.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/document/static/documentation/images/image148.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/document/static/documentation/images/image149.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/document/static/documentation/images/image151.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/document/static/documentation/images/image152_detrac.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/document/static/documentation/images/image153.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/document/static/documentation/images/image154.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/document/static/documentation/images/image155.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/document/static/documentation/images/image157_mapillary_vistas.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/document/static/documentation/images/image158_mapillary_vistas.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/document/static/documentation/images/image159_mapillary_vistas.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/document/static/documentation/images/image160_mapillary_vistas.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/document/static/documentation/images/image161.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/document/static/documentation/images/image162_detrac.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/document/static/documentation/images/image163_detrac.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/document/static/documentation/images/image164_mapillary_vistas.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/document/static/documentation/images/image165_detrac.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/document/static/documentation/images/image166.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/document/static/documentation/images/image167.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/document/static/documentation/images/image168.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/document/static/documentation/images/image169.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/document/static/documentation/images/image170.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/document/static/documentation/images/image171.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/document/static/documentation/images/image172.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/document/static/documentation/images/image173.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/document/static/documentation/images/image174.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/document/static/documentation/images/image175.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/document/static/documentation/images/image176.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/document/static/documentation/images/image177_mapillary_vistas.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/document/static/documentation/images/image178_mapillary_vistas.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/document/static/documentation/images/image179_mapillary_vistas.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/document/static/documentation/images/image180_mapillary_vistas.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/document/static/documentation/images/image181.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/document/static/documentation/images/image182_mapillary_vistas.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/document/static/documentation/images/image183.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/document/static/documentation/images/image184.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/document/static/documentation/images/image185_detrac.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/document/static/documentation/images/image186_detrac.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/document/static/documentation/images/image187.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/document/static/documentation/images/image188_detrac.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/document/static/documentation/images/image189.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/document/static/documentation/js/3rdparty/showdown-toc.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/document/static/documentation/js/3rdparty/showdown.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/document/static/documentation/js/3rdparty/showdown.js.map" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/engine/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/engine/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/engine/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/engine/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Frontend/dist/css/app.f3c9656f.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Frontend/dist/css/chunk-vendors.2ac5db4b.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Frontend/dist/css/home.551d83e7.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Frontend/dist/css/loginPage.c5d27a19.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Frontend/dist/css/workBench.db0d2788.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Frontend/dist/favicon.ico" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Frontend/dist/fonts/element-icons.535877f5.woff" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Frontend/dist/fonts/element-icons.732389de.ttf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Frontend/dist/img/iconfont.8cf419ae.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Frontend/dist/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Frontend/dist/js/app.e79e12a2.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Frontend/dist/js/app.e79e12a2.js.map" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Frontend/dist/js/chunk-2bc476de.7c1333a6.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Frontend/dist/js/chunk-2bc476de.7c1333a6.js.map" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Frontend/dist/js/chunk-vendors.c841c5cb.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Frontend/dist/js/chunk-vendors.c841c5cb.js.map" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Frontend/dist/js/home.dd90408a.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Frontend/dist/js/home.dd90408a.js.map" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Frontend/dist/js/home~workBench.5ecda8d4.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Frontend/dist/js/home~workBench.5ecda8d4.js.map" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Frontend/dist/js/loginPage.6150eed4.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Frontend/dist/js/loginPage.6150eed4.js.map" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Frontend/dist/js/workBench.918277d4.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Frontend/dist/js/workBench.918277d4.js.map" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../Frontend/src/components/workbench/setting.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../Frontend/src/components/workbench/setting.vue" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -61,7 +265,7 @@
     <property name="WebServerToolWindowPanel.toolwindow.show.date" value="false" />
     <property name="WebServerToolWindowPanel.toolwindow.show.permissions" value="false" />
     <property name="WebServerToolWindowPanel.toolwindow.show.size" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/document" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
@@ -69,11 +273,11 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="E:\WebTagging\Backend\document" />
       <recent name="E:\WebTagging\Backend" />
       <recent name="E:\WebTagging\Backend\cvat\requirements" />
       <recent name="E:\WebTagging\Backend\cvat\utils" />
       <recent name="E:\WebTagging\Backend\cvat\settings" />
-      <recent name="E:\WebTagging\Backend\cvat\apps" />
     </key>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
@@ -116,7 +320,9 @@
       <workItem from="1610627178343" duration="5601000" />
       <workItem from="1610715149365" duration="3624000" />
       <workItem from="1610941410149" duration="583000" />
-      <workItem from="1610973251364" duration="2677000" />
+      <workItem from="1610973251364" duration="3299000" />
+      <workItem from="1611065842415" duration="2542000" />
+      <workItem from="1611069443613" duration="590000" />
     </task>
     <task id="LOCAL-00001" summary="2020-12-21">
       <created>1608530665874</created>
