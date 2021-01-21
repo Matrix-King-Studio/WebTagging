@@ -136,25 +136,6 @@ export default new Vuex.Store({
         if(state.imageTags.shapes[i].id === TagInfo.id){
           state.imageTags.shapes[i] = TagInfo
         }
-        // console.log('正在保存第'+shapes.rectangles[i].index+'个矩形框的信息')
-
-        state.imageTags.shapes.push({
-          "type":"rectangle",
-          "occluded":false,
-          "z_order":0,
-          "points":shapes.rectangles[i].points,
-          "attributes":[
-            // {
-            //   "spec_id":"17",
-            //   "value":""
-            // }
-          ],
-          "frame":shapes.rectangles[i].frame,
-          id: shapes.rectangles[i].id,
-          "label_id":shapes.rectangles[i].label_id,
-          "isCover":shapes.rectangles[i].isCover,
-          "group":0
-        })
       }
       console.log('仓库标签信息修改结束', state.imageTags.shapes);
     },

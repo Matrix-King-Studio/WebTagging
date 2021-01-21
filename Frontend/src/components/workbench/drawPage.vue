@@ -173,7 +173,6 @@
 
 <script>
 import JSZip from '@/assets/js/jszip'
-import {Tag} from "element-ui";
 
 export default {
   data() {
@@ -242,47 +241,23 @@ export default {
   created() {
     //获取task信息
     this.getTaskInfo()
-      //快捷键
-      let _self = this
-      document.onkeyup = function (e) {
-        let key = window.event.keyCode
-        if (key === 87){ //w，切换为鼠标指针
-            _self.initDrawTools('cursor')
-        }
-        if (key === 83){ //s，切换为矩形框
-            _self.initDrawTools('rectangle')
-        }
-        if (key === 65){ //a，上一张图片
-            _self.changeImg(1)
-        }
-        if (key === 68){ //d，下一张图片
-            _self.changeImg(2)
-        }
-      }
-  },
-  beforeDestroy(){
-      //销毁前将快捷键取消
     //快捷键
-    let _self = this
-    document.onkeyup = function (e) {
+    document.onkeyup = ()=>{
       let key = window.event.keyCode
-
       if (key === 87){ //w，切换为鼠标指针
-        _self.initDrawTools('cursor')
+          this.initDrawTools('cursor')
       }
       if (key === 83){ //s，切换为矩形框
-        _self.initDrawTools('rectangle')
+          this.initDrawTools('rectangle')
       }
       if (key === 65){ //a，上一张图片
-        _self.changeImg(1)
+          this.changeImg(1)
       }
       if (key === 68){ //d，下一张图片
-        _self.changeImg(2)
+          this.changeImg(2)
       }
     }
-
   },
-
   mounted() {
     //停止改变窗口大小后0.3秒重新绘制图片
     window.onresize = () => {
@@ -294,6 +269,9 @@ export default {
       }, 300)
     }
   },
+  beforeDestroy() {
+    this.setToCursor()
+  },
   destroyed() {
     //页面切换清除改变大小监听器
     window.onresize = () => {
@@ -301,7 +279,10 @@ export default {
     //清除页面和仓库暂存的标注数据
     this.shapes = []
     this.$store.commit('cleanTagsInfo')
-    //TODO: 在矩形框标注的状态下退出标注页面删除鼠标移动的监听器，就是控制横竖直线的监听器
+    //清除快捷键
+    document.onkeyup = ()=>{
+    }
+
   },
   methods: {
     //右侧信息栏
@@ -573,7 +554,12 @@ export default {
       document.body.removeEventListener('mousemove', this.followMouse, false)
       //如果没有完成矩形的绘制
       if (this.isDrawing) {
+        //删除页面上标注到一半的元素
+        this.shapes[this.shapes.length - 1].el.parentNode.removeChild(this.shapes[this.shapes.length - 1].el)
+        this.shapes.splice(-1,1)
+        //清除监听事件
         document.body.removeEventListener('mousemove', this.resizeRec, false)
+        //切换状态
         this.isDrawing = !this.isDrawing
       }
       //移除click创建元素
@@ -665,7 +651,6 @@ export default {
               points: [],
             }
             this.rectangleIndex++
-            //TODO: 删掉了shapes后面的rectangle
             this.shapes.push(r)
             //渲染到页面上
             this.$refs.recBox.appendChild(rec)

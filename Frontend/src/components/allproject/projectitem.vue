@@ -73,12 +73,12 @@ export default {
       let logs = this.log
       let newDate = new Date()
       logs[0].time = newDate.toISOString()
-      //创建log数据
-      this.$http.post('v1/server/logs',logs).then(()=>{
-        // console.log('-1.创建log成功')
-      }).catch(()=>{
-        // console.log('-1.创建log失败')
-      })
+      // //创建log数据
+      // this.$http.post('v1/server/logs',logs).then(()=>{
+      //   // console.log('-1.创建log成功')
+      // }).catch(()=>{
+      //   // console.log('-1.创建log失败')
+      // })
       //保存用户对于当前点击的job的身份是否是创建者(拥有者)
       this.$store.commit('saveIfOwnerToUserInfo', this.ifOwner)
       //保存当前点击的job的id用于之后的对比
