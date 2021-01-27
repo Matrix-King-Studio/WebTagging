@@ -7,7 +7,7 @@
     <div class="cover" ref="cover">
       <div
         class="start"
-        v-if="!ifOwner"
+        v-if="!ifOwner && proInfo.mode === 'annotation'"
         @click.stop="toWorkbench(proInfo.id, proInfo.segments[proInfo.segIndex].jobs[0].id)"
       >
         开始标记
@@ -22,7 +22,12 @@
           :key="item.jobs[0].id"
           @click.stop="toWorkbench(proInfo.id, item.jobs[0].id)"
         >
-          <span>任务序号:{{ item.jobs[0].id }}</span>
+          <div class="id-box">
+            <span>任务序号:{{ item.jobs[0].id }}</span>
+          </div>
+          <div class="status-box">
+            <span class="status">状态:{{ whichStatus(item.jobs[0].status) }}</span>
+          </div>
         </div>
       </div>
       <div
@@ -61,6 +66,17 @@ export default {
     this.getCoverImg()
   },
   methods: {
+    //卡片中job状态翻译函数
+    whichStatus(status){
+      if(status === 'annotation'){
+        return '正在标注'
+      } else if(status === 'validation'){
+        return '正在质检'
+      } else if(status === 'completed'){
+        return '标注完成'
+      }
+    },
+    //鼠标放到卡片上滑出效果
     showStart(){
       this.$refs.cover.style.top = "0px"
     },
@@ -161,7 +177,6 @@ export default {
       transition: top 0.2s ease;
       display: flex;
       .start, .exam{
-        background-color: rgba(0,0,0,0.8);
         transition: background-color 0.2s;
         margin: 0;
         line-height: 200px;
@@ -180,11 +195,11 @@ export default {
       .start{
         flex: 2;
         transition: all 0.2s;
-        background-color: rgba(0,0,0,0.8);
+        background-color: rgba(0,0,0,0.4);
       }
       .start:hover{
-        background-color: rgba(0,0,0,0.4);
-        color: #eeeeee;
+        background-color: rgba(0,0,0,0.9);
+        color: #ffffff;
       }
       .allJobs{
         flex: 2;
@@ -192,28 +207,42 @@ export default {
         display: flex;
         flex-wrap: wrap;
         align-content: stretch;
-        background-color: rgba(0,0,0,0.8);
         .job{
           box-sizing: border-box;
           transition: all 0.2s;
           width: 100%;
           min-height: 30px;
-          color: #999999;
           padding-left: 6px;
           cursor: pointer;
 
           display: flex;
-          align-items: center;
           justify-content: center;
+          align-content: center;
+          flex-wrap: wrap;
           background-color: rgba(0,0,0,0.4);
+          .id-box{
+            width: 100%;
+            min-height: 18px;
+            text-align: center;
+            color: #aaaaaa;
+          }
+          .status-box{
+            width: 100%;
+            min-height: 12px;
+            text-align: center;
+            font-size: 10px;
+            color: #999999;
+          }
         }
         .job:hover{
-          color: #eeeeee;
-          background-color: rgba(0,0,0,0);
+          background-color: rgba(0,0,0,0.9);
         }
-      }
-      .allJobs:hover{
-        background-color: rgba(0,0,0,0.4);
+        .job:hover .id-box{
+          color: #ffffff;
+        }
+        .job:hover .status-box{
+          color: #eeeeee;
+        }
       }
       .exam{
         flex: 1;
@@ -223,7 +252,7 @@ export default {
         transition: all 0.2s;
       }
       .exam:hover{
-        background-color: rgba(0,0,0,0.3);
+        background-color: rgba(0,0,0,0.9);
         color: #eeeeee;
       }
     }

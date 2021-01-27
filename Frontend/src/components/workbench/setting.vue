@@ -78,7 +78,7 @@
             <span v-text="item.start_frame + '-' + item.stop_frame"/>
           </div>
           <div class="status info-box">
-            <span v-text="item.jobs[0].status"/>
+            <span v-text="whichStatus(item.jobs[0].status)"/>
           </div>
           <div class="start-time info-box">
             <span>无</span>
@@ -157,6 +157,17 @@ export default {
     this.getUsersInfo()
   },
   methods: {
+    //job状态翻译函数
+    /** 这个函数在projectitem中也有一个的，但是不会跨组件复用，只能再复制一个了*/
+    whichStatus(status){
+      if(status === 'annotation'){
+        return '正在标注'
+      } else if(status === 'validation'){
+        return '正在质检'
+      } else if(status === 'completed'){
+        return '标注完成'
+      }
+    },
     //两个用于下载标注数据
     updateData(item) {
       this.$http.get('v1/tasks/' + this.$route.params.index
@@ -236,18 +247,20 @@ export default {
     },
     //点选之后patch修改后端数据
     modifyJobAssign(index) {
+      console.log(this.jobsInfo);
+      console.log(index);
       this.$http.patch('v1/jobs/' + this.jobsInfo[index].jobs[0].id, {
-        "status": "annotation",
-        "assignee": this.jobsInfo[index].jobs[0].assignee
+        "assignee_id": this.jobsInfo[index].jobs[0].assignee
       }).then((e) => {
         if (e.status === 200) {
           this.$message({
-            message: "修改成功",
+            message: "分配成功",
             type: "success"
           })
         }
+      }).catch((e)=>{
+        console.log('修改标注员失败', e);
       })
-      console.log(this.jobsInfo);
     }
   }
 }

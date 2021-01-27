@@ -3,16 +3,18 @@
     <el-tabs type="border-card" @tab-click="getAllUsersInfo">
       <el-tab-pane label="选择标签">
         <el-tabs active-name="raw">
-          <el-tab-pane class="raw-label-box" label="Raw格式添加" name="raw">
-            <textarea v-model="labelValues" cols="30" rows="10" class="raw-label"></textarea>
+          <el-tab-pane class="raw-label-box" label="Raw格式查看" name="raw">
+<!--            <textarea v-model="jsonData" cols="30" rows="10" class="raw-label"></textarea>-->
             <JsonViewer
-              :value="jsonData"
+              :value="this.$store.state.projectInfo.labels"
               :expand-depth=5
               copyable
               boxed></JsonViewer>
           </el-tab-pane>
           <el-tab-pane label="手动添加" name="ac">
+<!--        所有标签    -->
             <div class="label-box" v-for="tag in labels" :key="tag.name">
+<!--          标签名    -->
               <div class="tab-box">
                 <el-tag
                   closable
@@ -23,7 +25,9 @@
                   {{ tag.name }}
                 </el-tag>
               </div>
+<!--          标签的属性    -->
               <div class="attribute-box">
+<!--             展示该标签下的所有属性   -->
                 <div
                   v-show="!tag.attrInputVisible"
                   class="attr-item-box"
@@ -58,15 +62,19 @@
                     </div>
                   </div>
                 </div>
+<!--             添加新的属性   -->
                 <div
                   v-show="tag.attrInputVisible"
                   class="attr-input-box"
                 >
+<!--               最上面的提示和后面的关闭按钮   -->
                   <div class="input-box-tip">
                     <span>添加属性</span>
                     <i class="el-icon-close" @click="endAttrInput(tag)"></i>
                   </div>
+<!--              下面输入区域    -->
                   <div class="input-box-content">
+<!--                 属性名   -->
                     <div class="attr-name-input-box">
                       <div class="attr-name-input" ref="attr_name_input">
                         <el-input
@@ -75,11 +83,12 @@
                         ></el-input>
                       </div>
                     </div>
+<!--                  属性选择模式  -->
                     <div class="attr-mod-select-box">
                       <div class="attr-mod-select" ref="attr_mod_select">
-                        <el-select v-model="newAttributeData.input_type" placeholder="请选择">
+                        <el-select v-model="newAttributeData.input_type" placeholder="选择属性填写模式">
                           <el-option
-                            v-for="item in options"
+                            v-for="item in attrOptions"
                             :key="item.value"
                             :label="item.label"
                             :value="item.value"
@@ -88,8 +97,9 @@
                         </el-select>
                       </div>
                     </div>
+<!--                  属性的默认值  -->
                     <div class="attr-value-input-box">
-                      <div class="attr-value-input" ref="attr_value_input" @click="attrValInputFocus($event)">
+                      <div v-if="newAttributeData.input_type === 'select'" class="attr-value-input" ref="attr_value_input" @click="attrValInputFocus($event)">
                         <el-tag
                           :key="attrVal"
                           v-for="attrVal in newAttributeData.values"
@@ -107,7 +117,22 @@
                           @blur="handleAttrValInput($event)"
                         ></div>
                       </div>
+                      <div v-if="newAttributeData.input_type === 'checkbox'" class="attr-value-input" ref="attr_value_input">
+                        <el-select v-model="newAttributeData.values[0]" placeholder="选择默认值">
+                          <el-option
+                            v-for="item in checkboxOption"
+                            :key="item.value"
+                            :label="item.label"
+                            :value="item.value"
+                          >
+                          </el-option>
+                        </el-select>
+                      </div>
+                      <div v-if="newAttributeData.input_type === 'text'" class="attr-value-input" ref="attr_value_input">
+                        <input v-model="newAttributeData.values[0]" type="text" placeholder="输入默认值">
+                      </div>
                     </div>
+<!--                 确认按钮   -->
                     <div class="attr-input-confirm-box">
                       <div class="attr-input-confirm">
                         <el-button type="success" plain icon="el-icon-check" size="small"
@@ -116,11 +141,13 @@
                     </div>
                   </div>
                 </div>
+<!--             添加属性按钮   -->
                 <el-button v-show="!tag.attrInputVisible" class="button-new-tag" size="small"
                            @click="showInput(2, tag)">+ 添加属性
                 </el-button>
               </div>
             </div>
+<!--         添加标签的按钮和输入框，点击按钮时将按钮的位置替换为输入框   /-->
             <el-input
               v-if="mainInputVisible"
               v-model="mainInputValue"
@@ -189,18 +216,6 @@ export default {
   components: {
     JsonViewer
   },
-  computed: {
-    //使用raw格式获取仓库中的数据，更改仓库中的数据
-    labelValues: {
-      get() {
-        return JSON.stringify(this.$store.state.projectInfo.labels)
-      },
-      set(val) {
-        this.$store.commit("updateLabels", val)
-        // this.loadData()
-      }
-    }
-  },
   data() {
     return {
       jsonData: {
@@ -208,61 +223,9 @@ export default {
         limit: 10,
         skip: 0,
         links: {
-          previous: undefined,
-          next: function () {},
+          previous: 'a',
+          next: 'b',
         },
-        data: [
-          {
-            id: '5968fcad629fa84ab65a5247',
-            firstname: 'Ada',
-            lastname: 'Lovelace',
-            awards: null,
-            known: [
-              'mathematics',
-              'computing'
-            ],
-            position: {
-              lat: 44.563836,
-              lng: 6.495139
-            },
-            description: `Augusta Ada King, Countess of Lovelace (née Byron; 10 December 1815 – 27 November 1852) was an English mathematician and writer,
-            chiefly known for her work on Charles Babbage's proposed mechanical general-purpose computer,
-            the Analytical Engine. She was the first to recognise that the machine had applications beyond pure calculation,
-            and published the first algorithm intended to be carried out by such a machine.
-            As a result, she is sometimes regarded as the first to recognise the full potential of a "computing machine" and the first computer programmer.`,
-            bornAt: '1815-12-10T00:00:00.000Z',
-            diedAt: '1852-11-27T00:00:00.000Z'
-          },
-          {
-            id: '5968fcad629fa84ab65a5246',
-            firstname: 'Grace',
-            lastname: 'Hopper',
-            awards: [
-              'Defense Distinguished Service Medal',
-              'Legion of Merit',
-              'Meritorious Service Medal',
-              'American Campaign Medal',
-              'World War II Victory Medal',
-              'National Defense Service Medal',
-              'Armed Forces Reserve Medal',
-              'Naval Reserve Medal',
-              'Presidential Medal of Freedom'
-            ],
-            known: null,
-            position: {
-              lat: 43.614624,
-              lng: 3.879995
-            },
-            description: `Grace Brewster Murray Hopper (née Murray; December 9, 1906 – January 1, 1992)
-            was an American computer scientist and United States Navy rear admiral.
-            One of the first programmers of the Harvard Mark I computer,
-            she was a pioneer of computer programming who invented one of the first compiler related tools.
-            She popularized the idea of machine-independent programming languages, which led to the development of COBOL,
-            an early high-level programming language still in use today.`,
-            bornAt: '1815-12-10T00:00:00.000Z',
-            diedAt: '1852-11-27T00:00:00.000Z'
-          }
-        ]
       },
 
       //图像压缩质量
@@ -279,28 +242,34 @@ export default {
 
       //分配任务
       segment_size: 1,
-      //
+      //给标签上id
       labelIndex: 1,
       //编辑标签中的属性
       isEditAttr: false,
       beingEditAttrIndex: -1,
 
       //新建属性中选择属性标注模式的选项
-      options: [{
+      attrOptions: [{
         value: 'select',
         label: '下拉框选择'
       }, {
         value: 'checkbox',
-        label: '选择是否有该值'
+        label: '是否有该值'
       }, {
         value: 'text',
-        label: '手动输入文本'
-      }, {
-        value: 'number',
-        label: '手动输入数字'
+        label: '手动输入'
       }],
-      attrOption: '',
-      attrValue: '',
+      //checkbox选项
+      checkboxOption: [
+        {
+          value: 'false',
+          label: '否'
+        },
+        {
+          value: 'true',
+          label: '是'
+        }
+      ],
 
       attrIndex: 1,
 
@@ -325,18 +294,19 @@ export default {
       this.$store.commit('updateLabels', e.target.value)
     },
     /** 记得解决重复值问题*/
-    //删除 标签/属性/属性值
+    //删除 标签
     handleLabelClose(tag) {
       this.labels.splice(this.labels.indexOf(tag), 1);
       this.$store.commit('addToStore', this.labels)
     },
     handleAttrClose(tag, attr) {
       this.labels[this.labels.indexOf(tag)].attributes.splice(this.labels[this.labels.indexOf(tag)].attributes.indexOf(attr), 1)
+      this.$store.commit('addToStore', this.labels)
     },
     handleAttrValClose(attrVal) {
       this.newAttributeData.values.splice(this.newAttributeData.values.indexOf(attrVal), 1)
     },
-    //开始添加 标签：1/属性：2
+    //开始添加 mod:  标签：1 属性：2
     showInput(mod, tag) {
       if (mod === 1) {
         this.mainInputVisible = true;
@@ -358,21 +328,26 @@ export default {
     },
     //添加标签结束
     handleInputConfirm() {
+      //获取输入的值
       let inputValue = this.mainInputValue
+      //如果不为空
       if (inputValue) {
+        //放到本地
         this.labels.push(
           {
             name: inputValue,
-            id: this.labelIndex,
             attributes: [],
             attrInputVisible: false,
           }
         );
+        //保存好后将输入框重置并隐藏
+        this.mainInputVisible = false;
+        this.mainInputValue = '';
+        console.log("添加标签成功", this.labels);
+        //将标签信息提交到仓库
+        //在往仓库提交的时候 attrInputVisible一项是被清洗掉的
+        this.$store.commit('addToStore', this.labels)
       }
-      this.mainInputVisible = false;
-      this.mainInputValue = '';
-      console.log("添加标签成功", this.labels);
-      this.$store.commit('addToStore', this.labels)
     },
     //点击添加属性里的属性值方框对其中的input进行聚焦
     attrValInputFocus(e) {
@@ -399,11 +374,14 @@ export default {
         this.$refs.attr_value_input[0].style.border = "1px solid #F56C6C"
         isReady = false
       }
-      setTimeout(() => {
-        this.$refs.attr_name_input[0].removeAttribute("style")
-        this.$refs.attr_mod_select[0].removeAttribute("style")
-        this.$refs.attr_value_input[0].removeAttribute("style")
-      }, 1600)
+      //红框提醒1.6秒消除
+      if(!isReady){
+        setTimeout(() => {
+          this.$refs.attr_name_input[0].removeAttribute("style")
+          this.$refs.attr_mod_select[0].removeAttribute("style")
+          this.$refs.attr_value_input[0].removeAttribute("style")
+        }, 1600)
+      }
       return isReady
     },
     //添加属性结束
@@ -596,9 +574,7 @@ export default {
   width: 100%;
 
   .el-tabs--border-card {
-    border: 1px solid #6fcdb2;
-    border-radius: 10px;
-    box-shadow: none !important;
+    border-radius: 6px;
     overflow: hidden;
   }
 
