@@ -211,7 +211,7 @@ export default {
           box-sizing: border-box;
           transition: all 0.2s;
           width: 100%;
-          min-height: 30px;
+          min-height: 40px;
           padding-left: 6px;
           cursor: pointer;
 

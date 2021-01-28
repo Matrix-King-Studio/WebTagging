@@ -32,6 +32,7 @@ export default {
   background-color: #ffffff;
   border-radius: 6px;
   box-sizing: border-box;
+  box-shadow: 0 2px 10px -4px gray;
 
   .info{
     background-color: transparent;

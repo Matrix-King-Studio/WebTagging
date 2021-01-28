@@ -117,7 +117,7 @@
                           @blur="handleAttrValInput($event)"
                         ></div>
                       </div>
-                      <div v-if="newAttributeData.input_type === 'checkbox'" class="attr-value-input" ref="attr_value_input">
+                      <div v-if="newAttributeData.input_type === 'checkbox'" class="attr-value-input-checkbox" ref="attr_value_input">
                         <el-select v-model="newAttributeData.values[0]" placeholder="选择默认值">
                           <el-option
                             v-for="item in checkboxOption"
@@ -128,8 +128,8 @@
                           </el-option>
                         </el-select>
                       </div>
-                      <div v-if="newAttributeData.input_type === 'text'" class="attr-value-input" ref="attr_value_input">
-                        <input v-model="newAttributeData.values[0]" type="text" placeholder="输入默认值">
+                      <div v-if="newAttributeData.input_type === 'text'" class="attr-value-input-text" ref="attr_value_input">
+                        <el-input v-model="newAttributeData.values[0]" placeholder="输入默认值"></el-input>
                       </div>
                     </div>
 <!--                 确认按钮   -->
@@ -739,9 +739,9 @@ export default {
             flex: 5;
             padding: 8px;
             max-width: 40%;
-            cursor: text;
 
             .attr-value-input {
+              cursor: text;
               min-height: 38px;
               background-color: #fff;
               box-sizing: border-box;
@@ -767,10 +767,22 @@ export default {
                 white-space: nowrap;
               }
             }
-
             .attr-value-input:hover {
               border: 1px solid #c2c3c6;
             }
+            .attr-value-input-checkbox{
+              min-height: 38px;
+              box-sizing: border-box;
+            }
+            .attr-value-input-text{
+              min-height: 38px;
+              box-sizing: border-box;
+            }
+          }
+          .attr-value-input-box-other{
+            flex: 5;
+            padding: 8px;
+            max-width: 40%;
           }
 
           .attr-input-confirm-box {
