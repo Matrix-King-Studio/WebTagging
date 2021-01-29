@@ -102,9 +102,8 @@
               <i class="el-icon-delete" />
             </div>
           </div>
-          <div class="label-add-attr">
-            <i class="el-icon-caret-bottom"></i>
-
+          <div class="label-add-attr" @click="showAttrEditor($event)">
+            <i class="el-icon-caret-bottom"></i><span> 编辑属性</span>
           </div>
         </div>
       </div>
@@ -320,7 +319,8 @@ export default {
         for (let item in e.data.results[0].labels) {
           let label = {
             value: e.data.results[0].labels[item].id,
-            label: e.data.results[0].labels[item].name
+            label: e.data.results[0].labels[item].name,
+            attributes: e.data.results[0].labels[item].attributes
           }
           this.options.push(label)
         }
@@ -963,7 +963,15 @@ export default {
         message: "元素成功移除",
         type: "success"
       })
-    }
+    },
+    //显示label下面的编辑属性页面
+    showAttrEditor(event) {
+      if(event.target.parentNode.getAttribute('class').indexOf('label-obj-open') === -1){
+        event.target.parentNode.setAttribute('class', event.target.parentNode.getAttribute('class') + ' label-obj-open')
+      } else {
+        event.target.parentNode.setAttribute('class', event.target.parentNode.getAttribute('class').replace('label-obj-open', ''))
+      }
+    },
   }
 }
 </script>
@@ -1060,7 +1068,10 @@ export default {
     background-color: #fafbfc;
     .label-obj{
       width: 100%;
+      height: 90px;
       border-bottom: 1px solid #cae7dc;
+      overflow: hidden;
+      transition: height 0.5s ease;
       .label-info {
         width: 100%;
         height: 30px;
@@ -1099,7 +1110,7 @@ export default {
 
       .label-func {
         width: 100%;
-        height: 50px;
+        height: 40px;
         display: flex;
         justify-content: space-around;
         align-items: center;
@@ -1118,7 +1129,21 @@ export default {
       .label-add-attr{
         width: 100%;
         height: 20px;
+        padding-left: 16px;
+        box-sizing: border-box;
+        cursor: pointer;
+        span{
+          line-height: 20px;
+          color: #444;
+          font-size: 10px;
+        }
       }
+    }
+    .label-obj-active{
+      background-color: rgb(250, 255, 255);
+    }
+    .label-obj-open{
+      height: auto
     }
   }
   .switch-images {
