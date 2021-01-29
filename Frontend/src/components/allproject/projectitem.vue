@@ -7,10 +7,17 @@
     <div class="cover" ref="cover">
       <div
         class="start"
-        v-if="!ifOwner && proInfo.mode === 'annotation'"
+        v-if="!ifOwner && proInfo.segments[proInfo.segIndex].jobs[0].status === 'annotation'"
         @click.stop="toWorkbench(proInfo.id, proInfo.segments[proInfo.segIndex].jobs[0].id)"
       >
         开始标记
+      </div>
+      <div
+        class="start"
+        v-if="!ifOwner && proInfo.segments[proInfo.segIndex].jobs[0].status === 'validation'"
+        @click.stop="showAnnotatedErr"
+      >
+        标记已完成
       </div>
       <div
         class="allJobs"
@@ -82,6 +89,13 @@ export default {
     },
     hideStart(){
       this.$refs.cover.style.top = "200px"
+    },
+    //已完成标记，提示无法进入
+    showAnnotatedErr() {
+      this.$message({
+        message: '已经完成标记，无法进入',
+        type: 'warning'
+      })
     },
     //开始标记
     toWorkbench(index, jobId){
