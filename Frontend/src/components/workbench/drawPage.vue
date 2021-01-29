@@ -838,7 +838,6 @@ export default {
               rec.style.cursor = 'default'
               this.$refs.recBox.appendChild(rec)
             }, 100)
-            this.isFirstDrawRec = false
           } else {
             rec.style.left = parseInt(item.points[0]) / this.imageScale + parseInt(this.imageInfo.left) + 46 + 'px'
             rec.style.top = parseInt(item.points[1]) / this.imageScale + parseInt(this.imageInfo.top) + 35 + 'px'
@@ -871,6 +870,7 @@ export default {
           this.rectangleIndex++
         }
       }
+      this.isFirstDrawRec = false
       //恢复鼠标样式
       this.initDrawTools('cursor')
       /** 鼠标样式无法更改*/
