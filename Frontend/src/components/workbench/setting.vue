@@ -89,17 +89,17 @@
           <div class="assignee info-box">
             <div class="select-box">
               <el-select
-                v-model="item.jobs[0].assignee"
-                filterable
-                size="mini"
-                placeholder="请选择"
-                @change="modifyJobAssign(item.index)"
+                  v-model="item.jobs[0].assignee.id"
+                  filterable
+                  size="mini"
+                  placeholder="请选择"
+                  @change="modifyJobAssign(item.index, item.jobs[0].assignee.id)"
               >
                 <el-option
-                  v-for="i in usersInfo"
-                  :key="i.key"
-                  :label="i.label"
-                  :value="i.id"
+                    v-for="i in usersInfo"
+                    :key="i.id"
+                    :label="i.label"
+                    :value="i.id"
                 />
               </el-select>
             </div>
@@ -219,14 +219,23 @@ export default {
     getTaskInfo() {
       this.$http.get('v1/tasks', {
         params: {
-          page_size: 10,
+
+          /** 这个分页器的参数好像可以不填 */
+          // page_size: 10,
+
           id: this.$route.params.index
         }
       }).then((e) => {
         this.taskInformation = e.data
         console.log('当前项目信息', this.taskInformation);
-        this.jobsInfo = e.data.results[0].segments
-        this.$store.commit('saveAllJobs', this.jobsInfo)
+        this.jobsInfo = e.data.results[0].segments.map((job)=>{
+          if(job.jobs[0].assignee === null){
+            job.jobs[0].assignee = {id: null}
+          }
+          return job
+        })
+        console.log('当前所有job信息', this.jobsInfo);
+        // this.$store.commit('saveAllJobs', this.jobsInfo)
         for (let i = 0; i < this.jobsInfo.length; i++) {
           this.jobsInfo[i]["index"] = i
         }
@@ -246,11 +255,11 @@ export default {
       })
     },
     //点选之后patch修改后端数据
-    modifyJobAssign(index) {
+    modifyJobAssign(index, id) {
       console.log(this.jobsInfo);
-      console.log(index);
+      console.log(index, id);
       this.$http.patch('v1/jobs/' + this.jobsInfo[index].jobs[0].id, {
-        "assignee_id": this.jobsInfo[index].jobs[0].assignee
+        "assignee_id": id
       }).then((e) => {
         if (e.status === 200) {
           this.$message({
