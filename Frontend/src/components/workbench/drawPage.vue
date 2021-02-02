@@ -208,7 +208,7 @@ export default {
       imagesData: '',
       //imagesSize原来为0，这里我改成了1，最小值应该为1吧
       imagesSize: 1,
-      imageIndex: 1,
+      imageIndex: 0,
       slideBarImageIndex: 1,
       imageIndexFrom1: 1,
       imageInfo: {},
@@ -398,7 +398,7 @@ export default {
         console.log('将从服务器获取标注数据保存到仓库完成', this.$store.state.imageTags.shapes);
         this.updateVersion = e.data.version
         //加载后 用切换图片的模式 渲染第1张图片的标记信息
-        this.reDrawTags(1, 1, e.data.shapes)
+        this.reDrawTags(1, 0)
       }).catch((err)=>{
         console.log('获取标注数据失败', err);
       })
@@ -411,7 +411,7 @@ export default {
       this.$http.get('v1/tasks/' + this.$route.params.index + '/data', {
         params: {
           type: 'chunk',
-          number: this.imageIndex - 1 + this.start_frame,
+          number: this.imageIndex + this.start_frame,
           quality: 'compressed'
         },
         // 请求数据的格式
@@ -461,7 +461,9 @@ export default {
       this.myCanvas.height = document.body.clientHeight - 35
       console.log('3.1重置画布大小完成')
       this.drawImages()
-      this.reDrawTags(2, this.imageIndex)
+      setTimeout(()=>{
+        this.reDrawTags(2, this.imageIndex)
+      },300)
     },
     //绘制图片
     drawImages() {
@@ -518,7 +520,7 @@ export default {
         this.isChangingImage = true
         if(mod === 1){
           //如果在第一张禁止后退
-          if(this.imageIndex === 1) {
+          if(this.imageIndex === 0) {
             this.isChangingImage = false
             return
           }
@@ -527,7 +529,7 @@ export default {
         }
         else if(mod === 2){
           //如果在最后一张禁止后退
-          if(this.imageIndex === this.imagesSize) {
+          if(this.imageIndex === this.imagesSize - 1) {
             this.isChangingImage = false
             return
           }
@@ -535,7 +537,7 @@ export default {
           this.slideBarImageIndex += 1
         }
         else if(mod === 3){
-          this.imageIndex = this.slideBarImageIndex
+          this.imageIndex = this.slideBarImageIndex - 1
         }
         this.getImages()
         this.removeRec('all')
@@ -545,7 +547,7 @@ export default {
         }, 200)
       } else {
         //如果该张图片没有加载完 让 sliderBar跳回去
-        this.slideBarImageIndex = this.imageIndex
+        this.slideBarImageIndex = this.imageIndex + 1
       }
     },
     //切换工具
@@ -800,7 +802,7 @@ export default {
     /**   切换图片后矩形框内的鼠标样式有问题
      * 是否锁定的参数没有保存回传*/
     reDrawTags(mod, index) {
-      //切换到了第几张图片, 这里的index是this.imageindex 也就是从1开始的数字
+      //切换到了第几张图片, 这里的index是this.imageindex 也就是从0开始的数字
       let imgIndex = index
       let TagsInfo = []
       let that = this
