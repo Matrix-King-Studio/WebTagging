@@ -169,9 +169,10 @@ export default {
       }
     },
     //两个用于下载标注数据
+    //两个用于下载标注数据
     updateData(item) {
       this.$http.get('v1/tasks/' + this.$route.params.index
-        + '/annotations?format=' + item.format, {
+          + '/annotations?format=' + item.format, {
         headers: {
           "Accept": "application/json, text/plain, */*",
           "Accept-Encoding": "gzip, deflate",
@@ -182,18 +183,18 @@ export default {
         if (e.status === 202) {
           this.updateData(item)
         } else if (e.status === 201) {
-          this.downloadData(item)
+          return new Promise((resolve)=>{
+            resolve(item)
+          })
         }
+      }).then(()=>{
+        const downloadAnchor = window.document.getElementById('downloadAnchor');
+        downloadAnchor.href = "http://47.102.205.231:8080/api/v1/tasks/" + this.$route.params.index + "/annotations?action=download&format=" + item.format;
+        downloadAnchor.click();
+        this.exportTaggingDialogVisible = false
+      }).catch((err)=>{
+        console.log(err);
       })
-    },
-    downloadData(item) {
-      const downloadAnchor = window.document.getElementById('downloadAnchor');
-      downloadAnchor.href = "http://alexking.site:8080/api/v1/tasks/4/annotations?action=download&format=" + item.format;
-      downloadAnchor.click();
-      /* Alex Start */
-      // 隐藏导出标注数据 dialog
-      this.exportTaggingDialogVisible = false
-      /* Alex End */
     },
     //删除项目
     deleteTask() {
