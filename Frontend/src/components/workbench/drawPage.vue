@@ -102,9 +102,8 @@
               <i class="el-icon-delete" />
             </div>
           </div>
-          <div class="label-add-attr">
-            <i class="el-icon-caret-bottom"></i>
-
+          <div class="label-add-attr" @click="showAttrEditor($event)">
+            <i class="el-icon-caret-bottom"></i><span> 编辑属性</span>
           </div>
         </div>
       </div>
@@ -129,17 +128,24 @@
         </div>
         <div class="main-func">
           <div
+            v-if="jobStatus === 'annotation'"
             class="main-btn submit"
             @click="isPrepare"
           >
             <i class="el-icon-upload" />
-            <span>提交所有</span>
+            <span>提交质检</span>
           </div>
           <div
-            class="main-btn abandon"
-            @click="getAllTags()"
+            v-if="jobStatus === 'validation'"
+            class="main-btn submitIssue"
           >
-            <span>废弃</span>
+            <span>提交问题</span>
+          </div>
+          <div
+            v-if="jobStatus === 'validation'"
+            class="main-btn pass"
+          >
+            <span>质检通过</span>
           </div>
         </div>
       </div>
@@ -173,7 +179,6 @@
 
 <script>
 import JSZip from '@/assets/js/jszip'
-import {Tag} from "element-ui";
 
 export default {
   data() {
@@ -191,7 +196,6 @@ export default {
 
       //保存所有Tag选项
       options: [],
-      // value: '',
 
       //画布对象
       myCanvas: {},
@@ -219,7 +223,8 @@ export default {
       recLeft: 0,
 
       //job信息
-      jobId: [],
+      jobId: 0,
+      jobStatus: '',
       //提交到服务器的版本号
       updateVersion: 0,
 
@@ -242,47 +247,23 @@ export default {
   created() {
     //获取task信息
     this.getTaskInfo()
-      //快捷键
-      let _self = this
-      document.onkeyup = function (e) {
-        let key = window.event.keyCode
-        if (key === 87){ //w，切换为鼠标指针
-            _self.initDrawTools('cursor')
-        }
-        if (key === 83){ //s，切换为矩形框
-            _self.initDrawTools('rectangle')
-        }
-        if (key === 65){ //a，上一张图片
-            _self.changeImg(1)
-        }
-        if (key === 68){ //d，下一张图片
-            _self.changeImg(2)
-        }
-      }
-  },
-  beforeDestroy(){
-      //销毁前将快捷键取消
     //快捷键
-    let _self = this
-    document.onkeyup = function (e) {
+    document.onkeyup = ()=>{
       let key = window.event.keyCode
-
       if (key === 87){ //w，切换为鼠标指针
-        _self.initDrawTools('cursor')
+          this.initDrawTools('cursor')
       }
       if (key === 83){ //s，切换为矩形框
-        _self.initDrawTools('rectangle')
+          this.initDrawTools('rectangle')
       }
       if (key === 65){ //a，上一张图片
-        _self.changeImg(1)
+          this.changeImg(1)
       }
       if (key === 68){ //d，下一张图片
-        _self.changeImg(2)
+          this.changeImg(2)
       }
     }
-
   },
-
   mounted() {
     //停止改变窗口大小后0.3秒重新绘制图片
     window.onresize = () => {
@@ -294,6 +275,9 @@ export default {
       }, 300)
     }
   },
+  beforeDestroy() {
+    this.setToCursor()
+  },
   destroyed() {
     //页面切换清除改变大小监听器
     window.onresize = () => {
@@ -301,9 +285,13 @@ export default {
     //清除页面和仓库暂存的标注数据
     this.shapes = []
     this.$store.commit('cleanTagsInfo')
-    //TODO: 在矩形框标注的状态下退出标注页面删除鼠标移动的监听器，就是控制横竖直线的监听器
+    //清除快捷键
+    document.onkeyup = ()=>{
+    }
+
   },
   methods: {
+    //TODO: 增加检测页面缩放信息， 不是100%的时候警告
     //右侧信息栏
     showBar() {
       if (this.flag2) {
@@ -331,7 +319,8 @@ export default {
         for (let item in e.data.results[0].labels) {
           let label = {
             value: e.data.results[0].labels[item].id,
-            label: e.data.results[0].labels[item].name
+            label: e.data.results[0].labels[item].name,
+            attributes: e.data.results[0].labels[item].attributes
           }
           this.options.push(label)
         }
@@ -362,10 +351,20 @@ export default {
           this.jobId = this.$route.params.jobIndex
           //再遍历task的job列表 寻找被分配的job 或者是否是创建者(Owner) 初始化开始结束图片和数量 如果没有找到拦截非法跳转
           if(e.data.results[0].segments.some((item)=>{
-            //查看 jobId与仓库对应的job 的 标注员信息 是否与当前用户相同
-            if(item.jobs[0].id === this.$store.state.jobInfo.jobId && ((item.jobs[0].assignee === this.$store.state.userInfo.id) || this.$store.state.userInfo.ifOwner)) {
+            //查看 jobId与仓库对应的job 的 标注员信息 是否与当前用户相同 或者是否是创建者
+            if(
+              item.jobs[0].id === this.$store.state.jobInfo.jobId &&
+              (
+                (
+                  item.jobs[0].assignee &&
+                  (item.jobs[0].assignee.id === this.$store.state.userInfo.id)
+                ) ||
+                this.$store.state.userInfo.ifOwner
+              )
+            ) {
+              console.log('当前job信息', item)
+              this.jobStatus = item.jobs[0].status
               //相同就设置图片开始结束标记
-              console.log('图片范围', item.start_frame, item.stop_frame)
               this.start_frame = item.start_frame
               this.stop_frame = item.stop_frame
               this.imagesSize = item.stop_frame - item.start_frame + 1
@@ -573,7 +572,12 @@ export default {
       document.body.removeEventListener('mousemove', this.followMouse, false)
       //如果没有完成矩形的绘制
       if (this.isDrawing) {
+        //删除页面上标注到一半的元素
+        this.shapes[this.shapes.length - 1].el.parentNode.removeChild(this.shapes[this.shapes.length - 1].el)
+        this.shapes.splice(-1,1)
+        //清除监听事件
         document.body.removeEventListener('mousemove', this.resizeRec, false)
+        //切换状态
         this.isDrawing = !this.isDrawing
       }
       //移除click创建元素
@@ -665,7 +669,6 @@ export default {
               points: [],
             }
             this.rectangleIndex++
-            //TODO: 删掉了shapes后面的rectangle
             this.shapes.push(r)
             //渲染到页面上
             this.$refs.recBox.appendChild(rec)
@@ -762,14 +765,13 @@ export default {
       })
     },
     //提交前询问
-    // TODO: 这里的按钮要大改
     isPrepare() {
-      this.$confirm('提交后无法修改, 是否继续?', '提示', {
+      this.$confirm('提交质检后无法修改, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        this.submitTags()
+        this.submitExam()
       }).catch(() => {
         this.$message({
           type: 'info',
@@ -778,18 +780,18 @@ export default {
       });
     },
     //提交标注信息
-    submitTags() {
-      let TagsInfo = this.$store.state.imageTags
-      console.log(TagsInfo)
-      this.$http.patch('v1/jobs/' + this.jobId + '/annotations?action=create', TagsInfo).then((e) => {
-        console.log(e)
+    submitExam() {
+      this.$http.patch('v1/jobs/' + this.$route.params.jobIndex, {
+        status: 'validation'
+      }).then((e)=>{
+        console.log('提交质检成功', e.data);
         this.$message({
-          message: "提交成功",
-          type: "success"
+          type: 'info',
+          message: '已提交质检'
         })
         this.$router.push('/home')
-      }).catch((err) => {
-        console.log(err);
+      }).catch((e)=>{
+        console.log('提交质检失败', e);
       })
     },
     //切换图片接收信息重新绘制Tag
@@ -836,7 +838,6 @@ export default {
               rec.style.cursor = 'default'
               this.$refs.recBox.appendChild(rec)
             }, 100)
-            this.isFirstDrawRec = false
           } else {
             rec.style.left = parseInt(item.points[0]) / this.imageScale + parseInt(this.imageInfo.left) + 46 + 'px'
             rec.style.top = parseInt(item.points[1]) / this.imageScale + parseInt(this.imageInfo.top) + 35 + 'px'
@@ -869,6 +870,7 @@ export default {
           this.rectangleIndex++
         }
       }
+      this.isFirstDrawRec = false
       //恢复鼠标样式
       this.initDrawTools('cursor')
       /** 鼠标样式无法更改*/
@@ -961,7 +963,15 @@ export default {
         message: "元素成功移除",
         type: "success"
       })
-    }
+    },
+    //显示label下面的编辑属性页面
+    showAttrEditor(event) {
+      if(event.target.parentNode.getAttribute('class').indexOf('label-obj-open') === -1){
+        event.target.parentNode.setAttribute('class', event.target.parentNode.getAttribute('class') + ' label-obj-open')
+      } else {
+        event.target.parentNode.setAttribute('class', event.target.parentNode.getAttribute('class').replace('label-obj-open', ''))
+      }
+    },
   }
 }
 </script>
@@ -1058,7 +1068,10 @@ export default {
     background-color: #fafbfc;
     .label-obj{
       width: 100%;
+      height: 90px;
       border-bottom: 1px solid #cae7dc;
+      overflow: hidden;
+      transition: height 0.5s ease;
       .label-info {
         width: 100%;
         height: 30px;
@@ -1097,7 +1110,7 @@ export default {
 
       .label-func {
         width: 100%;
-        height: 50px;
+        height: 40px;
         display: flex;
         justify-content: space-around;
         align-items: center;
@@ -1116,7 +1129,21 @@ export default {
       .label-add-attr{
         width: 100%;
         height: 20px;
+        padding-left: 16px;
+        box-sizing: border-box;
+        cursor: pointer;
+        span{
+          line-height: 20px;
+          color: #444;
+          font-size: 10px;
+        }
       }
+    }
+    .label-obj-active{
+      background-color: rgb(250, 255, 255);
+    }
+    .label-obj-open{
+      height: auto
     }
   }
   .switch-images {
@@ -1154,18 +1181,19 @@ export default {
   .main-func {
     position: absolute;
     bottom: 0;
-    width: 290px;
+    width: 100%;
     height: 80px;
-    margin: 5px;
-    padding: 0 15px;
+    padding: 10px;
     box-sizing: border-box;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
 
     .main-btn {
-      width: 90px;
+      flex: 1;
       height: 36px;
-      float: left;
-      margin: 10px 2px;
-      border-radius: 5px;
+      margin: 0 10px 0 10px;
+      border-radius: 3px;
       background-color: #d6efe6;
       line-height: 36px;
       text-align: center;
@@ -1177,17 +1205,10 @@ export default {
       }
     }
     .abandon {
-      width: 46px;
-      height: 26px;
-      font-size: 10px;
-      line-height: 26px;
-      letter-spacing: 1px;
-      margin-top: 20px;
-      border-radius: 2px;
+
     }
     .submit {
-      width: 200px;
-      letter-spacing: 2px;
+
     }
     .main-btn:hover {
       background-color: #bbe6d6;

@@ -48,11 +48,11 @@ export default new Vuex.Store({
     //保存当前登录的用户信息
     saveUserInfo(state, userInfo){
       state.userInfo = userInfo
-      console.log('1.3.保存用户信息到仓库', state.userInfo);
+      console.log('1.2.保存用户信息到仓库', state.userInfo);
     },
     saveIfOwnerToUserInfo(state, ifOwner){
       state.userInfo.ifOwner = ifOwner
-      console.log('1.3.保存用户信息到仓库', state.userInfo);
+      console.log('1.3.保存用户权限信息到仓库', state.userInfo);
     },
     //当前进入的job信息
     saveJobInfo(state, jobInfo){
@@ -69,7 +69,6 @@ export default new Vuex.Store({
       state.userChoiceModel = num;
     },
     //新建项目时保存label信息
-    //TODO: label中的信息有变化，需要清洗
     addToStore(state, labData){
       //先删除原有数据
       state.projectInfo.labels = []
@@ -77,17 +76,12 @@ export default new Vuex.Store({
       for(let i = 0; i < labData.length; i++){
         let item = {}
         item.name = labData[i].name
-        item.id = labData[i].id
+        //TODO： 这个id好像不需要 我也忘了当初为什么要加这个东西了，先留着吧
+        // item.id = labData[i].id
         item.attributes = labData[i].attributes
         state.projectInfo.labels.push(item)
       }
       console.log("仓库数据更新完成", state.projectInfo.labels);
-    },
-    updateLabels(state, labdata){
-      //先删除原有数据
-      state.projectInfo.labels = []
-      state.projectInfo.labels = JSON.parse(labdata)
-      console.log("通过row格式更改数据完成");
     },
     //新建项目时保存图片质量
     addImageQuality(state, image_quality){
@@ -136,25 +130,6 @@ export default new Vuex.Store({
         if(state.imageTags.shapes[i].id === TagInfo.id){
           state.imageTags.shapes[i] = TagInfo
         }
-        // console.log('正在保存第'+shapes.rectangles[i].index+'个矩形框的信息')
-
-        state.imageTags.shapes.push({
-          "type":"rectangle",
-          "occluded":false,
-          "z_order":0,
-          "points":shapes.rectangles[i].points,
-          "attributes":[
-            // {
-            //   "spec_id":"17",
-            //   "value":""
-            // }
-          ],
-          "frame":shapes.rectangles[i].frame,
-          id: shapes.rectangles[i].id,
-          "label_id":shapes.rectangles[i].label_id,
-          "isCover":shapes.rectangles[i].isCover,
-          "group":0
-        })
       }
       console.log('仓库标签信息修改结束', state.imageTags.shapes);
     },

@@ -28,12 +28,14 @@
         <div class="func-box">
           <div
             class="export-data func-btn"
-            @click="exportTaggingDialogVisible = true">
+            @click="exportTaggingDialogVisible = true"
+          >
             <span>导出数据</span>
           </div>
           <div
             class="delete func-btn"
-            @click="deleteTask">
+            @click="deleteTask"
+          >
             <span>删除</span>
           </div>
         </div>
@@ -45,7 +47,9 @@
     <div class="jobs-info">
       <div
         v-for="item in jobsInfo"
-        class="job">
+        :key="item.jobs[0].id"
+        class="job"
+      >
         <div class="job-title">
           <div class="job-id title-box">
             <span>jobId</span>
@@ -67,14 +71,14 @@
           </div>
         </div>
         <div class="job-info">
-          <div class="job-id info-box" v-if="item.jobs[0]">
+          <div class="job-id info-box">
             <span v-text="item.jobs[0].id"/>
           </div>
           <div class="frames info-box">
             <span v-text="item.start_frame + '-' + item.stop_frame"/>
           </div>
           <div class="status info-box">
-            <span v-text="item.jobs[0].status"/>
+            <span v-text="whichStatus(item.jobs[0].status)"/>
           </div>
           <div class="start-time info-box">
             <span>无</span>
@@ -85,32 +89,18 @@
           <div class="assignee info-box">
             <div class="select-box">
               <el-select
-                v-model="item.jobs[0].assignee"
-                filterable
-                size="mini"
-                placeholder="请选择"
-                @change="modifyJobAssign(item.index)">
+                  v-model="item.jobs[0].assignee.id"
+                  filterable
+                  size="mini"
+                  placeholder="请选择"
+                  @change="modifyJobAssign(item.index, item.jobs[0].assignee.id)"
+              >
                 <el-option
-                  v-for="user in usersInfo"
-                  :key="user.id"
-                  :label="user.label"
-                  :value="user"/>
-              </el-select>
-            </div>
-          </div>
-          <div class="assignee info-box">
-            <div class="select-box">
-              <el-select
-                v-model="item.jobs[0].reviewer"
-                filterable
-                size="mini"
-                placeholder="请选择"
-                @change="modifyJobReviewer(item.index)">
-                <el-option
-                  v-for="user in usersInfo"
-                  :key="user.id"
-                  :label="user.label"
-                  :value="user"/>
+                    v-for="i in usersInfo"
+                    :key="i.id"
+                    :label="i.label"
+                    :value="i.id"
+                />
               </el-select>
             </div>
           </div>
@@ -148,6 +138,7 @@
 export default {
   data() {
     return {
+      /* Alex Start */
       exportTaggingDialogVisible: false,   // 是否显示导出标注数据 dialog
       exportTaggingFormat: [
         {name: 'COCO', format: 'COCO%201.0'},
@@ -155,6 +146,8 @@ export default {
         {name: 'PASCAL VOC', format: "PASCAL%20VOC%201.1"},
       ],
       taskInformation: {},
+      /* Alex End */
+
       jobsInfo: [],
       usersInfo: []
     }
@@ -164,6 +157,17 @@ export default {
     this.getUsersInfo()
   },
   methods: {
+    //job状态翻译函数
+    /** 这个函数在projectitem中也有一个的，但是不会跨组件复用，只能再复制一个了*/
+    whichStatus(status){
+      if(status === 'annotation'){
+        return '正在标注'
+      } else if(status === 'validation'){
+        return '正在质检'
+      } else if(status === 'completed'){
+        return '标注完成'
+      }
+    },
     //两个用于下载标注数据
     updateData(item) {
       this.$http.get('v1/tasks/' + this.$route.params.index
@@ -186,7 +190,10 @@ export default {
       const downloadAnchor = window.document.getElementById('downloadAnchor');
       downloadAnchor.href = "http://alexking.site:8080/api/v1/tasks/4/annotations?action=download&format=" + item.format;
       downloadAnchor.click();
+      /* Alex Start */
+      // 隐藏导出标注数据 dialog
       this.exportTaggingDialogVisible = false
+      /* Alex End */
     },
     //删除项目
     deleteTask() {
@@ -195,7 +202,7 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        this.$http.delete('v1/tasks/' + this.taskInformation.results[0].id).then((e) => {
+        this.$http.delete('v1/tasks/' + this.taskInformation.results[0].id).then((e)=>{
           console.log(e)
         })
         this.$message({
@@ -212,14 +219,23 @@ export default {
     getTaskInfo() {
       this.$http.get('v1/tasks', {
         params: {
-          page_size: 10,
+
+          /** 这个分页器的参数好像可以不填 */
+          // page_size: 10,
+
           id: this.$route.params.index
         }
       }).then((e) => {
         this.taskInformation = e.data
         console.log('当前项目信息', this.taskInformation);
-        this.jobsInfo = e.data.results[0].segments
-        this.$store.commit('saveAllJobs', this.jobsInfo)
+        this.jobsInfo = e.data.results[0].segments.map((job)=>{
+          if(job.jobs[0].assignee === null){
+            job.jobs[0].assignee = {id: null}
+          }
+          return job
+        })
+        console.log('当前所有job信息', this.jobsInfo);
+        // this.$store.commit('saveAllJobs', this.jobsInfo)
         for (let i = 0; i < this.jobsInfo.length; i++) {
           this.jobsInfo[i]["index"] = i
         }
@@ -235,35 +251,26 @@ export default {
             id: user.id
           })
         })
+        // console.log(this.usersInfo);
       })
     },
     //点选之后patch修改后端数据
-    modifyJobAssign(index) {
+    modifyJobAssign(index, id) {
+      console.log(this.jobsInfo);
+      console.log(index, id);
       this.$http.patch('v1/jobs/' + this.jobsInfo[index].jobs[0].id, {
-        "assignee_id": this.jobsInfo[index].jobs[0].assignee.id
+        "assignee_id": id
       }).then((e) => {
         if (e.status === 200) {
           this.$message({
-            message: "修改成功",
+            message: "分配成功",
             type: "success"
           })
         }
+      }).catch((e)=>{
+        console.log('修改标注员失败', e);
       })
-      console.log(this.jobsInfo);
-    },
-    modifyJobReviewer(index) {
-      this.$http.patch('v1/jobs/' + this.jobsInfo[index].jobs[0].id, {
-        "reviewer_id": this.jobsInfo[index].jobs[0].reviewer.id
-      }).then((e) => {
-        if (e.status === 200) {
-          this.$message({
-            message: "修改成功",
-            type: "success"
-          })
-        }
-      })
-      console.log(this.jobsInfo);
-    },
+    }
   }
 }
 </script>

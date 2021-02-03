@@ -49,7 +49,7 @@ export default {
             //如果不是创建者，遍历job查看是否有被分配的项目
             for(let segIndex = 0; segIndex < res.data.results[index].segments.length; segIndex++){
               //如果只是一个job中的标注员，push一个job后继续查找后面的job
-              if(res.data.results[index].segments[segIndex].jobs[0].assignee === userId){
+              if(res.data.results[index].segments[segIndex].jobs[0].assignee && res.data.results[index].segments[segIndex].jobs[0].assignee.id === userId){
                 //将项目对象深拷贝
                 let jobData = JSON.parse(JSON.stringify(res.data.results[index]))
                 //添加对应的jobId 用于组件的循环渲染
@@ -70,8 +70,7 @@ export default {
     getUserInfo() {
       this.$http.get('v1/users/self').then((res) => {
         this.ifAdmin = res.data.groups.indexOf('admin') !== -1;
-        console.log('1.1.获取用户信息完成, 用户id:' + res.data.id);
-        console.log('1.2.用户身份判断', this.ifAdmin);
+        console.log('1.1.获取用户信息, 用户id:' + res.data.id + '用户是否是管理员:' + this.ifAdmin);
         res.data.ifAdmin = this.ifAdmin
         this.$store.commit('saveUserInfo', res.data)
         return new Promise(resolve => {
