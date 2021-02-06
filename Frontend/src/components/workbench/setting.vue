@@ -169,22 +169,19 @@ export default {
       }
     },
     //两个用于下载标注数据
-    //两个用于下载标注数据
     updateData(item) {
-      this.$http.get('v1/tasks/' + this.$route.params.index
-          + '/annotations?format=' + item.format, {
-        headers: {
-          "Accept": "application/json, text/plain, */*",
-          "Accept-Encoding": "gzip, deflate",
-          "Accept-Language": "en-US,en;q=0.9,zh-CN;q=0.8,zh;q=0.7",
-        }
-      }).then((e) => {
+      this.$http.get(`v1/tasks/${this.$route.params.index}/annotations?format=${item.format}`).then((e) => {
         console.log(e);
         if (e.status === 202) {
+          console.log(202);
           this.updateData(item)
+          return new Promise((resolve, reject)=>{
+            reject('not ready')
+          })
         } else if (e.status === 201) {
+          console.log(201 + 'ok');
           return new Promise((resolve)=>{
-            resolve(item)
+            resolve(e.request)
           })
         }
       }).then(()=>{

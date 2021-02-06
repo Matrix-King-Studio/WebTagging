@@ -13,16 +13,47 @@
         </el-button>
       </el-tooltip>
       <span class="line" />
-      <el-tooltip
-        :class="['item','tools',{'tool-active':flag === 'rectangle'}]"
-        effect="dark"
-        content="矩形标记"
+<!--      下面是老版矩形框标记， 不支持默认值， 由于不知道新版是否稳定，所以先留着，万一出错了拿出来救急-->
+<!--      <el-tooltip-->
+<!--        :class="['item','tools',{'tool-active':flag === 'rectangle'}]"-->
+<!--        effect="dark"-->
+<!--        content="矩形标记"-->
+<!--        placement="right"-->
+<!--      >-->
+<!--        <el-button @click="initDrawTools('rectangle')">-->
+<!--          <span class="iconfont">&#xe88e;</span>-->
+<!--        </el-button>-->
+<!--      </el-tooltip>-->
+<!--      <span class="line" />-->
+      <el-popover
+        v-model="defaultOptionVisible"
         placement="right"
+        width="100"
+        trigger="click"
       >
-        <el-button @click="initDrawTools('rectangle')">
+        <div class="chose-default">
+          <span>选择标签默认值</span><br>
+          <el-select
+            v-model="defaultOptionsValue"
+            @change="setDefaultOption"
+            placeholder="选择默认标签"
+            size="mini"
+          >
+            <el-option
+              v-for="item in options"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
+          </el-select>
+        </div>
+        <el-button
+          slot="reference"
+          :class="['item','tools',{'tool-active':flag === 'rectangle'}]"
+        >
           <span class="iconfont">&#xe88e;</span>
         </el-button>
-      </el-tooltip>
+      </el-popover>
     </div>
     <!-- 右边的工具栏 -->
     <div ref="objBar" class="object-bar">
@@ -102,8 +133,11 @@
               <i class="el-icon-delete" />
             </div>
           </div>
-          <div class="label-add-attr" @click="showAttrEditor($event)">
-            <i class="el-icon-caret-bottom"></i><span> 编辑属性</span>
+          <div class="label-add-attr a b c" title="label_add_attr" @click="showAttrEditor($event)">
+            <i class="el-icon-caret-right"></i><span> 编辑属性</span>
+            <div class="attributes-box">
+
+            </div>
           </div>
         </div>
       </div>
@@ -196,6 +230,10 @@ export default {
 
       //保存所有Tag选项
       options: [],
+      //选择矩形框时选择的默认Tag
+      defaultOptionsValue: null,
+      defaultOptionVisible: false,
+      defaultOptions: {},
 
       //画布对象
       myCanvas: {},
@@ -292,6 +330,7 @@ export default {
   },
   methods: {
     //TODO: 增加检测页面缩放信息， 不是100%的时候警告
+    //TODO: 高亮右侧标记对象的时候 如果不在区域内记得定位
     //右侧信息栏
     showBar() {
       if (this.flag2) {
@@ -597,6 +636,16 @@ export default {
       //创建矩形框
       document.body.addEventListener('mousedown', this.createRec, true)
     },
+    //初始化工具时设置默认标签值
+    setDefaultOption(tagId){
+      this.options.forEach((tag)=>{
+        if(tag.value === tagId){
+          this.defaultOptions = tag
+        }
+      })
+      this.defaultOptionVisible = false
+      this.initDrawTools('rectangle')
+    },
     //跟随鼠标的基准线
     followMouse(e) {
       let mPos = this.getMousePos(e)
@@ -657,16 +706,17 @@ export default {
               el: rec,//矩形框DOM元素
               //所在图片序号
               frame: this.imageIndex + this.start_frame,
-              //一级标签默认选择第一个
-              label_id: this.options[0].value,
+              //一级标签 如果没有默认值 选择标签列表中的第一个
+              label_id: this.defaultOptions.value ? this.defaultOptions.value : this.options[0].value,
               //不知道
               group: 0,
+
               //下面三个本地渲染使用
               isLock: false, //锁住
               isInvisible: false, //隐藏
               isCover: 0, //0表示未被遮挡，1表示被遮挡
               //属性
-              attributes: [],
+              attributes: this.defaultOptions.attributes ? this.defaultOptions.attributes : this.options[0].attributes,
               //左上 右下 两点数据
               points: [],
             }
@@ -967,11 +1017,14 @@ export default {
       })
     },
     //显示label下面的编辑属性页面
-    showAttrEditor(event) {
-      if(event.target.parentNode.getAttribute('class').indexOf('label-obj-open') === -1){
-        event.target.parentNode.setAttribute('class', event.target.parentNode.getAttribute('class') + ' label-obj-open')
-      } else {
-        event.target.parentNode.setAttribute('class', event.target.parentNode.getAttribute('class').replace('label-obj-open', ''))
+    showAttrEditor(e) {
+      //如果是未展开的状态
+      if(e.currentTarget.classList.value.indexOf('label-obj-open') === -1){
+        e.currentTarget.classList.add('label-obj-open')
+        e.currentTarget.children[0].style.transform = 'rotate(90deg)'
+      } else {//已经是展开的状态
+        e.currentTarget.classList.remove('label-obj-open')
+        e.currentTarget.children[0].style.transform = 'rotate(0)'
       }
     },
   }
@@ -1109,7 +1162,6 @@ export default {
           }
         }
       }
-
       .label-func {
         width: 100%;
         height: 40px;
@@ -1134,10 +1186,16 @@ export default {
         padding-left: 16px;
         box-sizing: border-box;
         cursor: pointer;
+        i{
+          transition: all 0.3s ease;
+        }
         span{
           line-height: 20px;
           color: #444;
           font-size: 10px;
+        }
+        .attributes-box{
+          width: 100%;
         }
       }
     }

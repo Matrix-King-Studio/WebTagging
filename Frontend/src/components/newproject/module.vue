@@ -35,7 +35,7 @@
                   <div
                     class="attribute-item"
                     v-for="attr in tag.attributes"
-                    :key="attr.id"
+                    :key="attr.name"
                   >
                     <div class="attr-name">
                       <span>
@@ -275,7 +275,6 @@ export default {
 
       //新建属性
       newAttributeData: {
-        "id": 0,
         "name": '',
         "input_type": '',
         "mutable": false,
@@ -394,12 +393,11 @@ export default {
           this.beingEditAttrIndex = -1
           this.isEditAttr = false
         }
-        this.newAttributeData.id = this.attrIndex
+        // this.newAttributeData.id = this.attrIndex
         this.labels[this.labels.indexOf(tag)].attributes.push(this.newAttributeData)
-        this.attrIndex += 1
+        // this.attrIndex += 1
         this.labels[this.labels.indexOf(tag)].attrInputVisible = false
         this.newAttributeData = {
-          "id": 0,
           "name": '',
           "input_type": '',
           "mutable": false,
@@ -417,7 +415,6 @@ export default {
     endAttrInput(tag) {
       this.labels[this.labels.indexOf(tag)].attrInputVisible = false
       this.newAttributeData = {
-        "id": 0,
         "name": '',
         "input_type": '',
         "mutable": false,

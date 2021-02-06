@@ -81,7 +81,7 @@ export default new Vuex.Store({
         item.attributes = labData[i].attributes
         state.projectInfo.labels.push(item)
       }
-      console.log("仓库数据更新完成", state.projectInfo.labels);
+      console.log("仓库标签数据更新完成", state.projectInfo.labels);
     },
     //新建项目时保存图片质量
     addImageQuality(state, image_quality){
