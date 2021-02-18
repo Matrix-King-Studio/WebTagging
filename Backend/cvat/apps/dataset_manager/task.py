@@ -1,4 +1,3 @@
-
 # Copyright (C) 2019-2020 Intel Corporation
 #
 # SPDX-License-Identifier: MIT
@@ -27,6 +26,7 @@ class dotdict(OrderedDict):
     __eq__ = lambda self, other: self.id == other.id
     __hash__ = lambda self: self.id
 
+
 class PatchAction(str, Enum):
     CREATE = "create"
     UPDATE = "update"
@@ -38,6 +38,7 @@ class PatchAction(str, Enum):
 
     def __str__(self):
         return self.value
+
 
 def bulk_create(db_model, objects, flt_param):
     if objects:
@@ -53,6 +54,7 @@ def bulk_create(db_model, objects, flt_param):
             return db_model.objects.bulk_create(objects)
 
     return []
+
 
 def _merge_table_rows(rows, keys_for_merge, field_id):
     # It is necessary to keep a stable order of original rows
@@ -70,7 +72,7 @@ def _merge_table_rows(rows, keys_for_merge, field_id):
                 merged_rows[row_id][key] = []
 
         for key in keys_for_merge:
-            item = dotdict({v.split('__', 1)[-1]:row[v] for v in keys_for_merge[key]})
+            item = dotdict({v.split('__', 1)[-1]: row[v] for v in keys_for_merge[key]})
             if item.id is not None:
                 merged_rows[row_id][key].append(item)
 
@@ -82,6 +84,7 @@ def _merge_table_rows(rows, keys_for_merge, field_id):
 
     return list(merged_rows.values())
 
+
 class JobAnnotation:
     def __init__(self, pk):
         self.db_job = models.Job.objects.select_related('segment__task') \
@@ -92,9 +95,9 @@ class JobAnnotation:
         self.stop_frame = db_segment.stop_frame
         self.ir_data = AnnotationIR()
 
-        self.db_labels = {db_label.id:db_label
-            for db_label in (db_segment.task.project.label_set.all()
-            if db_segment.task.project_id else db_segment.task.label_set.all())}
+        self.db_labels = {db_label.id: db_label
+                          for db_label in (db_segment.task.project.label_set.all()
+                                           if db_segment.task.project_id else db_segment.task.label_set.all())}
 
         self.db_attributes = {}
         for db_label in self.db_labels.values():
@@ -402,7 +405,7 @@ class JobAnnotation:
 
         for db_tag in db_tags:
             self._extend_attributes(db_tag.labeledimageattributeval_set,
-                self.db_attributes[db_tag.label_id]["all"].values())
+                                    self.db_attributes[db_tag.label_id]["all"].values())
 
         serializer = serializers.LabeledImageSerializer(db_tags, many=True)
         self.ir_data.tags = serializer.data
@@ -424,7 +427,7 @@ class JobAnnotation:
             'labeledshapeattributeval__spec_id',
             'labeledshapeattributeval__value',
             'labeledshapeattributeval__id',
-            ).order_by('frame')
+        ).order_by('frame')
 
         db_shapes = _merge_table_rows(
             rows=db_shapes,
@@ -439,7 +442,7 @@ class JobAnnotation:
         )
         for db_shape in db_shapes:
             self._extend_attributes(db_shape.labeledshapeattributeval_set,
-                self.db_attributes[db_shape.label_id]["all"].values())
+                                    self.db_attributes[db_shape.label_id]["all"].values())
 
         serializer = serializers.LabeledShapeSerializer(db_shapes, many=True)
         self.ir_data.shapes = serializer.data
@@ -478,7 +481,7 @@ class JobAnnotation:
                     "labeledtrackattributeval__value",
                     "labeledtrackattributeval__id",
                 ],
-                "trackedshape_set":[
+                "trackedshape_set": [
                     "trackedshape__type",
                     "trackedshape__occluded",
                     "trackedshape__z_order",
@@ -507,7 +510,7 @@ class JobAnnotation:
             # We need filter unique attributes manually
             db_track["labeledtrackattributeval_set"] = list(set(db_track["labeledtrackattributeval_set"]))
             self._extend_attributes(db_track.labeledtrackattributeval_set,
-                self.db_attributes[db_track.label_id]["immutable"].values())
+                                    self.db_attributes[db_track.label_id]["immutable"].values())
 
             default_attribute_values = self.db_attributes[db_track.label_id]["mutable"].values()
             for db_shape in db_track["trackedshape_set"]:
@@ -518,7 +521,6 @@ class JobAnnotation:
                 # by previous shape attribute values (not default values)
                 self._extend_attributes(db_shape["trackedshapeattributeval_set"], default_attribute_values)
                 default_attribute_values = db_shape["trackedshapeattributeval_set"]
-
 
         serializer = serializers.LabeledTrackSerializer(db_tracks, many=True)
         self.ir_data.tracks = serializer.data
@@ -557,6 +559,7 @@ class JobAnnotation:
 
         self.create(task_data.data.slice(self.start_frame, self.stop_frame).serialize())
 
+
 class TaskAnnotation:
     def __init__(self, pk):
         self.db_task = models.Task.objects.prefetch_related("data__images").get(id=pk)
@@ -576,7 +579,7 @@ class TaskAnnotation:
             jid = db_job.id
             start = db_job.segment.start_frame
             stop = db_job.segment.stop_frame
-            jobs[jid] = { "start": start, "stop": stop }
+            jobs[jid] = {"start": start, "stop": stop}
             splitted_data[jid] = _data.slice(start, stop)
 
         for jid, job_data in splitted_data.items():
@@ -623,11 +626,7 @@ class TaskAnnotation:
             self._merge_data(annotation.ir_data, start_frame, overlap)
 
     def export(self, dst_file, exporter, host='', **options):
-        task_data = TaskData(
-            annotation_ir=self.ir_data,
-            db_task=self.db_task,
-            host=host,
-        )
+        task_data = TaskData(annotation_ir=self.ir_data, db_task=self.db_task, host=host)
         exporter(dst_file, task_data, **options)
 
     def import_annotations(self, src_file, importer, **options):
@@ -655,6 +654,7 @@ def get_job_data(pk):
 
     return annotation.data
 
+
 @silk_profile(name="POST job data")
 @transaction.atomic
 def put_job_data(pk, data):
@@ -662,6 +662,7 @@ def put_job_data(pk, data):
     annotation.put(data)
 
     return annotation.data
+
 
 @silk_profile(name="UPDATE job data")
 @plugin_decorator
@@ -677,14 +678,16 @@ def patch_job_data(pk, data, action):
 
     return annotation.data
 
+
 @silk_profile(name="DELETE job data")
 @transaction.atomic
 def delete_job_data(pk):
     annotation = JobAnnotation(pk)
     annotation.delete()
 
+
 def export_job(job_id, dst_file, format_name,
-        server_url=None, save_images=False):
+               server_url=None, save_images=False):
     # For big tasks dump function may run for a long time and
     # we dont need to acquire lock after the task has been initialized from DB.
     # But there is the bug with corrupted dump file in case 2 or
@@ -698,6 +701,7 @@ def export_job(job_id, dst_file, format_name,
     with open(dst_file, 'wb') as f:
         job.export(f, exporter, host=server_url, save_images=save_images)
 
+
 @silk_profile(name="GET task data")
 @transaction.atomic
 def get_task_data(pk):
@@ -706,6 +710,7 @@ def get_task_data(pk):
 
     return annotation.data
 
+
 @silk_profile(name="POST task data")
 @transaction.atomic
 def put_task_data(pk, data):
@@ -713,6 +718,7 @@ def put_task_data(pk, data):
     annotation.put(data)
 
     return annotation.data
+
 
 @silk_profile(name="UPDATE task data")
 @transaction.atomic
@@ -727,18 +733,17 @@ def patch_task_data(pk, data, action):
 
     return annotation.data
 
+
 @silk_profile(name="DELETE task data")
 @transaction.atomic
 def delete_task_data(pk):
     annotation = TaskAnnotation(pk)
     annotation.delete()
 
-def export_task(task_id, dst_file, format_name,
-        server_url=None, save_images=False):
-    # For big tasks dump function may run for a long time and
-    # we dont need to acquire lock after the task has been initialized from DB.
-    # But there is the bug with corrupted dump file in case 2 or
-    # more dump request received at the same time:
+
+def export_task(task_id, dst_file, format_name, server_url=None, save_images=False):
+    # 对于大型任务，dump函数可能会运行很长时间，并且在任务从DB初始化之后，我们不需要获取锁。
+    # 但在同时收到2个或更多转储请求的情况下，存在转储文件损坏的错误：
     # https://github.com/opencv/cvat/issues/217
     with transaction.atomic():
         task = TaskAnnotation(task_id)
@@ -748,6 +753,7 @@ def export_task(task_id, dst_file, format_name,
     with open(dst_file, 'wb') as f:
         task.export(f, exporter, host=server_url, save_images=save_images)
 
+
 @transaction.atomic
 def import_task_annotations(task_id, src_file, format_name):
     task = TaskAnnotation(task_id)
@@ -756,6 +762,7 @@ def import_task_annotations(task_id, src_file, format_name):
     importer = make_importer(format_name)
     with open(src_file, 'rb') as f:
         task.import_annotations(f, importer)
+
 
 @transaction.atomic
 def import_job_annotations(job_id, src_file, format_name):

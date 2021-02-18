@@ -27,15 +27,18 @@
         </div>
         <div class="func-box">
           <div
+            class="auto-annotation func-btn"
+            @click="autoAnnotationDialogVisible = true">
+            <span>自动标注</span>
+          </div>
+          <div
             class="export-data func-btn"
-            @click="exportTaggingDialogVisible = true"
-          >
-            <span>导出数据</span>
+            @click="exportTaggingDialogVisible = true">
+            <span>导出</span>
           </div>
           <div
             class="delete func-btn"
-            @click="deleteTask"
-          >
+            @click="deleteTask">
             <span>删除</span>
           </div>
         </div>
@@ -47,9 +50,7 @@
     <div class="jobs-info">
       <div
         v-for="item in jobsInfo"
-        :key="item.jobs[0].id"
-        class="job"
-      >
+        class="job">
         <div class="job-title">
           <div class="job-id title-box">
             <span>jobId</span>
@@ -67,7 +68,10 @@
             <span>时长</span>
           </div>
           <div class="assignee title-box">
-            <span>标注人</span>
+            <span>标注员</span>
+          </div>
+          <div class="assignee title-box">
+            <span>质检员</span>
           </div>
         </div>
         <div class="job-info">
@@ -110,24 +114,77 @@
     <el-dialog
       title="提示"
       :visible.sync="exportTaggingDialogVisible"
-      width="30%"
-    >
+      width="30%">
       <span>
         <el-button
           v-for="item in exportTaggingFormat"
           :key="item.name"
           type="success"
           plain
-          @click="updateData(item)"
-        >{{ item.name }}</el-button>
+          @click="updateData(item)">{{ item.name }}</el-button>
       </span>
       <span
         slot="footer"
-        class="dialog-footer"
-      >
+        class="dialog-footer">
         <el-button
-          @click="exportTaggingDialogVisible = false"
-        >取 消</el-button>
+          @click="exportTaggingDialogVisible = false">取 消</el-button>
+      </span>
+    </el-dialog>
+    <el-dialog
+      title="自动标注"
+      :visible.sync="autoAnnotationDialogVisible"
+      width="30%">
+      <div>
+        模型：
+        <el-select v-model="autoAnnotationModel" placeholder="请选择">
+          <el-option
+            v-for="item in autoAnnotationModels"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value">
+          </el-option>
+        </el-select>
+      </div>
+      <br>
+      <div>
+        映射：
+        <el-select v-model="modelLabel" placeholder="请选择">
+          <!--        <el-option-->
+          <!--          :key="item.value"-->
+          <!--          :label="item.label"-->
+          <!--          :value="item.value">-->
+          <!--        </el-option>-->
+        </el-select>
+        --
+        <el-select v-model="taskLabel" placeholder="请选择">
+          <!--        <el-option-->
+          <!--          :key="item.value"-->
+          <!--          :label="item.label"-->
+          <!--          :value="item.value">-->
+          <!--        </el-option>-->
+        </el-select>
+      </div>
+      <br>
+      <div>
+        清楚旧标注：
+        <el-switch
+          v-model="cleanOldAnnotation"
+          active-color="#13ce66"
+          inactive-color="#ff4949">
+        </el-switch>
+      </div>
+      <span
+        slot="footer"
+        class="dialog-footer">
+        <el-button
+          @click="autoAnnotationDialogVisible = false">
+          取 消
+        </el-button>
+        <el-button
+          type="primary"
+          @click="confirmAutoAnnotation">
+          确 定
+        </el-button>
       </span>
     </el-dialog>
     <a href="" id="downloadAnchor"></a>
@@ -138,16 +195,24 @@
 export default {
   data() {
     return {
-      /* Alex Start */
       exportTaggingDialogVisible: false,   // 是否显示导出标注数据 dialog
       exportTaggingFormat: [
         {name: 'COCO', format: 'COCO%201.0'},
         {name: 'YOLO', format: 'YOLO%201.1'},
         {name: 'PASCAL VOC', format: "PASCAL%20VOC%201.1"},
       ],
-      taskInformation: {},
-      /* Alex End */
 
+      autoAnnotationDialogVisible: false,   // 是否显示导出标注数据 dialog
+      autoAnnotationModel: "",
+      autoAnnotationModels: [{
+        value: 'openvino-omz-public-yolo-v3-tf',
+        label: 'YOLO-V3'
+      },],
+      modelLabel: "car",
+      taskLabel: "car",
+      cleanOldAnnotation: false,
+
+      taskInformation: {},
       jobsInfo: [],
       usersInfo: []
     }
@@ -168,6 +233,19 @@ export default {
         return '标注完成'
       }
     },
+    confirmAutoAnnotation() {
+      this.$http.post("v1/lambda/requests", {
+        "mapping": {"car": "car"},
+        "cleanup": this.cleanOldAnnotation,
+        "task": parseInt(this.$route.params.index),
+        "function": "openvino-omz-public-yolo-v3-tf"
+      }).then(res => {
+        this.autoAnnotationDialogVisible = false
+        console.log(res);
+      }).catch(err => {
+        console.log(err);
+      })
+    },
     //两个用于下载标注数据
     updateData(item) {
       this.$http.get('v1/tasks/' + this.$route.params.index
@@ -187,13 +265,16 @@ export default {
       })
     },
     downloadData(item) {
+      // this.$http.get('v1/tasks/' + this.$route.params.index +
+      //   '/annotations?action=download&format=' + item.format).then((e) => {
+      //   console.log(e);
+      // }).catch((err) => {
+      //   console.log(err);
+      // })
       const downloadAnchor = window.document.getElementById('downloadAnchor');
-      downloadAnchor.href = "http://alexking.site:8080/api/v1/tasks/4/annotations?action=download&format=" + item.format;
+      downloadAnchor.href = "http://alexking.site:8080/api/v1/tasks/7/annotations?action=download&format=" + item.format;
       downloadAnchor.click();
-      /* Alex Start */
-      // 隐藏导出标注数据 dialog
       this.exportTaggingDialogVisible = false
-      /* Alex End */
     },
     //删除项目
     deleteTask() {
@@ -214,7 +295,6 @@ export default {
         console.log('取消删除');
       });
     },
-
     // 获取 task 数据，用于 job 配置
     getTaskInfo() {
       this.$http.get('v1/tasks', {
@@ -363,12 +443,16 @@ export default {
           background-color: #cfefe1;
         }
 
+        .auto-annotation {
+          width: 80px;
+        }
+
         .export-data {
-          width: 100px;
+          width: 50px;
         }
 
         .delete {
-          width: 60px;
+          width: 50px;
         }
       }
     }

@@ -487,8 +487,7 @@ class ExceptionSerializer(serializers.Serializer):
     filename = serializers.URLField()
     line = serializers.IntegerField()
     column = serializers.IntegerField()
-    stack = serializers.CharField(max_length=8192,
-                                  style={'base_template': 'textarea.html'}, allow_blank=True)
+    stack = serializers.CharField(max_length=8192, style={'base_template': 'textarea.html'}, allow_blank=True)
 
 
 class AboutSerializer(serializers.Serializer):

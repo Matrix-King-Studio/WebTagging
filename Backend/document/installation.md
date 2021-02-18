@@ -37,12 +37,13 @@
   sudo python3 -m pip install setuptools docker-compose
   ```
 
-- Clone _CVAT_ source code from the [GitHub repository](https://github.com/Matrix-King-Studio/WebTagging).
+- Clone project source code [GitHub repository](https://github.com/Matrix-King-Studio/WebTagging).
 
   ```bash
   sudo apt-get --no-install-recommends install -y git
   git clone https://github.com/Matrix-King-Studio/WebTagging.git
   cd WebTagging/Backend
+  sudo mkdir /mnt/share
   ```
 
 - Build docker images by default.
@@ -57,86 +58,23 @@
   docker-compose up -d
   ```
 
+- 数据库迁移
+
+    ```shell
+    docker exec -it cvat bash -ic 'python3 ~/manage.py makemigrations'
+    docker exec -it cvat bash -ic 'python3 ~/manage.py migrate'
+    ```
+
 - 注册超级用户
 
   ```sh
   docker exec -it cvat bash -ic 'python3 ~/manage.py createsuperuser'
   ```
 
-- 安装 Google Chrome 支持
-
-  ```sh
-  curl https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
-  sudo sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list'
-  sudo apt-get update
-  sudo apt-get --no-install-recommends install -y google-chrome-stable
-  ```
-
 - 访问：http://{ IP }:8080/admin/
 
-## Advanced Topics
+- 停止运行所有容器
 
-### Additional components
-
-- [Analytics: management and monitoring of data annotation team](/components/analytics/README.md)
-
-```bash
-# Build and run containers with Analytics component support:
-docker-compose -f docker-compose.yml -f components/analytics/docker-compose.analytics.yml up -d --build
-```
-
-### （半）自动标注
-
-Please follow [instructions](/document/installation_automatic_annotation.md)
-
-### 暂停所有容器
-
-下面的 command 会停止并删除 `up` 创建的 containers, networks, volumes, and images.
-
-```bash
-docker-compose down
-```
-
-### Share path
-
-在创建任务期间，可以使用共享存储上载数据。
-
-```yml
-version: '3.3'
-
-services:
-  cvat:
-    environment:
-      CVAT_SHARE_URL: 'Mounted from /mnt/share host directory'
-    volumes:
-      - cvat_share:/home/django/share:ro
-
-volumes:
-  cvat_share:
-    driver_opts:
-      type: none
-      device: /mnt/share
-      o: bind
-```
-
-### Email verification
-
-You can enable email verification for newly registered users.
-Specify these options in the [settings file](../../settings/base.py) to configure Django allauth
-to enable email verification (ACCOUNT_EMAIL_VERIFICATION = 'mandatory').
-Access is denied until the user's email address is verified.
-
-```python
-ACCOUNT_AUTHENTICATION_METHOD = 'username'
-ACCOUNT_CONFIRM_EMAIL_ON_GET = True
-ACCOUNT_EMAIL_REQUIRED = True
-ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
-
-# Email backend settings for Django
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-```
-
-Also you need to configure the Django email backend to send emails.
-This depends on the email server you are using and is not covered in this tutorial, please see
-[Django SMTP backend configuration](https://docs.djangoproject.com/en/3.1/topics/email/#django.core.mail.backends.smtp.EmailBackend)
-for details.
+  ```sh
+  docker stop $(docker ps -aq)
+  ```

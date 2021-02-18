@@ -12,12 +12,7 @@ server {
     proxy_set_header        Host $http_host;
     proxy_pass_header       Set-Cookie;
 
-    location ~* /api/.*|git/.*|tensorflow/.*|auto_annotation/.*|analytics/.*|static/.*|admin|admin/.*|documentation/.*|dextr/.*|reid/.*  {
-        proxy_pass              http://cvat:8080;
-    }
-
-    # old annotation ui, will be removed in the future.
-    location @annotation_ui {
+    location ~* /api/.*|git/.*|analytics/.*|static/.*|admin(?:/(.*))?.*|documentation/.*|django-rq(?:/(.*))? {
         proxy_pass              http://cvat:8080;
     }
 }

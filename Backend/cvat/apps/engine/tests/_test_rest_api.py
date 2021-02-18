@@ -21,8 +21,7 @@ from pycocotools import coco as coco_loader
 from rest_framework import status
 from rest_framework.test import APIClient, APITestCase
 
-from cvat.apps.engine.models import (AttributeType, Data, Job, Project,
-                                     Segment, StatusChoice, Task)
+from cvat.apps.engine.models import (AttributeType, Data, Job, Project, Segment, StatusChoice, Task)
 
 
 # FIXME: Git application and package name clash in tests

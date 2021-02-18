@@ -13,11 +13,10 @@ from django.conf import settings
 from django.contrib.auth.models import User
 from django.db import IntegrityError
 from django.forms import model_to_dict
-from django.http import HttpResponse, HttpResponseNotFound
-from django.shortcuts import render, get_object_or_404
+from django.http import HttpResponse
+from django.shortcuts import get_object_or_404
 from django.utils import timezone
 from django.utils.decorators import method_decorator
-from django.views.generic import RedirectView
 from django_filters import rest_framework as filters
 from django_filters.rest_framework import DjangoFilterBackend
 from drf_yasg import openapi
@@ -35,7 +34,6 @@ from sendfile import sendfile
 import cvat.apps.dataset_manager as dm
 import cvat.apps.dataset_manager.views
 from cvat.apps.authentication import auth
-from cvat.apps.authentication.decorators import login_required
 from cvat.apps.dataset_manager.serializers import DatasetFormatsSerializer
 from cvat.apps.engine.frame_provider import FrameProvider
 from cvat.apps.engine.models import Job, StatusChoice, Task, Log, Segment, Project, StorageMethodChoice, StorageChoice, \
@@ -46,7 +44,6 @@ from cvat.apps.engine.serializers import (
     LogEventSerializer, ProjectSerializer, RqStatusSerializer, TaskSerializer, UserSerializer, LogSerializer,
     ReviewSerializer, CombinedIssueSerializer, PluginsSerializer, ProjectSearchSerializer, CombinedReviewSerializer,
     IssueSerializer, CommentSerializer)
-from cvat.settings.base import CSS_3RDPARTY, JS_3RDPARTY
 
 from . import models, task
 from .log import clogger, slogger
@@ -534,12 +531,12 @@ class TaskViewSet(auth.TaskGetQuerySetMixin, viewsets.ModelViewSet):
             serializer_class=LabeledDataSerializer)
     def annotations(self, request, pk):
         db_task = self.get_object()  # force to call check_object_permissions
-        if request.method == 'GET':
+        if request.method == "GET":
             LogViewSet.createLog(taskId=pk, userId=request.user.id, message="Download task annotation data")
             format_name = request.query_params.get('format')
             if format_name:
                 return _export_annotations(db_task=db_task,
-                                           rq_id="/api/v1/tasks/{}/annotations/{}".format(pk, format_name),
+                                           rq_id=f"/api/v1/tasks/{pk}/annotations/{format_name}",
                                            request=request,
                                            action=request.query_params.get("action", "").lower(),
                                            callback=dm.views.export_task_annotations,
@@ -1029,8 +1026,7 @@ def _export_annotations(db_task, rq_id, request, format_name, action, callback):
                 if action == "download" and osp.exists(file_path):
                     rqJob.delete()
                     timestamp = datetime.strftime(lastTaskUpdateTime, "%Y_%m_%d_%H_%M_%S")
-                    filename = "task_{}-{}-{}{}".format(
-                        db_task.name, timestamp, format_name, osp.splitext(file_path)[1])
+                    filename = f"task_{db_task.name}-{timestamp}-{format_name}{osp.splitext(file_path)[1]}"
                     return sendfile(request, file_path, attachment=True, attachment_filename=filename.lower())
                 else:
                     if osp.exists(file_path):
@@ -1049,6 +1045,7 @@ def _export_annotations(db_task, rq_id, request, format_name, action, callback):
         server_address = None
 
     ttl = dm.views.CACHE_TTL.total_seconds()
+    # 加入任务队列
     queue.enqueue_call(func=callback, args=(db_task.id, format_name, server_address), job_id=rq_id,
                        meta={'request_time': timezone.localtime()}, result_ttl=ttl, failure_ttl=ttl)
     return Response(status=status.HTTP_202_ACCEPTED)

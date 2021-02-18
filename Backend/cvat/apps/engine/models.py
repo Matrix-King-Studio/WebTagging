@@ -489,9 +489,6 @@ class Profile(models.Model):
 
 
 class Review(models.Model):
-    """
-    质检
-    """
     job = models.ForeignKey(Job, on_delete=models.CASCADE)
     reviewer = models.ForeignKey(User, null=True, blank=True, related_name='reviews', on_delete=models.SET_NULL)
     assignee = models.ForeignKey(User, null=True, blank=True, related_name='reviewed', on_delete=models.SET_NULL)
