@@ -135,8 +135,32 @@
           </div>
           <div class="label-add-attr a b c" title="label_add_attr" @click="showAttrEditor($event)">
             <i class="el-icon-caret-right"></i><span> 编辑属性</span>
+            <div class="line"></div>
             <div class="attributes-box">
-
+              <div
+                v-for="attr in whichLabel(item)"
+                :key="attr.id"
+                class="attributes"
+              >
+                <div
+                  v-if="attr.input_type === 'checkbox'"
+                  class="checkbox"
+                >
+                  <span>{{ attr.input_type }}</span>
+                </div>
+                <div
+                  v-if="attr.input_type === 'select'"
+                  class="select"
+                >
+                  <span>{{ attr.input_type }}</span>
+                </div>
+                <div
+                  v-if="attr.input_type === 'text'"
+                  class="text"
+                >
+                  <span>{{ attr.input_type }}</span>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -281,6 +305,9 @@ export default {
 
       timeout: {},
     }
+  },
+  compute: {
+
   },
   created() {
     //获取task信息
@@ -710,13 +737,16 @@ export default {
               label_id: this.defaultOptions.value ? this.defaultOptions.value : this.options[0].value,
               //不知道
               group: 0,
+              //谁标注的，之后会用到的属性
+              source: "manual",
 
               //下面三个本地渲染使用
               isLock: false, //锁住
               isInvisible: false, //隐藏
               isCover: 0, //0表示未被遮挡，1表示被遮挡
               //属性
-              attributes: this.defaultOptions.attributes ? this.defaultOptions.attributes : this.options[0].attributes,
+              // attributes: this.defaultOptions.attributes ? this.defaultOptions.attributes : this.options[0].attributes,
+              attributes: [],
               //左上 右下 两点数据
               points: [],
             }
@@ -790,6 +820,7 @@ export default {
     //将标注信息的更改存储到服务器中
     addTagsToServer(shapeInfo){
       let shapes = [shapeInfo]
+      console.log(shapes);
       this.$http.patch('v1/jobs/' + this.jobId + '/annotations?action=create', {
         shapes: shapes,
         tracks: [],
@@ -800,7 +831,7 @@ export default {
         //把服务器分配的id赋值给shapes中
         shapeInfo.id = e.data.shapes[0].id
       }).catch((err) => {
-        console.log('标注信息上传错误', err)
+        console.log('标注信息上传失败', err)
       })
     },
     delTagFromServer(shapeIndex){
@@ -1019,12 +1050,22 @@ export default {
     //显示label下面的编辑属性页面
     showAttrEditor(e) {
       //如果是未展开的状态
-      if(e.currentTarget.classList.value.indexOf('label-obj-open') === -1){
-        e.currentTarget.classList.add('label-obj-open')
+      if(e.currentTarget.parentNode.classList.value.indexOf('label-obj-open') === -1){
+        e.currentTarget.parentNode.classList.add('label-obj-open')
         e.currentTarget.children[0].style.transform = 'rotate(90deg)'
       } else {//已经是展开的状态
-        e.currentTarget.classList.remove('label-obj-open')
+        e.currentTarget.parentNode.classList.remove('label-obj-open')
         e.currentTarget.children[0].style.transform = 'rotate(0)'
+      }
+    },
+    //通过该标注的标签，返回其应该有的属性
+    whichLabel(shape) {
+      console.log('当前标签信息', shape);
+      for (let label of this.options) {
+        if(shape.label_id === label.value){
+          console.log('该标签的属性信息', label.attributes);
+          return label.attributes
+        }
       }
     },
   }
@@ -1095,6 +1136,9 @@ export default {
   background-color: #e4f5ef;
   box-shadow: -1px 0 6px 2px #c1d4cd;
   transition: all 0.4s ease;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
   .drawer {
     position: absolute;
     top: 35px;
@@ -1114,11 +1158,12 @@ export default {
     background-color: rgba(0, 0, 0, 0.1);
   }
   .label-obj-box {
-    width: 280px;
+    flex: 10;
+    width: 286px;
     height: 550px;
-    margin: 20px auto;
+    margin: 10px auto;
     border: 2px solid #b3d9cb;
-    border-radius: 12px;
+    border-radius: 4px;
     overflow: auto;
     background-color: #fafbfc;
     .label-obj{
@@ -1182,10 +1227,14 @@ export default {
       }
       .label-add-attr{
         width: 100%;
-        height: 20px;
         padding-left: 16px;
         box-sizing: border-box;
         cursor: pointer;
+        .line{
+          width: 248px;
+          height: 1px;
+          background-color: #cae7dc;
+        }
         i{
           transition: all 0.3s ease;
         }
@@ -1203,75 +1252,81 @@ export default {
       background-color: rgb(250, 255, 255);
     }
     .label-obj-open{
-      height: auto
+      height: auto !important;
     }
   }
-  .switch-images {
-    width: 290px;
-    height: 40px;
-    margin: 5px;
+  .main-btn-box {
+    flex: 1;
     display: flex;
-    .back, .next{
+    flex-wrap: wrap;
+    flex-direction: column;
+    .switch-images {
       flex: 1;
+      width: 290px;
+      min-height: 40px;
+      margin: 5px;
       display: flex;
-      justify-content: center;
-      align-items: center;
-      span{
-        display: block;
-        width: 26px;
-        height: 26px;
-        border-radius: 4px;
-        cursor: pointer;
-        transition: 0.3s;
+      .back, .next {
+        flex: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
 
-        font-size: 26px;
-        line-height: 22px;
-        text-align: center;
+        span {
+          display: block;
+          width: 26px;
+          height: 26px;
+          border-radius: 4px;
+          cursor: pointer;
+          transition: 0.3s;
+
+          font-size: 26px;
+          line-height: 22px;
+          text-align: center;
+        }
+
+        span:hover {
+          background-color: #bbe6d6;
+        }
       }
-      span:hover{
+      .slider {
+        flex: 5;
+        padding: 0 5px;
+      }
+    }
+    .main-func {
+      flex: 1;
+      width: 100%;
+      min-height: 60px;
+      padding: 10px;
+      box-sizing: border-box;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      .main-btn {
+        flex: 1;
+        height: 36px;
+        margin: 0 10px 0 10px;
+        border-radius: 3px;
+        background-color: #d6efe6;
+        line-height: 36px;
+        text-align: center;
+        letter-spacing: 3px;
+        font-size: 14px;
+        transition: all 0.2s;
+        i {
+          font-size: 18px;
+        }
+      }
+      .abandon {
+
+      }
+      .submit {
+
+      }
+      .main-btn:hover {
         background-color: #bbe6d6;
       }
-    }
-    .slider{
-      flex: 5;
-      padding: 0 5px;
-    }
-  }
-
-  .main-func {
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-    height: 80px;
-    padding: 10px;
-    box-sizing: border-box;
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-
-    .main-btn {
-      flex: 1;
-      height: 36px;
-      margin: 0 10px 0 10px;
-      border-radius: 3px;
-      background-color: #d6efe6;
-      line-height: 36px;
-      text-align: center;
-      letter-spacing: 3px;
-      font-size: 14px;
-      transition: all 0.2s;
-      i {
-        font-size: 18px;
-      }
-    }
-    .abandon {
-
-    }
-    .submit {
-
-    }
-    .main-btn:hover {
-      background-color: #bbe6d6;
     }
   }
 }
