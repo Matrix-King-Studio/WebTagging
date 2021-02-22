@@ -1,151 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="8aff03a2-0667-4496-ac86-7694afcaba37" name="Default Changelist" comment="Alex：增加质检review和issue路由">
-      <change afterPath="$PROJECT_DIR$/cvat/apps/autoAnnotation/admin.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cvat/apps/autoAnnotation/apps.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cvat/apps/autoAnnotation/models.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cvat/apps/autoAnnotation/urls.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cvat/apps/autoAnnotation/views.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cvat/apps/logSystem/admin.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cvat/apps/logSystem/apps.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cvat/apps/logSystem/models.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cvat/apps/logSystem/urls.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cvat/apps/logSystem/views.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/serverless/deploy_cpu.sh" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/serverless/deploy_gpu.sh" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/serverless/openvino/common/model_loader.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/serverless/openvino/dextr/nuclio/function.yaml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/serverless/openvino/dextr/nuclio/main.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/serverless/openvino/dextr/nuclio/model_handler.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/serverless/openvino/omz/intel/person-reidentification-retail-300/nuclio/function.yaml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/serverless/openvino/omz/intel/person-reidentification-retail-300/nuclio/main.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/serverless/openvino/omz/intel/person-reidentification-retail-300/nuclio/model_handler.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/serverless/openvino/omz/intel/semantic-segmentation-adas-0001/nuclio/function.yaml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/serverless/openvino/omz/intel/semantic-segmentation-adas-0001/nuclio/main.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/serverless/openvino/omz/intel/semantic-segmentation-adas-0001/nuclio/model_handler.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/serverless/openvino/omz/intel/text-detection-0004/nuclio/function.yaml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/serverless/openvino/omz/intel/text-detection-0004/nuclio/main.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/serverless/openvino/omz/intel/text-detection-0004/nuclio/model_handler.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/serverless/openvino/omz/public/faster_rcnn_inception_v2_coco/nuclio/function.yaml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/serverless/openvino/omz/public/faster_rcnn_inception_v2_coco/nuclio/main.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/serverless/openvino/omz/public/faster_rcnn_inception_v2_coco/nuclio/model_handler.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/serverless/openvino/omz/public/mask_rcnn_inception_resnet_v2_atrous_coco/nuclio/function.yaml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/serverless/openvino/omz/public/mask_rcnn_inception_resnet_v2_atrous_coco/nuclio/main.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/serverless/openvino/omz/public/mask_rcnn_inception_resnet_v2_atrous_coco/nuclio/model_handler.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/serverless/openvino/omz/public/yolo-v3-tf/nuclio/function.yaml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/serverless/openvino/omz/public/yolo-v3-tf/nuclio/main.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/serverless/openvino/omz/public/yolo-v3-tf/nuclio/model_handler.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/serverless/pytorch/foolwood/siammask/nuclio/function.yaml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/serverless/pytorch/foolwood/siammask/nuclio/main.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/serverless/pytorch/foolwood/siammask/nuclio/model_handler.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/serverless/pytorch/saic-vul/fbrs/nuclio/function.yaml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/serverless/pytorch/saic-vul/fbrs/nuclio/main.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/serverless/pytorch/saic-vul/fbrs/nuclio/model_handler.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/serverless/tensorflow/faster_rcnn_inception_v2_coco/nuclio/function.yaml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/serverless/tensorflow/faster_rcnn_inception_v2_coco/nuclio/main.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/serverless/tensorflow/faster_rcnn_inception_v2_coco/nuclio/model_loader.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/serverless/tensorflow/matterport/mask_rcnn/nuclio/function.yaml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/serverless/tensorflow/matterport/mask_rcnn/nuclio/main.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/serverless/tensorflow/matterport/mask_rcnn/nuclio/model_loader.py" afterDir="false" />
+    <list default="true" id="8aff03a2-0667-4496-ac86-7694afcaba37" name="Default Changelist" comment="Alex：2021-02-18">
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/Dockerfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/analytics/README.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/analytics/docker-compose.analytics.yml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/analytics/elasticsearch/Dockerfile" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/analytics/elasticsearch/elasticsearch.yml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/analytics/kibana/Dockerfile" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/analytics/kibana/export.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/analytics/kibana/kibana.yml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/analytics/kibana/setup.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/analytics/logstash/Dockerfile" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/analytics/logstash/logstash.conf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/auto_segmentation/README.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/auto_segmentation/docker-compose.auto_segmentation.yml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/auto_segmentation/install.sh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/cuda/README.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/cuda/docker-compose.cuda.yml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/cuda/install.sh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/openvino/README.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/openvino/docker-compose.openvino.yml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/openvino/eula.cfg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/openvino/install.sh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/serverless/docker-compose.serverless.yml" beforeDir="false" afterPath="$PROJECT_DIR$/components/serverless/docker-compose.serverless.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/tf_annotation/README.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/tf_annotation/docker-compose.tf_annotation.yml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/tf_annotation/install.sh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/authentication/tests.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/autoAnnotation/tests.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/auto_annotation/README.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/auto_annotation/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/auto_annotation/admin.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/auto_annotation/apps.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/auto_annotation/image_loader.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/auto_annotation/inference.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/auto_annotation/inference_engine.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/auto_annotation/migrations/0001_initial.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/auto_annotation/migrations/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/autoAnnotation/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/auto_annotation/model_loader.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/auto_annotation/model_manager.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/auto_annotation/models.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/auto_annotation/permissions.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/auto_annotation/tests.py" beforeDir="false" afterPath="$PROJECT_DIR$/serverless/openvino/common/python3" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/auto_annotation/urls.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/auto_annotation/views.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/auto_segmentation/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/autoAnnotation/migrations/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/auto_segmentation/apps.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/auto_segmentation/migrations/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/logSystem/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/auto_segmentation/urls.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/auto_segmentation/views.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/dataset_manager/formats/registry.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/dataset_manager/formats/registry.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/dataset_manager/task.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/dataset_manager/task.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/dataset_manager/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/dataset_manager/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/dextr_segmentation/README.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/dextr_segmentation/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/dextr_segmentation/apps.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/dextr_segmentation/dextr.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/dextr_segmentation/docker-compose.dextr.yml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/dextr_segmentation/static/dextr_segmentation/js/enginePlugin.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/dextr_segmentation/urls.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/dextr_segmentation/views.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/engine/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/engine/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/engine/serializers.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/engine/serializers.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/engine/tests/_test_rest_api.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/engine/tests/_test_rest_api.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/engine/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/engine/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/git/README.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/git/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/logSystem/migrations/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/git/apps.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/git/git.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/git/management/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/git/management/commands/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/git/management/commands/update_git_states.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/git/migrations/0001_initial.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/git/migrations/0002_auto_20190123_1305.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/git/migrations/0003_gitdata_lfs.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/git/migrations/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/git/models.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/git/tests.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/git/urls.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/git/views.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/lambda_manager/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/lambda_manager/apps.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/lambda_manager/urls.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/lambda_manager/views.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/reid/README.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/reid/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/reid/apps.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/reid/reid.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/reid/static/reid/js/enginePlugin.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/reid/urls.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/reid/views.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/tf_annotation/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/tf_annotation/apps.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/tf_annotation/migrations/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/tf_annotation/urls.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/apps/tf_annotation/views.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/requirements/base.txt" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/requirements/base.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/settings/base.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/settings/base.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cvat_proxy/conf.d/cvat.conf.template" beforeDir="false" afterPath="$PROJECT_DIR$/cvat_proxy/conf.d/cvat.conf.template" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/datumaro/.bandit" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/datumaro/.coveragerc" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/datumaro/CHANGELOG.md" beforeDir="false" afterPath="$PROJECT_DIR$/datumaro/CHANGELOG.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/datumaro/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/datumaro/README.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/datumaro/datumaro/cli/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/datumaro/datumaro/cli/__init__.py" afterDir="false" />
@@ -159,8 +19,11 @@
       <change beforePath="$PROJECT_DIR$/datumaro/datumaro/cli/commands/merge.py" beforeDir="false" afterPath="$PROJECT_DIR$/datumaro/datumaro/cli/commands/merge.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/datumaro/datumaro/cli/commands/remove.py" beforeDir="false" afterPath="$PROJECT_DIR$/datumaro/datumaro/cli/commands/remove.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/datumaro/datumaro/cli/contexts/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/datumaro/datumaro/cli/contexts/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/datumaro/datumaro/cli/contexts/item/__init__.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/datumaro/datumaro/cli/contexts/model/__init__.py" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/datumaro/datumaro/cli/contexts/project/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/datumaro/datumaro/cli/contexts/project/__init__.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/datumaro/datumaro/cli/contexts/project/diff.py" beforeDir="false" afterPath="$PROJECT_DIR$/datumaro/datumaro/cli/contexts/project/diff.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/datumaro/datumaro/cli/contexts/source/__init__.py" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/datumaro/datumaro/cli/util/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/datumaro/datumaro/cli/util/__init__.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/datumaro/datumaro/cli/util/project.py" beforeDir="false" afterPath="$PROJECT_DIR$/datumaro/datumaro/cli/util/project.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/datumaro/datumaro/components/converter.py" beforeDir="false" afterPath="$PROJECT_DIR$/datumaro/datumaro/components/converter.py" afterDir="false" />
@@ -184,195 +47,14 @@
       <change beforePath="$PROJECT_DIR$/datumaro/docs/developer_guide.md" beforeDir="false" afterPath="$PROJECT_DIR$/datumaro/docs/developer_guide.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/datumaro/docs/user_manual.md" beforeDir="false" afterPath="$PROJECT_DIR$/datumaro/docs/user_manual.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/datumaro/setup.py" beforeDir="false" afterPath="$PROJECT_DIR$/datumaro/setup.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/datumaro/tests/assets/coco_dataset/annotations/instances_val.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/datumaro/tests/assets/coco_dataset/images/val/000000000001.jpg" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/datumaro/tests/test_coco_format.py" beforeDir="false" afterPath="$PROJECT_DIR$/datumaro/tests/test_coco_format.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/datumaro/tests/test_ops.py" beforeDir="false" afterPath="$PROJECT_DIR$/datumaro/tests/test_ops.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/datumaro/tests/test_splitter.py" beforeDir="false" afterPath="$PROJECT_DIR$/datumaro/tests/test_splitter.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/datumaro/tests/test_util.py" beforeDir="false" afterPath="$PROJECT_DIR$/datumaro/tests/test_util.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/datumaro/tests/test_vgg_face2_format.py" beforeDir="false" afterPath="$PROJECT_DIR$/datumaro/tests/test_vgg_face2_format.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/datumaro/tests/test_widerface_format.py" beforeDir="false" afterPath="$PROJECT_DIR$/datumaro/tests/test_widerface_format.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/document/installation.md" beforeDir="false" afterPath="$PROJECT_DIR$/document/installation.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/document/installation_automatic_annotation.md" beforeDir="false" afterPath="$PROJECT_DIR$/document/installation_automatic_annotation.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/document/static/documentation/images/cvat.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/document/static/documentation/images/gif001_detrac.gif" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/document/static/documentation/images/gif003_detrac.gif" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/document/static/documentation/images/gif005_detrac.gif" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/document/static/documentation/images/gif006_detrac.gif" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/document/static/documentation/images/gif007_mapillary_vistas.gif" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/document/static/documentation/images/gif010_detrac.gif" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/document/static/documentation/images/gif013_detrac.gif" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/document/static/documentation/images/gif014_detrac.gif" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/document/static/documentation/images/gif015_detrac.gif" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/document/static/documentation/images/gif016_mapillary_vistas.gif" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/document/static/documentation/images/gif017_mapillary_vistas.gif" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/document/static/documentation/images/gif018_mapillary_vistas.gif" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/document/static/documentation/images/gif019_detrac.gif" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/document/static/documentation/images/gif020_mapillary_vistas.gif" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/document/static/documentation/images/gif025_mapillary_vistas.gif" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/document/static/documentation/images/image001.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/document/static/documentation/images/image002.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/document/static/documentation/images/image003.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/document/static/documentation/images/image004.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/document/static/documentation/images/image005.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/document/static/documentation/images/image006_detrac.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/document/static/documentation/images/image007_detrac.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/document/static/documentation/images/image008.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/document/static/documentation/images/image009_mapillary_vistas.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/document/static/documentation/images/image010_affectnet.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/document/static/documentation/images/image011_detrac.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/document/static/documentation/images/image012.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/document/static/documentation/images/image013_detrac.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/document/static/documentation/images/image014.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/document/static/documentation/images/image015_detrac.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/document/static/documentation/images/image016.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/document/static/documentation/images/image017_detrac.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/document/static/documentation/images/image019.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/document/static/documentation/images/image020.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/document/static/documentation/images/image023_affectnet.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/document/static/documentation/images/image024_affectnet.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/document/static/documentation/images/image025_affectnet.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/document/static/documentation/images/image026.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/document/static/documentation/images/image028.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/document/static/documentation/images/image029.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/document/static/documentation/images/image032_detrac.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/document/static/documentation/images/image033_detrac.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/document/static/documentation/images/image034_detrac.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/document/static/documentation/images/image035.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/document/static/documentation/images/image036.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/document/static/documentation/images/image037.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/document/static/documentation/images/image038_detrac.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/document/static/documentation/images/image039_mapillary_vistas.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/document/static/documentation/images/image040.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/document/static/documentation/images/image041.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/document/static/documentation/images/image042.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/document/static/documentation/images/image044.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/document/static/documentation/images/image045.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/document/static/documentation/images/image046.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/document/static/documentation/images/image047.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/document/static/documentation/images/image048.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/document/static/documentation/images/image049_detrac.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/document/static/documentation/images/image050.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/document/static/documentation/images/image051.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/document/static/documentation/images/image052.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/document/static/documentation/images/image053.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/document/static/documentation/images/image054_mapillary_vistas.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/document/static/documentation/images/image055.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/document/static/documentation/images/image056.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/document/static/documentation/images/image057.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/document/static/documentation/images/image058_detrac.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/document/static/documentation/images/image059.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/document/static/documentation/images/image060.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/document/static/documentation/images/image061.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/document/static/documentation/images/image062.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/document/static/documentation/images/image063_affectnet.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/document/static/documentation/images/image064_mapillary_vistas.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/document/static/documentation/images/image065.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/document/static/documentation/images/image066.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/document/static/documentation/images/image067.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/document/static/documentation/images/image068_mapillary_vistas.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/document/static/documentation/images/image072.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/document/static/documentation/images/image073.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/document/static/documentation/images/image075.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/document/static/documentation/images/image077_detrac.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/document/static/documentation/images/image078_detrac.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/document/static/documentation/images/image080.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/document/static/documentation/images/image081.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/document/static/documentation/images/image082.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/document/static/documentation/images/image083.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/document/static/documentation/images/image084.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/document/static/documentation/images/image085.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/document/static/documentation/images/image086_detrac.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/document/static/documentation/images/image087_detrac.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/document/static/documentation/images/image088_detrac.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/document/static/documentation/images/image089_detrac.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/document/static/documentation/images/image090_detrac.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/document/static/documentation/images/image091.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/document/static/documentation/images/image093_detrac.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/document/static/documentation/images/image094_detrac.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/document/static/documentation/images/image095_detrac.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/document/static/documentation/images/image096.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/document/static/documentation/images/image097.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/document/static/documentation/images/image098.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/document/static/documentation/images/image099.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/document/static/documentation/images/image100_detrac.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/document/static/documentation/images/image102.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/document/static/documentation/images/image106.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/document/static/documentation/images/image109.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/document/static/documentation/images/image110.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/document/static/documentation/images/image113.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/document/static/documentation/images/image114.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/document/static/documentation/images/image115.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/document/static/documentation/images/image119_detrac.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/document/static/documentation/images/image120.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/document/static/documentation/images/image121_detrac.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/document/static/documentation/images/image122.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/document/static/documentation/images/image123.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/document/static/documentation/images/image124.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/document/static/documentation/images/image125.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/document/static/documentation/images/image126.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/document/static/documentation/images/image127.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/document/static/documentation/images/image128_use_cache.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/document/static/documentation/images/image130.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/document/static/documentation/images/image131_detrac.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/document/static/documentation/images/image133.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/document/static/documentation/images/image134.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/document/static/documentation/images/image135.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/document/static/documentation/images/image136.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/document/static/documentation/images/image137.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/document/static/documentation/images/image138_mapillary_vistas.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/document/static/documentation/images/image139_mapillary_vistas.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/document/static/documentation/images/image140.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/document/static/documentation/images/image141.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/document/static/documentation/images/image143.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/document/static/documentation/images/image144_detrac.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/document/static/documentation/images/image145.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/document/static/documentation/images/image146.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/document/static/documentation/images/image147.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/document/static/documentation/images/image148.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/document/static/documentation/images/image149.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/document/static/documentation/images/image151.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/document/static/documentation/images/image152_detrac.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/document/static/documentation/images/image153.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/document/static/documentation/images/image154.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/document/static/documentation/images/image155.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/document/static/documentation/images/image157_mapillary_vistas.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/document/static/documentation/images/image158_mapillary_vistas.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/document/static/documentation/images/image159_mapillary_vistas.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/document/static/documentation/images/image160_mapillary_vistas.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/document/static/documentation/images/image161.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/document/static/documentation/images/image162_detrac.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/document/static/documentation/images/image163_detrac.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/document/static/documentation/images/image164_mapillary_vistas.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/document/static/documentation/images/image165_detrac.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/document/static/documentation/images/image166.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/document/static/documentation/images/image167.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/document/static/documentation/images/image168.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/document/static/documentation/images/image169.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/document/static/documentation/images/image170.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/document/static/documentation/images/image171.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/document/static/documentation/images/image172.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/document/static/documentation/images/image173.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/document/static/documentation/images/image174.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/document/static/documentation/images/image175.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/document/static/documentation/images/image176.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/document/static/documentation/images/image177_mapillary_vistas.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/document/static/documentation/images/image178_mapillary_vistas.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/document/static/documentation/images/image179_mapillary_vistas.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/document/static/documentation/images/image180_mapillary_vistas.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/document/static/documentation/images/image181.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/document/static/documentation/images/image182_mapillary_vistas.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/document/static/documentation/images/image183.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/document/static/documentation/images/image184.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/document/static/documentation/images/image185_detrac.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/document/static/documentation/images/image186_detrac.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/document/static/documentation/images/image187.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/document/static/documentation/images/image188_detrac.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/document/static/documentation/images/image189.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/document/static/documentation/js/3rdparty/showdown-toc.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/document/static/documentation/js/3rdparty/showdown.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/document/static/documentation/js/3rdparty/showdown.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Frontend/debug.log" beforeDir="false" afterPath="$PROJECT_DIR$/../Frontend/debug.log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Frontend/src/components/workbench/setting.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../Frontend/src/components/workbench/setting.vue" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -432,7 +114,7 @@
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
-    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
+    <property name="settings.editor.selected.configurable" value="project.propVCSSupport.Mappings" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
@@ -519,7 +201,9 @@
       <workItem from="1612359192658" duration="1409000" />
       <workItem from="1612620387943" duration="2357000" />
       <workItem from="1613482537193" duration="2398000" />
-      <workItem from="1613656935051" duration="3331000" />
+      <workItem from="1613656935051" duration="3662000" />
+      <workItem from="1613919932478" duration="588000" />
+      <workItem from="1614003205050" duration="1073000" />
     </task>
     <task id="LOCAL-00001" summary="2020-12-21">
       <created>1608530665874</created>
@@ -613,6 +297,9 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
+    <ignored-roots>
+      <path value="$PROJECT_DIR$/datumaro" />
+    </ignored-roots>
     <MESSAGE value="2020-12-21" />
     <MESSAGE value="2020-12-27" />
     <MESSAGE value="Alex：用户获取待标注图片的权限" />
@@ -623,6 +310,7 @@
     <MESSAGE value="Alex：超级大更新" />
     <MESSAGE value="Alex：成功部署版本" />
     <MESSAGE value="Alex：增加质检review和issue路由" />
-    <option name="LAST_COMMIT_MESSAGE" value="Alex：增加质检review和issue路由" />
+    <MESSAGE value="Alex：2021-02-18" />
+    <option name="LAST_COMMIT_MESSAGE" value="Alex：2021-02-18" />
   </component>
 </project>
