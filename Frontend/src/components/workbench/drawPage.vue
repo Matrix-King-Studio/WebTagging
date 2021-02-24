@@ -73,8 +73,8 @@
           :key="item.index"
           :id="'style_'+(item.index)"
           class="label-obj"
-          @mouseenter="showRecObj(item.index), showLabObj(item.index)"
-          @mouseleave="hideRecObj(item.index), hideLabObj(item.index)"
+          @mouseenter="showLabAndRecObj(item.index)"
+          @mouseleave="hideLabAndRecObj(item.index)"
         >
           <!--右边的用来选择标签的框，上半部分，显示序号和标签下拉选择-->
           <div class="label-info">
@@ -134,8 +134,9 @@
             </div>
           </div>
           <div class="label-add-attr a b c" title="label_add_attr" @click="showAttrEditor($event)">
-            <i class="el-icon-caret-right"></i><span> 编辑属性</span>
-            <div class="line"></div>
+            <div class="attr-header-box">
+              <i class="el-icon-caret-right"></i><span> 编辑属性</span>
+            </div>
             <div class="attributes-box">
               <div
                 v-for="attr in whichLabel(item)"
@@ -630,6 +631,7 @@ export default {
       }
     },
     //切换成鼠标的样式
+    //TODO: 矩形框标注状态下 重新切换默认值有bug
     setToCursor() {
       //恢复鼠标样式
       this.$refs.myCanvas.style.cursor = 'default'
@@ -709,13 +711,9 @@ export default {
             rec.style.top = mPos.top + 'px'
             rec.style.left = mPos.left + 'px'
             //添加鼠标移入，右侧对应标签栏高亮事件
-            rec.onmouseenter = (e) => {
-              this.showLabObj(e.target.id)
-            }
+            rec.onmouseenter = e => {this.showLabAndRecObj(e.target.id)}
             //添加鼠标移出，右侧对应标签栏高亮事件
-            rec.onmouseleave = (e) => {
-              this.hideLabObj(e.target.id)
-            }
+            rec.onmouseleave = e => {this.hideLabAndRecObj(e.target.id)}
             //设置元素的左上角位置
             this.recTop = mPos.top
             this.recLeft = mPos.left
@@ -880,8 +878,7 @@ export default {
     //切换图片接收信息重新绘制Tag
     //或者窗口大小改变时重新绘制Tag
     //mod:  1：切换图片  2：改变窗口大小
-    /**   切换图片后矩形框内的鼠标样式有问题
-     * 是否锁定的参数没有保存回传*/
+    /**是否锁定的参数没有保存回传*/
     reDrawTags(mod, index) {
       //切换到了第几张图片, 这里的index是this.imageindex 也就是从0开始的数字
       let imgIndex = index
@@ -905,13 +902,9 @@ export default {
           //id用来标记是第几个div
           rec.id = this.rectangleIndex
           //添加鼠标移入，右侧对应标签栏高亮事件
-          rec.onmouseenter = (e) => {
-              this.showLabObj(e.target.id)
-          }
+          rec.onmouseenter = e => {this.showLabAndRecObj(e.target.id)}
           //添加鼠标移出，右侧对应标签栏高亮事件
-          rec.onmouseleave = (e) => {
-              this.hideLabObj(e.target.id)
-          }
+          rec.onmouseleave = e => {this.hideLabAndRecObj(e.target.id)}
           if(this.isFirstDrawRec){
             setTimeout(() => {
               rec.style.left = parseInt(item.points[0]) / this.imageScale + parseInt(this.imageInfo.left) + 46 + 'px'
@@ -961,29 +954,29 @@ export default {
         item.style.cursor = 'default'
       })
     },
-    //鼠标放到右侧信息栏高亮对应矩形框
-    showRecObj(index) {
-      this.shapes[index - 1].el.style.backgroundColor = 'rgba(255,255,255,0.4)'
-    },
-    hideRecObj(index){
-      this.shapes[index-1].el.style.backgroundColor = 'transparent'
-    },
-    //鼠标放到矩形框高亮右侧信息栏
-    //TODO: 删除矩形框后这里会产生错误 切换图片后再切回来就恢复正常
-    showLabObj(index){
-      let styleid = "style_"+index;
+    //矩形框对象和标签信息对象的高亮控制，鼠标移动到任何一方，其及其对应的另一方高亮
+    //TODO:这个对应关系一定要搞清楚，别找错了对象
+    //TODO: 重新加载后矩形框顺序会被打乱，想个办法
+    showLabAndRecObj(index){
+      // console.log(index);
+      // console.log(e);
+      let styleid = "style_" + index;
       let object = document.getElementById(styleid);
       object.style.background = '#fcffe1'
+
+      this.shapes[index - 1].el.classList.add('rec-obj-active')
     },
-    hideLabObj(index){
-      let styleid = "style_"+index;
+    hideLabAndRecObj(index){
+      let styleid = "style_" + index;
       let object = document.getElementById(styleid);
       object.style.background = 'rgb(255,255,255)'
+
+      this.shapes[index - 1].el.classList.remove('rec-obj-active')
     },
     //信息栏中的功能
     //更新矩形框(标注对象)标签
-    //TODO: 后续的更改标签直接改成选择默认标签 不用每次标注后再更改标签信息
     changeTagInfo(item){
+      console.log(item);
       //更新页面数据： 不用更新，点选的时候是直接绑定的
       //更新仓库数据
       this.$store.commit('changeTagInfo', item)
@@ -994,7 +987,8 @@ export default {
         tracks: [],
         tags: [],
         version: this.updateVersion
-      }).then(() => {
+      }).then((e) => {
+        console.log(e);
         this.$message({
           message: "修改已保存",
           type: "success"
@@ -1036,6 +1030,7 @@ export default {
       for (let i = index; i < this.shapes.length; i++) {
         // console.log(this.shapes[i]);
         this.shapes[i].index -= 1
+        this.shapes[i].el.id -= 1
       }
       console.log('本地数据更新后', this.shapes)
       //在本地删除数据
@@ -1050,20 +1045,26 @@ export default {
     //显示label下面的编辑属性页面
     showAttrEditor(e) {
       //如果是未展开的状态
+      //这里用ref应该看起来好一些但是我不喜欢ref就没用，
+      // parentNode部分是控制展开的
+      // children部分是控制那个小三角旋转的
       if(e.currentTarget.parentNode.classList.value.indexOf('label-obj-open') === -1){
         e.currentTarget.parentNode.classList.add('label-obj-open')
-        e.currentTarget.children[0].style.transform = 'rotate(90deg)'
+        e.currentTarget.children[0].children[0].style.transform = 'rotate(90deg)'
       } else {//已经是展开的状态
         e.currentTarget.parentNode.classList.remove('label-obj-open')
-        e.currentTarget.children[0].style.transform = 'rotate(0)'
+        e.currentTarget.children[0].children[0].style.transform = 'rotate(0)'
       }
     },
     //通过该标注的标签，返回其应该有的属性
+    //TODO:如果该标签没有属性要隐藏掉那一行
     whichLabel(shape) {
-      console.log('当前标签信息', shape);
+      //TODO:测试使用输出，记得删除
+      // console.log('当前标签信息', shape);
       for (let label of this.options) {
         if(shape.label_id === label.value){
-          console.log('该标签的属性信息', label.attributes);
+          //TODO:测试使用输出，记得删除
+          // console.log('该标签的属性信息', label.attributes);
           return label.attributes
         }
       }
@@ -1227,24 +1228,24 @@ export default {
       }
       .label-add-attr{
         width: 100%;
-        padding-left: 16px;
         box-sizing: border-box;
-        cursor: pointer;
-        .line{
-          width: 248px;
-          height: 1px;
-          background-color: #cae7dc;
-        }
-        i{
-          transition: all 0.3s ease;
-        }
-        span{
-          line-height: 20px;
-          color: #444;
-          font-size: 10px;
+        .attr-header-box{
+          cursor: pointer;
+          padding-left: 16px;
+          i{
+            transition: all 0.3s ease;
+          }
+          span{
+            line-height: 20px;
+            color: #444;
+            font-size: 10px;
+          }
         }
         .attributes-box{
           width: 100%;
+          .attributes{
+
+          }
         }
       }
     }
@@ -1381,8 +1382,9 @@ export default {
 /deep/ .rec-obj-lock {
   background-color: transparent !important;
 }
-/deep/ .rec-obj:hover {
-  border: 2px solid #555555;
-  background-color: rgba(228, 254, 239, 0.3) !important;
-}
+/deep/ .rec-obj-active {
+   border: 2px solid #ff6443;
+   background-color: rgba(228, 254, 239, 0.6) !important;
+ }
+
 </style>
