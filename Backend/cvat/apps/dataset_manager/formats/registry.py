@@ -1,7 +1,3 @@
-# Copyright (C) 2020 Intel Corporation
-#
-# SPDX-License-Identifier: MIT
-
 from datumaro.components.project import Environment
 
 dm_env = Environment()
@@ -56,14 +52,14 @@ EXPORT_FORMATS = {}
 
 
 def exporter(name, version, ext, display_name=None, enabled=True):
-    assert name not in EXPORT_FORMATS, "Export format '%s' already registered" % name
+    assert name not in EXPORT_FORMATS, f"导出格式： {name} 已被注册！"
 
     def wrap_with_params(f_or_cls):
         t = _wrap_format(f_or_cls, Exporter,
                          name=name, ext=ext, version=version, display_name=display_name,
                          enabled=enabled)
         key = t.DISPLAY_NAME
-        assert key not in EXPORT_FORMATS, "Export format '%s' already registered" % name
+        assert key not in EXPORT_FORMATS, f"导出格式： {name} 已被注册！"
         EXPORT_FORMATS[key] = t
         return t
 
@@ -75,11 +71,10 @@ IMPORT_FORMATS = {}
 
 def importer(name, version, ext, display_name=None, enabled=True):
     def wrap_with_params(f_or_cls):
-        t = _wrap_format(f_or_cls, Importer,
-                         name=name, ext=ext, version=version, display_name=display_name,
+        t = _wrap_format(f_or_cls, Importer, name=name, ext=ext, version=version, display_name=display_name,
                          enabled=enabled)
         key = t.DISPLAY_NAME
-        assert key not in IMPORT_FORMATS, "Import format '%s' already registered" % name
+        assert key not in IMPORT_FORMATS, f"导入格式： {name} 已被注册！"
         IMPORT_FORMATS[key] = t
         return t
 

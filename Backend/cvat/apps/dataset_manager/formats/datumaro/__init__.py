@@ -1,15 +1,10 @@
-# Copyright (C) 2019 Intel Corporation
-#
-# SPDX-License-Identifier: MIT
-
 import json
 import os
 import os.path as osp
 import shutil
 from tempfile import TemporaryDirectory
 
-from cvat.apps.dataset_manager.bindings import (CvatTaskDataExtractor,
-    import_dm_annotations)
+from cvat.apps.dataset_manager.bindings import CvatTaskDataExtractor
 from cvat.apps.dataset_manager.util import make_zip_archive
 from cvat.settings.base import BASE_DIR
 from datumaro.components.project import Project
@@ -32,7 +27,7 @@ class DatumaroProjectExporter:
         }
 
         images = []
-        images_meta = { 'images': images, }
+        images_meta = {'images': images, }
         for frame_id, frame in task_data.frame_info.items():
             images.append({
                 'id': frame_id,
@@ -49,9 +44,9 @@ class DatumaroProjectExporter:
     def _export(self, task_data, save_dir, save_images=False):
         dataset = CvatTaskDataExtractor(task_data, include_images=save_images)
         dm_env.converters.get('datumaro_project').convert(dataset,
-            save_dir=save_dir, save_images=save_images,
-            project_config={ 'project_name': task_data.db_task.name, }
-        )
+                                                          save_dir=save_dir, save_images=save_images,
+                                                          project_config={'project_name': task_data.db_task.name, }
+                                                          )
 
         project = Project.load(save_dir)
         target_dir = project.config.project_dir
@@ -73,7 +68,7 @@ class DatumaroProjectExporter:
 
             templates_dir = osp.join(self._TEMPLATES_DIR, 'plugins')
             target_dir = osp.join(project.config.project_dir,
-                project.config.env_dir, project.config.plugins_dir)
+                                  project.config.env_dir, project.config.plugins_dir)
             os.makedirs(target_dir, exist_ok=True)
             shutil.copyfile(
                 osp.join(templates_dir, self._REMOTE_IMAGES_EXTRACTOR + '.py'),
@@ -83,7 +78,7 @@ class DatumaroProjectExporter:
         cvat_utils_dst_dir = osp.join(save_dir, 'cvat', 'utils')
         os.makedirs(cvat_utils_dst_dir)
         shutil.copytree(osp.join(BASE_DIR, 'utils', 'cli'),
-            osp.join(cvat_utils_dst_dir, 'cli'))
+                        osp.join(cvat_utils_dst_dir, 'cli'))
 
     def __call__(self, dst_file, task_data, save_images=False):
         with TemporaryDirectory() as temp_dir:

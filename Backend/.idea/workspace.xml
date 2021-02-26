@@ -1,60 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="8aff03a2-0667-4496-ac86-7694afcaba37" name="Default Changelist" comment="Alex：2021-02-18">
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+    <list default="true" id="8aff03a2-0667-4496-ac86-7694afcaba37" name="Default Changelist" comment="Alex：2021-02-22">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datumaro/.bandit" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/datumaro/.coveragerc" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/datumaro/CHANGELOG.md" beforeDir="false" afterPath="$PROJECT_DIR$/datumaro/CHANGELOG.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datumaro/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/datumaro/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datumaro/datumaro/cli/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/datumaro/datumaro/cli/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datumaro/datumaro/cli/__main__.py" beforeDir="false" afterPath="$PROJECT_DIR$/datumaro/datumaro/cli/__main__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datumaro/datumaro/cli/commands/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/datumaro/datumaro/cli/commands/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datumaro/datumaro/cli/commands/add.py" beforeDir="false" afterPath="$PROJECT_DIR$/datumaro/datumaro/cli/commands/add.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datumaro/datumaro/cli/commands/convert.py" beforeDir="false" afterPath="$PROJECT_DIR$/datumaro/datumaro/cli/commands/convert.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datumaro/datumaro/cli/commands/create.py" beforeDir="false" afterPath="$PROJECT_DIR$/datumaro/datumaro/cli/commands/create.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datumaro/datumaro/cli/commands/explain.py" beforeDir="false" afterPath="$PROJECT_DIR$/datumaro/datumaro/cli/commands/explain.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datumaro/datumaro/cli/commands/export.py" beforeDir="false" afterPath="$PROJECT_DIR$/datumaro/datumaro/cli/commands/export.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datumaro/datumaro/cli/commands/merge.py" beforeDir="false" afterPath="$PROJECT_DIR$/datumaro/datumaro/cli/commands/merge.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datumaro/datumaro/cli/commands/remove.py" beforeDir="false" afterPath="$PROJECT_DIR$/datumaro/datumaro/cli/commands/remove.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datumaro/datumaro/cli/contexts/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/datumaro/datumaro/cli/contexts/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datumaro/datumaro/cli/contexts/item/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/datumaro/datumaro/cli/contexts/model/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/datumaro/datumaro/cli/contexts/project/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/datumaro/datumaro/cli/contexts/project/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datumaro/datumaro/cli/contexts/project/diff.py" beforeDir="false" afterPath="$PROJECT_DIR$/datumaro/datumaro/cli/contexts/project/diff.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datumaro/datumaro/cli/contexts/source/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/datumaro/datumaro/cli/util/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/datumaro/datumaro/cli/util/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datumaro/datumaro/cli/util/project.py" beforeDir="false" afterPath="$PROJECT_DIR$/datumaro/datumaro/cli/util/project.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datumaro/datumaro/components/converter.py" beforeDir="false" afterPath="$PROJECT_DIR$/datumaro/datumaro/components/converter.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datumaro/datumaro/components/dataset.py" beforeDir="false" afterPath="$PROJECT_DIR$/datumaro/datumaro/components/dataset.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datumaro/datumaro/components/extractor.py" beforeDir="false" afterPath="$PROJECT_DIR$/datumaro/datumaro/components/extractor.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datumaro/datumaro/components/operations.py" beforeDir="false" afterPath="$PROJECT_DIR$/datumaro/datumaro/components/operations.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datumaro/datumaro/components/project.py" beforeDir="false" afterPath="$PROJECT_DIR$/datumaro/datumaro/components/project.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datumaro/datumaro/plugins/camvid_format.py" beforeDir="false" afterPath="$PROJECT_DIR$/datumaro/datumaro/plugins/camvid_format.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datumaro/datumaro/plugins/coco_format/converter.py" beforeDir="false" afterPath="$PROJECT_DIR$/datumaro/datumaro/plugins/coco_format/converter.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datumaro/datumaro/plugins/image_dir.py" beforeDir="false" afterPath="$PROJECT_DIR$/datumaro/datumaro/plugins/image_dir.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datumaro/datumaro/plugins/imagenet_format.py" beforeDir="false" afterPath="$PROJECT_DIR$/datumaro/datumaro/plugins/imagenet_format.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datumaro/datumaro/plugins/imagenet_txt_format.py" beforeDir="false" afterPath="$PROJECT_DIR$/datumaro/datumaro/plugins/imagenet_txt_format.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datumaro/datumaro/plugins/mot_format.py" beforeDir="false" afterPath="$PROJECT_DIR$/datumaro/datumaro/plugins/mot_format.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datumaro/datumaro/plugins/splitter.py" beforeDir="false" afterPath="$PROJECT_DIR$/datumaro/datumaro/plugins/splitter.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datumaro/datumaro/plugins/vgg_face2_format.py" beforeDir="false" afterPath="$PROJECT_DIR$/datumaro/datumaro/plugins/vgg_face2_format.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datumaro/datumaro/plugins/widerface_format.py" beforeDir="false" afterPath="$PROJECT_DIR$/datumaro/datumaro/plugins/widerface_format.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datumaro/datumaro/util/image.py" beforeDir="false" afterPath="$PROJECT_DIR$/datumaro/datumaro/util/image.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datumaro/datumaro/util/os_util.py" beforeDir="false" afterPath="$PROJECT_DIR$/datumaro/datumaro/util/os_util.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datumaro/datumaro/version.py" beforeDir="false" afterPath="$PROJECT_DIR$/datumaro/datumaro/version.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datumaro/docs/design.md" beforeDir="false" afterPath="$PROJECT_DIR$/datumaro/docs/design.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datumaro/docs/developer_guide.md" beforeDir="false" afterPath="$PROJECT_DIR$/datumaro/docs/developer_guide.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datumaro/docs/user_manual.md" beforeDir="false" afterPath="$PROJECT_DIR$/datumaro/docs/user_manual.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datumaro/setup.py" beforeDir="false" afterPath="$PROJECT_DIR$/datumaro/setup.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datumaro/tests/assets/coco_dataset/annotations/instances_val.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/datumaro/tests/assets/coco_dataset/images/val/000000000001.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/datumaro/tests/test_coco_format.py" beforeDir="false" afterPath="$PROJECT_DIR$/datumaro/tests/test_coco_format.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datumaro/tests/test_ops.py" beforeDir="false" afterPath="$PROJECT_DIR$/datumaro/tests/test_ops.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datumaro/tests/test_splitter.py" beforeDir="false" afterPath="$PROJECT_DIR$/datumaro/tests/test_splitter.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datumaro/tests/test_util.py" beforeDir="false" afterPath="$PROJECT_DIR$/datumaro/tests/test_util.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datumaro/tests/test_vgg_face2_format.py" beforeDir="false" afterPath="$PROJECT_DIR$/datumaro/tests/test_vgg_face2_format.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datumaro/tests/test_widerface_format.py" beforeDir="false" afterPath="$PROJECT_DIR$/datumaro/tests/test_widerface_format.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cvat/apps/dataset_manager/formats/datumaro/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/dataset_manager/formats/datumaro/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cvat/apps/dataset_manager/formats/registry.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/dataset_manager/formats/registry.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cvat/apps/engine/media_extractors.py" beforeDir="false" afterPath="$PROJECT_DIR$/cvat/apps/engine/media_extractors.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -203,7 +154,9 @@
       <workItem from="1613482537193" duration="2398000" />
       <workItem from="1613656935051" duration="3662000" />
       <workItem from="1613919932478" duration="588000" />
-      <workItem from="1614003205050" duration="1073000" />
+      <workItem from="1614003205050" duration="1996000" />
+      <workItem from="1614174880527" duration="1689000" />
+      <workItem from="1614350233367" duration="668000" />
     </task>
     <task id="LOCAL-00001" summary="2020-12-21">
       <created>1608530665874</created>
@@ -275,7 +228,14 @@
       <option name="project" value="LOCAL" />
       <updated>1610636408287</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="Alex：2021-02-22">
+      <created>1614004523962</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1614004523962</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -311,6 +271,7 @@
     <MESSAGE value="Alex：成功部署版本" />
     <MESSAGE value="Alex：增加质检review和issue路由" />
     <MESSAGE value="Alex：2021-02-18" />
-    <option name="LAST_COMMIT_MESSAGE" value="Alex：2021-02-18" />
+    <MESSAGE value="Alex：2021-02-22" />
+    <option name="LAST_COMMIT_MESSAGE" value="Alex：2021-02-22" />
   </component>
 </project>
