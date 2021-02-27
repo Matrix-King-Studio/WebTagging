@@ -968,8 +968,8 @@ export default {
       })
     },
     //矩形框对象和标签信息对象的高亮控制，鼠标移动到任何一方，其及其对应的另一方高亮
-    //TODO:这个对应关系一定要搞清楚，别找错了对象
-    //TODO: 重新加载后矩形框顺序会被打乱，想个办法
+    //TODO: 这个对应关系一定要搞清楚，别找错了对象
+    //TODO: 退出重进后矩形框顺序会被打乱，之后想个办法吧
     showLabAndRecObj(index){
       // console.log(index);
       // console.log(e);
@@ -989,9 +989,13 @@ export default {
     //信息栏中的功能
     //更新矩形框(标注对象)标签
     changeTagInfo(item){
-      console.log(item);
       //更新页面数据： label不用更新，点选的时候是直接绑定的. 但是attributes需要手动更新
-
+      this.options.forEach((tag)=>{
+        if(tag.value === item.label_id){
+          item.attributes = tag.attributes.map(this.setDefaultAttributes)
+        }
+      })
+      console.log('更新标签后', item)
       //更新仓库数据
       this.$store.commit('changeTagInfo', item)
       //向服务器提交更新
