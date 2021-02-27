@@ -48,8 +48,15 @@
                       </span>
                     </div>
                     <div class="attr-value">
-                      <span>
+                      <span
+                        v-if="attr.input_type === 'select'"
+                      >
                         {{ attr.values }}
+                      </span>
+                      <span
+                          v-if="attr.input_type === 'text' || attr.input_type === 'checkbox'"
+                      >
+                        {{ attr.default_value }}
                       </span>
                     </div>
                     <div class="attr-edit-box">
@@ -97,7 +104,7 @@
                         </el-select>
                       </div>
                     </div>
-<!--                  属性的默认值  -->
+<!--                  属性的值或者默认值  -->
                     <div class="attr-value-input-box">
                       <div v-if="newAttributeData.input_type === 'select'" class="attr-value-input" ref="attr_value_input" @click="attrValInputFocus($event)">
                         <el-tag
@@ -118,7 +125,7 @@
                         ></div>
                       </div>
                       <div v-if="newAttributeData.input_type === 'checkbox'" class="attr-value-input-checkbox" ref="attr_value_input">
-                        <el-select v-model="newAttributeData.values[0]" placeholder="选择默认值">
+                        <el-select v-model="newAttributeData.default_value" placeholder="选择默认值">
                           <el-option
                             v-for="item in checkboxOption"
                             :key="item.value"
@@ -129,7 +136,7 @@
                         </el-select>
                       </div>
                       <div v-if="newAttributeData.input_type === 'text'" class="attr-value-input-text" ref="attr_value_input">
-                        <el-input v-model="newAttributeData.values[0]" placeholder="输入默认值"></el-input>
+                        <el-input v-model="newAttributeData.default_value" placeholder="输入默认值"></el-input>
                       </div>
                     </div>
 <!--                 确认按钮   -->
@@ -278,6 +285,7 @@ export default {
         "name": '',
         "input_type": '',
         "mutable": false,
+        "default_value": '',
         "values": [],
       },
 
@@ -288,7 +296,7 @@ export default {
     this.loadData()
   },
   methods: {
-    //
+    //忘了这是干啥的代码了，先放着吧
     updateLabels(e) {
       this.$store.commit('updateLabels', e.target.value)
     },
@@ -325,7 +333,7 @@ export default {
       e.srcElement.blur()
       e.preventDefault()
     },
-    //添加标签结束
+    //添加标签确认
     handleInputConfirm() {
       //获取输入的值
       let inputValue = this.mainInputValue
@@ -368,11 +376,18 @@ export default {
         this.$refs.attr_mod_select[0].style.border = "1px solid #F56C6C"
         isReady = false
       }
-      if (this.newAttributeData.values.length === 0) {
+      if (this.newAttributeData.input_type === "select" && this.newAttributeData.values.length === 0) {
         console.log(this.$refs.attr_value_input);
         this.$refs.attr_value_input[0].style.border = "1px solid #F56C6C"
         isReady = false
       }
+      if (this.newAttributeData.input_type === "checkbox" && this.newAttributeData.default_value === "") {
+        console.log(this.$refs.attr_value_input);
+        this.$refs.attr_value_input[0].style.border = "1px solid #F56C6C"
+        isReady = false
+      }
+      //暂且允许text不输入默认值，所以没有对text输入框内容做限制
+
       //红框提醒1.6秒消除
       if(!isReady){
         setTimeout(() => {
@@ -383,7 +398,7 @@ export default {
       }
       return isReady
     },
-    //添加属性结束
+    //添加属性开始
     /** 提交创建项目后记得重置 attrIndex */
     handleAttrConfirm(tag) {
       if (this.ifAttrReady()) {
@@ -393,14 +408,20 @@ export default {
           this.beingEditAttrIndex = -1
           this.isEditAttr = false
         }
-        // this.newAttributeData.id = this.attrIndex
+        //将select属性的值的第一个拿出来作为默认值(text 和 checkbox的默认值是直接和童虎输入绑定的)
+        if(this.newAttributeData.input_type === "select"){
+          this.newAttributeData.default_value = this.newAttributeData.values[0]
+        }
+        //提交编辑
         this.labels[this.labels.indexOf(tag)].attributes.push(this.newAttributeData)
-        // this.attrIndex += 1
+        //让编辑界面不可见
         this.labels[this.labels.indexOf(tag)].attrInputVisible = false
+        //重置编辑内容等待下次使用
         this.newAttributeData = {
           "name": '',
           "input_type": '',
           "mutable": false,
+          "default_value": '',
           "values": [],
         }
         this.$store.commit('addToStore', this.labels)
@@ -438,7 +459,7 @@ export default {
       tag.attrInputVisible = true
     },
     //从仓库加载数据
-    /** 加载人员数据可能不会再用到了，记得删掉*/
+    /** 加载人员数据可能不会再用到了，如果不用了记得删掉，呜呜呜花了好大的功夫写出来的结果用不上*/
     loadData() {
       let labData = this.$store.state.projectInfo.labels
       console.log('开始从仓库加载数据', labData);

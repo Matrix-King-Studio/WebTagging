@@ -669,11 +669,24 @@ export default {
     setDefaultOption(tagId){
       this.options.forEach((tag)=>{
         if(tag.value === tagId){
-          this.defaultOptions = tag
+          this.defaultOptions = {
+            //这两个变量应该有更好听的名字的，当时还不大会用，跟着elementui瞎起名，现在涉及太多东西了，懒得改了
+            value: tag.value,//标签的值
+            label: tag.label,//标签的id
+            //哈哈哈这里有点函数式编程那味了，我又觉得我行了
+            //清洗 attributes 数组 仅使用 id 和 默认属性值default_value
+            attributes: tag.attributes.map(this.setDefaultAttributes)
+          }
         }
       })
       this.defaultOptionVisible = false
       this.initDrawTools('rectangle')
+    },
+    setDefaultAttributes(attribute) {
+      return {
+        "spec_id": attribute.id,
+        "value": attribute.default_value
+      }
     },
     //跟随鼠标的基准线
     followMouse(e) {
@@ -770,7 +783,7 @@ export default {
             this.saveTagsToStore(this.shapes[this.shapes.length - 1])
             //完成一个标记,切换回鼠标模式
             // this.initDrawTools('cursor')
-            this.addTagsToServer( this.shapes[this.shapes.length - 1])
+            this.saveTagsToServer( this.shapes[this.shapes.length - 1])
           }
         }
       }
@@ -816,7 +829,7 @@ export default {
       })
     },
     //将标注信息的更改存储到服务器中
-    addTagsToServer(shapeInfo){
+    saveTagsToServer(shapeInfo){
       let shapes = [shapeInfo]
       console.log(shapes);
       this.$http.patch('v1/jobs/' + this.jobId + '/annotations?action=create', {
@@ -860,7 +873,7 @@ export default {
         });
       });
     },
-    //提交标注信息
+    //提交质检
     submitExam() {
       this.$http.patch('v1/jobs/' + this.$route.params.jobIndex, {
         status: 'validation'
@@ -977,7 +990,8 @@ export default {
     //更新矩形框(标注对象)标签
     changeTagInfo(item){
       console.log(item);
-      //更新页面数据： 不用更新，点选的时候是直接绑定的
+      //更新页面数据： label不用更新，点选的时候是直接绑定的. 但是attributes需要手动更新
+
       //更新仓库数据
       this.$store.commit('changeTagInfo', item)
       //向服务器提交更新
