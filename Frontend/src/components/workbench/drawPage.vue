@@ -133,33 +133,50 @@
               <i class="el-icon-delete" />
             </div>
           </div>
-          <div class="label-add-attr a b c" title="label_add_attr" @click="showAttrEditor($event)">
-            <div class="attr-header-box">
+          <div class="label-add-attr a b c">
+            <div class="attr-header-box" @click="showAttrEditor($event)">
               <i class="el-icon-caret-right"></i><span> 编辑属性</span>
             </div>
             <div class="attributes-box">
               <div
-                v-for="attr in whichLabel(item)"
-                :key="attr.id"
+                v-for="attr in item.attributes"
+                :key="attr.spec_id"
                 class="attributes"
               >
                 <div
-                  v-if="attr.input_type === 'checkbox'"
+                  v-if="whichInputType(item.label_id, attr.spec_id) === 'checkbox'"
                   class="checkbox"
                 >
-                  <span>{{ attr.input_type }}</span>
+                  <el-checkbox v-model="attr.value" @change="changeAttrInfo(item)">
+                    {{ whichAttrName(item.label_id, attr.spec_id) }}
+                  </el-checkbox>
                 </div>
                 <div
-                  v-if="attr.input_type === 'select'"
+                  v-if="whichInputType(item.label_id, attr.spec_id) === 'select'"
                   class="select"
                 >
-                  <span>{{ attr.input_type }}</span>
+                  <span>{{ whichAttrName(item.label_id, attr.spec_id) }}</span>
+                  <el-select v-model="attr.value" @change="changeAttrInfo(item)" size="mini" placeholder="请选择">
+                    <el-option
+                      v-for="val in whichSelectValues(item.label_id, attr.spec_id)"
+                      :key="val"
+                      :label="val"
+                      :value="val">
+                    </el-option>
+                  </el-select>
                 </div>
                 <div
-                  v-if="attr.input_type === 'text'"
+                  v-if="whichInputType(item.label_id, attr.spec_id) === 'text'"
                   class="text"
                 >
-                  <span>{{ attr.input_type }}</span>
+                  <span>{{ whichAttrName(item.label_id, attr.spec_id) }}</span>
+                  <input
+                    v-model="attr.value"
+                    class="text-input"
+                    type="text"
+                    @focus="switchShortcut('close')"
+                    @blur="switchShortcut('open'); changeAttrInfo(item)"
+                  >
                 </div>
               </div>
             </div>
@@ -314,21 +331,7 @@ export default {
     //获取task信息
     this.getTaskInfo()
     //快捷键
-    document.onkeyup = ()=>{
-      let key = window.event.keyCode
-      if (key === 87){ //w，切换为鼠标指针
-          this.initDrawTools('cursor')
-      }
-      if (key === 83){ //s，切换为矩形框
-          this.initDrawTools('rectangle')
-      }
-      if (key === 65){ //a，上一张图片
-          this.changeImg(1)
-      }
-      if (key === 68){ //d，下一张图片
-          this.changeImg(2)
-      }
-    }
+    this.switchShortcut('open')
   },
   mounted() {
     //停止改变窗口大小后0.3秒重新绘制图片
@@ -352,11 +355,13 @@ export default {
     this.shapes = []
     this.$store.commit('cleanTagsInfo')
     //清除快捷键
-    document.onkeyup = ()=>{
-    }
-
+    this.switchShortcut('close')
   },
   methods: {
+    //Test测试使用函数
+    showInfo(item){
+      console.log(item);
+    },
     //TODO: 增加检测页面缩放信息， 不是100%的时候警告
     //TODO: 高亮右侧标记对象的时候 如果不在区域内记得定位
     //右侧信息栏
@@ -756,8 +761,7 @@ export default {
               isInvisible: false, //隐藏
               isCover: 0, //0表示未被遮挡，1表示被遮挡
               //属性
-              // attributes: this.defaultOptions.attributes ? this.defaultOptions.attributes : this.options[0].attributes,
-              attributes: [],
+              attributes: this.defaultOptions.attributes ? this.defaultOptions.attributes : this.options[0].attributes,
               //左上 右下 两点数据
               points: [],
             }
@@ -1015,6 +1019,27 @@ export default {
         console.log('标注信息更新错误', err)
       })
     },
+    changeAttrInfo(item){
+      console.log('更新标签后', item)
+      //更新仓库数据
+      this.$store.commit('changeTagInfo', item)
+      //向服务器提交更新
+      let shapes = [item]
+      this.$http.patch('v1/jobs/' + this.jobId + '/annotations?action=update', {
+        shapes: shapes,
+        tracks: [],
+        tags: [],
+        version: this.updateVersion
+      }).then((e) => {
+        console.log(e);
+        this.$message({
+          message: "修改已保存",
+          type: "success"
+        })
+      }).catch((err) => {
+        console.log('标注信息更新错误', err)
+      })
+    },
     //锁定
     lockRecObj(index) {
       this.shapes[index - 1].isLock = !this.shapes[index - 1].isLock
@@ -1066,27 +1091,72 @@ export default {
       //这里用ref应该看起来好一些但是我不喜欢ref就没用，
       // parentNode部分是控制展开的
       // children部分是控制那个小三角旋转的
-      if(e.currentTarget.parentNode.classList.value.indexOf('label-obj-open') === -1){
-        e.currentTarget.parentNode.classList.add('label-obj-open')
-        e.currentTarget.children[0].children[0].style.transform = 'rotate(90deg)'
+      if(e.currentTarget.parentNode.parentNode.classList.value.indexOf('label-obj-open') === -1){
+        e.currentTarget.parentNode.parentNode.classList.add('label-obj-open')
+        e.currentTarget.children[0].style.transform = 'rotate(90deg)'
       } else {//已经是展开的状态
-        e.currentTarget.parentNode.classList.remove('label-obj-open')
-        e.currentTarget.children[0].children[0].style.transform = 'rotate(0)'
+        e.currentTarget.parentNode.parentNode.classList.remove('label-obj-open')
+        e.currentTarget.children[0].style.transform = 'rotate(0)'
       }
     },
     //通过该标注的标签，返回其应该有的属性
     //TODO:如果该标签没有属性要隐藏掉那一行
-    whichLabel(shape) {
-      //TODO:测试使用输出，记得删除
-      // console.log('当前标签信息', shape);
+    whichInputType(labelId, specId) {
       for (let label of this.options) {
-        if(shape.label_id === label.value){
-          //TODO:测试使用输出，记得删除
-          // console.log('该标签的属性信息', label.attributes);
-          return label.attributes
+        if(labelId === label.value){
+          for(let attribute of label.attributes){
+            if(attribute.id === specId){
+              return attribute.input_type
+            }
+          }
         }
       }
     },
+    whichAttrName(labelId, specId) {
+      for (let label of this.options) {
+        if(labelId === label.value){
+          for(let attribute of label.attributes){
+            if(attribute.id === specId){
+              return attribute.name
+            }
+          }
+        }
+      }
+    },
+    whichSelectValues(labelId, specId) {
+      for (let label of this.options) {
+        if(labelId === label.value){
+          for(let attribute of label.attributes){
+            if(attribute.id === specId){
+              return attribute.values
+            }
+          }
+        }
+      }
+    },
+    //快捷键控制
+    switchShortcut(status) {
+      if(status === "open"){
+        document.onkeyup = ()=> {
+          console.log(window.event.keyCode);
+          let key = window.event.keyCode
+          if (key === 27 || key === 87) { //w，切换为鼠标指针
+            this.initDrawTools('cursor')
+          }
+          if (key === 40 || key === 83) { //s，切换为矩形框
+            this.initDrawTools('rectangle')
+          }
+          if (key === 37 || key === 65) { //a，上一张图片
+            this.changeImg(1)
+          }
+          if (key === 39 || key === 68) { //d，下一张图片
+            this.changeImg(2)
+          }
+        }
+      } else if(status === "close"){
+        document.onkeyup = ()=> {}
+      }
+    }
   }
 }
 </script>
@@ -1262,7 +1332,9 @@ export default {
         .attributes-box{
           width: 100%;
           .attributes{
-
+            .checkbox {
+              padding-left: 12px;
+            }
           }
         }
       }
