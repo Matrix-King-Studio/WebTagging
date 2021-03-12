@@ -133,16 +133,20 @@
               <i class="el-icon-delete" />
             </div>
           </div>
+          <!-- 右边的用来选择标签的框， 最下面折叠起来用于编辑属性的界面 -->
           <div class="label-add-attr a b c">
+            <!-- 一直展示，用于控制折叠与展开 -->
             <div class="attr-header-box" @click="showAttrEditor($event)">
               <i class="el-icon-caret-right"></i><span> 编辑属性</span>
             </div>
+            <!-- 编辑属性的所有功能 -->
             <div class="attributes-box">
               <div
                 v-for="attr in item.attributes"
                 :key="attr.spec_id"
                 class="attributes"
               >
+                <!-- 复选框 -->
                 <div
                   v-if="whichInputType(item.label_id, attr.spec_id) === 'checkbox'"
                   class="checkbox"
@@ -151,6 +155,7 @@
                     {{ whichAttrName(item.label_id, attr.spec_id) }}
                   </el-checkbox>
                 </div>
+                <!-- select框 -->
                 <div
                   v-if="whichInputType(item.label_id, attr.spec_id) === 'select'"
                   class="select"
@@ -165,6 +170,7 @@
                     </el-option>
                   </el-select>
                 </div>
+                <!-- 输入框 -->
                 <div
                   v-if="whichInputType(item.label_id, attr.spec_id) === 'text'"
                   class="text"
@@ -322,12 +328,15 @@ export default {
       // radio: 0,
 
       timeout: {},
+      //所有checkbox属性的id 用于清洗字符串包裹的布尔值
+      checkboxAttrId: []
     }
   },
   compute: {
 
   },
   created() {
+    //TODO: 无缓存第一次加载不是图片就是矩形框无法加载
     //获取task信息
     this.getTaskInfo()
     //快捷键
@@ -362,7 +371,7 @@ export default {
     showInfo(item){
       console.log(item);
     },
-    //TODO: 增加检测页面缩放信息， 不是100%的时候警告
+    //TODO: 增加检测页面缩放信息， 不是100%的时候警告， 其实坐标都是一样的，但还是害怕出错
     //TODO: 高亮右侧标记对象的时候 如果不在区域内记得定位
     //右侧信息栏
     showBar() {
@@ -395,6 +404,13 @@ export default {
             attributes: e.data.results[0].labels[item].attributes
           }
           this.options.push(label)
+        }
+        for(let label of this.options){
+          for(let attr of label.attributes){
+            if(attr.input_type === "checkbox"){
+              this.checkboxAttrId.push(attr.id)
+            }
+          }
         }
         console.log('标签列表', this.options);
 
@@ -463,8 +479,14 @@ export default {
     //获取标注数据
     getShapes(){
       this.$http.get('v1/jobs/'+ this.jobId +'/annotations').then((e)=>{
-        console.log('从服务器获取标注数据', e.data);
+        // console.log('从服务器获取标注数据', e.data);
         for(let item of e.data.shapes){
+          //TODO: 在这里将所有的字符串形式的布尔值清洗成正常形式
+          for(let attr of item.attributes){
+            if(this.checkboxAttrId.includes(attr.spec_id)){
+              attr.value = attr.value === "True"
+            }
+          }
           this.$store.commit('saveTagsInfo', item)
         }
         console.log('将从服务器获取标注数据保存到仓库完成', this.$store.state.imageTags.shapes);
@@ -688,9 +710,17 @@ export default {
       this.initDrawTools('rectangle')
     },
     setDefaultAttributes(attribute) {
-      return {
-        "spec_id": attribute.id,
-        "value": attribute.default_value
+      if(this.checkboxAttrId.includes(attribute.id)){
+        // 如果是checkbox属性， 则将字符串转换为布尔值
+        return {
+          "spec_id": attribute.id,
+          "value": attribute.default_value === "True"
+        }
+      } else {
+        return {
+          "spec_id": attribute.id,
+          "value": attribute.default_value
+        }
       }
     },
     //跟随鼠标的基准线
