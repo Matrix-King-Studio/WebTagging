@@ -160,7 +160,7 @@
                   v-if="whichInputType(item.label_id, attr.spec_id) === 'select'"
                   class="select"
                 >
-                  <span>{{ whichAttrName(item.label_id, attr.spec_id) }}</span>
+                  <span class="select-title">{{ whichAttrName(item.label_id, attr.spec_id) }}</span>
                   <el-select v-model="attr.value" @change="changeAttrInfo(item)" size="mini" placeholder="请选择">
                     <el-option
                       v-for="val in whichSelectValues(item.label_id, attr.spec_id)"
@@ -175,13 +175,14 @@
                   v-if="whichInputType(item.label_id, attr.spec_id) === 'text'"
                   class="text"
                 >
-                  <span>{{ whichAttrName(item.label_id, attr.spec_id) }}</span>
+                  <span class="text-title">{{ whichAttrName(item.label_id, attr.spec_id) }}</span>
                   <input
                     v-model="attr.value"
                     class="text-input"
                     type="text"
                     @focus="switchShortcut('close')"
                     @blur="switchShortcut('open'); changeAttrInfo(item)"
+                    @keyup.enter="handleBlur($event)"
                   >
                 </div>
               </div>
@@ -1186,6 +1187,10 @@ export default {
       } else if(status === "close"){
         document.onkeyup = ()=> {}
       }
+    },
+    //属性输入框回车结束输入
+    handleBlur(e){
+      e.target.blur()
     }
   }
 }
@@ -1364,6 +1369,43 @@ export default {
           .attributes{
             .checkbox {
               padding-left: 12px;
+              height: 24px;
+              display: flex;
+              align-items: center;
+            }
+            .select{
+              display: flex;
+              padding-left: 8px;
+              height: 40px;
+              align-items: center;
+              .select-title{
+                font-size: 14px;
+                color: #444444;
+                margin-right: 10px;
+              }
+            }
+            .text{
+              display: flex;
+              padding-left: 8px;
+              height: 40px;
+              align-items: center;
+              .text-title{
+                font-size: 14px;
+                color: #444444;
+                margin-right: 10px;
+              }
+              input{
+                outline: none;
+                border: 1px solid #cccccc;
+                height: 28px;
+                border-radius: 4px;
+                padding: 0px 0px 0px 8px;
+                box-sizing: border-box;
+                transition: border 0.3s linear;
+              }
+              input:focus{
+                border: 1px solid #51b5ff;
+              }
             }
           }
         }
